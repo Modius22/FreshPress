@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A class to render Diffs in different formats.
  *
@@ -12,7 +13,8 @@
  *
  * @package Text_Diff
  */
-class Text_Diff_Renderer {
+class Text_Diff_Renderer
+{
 
     /**
      * Number of leading context "lines" to preserve.
@@ -33,7 +35,7 @@ class Text_Diff_Renderer {
     /**
      * Constructor.
      */
-    function __construct( $params = array() )
+    function __construct($params = array())
     {
         foreach ($params as $param => $value) {
             $v = '_' . $param;
@@ -43,12 +45,13 @@ class Text_Diff_Renderer {
         }
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Renderer( $params = array() ) {
-		self::__construct( $params );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_Diff_Renderer($params = array())
+    {
+        self::__construct($params);
+    }
 
     /**
      * Get any renderer parameters.
@@ -70,7 +73,7 @@ class Text_Diff_Renderer {
     /**
      * Renders a diff.
      *
-     * @param Text_Diff $diff  A Text_Diff object.
+     * @param Text_Diff $diff A Text_Diff object.
      *
      * @return string  The formatted output.
      */
@@ -109,8 +112,8 @@ class Text_Diff_Renderer {
                         }
                         /* @todo */
                         $output .= $this->_block($x0, $ntrail + $xi - $x0,
-                                                 $y0, $ntrail + $yi - $y0,
-                                                 $block);
+                            $y0, $ntrail + $yi - $y0,
+                            $block);
                         $block = false;
                     }
                 }
@@ -141,8 +144,8 @@ class Text_Diff_Renderer {
 
         if (is_array($block)) {
             $output .= $this->_block($x0, $xi - $x0,
-                                     $y0, $yi - $y0,
-                                     $block);
+                $y0, $yi - $y0,
+                $block);
         }
 
         return $output . $this->_endDiff();
@@ -154,21 +157,21 @@ class Text_Diff_Renderer {
 
         foreach ($edits as $edit) {
             switch (strtolower(get_class($edit))) {
-            case 'text_diff_op_copy':
-                $output .= $this->_context($edit->orig);
-                break;
+                case 'text_diff_op_copy':
+                    $output .= $this->_context($edit->orig);
+                    break;
 
-            case 'text_diff_op_add':
-                $output .= $this->_added($edit->final);
-                break;
+                case 'text_diff_op_add':
+                    $output .= $this->_added($edit->final);
+                    break;
 
-            case 'text_diff_op_delete':
-                $output .= $this->_deleted($edit->orig);
-                break;
+                case 'text_diff_op_delete':
+                    $output .= $this->_deleted($edit->orig);
+                    break;
 
-            case 'text_diff_op_change':
-                $output .= $this->_changed($edit->orig, $edit->final);
-                break;
+                case 'text_diff_op_change':
+                    $output .= $this->_changed($edit->orig, $edit->final);
+                    break;
             }
         }
 

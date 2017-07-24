@@ -6,8 +6,9 @@
  * @subpackage Administration
  */
 
-if ( ! defined('ABSPATH') )
-	die();
+if (!defined('ABSPATH')) {
+    die();
+}
 
 /**
  * @global string $opml
@@ -30,32 +31,33 @@ global $opml;
  * @param string $tagName XML element name.
  * @param array $attrs XML element attributes.
  */
-function startElement($parser, $tagName, $attrs) {
-	global $names, $urls, $targets, $descriptions, $feeds;
+function startElement($parser, $tagName, $attrs)
+{
+    global $names, $urls, $targets, $descriptions, $feeds;
 
-	if ( 'OUTLINE' === $tagName ) {
-		$name = '';
-		if ( isset( $attrs['TEXT'] ) ) {
-			$name = $attrs['TEXT'];
-		}
-		if ( isset( $attrs['TITLE'] ) ) {
-			$name = $attrs['TITLE'];
-		}
-		$url = '';
-		if ( isset( $attrs['URL'] ) ) {
-			$url = $attrs['URL'];
-		}
-		if ( isset( $attrs['HTMLURL'] ) ) {
-			$url = $attrs['HTMLURL'];
-		}
+    if ('OUTLINE' === $tagName) {
+        $name = '';
+        if (isset($attrs['TEXT'])) {
+            $name = $attrs['TEXT'];
+        }
+        if (isset($attrs['TITLE'])) {
+            $name = $attrs['TITLE'];
+        }
+        $url = '';
+        if (isset($attrs['URL'])) {
+            $url = $attrs['URL'];
+        }
+        if (isset($attrs['HTMLURL'])) {
+            $url = $attrs['HTMLURL'];
+        }
 
-		// Save the data away.
-		$names[] = $name;
-		$urls[] = $url;
-		$targets[] = isset( $attrs['TARGET'] ) ? $attrs['TARGET'] :  '';
-		$feeds[] = isset( $attrs['XMLURL'] ) ? $attrs['XMLURL'] :  '';
-		$descriptions[] = isset( $attrs['DESCRIPTION'] ) ? $attrs['DESCRIPTION'] :  '';
-	} // End if outline.
+        // Save the data away.
+        $names[] = $name;
+        $urls[] = $url;
+        $targets[] = isset($attrs['TARGET']) ? $attrs['TARGET'] : '';
+        $feeds[] = isset($attrs['XMLURL']) ? $attrs['XMLURL'] : '';
+        $descriptions[] = isset($attrs['DESCRIPTION']) ? $attrs['DESCRIPTION'] : '';
+    } // End if outline.
 }
 
 /**
@@ -67,14 +69,15 @@ function startElement($parser, $tagName, $attrs) {
  * @param mixed $parser XML Parser resource.
  * @param string $tagName XML tag name.
  */
-function endElement($parser, $tagName) {
-	// Nothing to do.
+function endElement($parser, $tagName)
+{
+    // Nothing to do.
 }
 
 // Create an XML parser
-if ( ! function_exists( 'xml_parser_create' ) ) {
-	trigger_error( __( "PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension." ) );
-	wp_die( __( "PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension." ) );
+if (!function_exists('xml_parser_create')) {
+    trigger_error(__("PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension."));
+    wp_die(__("PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension."));
 }
 
 $xml_parser = xml_parser_create();
@@ -82,13 +85,13 @@ $xml_parser = xml_parser_create();
 // Set the functions to handle opening and closing tags
 xml_set_element_handler($xml_parser, "startElement", "endElement");
 
-if ( ! xml_parse( $xml_parser, $opml, true ) ) {
-	printf(
-		/* translators: 1: error message, 2: line number */
-		__( 'XML Error: %1$s at line %2$s' ),
-		xml_error_string( xml_get_error_code( $xml_parser ) ),
-		xml_get_current_line_number( $xml_parser )
-	);
+if (!xml_parse($xml_parser, $opml, true)) {
+    printf(
+    /* translators: 1: error message, 2: line number */
+        __('XML Error: %1$s at line %2$s'),
+        xml_error_string(xml_get_error_code($xml_parser)),
+        xml_get_current_line_number($xml_parser)
+    );
 }
 
 // Free up memory used by the XML parser

@@ -35,73 +35,75 @@
  */
 
 /** Load WordPress Bootstrap */
-require_once(dirname(dirname(__FILE__)).'/wp-load.php');
+require_once(dirname(dirname(__FILE__)) . '/wp-load.php');
 
-if ( ! function_exists('maybe_create_table') ) :
-/**
- * Create database table, if it doesn't already exist.
- *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $table_name Database table name.
- * @param string $create_ddl Create database table SQL.
- * @return bool False on error, true if already exists or success.
- */
-function maybe_create_table($table_name, $create_ddl) {
-	global $wpdb;
-	foreach ($wpdb->get_col("SHOW TABLES",0) as $table ) {
-		if ($table == $table_name) {
-			return true;
-		}
-	}
-	// Didn't find it, so try to create it.
-	$wpdb->query($create_ddl);
+if (!function_exists('maybe_create_table')) :
+    /**
+     * Create database table, if it doesn't already exist.
+     *
+     * @since 1.0.0
+     *
+     * @global wpdb $wpdb WordPress database abstraction object.
+     *
+     * @param string $table_name Database table name.
+     * @param string $create_ddl Create database table SQL.
+     * @return bool False on error, true if already exists or success.
+     */
+    function maybe_create_table($table_name, $create_ddl)
+    {
+        global $wpdb;
+        foreach ($wpdb->get_col("SHOW TABLES", 0) as $table) {
+            if ($table == $table_name) {
+                return true;
+            }
+        }
+        // Didn't find it, so try to create it.
+        $wpdb->query($create_ddl);
 
-	// We cannot directly tell that whether this succeeded!
-	foreach ($wpdb->get_col("SHOW TABLES",0) as $table ) {
-		if ($table == $table_name) {
-			return true;
-		}
-	}
-	return false;
-}
+        // We cannot directly tell that whether this succeeded!
+        foreach ($wpdb->get_col("SHOW TABLES", 0) as $table) {
+            if ($table == $table_name) {
+                return true;
+            }
+        }
+        return false;
+    }
 endif;
 
-if ( ! function_exists('maybe_add_column') ) :
-/**
- * Add column to database table, if column doesn't already exist in table.
- *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $table_name Database table name
- * @param string $column_name Table column name
- * @param string $create_ddl SQL to add column to table.
- * @return bool False on failure. True, if already exists or was successful.
- */
-function maybe_add_column($table_name, $column_name, $create_ddl) {
-	global $wpdb;
-	foreach ($wpdb->get_col("DESC $table_name",0) as $column ) {
+if (!function_exists('maybe_add_column')) :
+    /**
+     * Add column to database table, if column doesn't already exist in table.
+     *
+     * @since 1.0.0
+     *
+     * @global wpdb $wpdb WordPress database abstraction object.
+     *
+     * @param string $table_name Database table name
+     * @param string $column_name Table column name
+     * @param string $create_ddl SQL to add column to table.
+     * @return bool False on failure. True, if already exists or was successful.
+     */
+    function maybe_add_column($table_name, $column_name, $create_ddl)
+    {
+        global $wpdb;
+        foreach ($wpdb->get_col("DESC $table_name", 0) as $column) {
 
-		if ($column == $column_name) {
-			return true;
-		}
-	}
+            if ($column == $column_name) {
+                return true;
+            }
+        }
 
-	// Didn't find it, so try to create it.
-	$wpdb->query($create_ddl);
+        // Didn't find it, so try to create it.
+        $wpdb->query($create_ddl);
 
-	// We cannot directly tell that whether this succeeded!
-	foreach ($wpdb->get_col("DESC $table_name",0) as $column ) {
-		if ($column == $column_name) {
-			return true;
-		}
-	}
-	return false;
-}
+        // We cannot directly tell that whether this succeeded!
+        foreach ($wpdb->get_col("DESC $table_name", 0) as $column) {
+            if ($column == $column_name) {
+                return true;
+            }
+        }
+        return false;
+    }
 endif;
 
 /**
@@ -116,24 +118,25 @@ endif;
  * @param string $drop_ddl SQL statement to drop column.
  * @return bool False on failure, true on success or doesn't exist.
  */
-function maybe_drop_column($table_name, $column_name, $drop_ddl) {
-	global $wpdb;
-	foreach ($wpdb->get_col("DESC $table_name",0) as $column ) {
-		if ($column == $column_name) {
+function maybe_drop_column($table_name, $column_name, $drop_ddl)
+{
+    global $wpdb;
+    foreach ($wpdb->get_col("DESC $table_name", 0) as $column) {
+        if ($column == $column_name) {
 
-			// Found it, so try to drop it.
-			$wpdb->query($drop_ddl);
+            // Found it, so try to drop it.
+            $wpdb->query($drop_ddl);
 
-			// We cannot directly tell that whether this succeeded!
-			foreach ($wpdb->get_col("DESC $table_name",0) as $column ) {
-				if ($column == $column_name) {
-					return false;
-				}
-			}
-		}
-	}
-	// Else didn't find it.
-	return true;
+            // We cannot directly tell that whether this succeeded!
+            foreach ($wpdb->get_col("DESC $table_name", 0) as $column) {
+                if ($column == $column_name) {
+                    return false;
+                }
+            }
+        }
+    }
+    // Else didn't find it.
+    return true;
 }
 
 /**
@@ -157,44 +160,45 @@ function maybe_drop_column($table_name, $column_name, $drop_ddl) {
  * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @param string $table_name Table name
- * @param string $col_name   Column name
- * @param string $col_type   Column type
- * @param bool   $is_null    Optional. Check is null.
- * @param mixed  $key        Optional. Key info.
- * @param mixed  $default    Optional. Default value.
- * @param mixed  $extra      Optional. Extra value.
+ * @param string $col_name Column name
+ * @param string $col_type Column type
+ * @param bool $is_null Optional. Check is null.
+ * @param mixed $key Optional. Key info.
+ * @param mixed $default Optional. Default value.
+ * @param mixed $extra Optional. Extra value.
  * @return bool True, if matches. False, if not matching.
  */
-function check_column($table_name, $col_name, $col_type, $is_null = null, $key = null, $default = null, $extra = null) {
-	global $wpdb;
-	$diffs = 0;
-	$results = $wpdb->get_results("DESC $table_name");
+function check_column($table_name, $col_name, $col_type, $is_null = null, $key = null, $default = null, $extra = null)
+{
+    global $wpdb;
+    $diffs = 0;
+    $results = $wpdb->get_results("DESC $table_name");
 
-	foreach ($results as $row ) {
+    foreach ($results as $row) {
 
-		if ($row->Field == $col_name) {
+        if ($row->Field == $col_name) {
 
-			// Got our column, check the params.
-			if (($col_type != null) && ($row->Type != $col_type)) {
-				++$diffs;
-			}
-			if (($is_null != null) && ($row->Null != $is_null)) {
-				++$diffs;
-			}
-			if (($key != null) && ($row->Key  != $key)) {
-				++$diffs;
-			}
-			if (($default != null) && ($row->Default != $default)) {
-				++$diffs;
-			}
-			if (($extra != null) && ($row->Extra != $extra)) {
-				++$diffs;
-			}
-			if ($diffs > 0) {
-				return false;
-			}
-			return true;
-		} // end if found our column
-	}
-	return false;
+            // Got our column, check the params.
+            if (($col_type != null) && ($row->Type != $col_type)) {
+                ++$diffs;
+            }
+            if (($is_null != null) && ($row->Null != $is_null)) {
+                ++$diffs;
+            }
+            if (($key != null) && ($row->Key != $key)) {
+                ++$diffs;
+            }
+            if (($default != null) && ($row->Default != $default)) {
+                ++$diffs;
+            }
+            if (($extra != null) && ($row->Extra != $extra)) {
+                ++$diffs;
+            }
+            if ($diffs > 0) {
+                return false;
+            }
+            return true;
+        } // end if found our column
+    }
+    return false;
 }

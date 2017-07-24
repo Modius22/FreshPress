@@ -10,18 +10,19 @@
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_501 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 501;
+class Requests_Exception_HTTP_501 extends Requests_Exception_HTTP
+{
+    /**
+     * HTTP status code
+     *
+     * @var integer
+     */
+    protected $code = 501;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Not Implemented';
+    /**
+     * Reason phrase
+     *
+     * @var string
+     */
+    protected $reason = 'Not Implemented';
 }

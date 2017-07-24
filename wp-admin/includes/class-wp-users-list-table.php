@@ -55,7 +55,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		$this->is_site_users = 'site-users-network' === $this->screen->id;
 
 		if ( $this->is_site_users )
-			$this->site_id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
+			{$this->site_id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;}
 	}
 
 	/**
@@ -68,9 +68,9 @@ class WP_Users_List_Table extends WP_List_Table {
 	 */
 	public function ajax_user_can() {
 		if ( $this->is_site_users )
-			return current_user_can( 'manage_sites' );
+			{return current_user_can( 'manage_sites' );}
 		else
-			return current_user_can( 'list_users' );
+			{return current_user_can( 'list_users' );}
 	}
 
 	/**
@@ -113,16 +113,16 @@ class WP_Users_List_Table extends WP_List_Table {
 		}
 
 		if ( '' !== $args['search'] )
-			$args['search'] = '*' . $args['search'] . '*';
+			{$args['search'] = '*' . $args['search'] . '*';}
 
 		if ( $this->is_site_users )
-			$args['blog_id'] = $this->site_id;
+			{$args['blog_id'] = $this->site_id;}
 
 		if ( isset( $_REQUEST['orderby'] ) )
-			$args['orderby'] = $_REQUEST['orderby'];
+			{$args['orderby'] = $_REQUEST['orderby'];}
 
 		if ( isset( $_REQUEST['order'] ) )
-			$args['order'] = $_REQUEST['order'];
+			{$args['order'] = $_REQUEST['order'];}
 
 		/**
 		 * Filters the query arguments used to retrieve users for the current users list table.
@@ -193,7 +193,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		$role_links['all'] = "<a href='$url'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_users, 'users' ), number_format_i18n( $total_users ) ) . '</a>';
 		foreach ( $wp_roles->get_names() as $this_role => $name ) {
 			if ( !isset($avail_roles[$this_role]) )
-				continue;
+				{continue;}
 
 			$class = '';
 
@@ -238,10 +238,10 @@ class WP_Users_List_Table extends WP_List_Table {
 
 		if ( is_multisite() ) {
 			if ( current_user_can( 'remove_users' ) )
-				$actions['remove'] = __( 'Remove' );
+				{$actions['remove'] = __( 'Remove' );}
 		} else {
 			if ( current_user_can( 'delete_users' ) )
-				$actions['delete'] = __( 'Delete' );
+				{$actions['delete'] = __( 'Delete' );}
 		}
 
 		return $actions;
@@ -324,7 +324,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		);
 
 		if ( $this->is_site_users )
-			unset( $c['posts'] );
+			{unset( $c['posts'] );}
 
 		return $c;
 	}
@@ -355,11 +355,11 @@ class WP_Users_List_Table extends WP_List_Table {
 	public function display_rows() {
 		// Query the post counts for this page
 		if ( ! $this->is_site_users )
-			$post_counts = count_many_users_posts( array_keys( $this->items ) );
+			{$post_counts = count_many_users_posts( array_keys( $this->items ) );}
 
 		foreach ( $this->items as $userid => $user_object ) {
 			if ( is_multisite() && empty( $user_object->allcaps ) )
-				continue;
+				{continue;}
 
 			echo "\n\t" . $this->single_row( $user_object, '', '', isset( $post_counts ) ? $post_counts[ $userid ] : 0 );
 		}
@@ -388,9 +388,9 @@ class WP_Users_List_Table extends WP_List_Table {
 		$email = $user_object->user_email;
 
 		if ( $this->is_site_users )
-			$url = "site-users.php?id={$this->site_id}&amp;";
+			{$url = "site-users.php?id={$this->site_id}&amp;";}
 		else
-			$url = 'users.php?';
+			{$url = 'users.php?';}
 
 		$user_roles = $this->get_role_list( $user_object );
 
@@ -410,9 +410,9 @@ class WP_Users_List_Table extends WP_List_Table {
 			}
 
 			if ( !is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) )
-				$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete' ) . "</a>";
+				{$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete' ) . "</a>";}
 			if ( is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'remove_user', $user_object->ID ) )
-				$actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url."action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove' ) . "</a>";
+				{$actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url."action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove' ) . "</a>";}
 
 			/**
 			 * Filters the action links displayed under each user in the Users list table.

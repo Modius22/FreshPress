@@ -46,14 +46,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'put your unique phrase here');
-define('SECURE_AUTH_KEY',  'put your unique phrase here');
-define('LOGGED_IN_KEY',    'put your unique phrase here');
-define('NONCE_KEY',        'put your unique phrase here');
-define('AUTH_SALT',        'put your unique phrase here');
+define('AUTH_KEY', 'put your unique phrase here');
+define('SECURE_AUTH_KEY', 'put your unique phrase here');
+define('LOGGED_IN_KEY', 'put your unique phrase here');
+define('NONCE_KEY', 'put your unique phrase here');
+define('AUTH_SALT', 'put your unique phrase here');
 define('SECURE_AUTH_SALT', 'put your unique phrase here');
-define('LOGGED_IN_SALT',   'put your unique phrase here');
-define('NONCE_SALT',       'put your unique phrase here');
+define('LOGGED_IN_SALT', 'put your unique phrase here');
+define('NONCE_SALT', 'put your unique phrase here');
 
 /**#@-*/
 
@@ -63,7 +63,7 @@ define('NONCE_SALT',       'put your unique phrase here');
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix = 'wp_';
 
 /**
  * For developers: WordPress debugging mode.
@@ -82,8 +82,9 @@ define('WP_DEBUG', false);
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
-if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . '/');
+if (!defined('ABSPATH')) {
+    define('ABSPATH', dirname(__FILE__) . '/');
+}
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');

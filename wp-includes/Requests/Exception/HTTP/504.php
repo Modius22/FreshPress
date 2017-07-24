@@ -10,18 +10,19 @@
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_504 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 504;
+class Requests_Exception_HTTP_504 extends Requests_Exception_HTTP
+{
+    /**
+     * HTTP status code
+     *
+     * @var integer
+     */
+    protected $code = 504;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Gateway Timeout';
+    /**
+     * Reason phrase
+     *
+     * @var string
+     */
+    protected $reason = 'Gateway Timeout';
 }

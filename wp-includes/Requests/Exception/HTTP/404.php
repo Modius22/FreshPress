@@ -10,18 +10,19 @@
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_404 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 404;
+class Requests_Exception_HTTP_404 extends Requests_Exception_HTTP
+{
+    /**
+     * HTTP status code
+     *
+     * @var integer
+     */
+    protected $code = 404;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Not Found';
+    /**
+     * Reason phrase
+     *
+     * @var string
+     */
+    protected $reason = 'Not Found';
 }

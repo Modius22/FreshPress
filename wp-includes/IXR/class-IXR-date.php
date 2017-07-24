@@ -6,7 +6,8 @@
  * @package IXR
  * @since 1.5.0
  */
-class IXR_Date {
+class IXR_Date
+{
     var $year;
     var $month;
     var $day;
@@ -15,10 +16,10 @@ class IXR_Date {
     var $second;
     var $timezone;
 
-	/**
-	 * PHP5 constructor.
-	 */
-    function __construct( $time )
+    /**
+     * PHP5 constructor.
+     */
+    function __construct($time)
     {
         // $time can be a PHP timestamp or an ISO one
         if (is_numeric($time)) {
@@ -28,12 +29,13 @@ class IXR_Date {
         }
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Date( $time ) {
-		self::__construct( $time );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function IXR_Date($time)
+    {
+        self::__construct($time);
+    }
 
     function parseTimestamp($timestamp)
     {
@@ -59,12 +61,12 @@ class IXR_Date {
 
     function getIso()
     {
-        return $this->year.$this->month.$this->day.'T'.$this->hour.':'.$this->minute.':'.$this->second.$this->timezone;
+        return $this->year . $this->month . $this->day . 'T' . $this->hour . ':' . $this->minute . ':' . $this->second . $this->timezone;
     }
 
     function getXml()
     {
-        return '<dateTime.iso8601>'.$this->getIso().'</dateTime.iso8601>';
+        return '<dateTime.iso8601>' . $this->getIso() . '</dateTime.iso8601>';
     }
 
     function getTimestamp()

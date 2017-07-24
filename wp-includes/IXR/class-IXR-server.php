@@ -13,10 +13,10 @@ class IXR_Server
     var $message;
     var $capabilities;
 
-	/**
-	 * PHP5 constructor.
-	 */
-    function __construct( $callbacks = false, $data = false, $wait = false )
+    /**
+     * PHP5 constructor.
+     */
+    function __construct($callbacks = false, $data = false, $wait = false)
     {
         $this->setCapabilities();
         if ($callbacks) {
@@ -28,20 +28,21 @@ class IXR_Server
         }
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Server( $callbacks = false, $data = false, $wait = false ) {
-		self::__construct( $callbacks, $data, $wait );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function IXR_Server($callbacks = false, $data = false, $wait = false)
+    {
+        self::__construct($callbacks, $data, $wait);
+    }
 
     function serve($data = false)
     {
         if (!$data) {
             if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
-                if ( function_exists( 'status_header' ) ) {
-                    status_header( 405 ); // WP #20986
-                    header( 'Allow: POST' );
+                if (function_exists('status_header')) {
+                    status_header(405); // WP #20986
+                    header('Allow: POST');
                 }
                 header('Content-Type: text/plain'); // merged from WP #9093
                 die('XML-RPC server accepts POST requests only.');
@@ -86,14 +87,14 @@ class IXR_Server
 </methodResponse>
 
 EOD;
-      // Send it
-      $this->output($xml);
+        // Send it
+        $this->output($xml);
     }
 
     function call($methodname, $args)
     {
         if (!$this->hasMethod($methodname)) {
-            return new IXR_Error(-32601, 'server error. requested method '.$methodname.' does not exist.');
+            return new IXR_Error(-32601, 'server error. requested method ' . $methodname . ' does not exist.');
         }
         $method = $this->callbacks[$methodname];
 
@@ -108,7 +109,7 @@ EOD;
             // It's a class method - check it exists
             $method = substr($method, 5);
             if (!method_exists($this, $method)) {
-                return new IXR_Error(-32601, 'server error. requested class method "'.$method.'" does not exist.');
+                return new IXR_Error(-32601, 'server error. requested class method "' . $method . '" does not exist.');
             }
 
             //Call the method
@@ -117,10 +118,13 @@ EOD;
             // It's a function - does it exist?
             if (is_array($method)) {
                 if (!is_callable(array($method[0], $method[1]))) {
-                    return new IXR_Error(-32601, 'server error. requested object method "'.$method[1].'" does not exist.');
+                    return new IXR_Error(-32601,
+                        'server error. requested object method "' . $method[1] . '" does not exist.');
                 }
-            } else if (!function_exists($method)) {
-                return new IXR_Error(-32601, 'server error. requested function "'.$method.'" does not exist.');
+            } else {
+                if (!function_exists($method)) {
+                    return new IXR_Error(-32601, 'server error. requested function "' . $method . '" does not exist.');
+                }
             }
 
             // Call the function
@@ -141,17 +145,19 @@ EOD;
     function output($xml)
     {
         $charset = function_exists('get_option') ? get_option('blog_charset') : '';
-        if ($charset)
-            $xml = '<?xml version="1.0" encoding="'.$charset.'"?>'."\n".$xml;
-        else
-            $xml = '<?xml version="1.0"?>'."\n".$xml;
+        if ($charset) {
+            $xml = '<?xml version="1.0" encoding="' . $charset . '"?>' . "\n" . $xml;
+        } else {
+            $xml = '<?xml version="1.0"?>' . "\n" . $xml;
+        }
         $length = strlen($xml);
         header('Connection: close');
-        if ($charset)
-            header('Content-Type: text/xml; charset='.$charset);
-        else
+        if ($charset) {
+            header('Content-Type: text/xml; charset=' . $charset);
+        } else {
             header('Content-Type: text/xml');
-        header('Date: '.date('r'));
+        }
+        header('Date: ' . date('r'));
         echo $xml;
         exit;
     }
@@ -168,15 +174,15 @@ EOD;
             'xmlrpc' => array(
                 'specUrl' => 'http://www.xmlrpc.com/spec',
                 'specVersion' => 1
-        ),
+            ),
             'faults_interop' => array(
                 'specUrl' => 'http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php',
                 'specVersion' => 20010516
-        ),
+            ),
             'system.multicall' => array(
                 'specUrl' => 'http://www.xmlrpc.com/discuss/msgReader$1208',
                 'specVersion' => 1
-        ),
+            ),
         );
     }
 

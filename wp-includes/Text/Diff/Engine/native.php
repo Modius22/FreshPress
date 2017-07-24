@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class used internally by Text_Diff to actually compute the diffs.
  *
@@ -26,7 +27,8 @@
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  * @package Text_Diff
  */
-class Text_Diff_Engine_native {
+class Text_Diff_Engine_native
+{
 
     function diff($from_lines, $to_lines)
     {
@@ -52,7 +54,8 @@ class Text_Diff_Engine_native {
         }
 
         // Skip trailing common lines.
-        $xi = $n_from; $yi = $n_to;
+        $xi = $n_from;
+        $yi = $n_to;
         for ($endskip = 0; --$xi > $skip && --$yi > $skip; $endskip++) {
             if ($from_lines[$xi] !== $to_lines[$yi]) {
                 break;
@@ -99,7 +102,7 @@ class Text_Diff_Engine_native {
             // Skip matching "snake".
             $copy = array();
             while ($xi < $n_from && $yi < $n_to
-                   && !$this->xchanged[$xi] && !$this->ychanged[$yi]) {
+                && !$this->xchanged[$xi] && !$this->ychanged[$yi]) {
                 $copy[] = $from_lines[$xi++];
                 ++$yi;
             }
@@ -146,7 +149,7 @@ class Text_Diff_Engine_native {
      * match.  The caller must trim matching lines from the beginning and end
      * of the portions it is going to specify.
      */
-    function _diag ($xoff, $xlim, $yoff, $ylim, $nchunks)
+    function _diag($xoff, $xlim, $yoff, $ylim, $nchunks)
     {
         $flip = false;
 
@@ -169,7 +172,7 @@ class Text_Diff_Engine_native {
         }
 
         $this->lcs = 0;
-        $this->seq[0]= $yoff - 1;
+        $this->seq[0] = $yoff - 1;
         $this->in_seq = array();
         $ymids[0] = array();
 
@@ -266,18 +269,18 @@ class Text_Diff_Engine_native {
      * Note that XLIM, YLIM are exclusive bounds.  All line numbers are
      * origin-0 and discarded lines are not counted.
      */
-    function _compareseq ($xoff, $xlim, $yoff, $ylim)
+    function _compareseq($xoff, $xlim, $yoff, $ylim)
     {
         /* Slide down the bottom initial diagonal. */
         while ($xoff < $xlim && $yoff < $ylim
-               && $this->xv[$xoff] == $this->yv[$yoff]) {
+            && $this->xv[$xoff] == $this->yv[$yoff]) {
             ++$xoff;
             ++$yoff;
         }
 
         /* Slide up the top initial diagonal. */
         while ($xlim > $xoff && $ylim > $yoff
-               && $this->xv[$xlim - 1] == $this->yv[$ylim - 1]) {
+            && $this->xv[$xlim - 1] == $this->yv[$ylim - 1]) {
             --$xlim;
             --$ylim;
         }
@@ -307,7 +310,7 @@ class Text_Diff_Engine_native {
             reset($seps);
             $pt1 = $seps[0];
             while ($pt2 = next($seps)) {
-                $this->_compareseq ($pt1[0], $pt2[0], $pt1[1], $pt2[1]);
+                $this->_compareseq($pt1[0], $pt2[0], $pt1[1], $pt2[1]);
                 $pt1 = $pt2;
             }
         }
@@ -350,9 +353,10 @@ class Text_Diff_Engine_native {
                 $j++;
             }
 
-            while ($i < $len && ! $changed[$i]) {
+            while ($i < $len && !$changed[$i]) {
                 assert('$j < $other_len && ! $other_changed[$j]');
-                $i++; $j++;
+                $i++;
+                $j++;
                 while ($j < $other_len && $other_changed[$j]) {
                     $j++;
                 }

@@ -10,18 +10,19 @@
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_502 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 502;
+class Requests_Exception_HTTP_502 extends Requests_Exception_HTTP
+{
+    /**
+     * HTTP status code
+     *
+     * @var integer
+     */
+    protected $code = 502;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Bad Gateway';
+    /**
+     * Reason phrase
+     *
+     * @var string
+     */
+    protected $reason = 'Bad Gateway';
 }

@@ -10,18 +10,19 @@
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_402 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 402;
+class Requests_Exception_HTTP_402 extends Requests_Exception_HTTP
+{
+    /**
+     * HTTP status code
+     *
+     * @var integer
+     */
+    protected $code = 402;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Payment Required';
+    /**
+     * Reason phrase
+     *
+     * @var string
+     */
+    protected $reason = 'Payment Required';
 }

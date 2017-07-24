@@ -11,9 +11,9 @@ class IXR_IntrospectionServer extends IXR_Server
     var $signatures;
     var $help;
 
-	/**
-	 * PHP5 constructor.
-	 */
+    /**
+     * PHP5 constructor.
+     */
     function __construct()
     {
         $this->setCallbacks();
@@ -48,12 +48,13 @@ class IXR_IntrospectionServer extends IXR_Server
         );
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_IntrospectionServer() {
-		self::__construct();
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function IXR_IntrospectionServer()
+    {
+        self::__construct();
+    }
 
     function addCallback($method, $callback, $args, $help)
     {
@@ -71,7 +72,8 @@ class IXR_IntrospectionServer extends IXR_Server
 
         // Over-rides default call method, adds signature check
         if (!$this->hasMethod($methodname)) {
-            return new IXR_Error(-32601, 'server error. requested method "'.$this->message->methodName.'" not specified.');
+            return new IXR_Error(-32601,
+                'server error. requested method "' . $this->message->methodName . '" not specified.');
         }
         $method = $this->callbacks[$methodname];
         $signature = $this->signatures[$methodname];
@@ -130,7 +132,7 @@ class IXR_IntrospectionServer extends IXR_Server
     function methodSignature($method)
     {
         if (!$this->hasMethod($method)) {
-            return new IXR_Error(-32601, 'server error. requested method "'.$method.'" not specified.');
+            return new IXR_Error(-32601, 'server error. requested method "' . $method . '" not specified.');
         }
         // We should be returning an array of types
         $types = $this->signatures[$method];

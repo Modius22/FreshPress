@@ -10,104 +10,142 @@
 /**
  * @ignore
  */
-function __() {}
+function __()
+{
+}
 
 /**
  * @ignore
  */
-function _x() {}
+function _x()
+{
+}
 
 /**
  * @ignore
  */
-function add_filter() {}
+function add_filter()
+{
+}
 
 /**
  * @ignore
  */
-function esc_attr() {}
+function esc_attr()
+{
+}
 
 /**
  * @ignore
  */
-function apply_filters() {}
+function apply_filters()
+{
+}
 
 /**
  * @ignore
  */
-function get_option() {}
+function get_option()
+{
+}
 
 /**
  * @ignore
  */
-function is_lighttpd_before_150() {}
+function is_lighttpd_before_150()
+{
+}
 
 /**
  * @ignore
  */
-function add_action() {}
+function add_action()
+{
+}
 
 /**
  * @ignore
  */
-function did_action() {}
+function did_action()
+{
+}
 
 /**
  * @ignore
  */
-function do_action_ref_array() {}
+function do_action_ref_array()
+{
+}
 
 /**
  * @ignore
  */
-function get_bloginfo() {}
+function get_bloginfo()
+{
+}
 
 /**
  * @ignore
  */
-function is_admin() {return true;}
+function is_admin()
+{
+    return true;
+}
 
 /**
  * @ignore
  */
-function site_url() {}
+function site_url()
+{
+}
 
 /**
  * @ignore
  */
-function admin_url() {}
+function admin_url()
+{
+}
 
 /**
  * @ignore
  */
-function home_url() {}
+function home_url()
+{
+}
 
 /**
  * @ignore
  */
-function includes_url() {}
+function includes_url()
+{
+}
 
 /**
  * @ignore
  */
-function wp_guess_url() {}
+function wp_guess_url()
+{
+}
 
-if ( ! function_exists( 'json_encode' ) ) :
-/**
- * @ignore
- */
-function json_encode() {}
+if (!function_exists('json_encode')) :
+    /**
+     * @ignore
+     */
+    function json_encode()
+    {
+    }
 endif;
 
-function get_file( $path ) {
+function get_file($path)
+{
 
-	if ( function_exists('realpath') ) {
-		$path = realpath( $path );
-	}
+    if (function_exists('realpath')) {
+        $path = realpath($path);
+    }
 
-	if ( ! $path || ! @is_file( $path ) ) {
-		return '';
-	}
+    if (!$path || !@is_file($path)) {
+        return '';
+    }
 
-	return @file_get_contents( $path );
+    return @file_get_contents($path);
 }

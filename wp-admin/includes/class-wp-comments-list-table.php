@@ -79,7 +79,7 @@ class WP_Comments_List_Table extends WP_List_Table {
 
 		$comment_status = isset( $_REQUEST['comment_status'] ) ? $_REQUEST['comment_status'] : 'all';
 		if ( !in_array( $comment_status, array( 'all', 'moderated', 'approved', 'spam', 'trash' ) ) )
-			$comment_status = 'all';
+			{$comment_status = 'all';}
 
 		$comment_type = !empty( $_REQUEST['comment_type'] ) ? $_REQUEST['comment_type'] : '';
 
@@ -240,20 +240,20 @@ class WP_Comments_List_Table extends WP_List_Table {
 		);
 
 		if ( !EMPTY_TRASH_DAYS )
-			unset($stati['trash']);
+			{unset($stati['trash']);}
 
 		$link = admin_url( 'edit-comments.php' );
 		if ( !empty($comment_type) && 'all' != $comment_type )
-			$link = add_query_arg( 'comment_type', $comment_type, $link );
+			{$link = add_query_arg( 'comment_type', $comment_type, $link );}
 
 		foreach ( $stati as $status => $label ) {
 			$class = ( $status === $comment_status ) ? ' class="current"' : '';
 
 			if ( !isset( $num_comments->$status ) )
-				$num_comments->$status = 10;
+				{$num_comments->$status = 10;}
 			$link = add_query_arg( 'comment_status', $status, $link );
 			if ( $post_id )
-				$link = add_query_arg( 'p', absint( $post_id ), $link );
+				{$link = add_query_arg( 'p', absint( $post_id ), $link );}
 			/*
 			// I toyed with this, but decided against it. Leaving it in here in case anyone thinks it is a good idea. ~ Mark
 			if ( !empty( $_REQUEST['s'] ) )
@@ -290,11 +290,11 @@ class WP_Comments_List_Table extends WP_List_Table {
 
 		$actions = array();
 		if ( in_array( $comment_status, array( 'all', 'approved' ) ) )
-			$actions['unapprove'] = __( 'Unapprove' );
+			{$actions['unapprove'] = __( 'Unapprove' );}
 		if ( in_array( $comment_status, array( 'all', 'moderated' ) ) )
-			$actions['approve'] = __( 'Approve' );
+			{$actions['approve'] = __( 'Approve' );}
 		if ( in_array( $comment_status, array( 'all', 'moderated', 'approved', 'trash' ) ) )
-			$actions['spam'] = _x( 'Mark as Spam', 'comment' );
+			{$actions['spam'] = _x( 'Mark as Spam', 'comment' );}
 
 		if ( 'trash' === $comment_status ) {
 			$actions['untrash'] = __( 'Restore' );
@@ -303,9 +303,9 @@ class WP_Comments_List_Table extends WP_List_Table {
 		}
 
 		if ( in_array( $comment_status, array( 'trash', 'spam' ) ) || !EMPTY_TRASH_DAYS )
-			$actions['delete'] = __( 'Delete Permanently' );
+			{$actions['delete'] = __( 'Delete Permanently' );}
 		else
-			$actions['trash'] = __( 'Move to Trash' );
+			{$actions['trash'] = __( 'Move to Trash' );}
 
 		return $actions;
 	}
@@ -341,7 +341,7 @@ class WP_Comments_List_Table extends WP_List_Table {
 				) );
 
 				foreach ( $comment_types as $type => $label )
-					echo "\t" . '<option value="' . esc_attr( $type ) . '"' . selected( $comment_type, $type, false ) . ">$label</option>\n";
+					{echo "\t" . '<option value="' . esc_attr( $type ) . '"' . selected( $comment_type, $type, false ) . ">$label</option>\n";}
 			?>
 			</select>
 <?php
@@ -375,7 +375,7 @@ class WP_Comments_List_Table extends WP_List_Table {
 	 */
 	public function current_action() {
 		if ( isset( $_REQUEST['delete_all'] ) || isset( $_REQUEST['delete_all2'] ) )
-			return 'delete_all';
+			{return 'delete_all';}
 
 		return parent::current_action();
 	}
@@ -392,7 +392,7 @@ class WP_Comments_List_Table extends WP_List_Table {
 		$columns = array();
 
 		if ( $this->checkbox )
-			$columns['cb'] = '<input type="checkbox" />';
+			{$columns['cb'] = '<input type="checkbox" />';}
 
 		$columns['author'] = __( 'Author' );
 		$columns['comment'] = _x( 'Comment', 'column name' );
@@ -601,12 +601,12 @@ class WP_Comments_List_Table extends WP_List_Table {
 
 			// Reply and quickedit need a hide-if-no-js span when not added with ajax
 			if ( ( 'reply' === $action || 'quickedit' === $action ) && ! wp_doing_ajax() )
-				$action .= ' hide-if-no-js';
+				{$action .= ' hide-if-no-js';}
 			elseif ( ( $action === 'untrash' && $the_comment_status === 'trash' ) || ( $action === 'unspam' && $the_comment_status === 'spam' ) ) {
 				if ( '1' == get_comment_meta( $comment->comment_ID, '_wp_trash_meta_status', true ) )
-					$action .= ' approve';
+					{$action .= ' approve';}
 				else
-					$action .= ' unapprove';
+					{$action .= ' unapprove';}
 			}
 
 			$out .= "<span class='$action'>$sep$link</span>";

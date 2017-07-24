@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class used internally by Diff to actually compute the diffs.
  *
@@ -13,7 +14,8 @@
  * @author  Jon Parise <jon@horde.org>
  * @package Text_Diff
  */
-class Text_Diff_Engine_xdiff {
+class Text_Diff_Engine_xdiff
+{
 
     /**
      */
@@ -44,17 +46,17 @@ class Text_Diff_Engine_xdiff {
                 continue;
             }
             switch ($line[0]) {
-            case ' ':
-                $edits[] = new Text_Diff_Op_copy(array(substr($line, 1)));
-                break;
+                case ' ':
+                    $edits[] = new Text_Diff_Op_copy(array(substr($line, 1)));
+                    break;
 
-            case '+':
-                $edits[] = new Text_Diff_Op_add(array(substr($line, 1)));
-                break;
+                case '+':
+                    $edits[] = new Text_Diff_Op_add(array(substr($line, 1)));
+                    break;
 
-            case '-':
-                $edits[] = new Text_Diff_Op_delete(array(substr($line, 1)));
-                break;
+                case '-':
+                    $edits[] = new Text_Diff_Op_delete(array(substr($line, 1)));
+                    break;
             }
         }
 
