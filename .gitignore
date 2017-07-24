@@ -1,6 +1,6 @@
 /vendor/
 wp-config.php
-/wp-content/languages
-/wp-content/plugins
+/wp-content/languages/*
+/wp-content/plugins/*
 !/wp-content/plugins/hello.php
 !/wp-content/plugins/index.php
