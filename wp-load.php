@@ -16,6 +16,9 @@
  * @package WordPress
  */
 
+/** Include Composer Autoloader */
+require_once( __DIR__ . '/vendor/autoload.php' );
+
 /** Define ABSPATH as this file's directory */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
