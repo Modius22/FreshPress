@@ -222,8 +222,6 @@ if (!function_exists('wp_mail')) :
 
         // (Re)create it, if it's gone missing
         if (!($phpmailer instanceof PHPMailer)) {
-            require_once ABSPATH . WPINC . '/class-phpmailer.php';
-            require_once ABSPATH . WPINC . '/class-smtp.php';
             $phpmailer = new PHPMailer(true);
         }
 
