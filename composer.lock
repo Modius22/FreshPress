@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "85f93ccb66a3e8806a9ffc250f8817df",
+    "content-hash": "7fb4400150a319e81c061d4715767945",
     "packages": [
         {
             "name": "james-heinrich/getid3",
@@ -41,6 +41,49 @@
                 "tags"
             ],
             "time": "2014-12-18T16:39:41+00:00"
+        },
+        {
+            "name": "kissifrot/php-ixr",
+            "version": "1.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kissifrot/php-ixr.git",
+                "reference": "6a25cfdad90390a958458b572eb6a210be1d0a4b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kissifrot/php-ixr/zipball/6a25cfdad90390a958458b572eb6a210be1d0a4b",
+                "reference": "6a25cfdad90390a958458b572eb6a210be1d0a4b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=4.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "IXR_Library.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Incutio Ltd 2010 - Simon Willison",
+                    "homepage": "http://scripts.incutio.com/xmlrpc/"
+                }
+            ],
+            "description": "Incutio XML-RPC library (IXR)",
+            "homepage": "http://scripts.incutio.com/xmlrpc/",
+            "keywords": [
+                "remote procedure call",
+                "rpc",
+                "xlm-rpc",
+                "xmlrpc"
+            ],
+            "time": "2013-07-01T19:38:02+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
