@@ -8,7 +8,8 @@
         "phpmailer/phpmailer": "5.2.22",
         "kissifrot/php-ixr": "1.7.4",
         "hautelook/phpass": "~0.3",
-        "simplepie/simplepie": "1.3.1"
+        "simplepie/simplepie": "1.3.1",
+        "rmccue/requests": "1.7"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7"
