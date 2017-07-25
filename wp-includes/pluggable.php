@@ -6,6 +6,8 @@
  * @package WordPress
  */
 
+use Hautelook\Phpass\PasswordHash;
+
 if (!function_exists('wp_set_current_user')) :
     /**
      * Changes the current user by ID or name.
@@ -1883,7 +1885,6 @@ if (!function_exists('wp_new_user_notification')) :
 
         // Now insert the key, hashed, into the DB.
         if (empty($wp_hasher)) {
-            require_once ABSPATH . WPINC . '/class-phpass.php';
             $wp_hasher = new PasswordHash(8, true);
         }
         $hashed = time() . ':' . $wp_hasher->HashPassword($key);
@@ -2171,7 +2172,6 @@ if (!function_exists('wp_hash_password')) :
         global $wp_hasher;
 
         if (empty($wp_hasher)) {
-            require_once(ABSPATH . WPINC . '/class-phpass.php');
             // By default, use the portable hash from phpass
             $wp_hasher = new PasswordHash(8, true);
         }
@@ -2232,7 +2232,6 @@ if (!function_exists('wp_check_password')) :
         // If the stored hash is longer than an MD5, presume the
         // new style phpass portable hash.
         if (empty($wp_hasher)) {
-            require_once(ABSPATH . WPINC . '/class-phpass.php');
             // By default, use the portable hash from phpass
             $wp_hasher = new PasswordHash(8, true);
         }

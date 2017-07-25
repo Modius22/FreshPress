@@ -6,6 +6,8 @@
  * @subpackage Users
  */
 
+use Hautelook\Phpass\PasswordHash;
+
 /**
  * Authenticates and logs a user in with 'remember' capability.
  *
@@ -2244,7 +2246,6 @@ function get_password_reset_key($user)
 
     // Now insert the key, hashed, into the DB.
     if (empty($wp_hasher)) {
-        require_once ABSPATH . WPINC . '/class-phpass.php';
         $wp_hasher = new PasswordHash(8, true);
     }
     $hashed = time() . ':' . $wp_hasher->HashPassword($key);
@@ -2295,7 +2296,6 @@ function check_password_reset_key($key, $login)
     }
 
     if (empty($wp_hasher)) {
-        require_once ABSPATH . WPINC . '/class-phpass.php';
         $wp_hasher = new PasswordHash(8, true);
     }
 

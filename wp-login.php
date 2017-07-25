@@ -8,6 +8,8 @@
  * @package WordPress
  */
 
+use Hautelook\Phpass\PasswordHash;
+
 /** Make sure that the WordPress bootstrap has run before continuing. */
 require(dirname(__FILE__) . '/wp-load.php');
 
@@ -522,7 +524,6 @@ switch ($action) {
             exit();
         }
 
-        require_once ABSPATH . WPINC . '/class-phpass.php';
         $hasher = new PasswordHash(8, true);
 
         /**
