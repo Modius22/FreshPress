@@ -3288,9 +3288,6 @@ function wp_read_video_metadata($file)
         define('GETID3_TEMP_DIR', get_temp_dir());
     }
 
-    if (!class_exists('getID3', false)) {
-        require(ABSPATH . WPINC . '/ID3/getid3.php');
-    }
     $id3 = new getID3();
     $data = $id3->analyze($file);
 
@@ -3363,9 +3360,6 @@ function wp_read_audio_metadata($file)
         define('GETID3_TEMP_DIR', get_temp_dir());
     }
 
-    if (!class_exists('getID3', false)) {
-        require(ABSPATH . WPINC . '/ID3/getid3.php');
-    }
     $id3 = new getID3();
     $data = $id3->analyze($file);
 

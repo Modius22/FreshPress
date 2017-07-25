@@ -4,8 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d17c86455486aae49952fe03f783dbc",
-    "packages": [],
+    "content-hash": "b6edd28d320154bd8d88f0e645465194",
+    "packages": [
+        {
+            "name": "james-heinrich/getid3",
+            "version": "v1.9.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JamesHeinrich/getID3.git",
+                "reference": "c34fb84e295477cc1865b2ea4dad2d13452058d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/c34fb84e295477cc1865b2ea4dad2d13452058d1",
+                "reference": "c34fb84e295477cc1865b2ea4dad2d13452058d1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "getid3/getid3.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "description": "PHP script that extracts useful information from popular multimedia file formats",
+            "homepage": "http://www.getid3.org/",
+            "keywords": [
+                "codecs",
+                "php",
+                "tags"
+            ],
+            "time": "2014-12-18T16:39:41+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
