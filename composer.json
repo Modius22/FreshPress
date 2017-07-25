@@ -7,7 +7,8 @@
         "james-heinrich/getid3": "1.9.9",
         "phpmailer/phpmailer": "5.2.22",
         "kissifrot/php-ixr": "1.7.4",
-        "hautelook/phpass": "~0.3"
+        "hautelook/phpass": "~0.3",
+        "simplepie/simplepie": "1.3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7"

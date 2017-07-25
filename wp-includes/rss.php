@@ -14,9 +14,9 @@
  */
 
 /**
- * Deprecated. Use SimplePie (class-simplepie.php) instead.
+ * Deprecated. Use SimplePie instead.
  */
-_deprecated_file(basename(__FILE__), '3.0.0', WPINC . '/class-simplepie.php');
+_deprecated_file(basename(__FILE__), '3.0.0', SimplePie::class);
 
 /**
  * Fires before MagpieRSS is loaded, to optionally replace it.
