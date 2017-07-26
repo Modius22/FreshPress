@@ -838,10 +838,16 @@ class WP_Query
         $qv['w'] = absint($qv['w']);
         $qv['m'] = is_scalar($qv['m']) ? preg_replace('|[^0-9]|', '', $qv['m']) : '';
         $qv['paged'] = absint($qv['paged']);
-        $qv['cat'] = preg_replace('|[^0-9,-]|', '',
-            $qv['cat']); // comma separated list of positive or negative integers
-        $qv['author'] = preg_replace('|[^0-9,-]|', '',
-            $qv['author']); // comma separated list of positive or negative integers
+        $qv['cat'] = preg_replace(
+            '|[^0-9,-]|',
+            '',
+            $qv['cat']
+        ); // comma separated list of positive or negative integers
+        $qv['author'] = preg_replace(
+            '|[^0-9,-]|',
+            '',
+            $qv['author']
+        ); // comma separated list of positive or negative integers
         $qv['pagename'] = trim($qv['pagename']);
         $qv['name'] = trim($qv['name']);
         $qv['title'] = trim($qv['title']);
@@ -912,8 +918,12 @@ class WP_Query
             if ($qv['day']) {
                 if (!$this->is_date) {
                     $date = sprintf('%04d-%02d-%02d', $qv['year'], $qv['monthnum'], $qv['day']);
-                    if ($qv['monthnum'] && $qv['year'] && !wp_checkdate($qv['monthnum'], $qv['day'], $qv['year'],
-                            $date)) {
+                    if ($qv['monthnum'] && $qv['year'] && !wp_checkdate(
+                        $qv['monthnum'],
+                        $qv['day'],
+                        $qv['year'],
+                            $date
+                    )) {
                         $qv['error'] = '404';
                     } else {
                         $this->is_day = true;
@@ -1445,8 +1455,12 @@ class WP_Query
             }
 
             $like = $n . $wpdb->esc_like($term) . $n;
-            $search .= $wpdb->prepare("{$searchand}(({$wpdb->posts}.post_title $like_op %s) $andor_op ({$wpdb->posts}.post_excerpt $like_op %s) $andor_op ({$wpdb->posts}.post_content $like_op %s))",
-                $like, $like, $like);
+            $search .= $wpdb->prepare(
+                "{$searchand}(({$wpdb->posts}.post_title $like_op %s) $andor_op ({$wpdb->posts}.post_excerpt $like_op %s) $andor_op ({$wpdb->posts}.post_content $like_op %s))",
+                $like,
+                $like,
+                $like
+            );
             $searchand = ' AND ';
         }
 
@@ -1516,12 +1530,16 @@ class WP_Query
         }
 
         /* translators: This is a comma-separated list of very common words that should be excluded from a search,
-		 * like a, an, and the. These are usually called "stopwords". You should not simply translate these individual
-		 * words into your language. Instead, look for and provide commonly accepted stopwords in your language.
-		 */
-        $words = explode(',',
-            _x('about,an,are,as,at,be,by,com,for,from,how,in,is,it,of,on,or,that,the,this,to,was,what,when,where,who,will,with,www',
-                'Comma-separated list of search stopwords in your language'));
+         * like a, an, and the. These are usually called "stopwords". You should not simply translate these individual
+         * words into your language. Instead, look for and provide commonly accepted stopwords in your language.
+         */
+        $words = explode(
+            ',',
+            _x(
+                'about,an,are,as,at,be,by,com,for,from,how,in,is,it,of,on,or,that,the,this,to,was,what,when,where,who,will,with,www',
+                'Comma-separated list of search stopwords in your language'
+            )
+        );
 
         $stopwords = array();
         foreach ($words as $word) {
@@ -1839,9 +1857,12 @@ class WP_Query
         $page = 1;
 
         if (isset($q['caller_get_posts'])) {
-            _deprecated_argument('WP_Query', '3.1.0',
+            _deprecated_argument(
+                'WP_Query',
+                '3.1.0',
                 /* translators: 1: caller_get_posts, 2: ignore_sticky_posts */
-                sprintf(__('%1$s is deprecated. Use %2$s instead.'),
+                sprintf(
+                    __('%1$s is deprecated. Use %2$s instead.'),
                     '<code>caller_get_posts</code>',
                     '<code>ignore_sticky_posts</code>'
                 )
@@ -2187,15 +2208,15 @@ class WP_Query
         }
 
         /*
-		 * Ensure that 'taxonomy', 'term', 'term_id', 'cat', and
-		 * 'category_name' vars are set for backward compatibility.
-		 */
+         * Ensure that 'taxonomy', 'term', 'term_id', 'cat', and
+         * 'category_name' vars are set for backward compatibility.
+         */
         if (!empty($this->tax_query->queried_terms)) {
 
             /*
-			 * Set 'taxonomy', 'term', and 'term_id' to the
-			 * first taxonomy other than 'post_tag' or 'category'.
-			 */
+             * Set 'taxonomy', 'term', and 'term_id' to the
+             * first taxonomy other than 'post_tag' or 'category'.
+             */
             if (!isset($q['taxonomy'])) {
                 foreach ($this->tax_query->queried_terms as $queried_taxonomy => $queried_items) {
                     if (empty($queried_items['terms'][0])) {
@@ -2308,9 +2329,9 @@ class WP_Query
         // Order by.
         if (empty($q['orderby'])) {
             /*
-			 * Boolean false or empty array blanks out ORDER BY,
-			 * while leaving the value unset or otherwise empty sets the default.
-			 */
+             * Boolean false or empty array blanks out ORDER BY,
+             * while leaving the value unset or otherwise empty sets the default.
+             */
             if (isset($q['orderby']) && (is_array($q['orderby']) || false === $q['orderby'])) {
                 $orderby = '';
             } else {
@@ -2338,7 +2359,6 @@ class WP_Query
                     $orderby_array[] = $parsed . ' ' . $this->parse_order($order);
                 }
                 $orderby = implode(', ', $orderby_array);
-
             } else {
                 $q['orderby'] = urldecode($q['orderby']);
                 $q['orderby'] = addslashes_gpc($q['orderby']);
@@ -2420,8 +2440,10 @@ class WP_Query
             if (empty($in_search_post_types)) {
                 $where .= ' AND 1=0 ';
             } else {
-                $where .= " AND {$wpdb->posts}.post_type IN ('" . join("', '",
-                        array_map('esc_sql', $in_search_post_types)) . "')";
+                $where .= " AND {$wpdb->posts}.post_type IN ('" . join(
+                    "', '",
+                        array_map('esc_sql', $in_search_post_types)
+                ) . "')";
             }
         } elseif (!empty($post_type) && is_array($post_type)) {
             $where .= " AND {$wpdb->posts}.post_type IN ('" . join("', '", esc_sql($post_type)) . "')";
@@ -2490,16 +2512,20 @@ class WP_Query
             }
             if (!empty($r_status)) {
                 if (!empty($q['perm']) && 'editable' == $q['perm'] && !current_user_can($edit_others_cap)) {
-                    $statuswheres[] = "({$wpdb->posts}.post_author = $user_id " . "AND (" . join(' OR ',
-                            $r_status) . "))";
+                    $statuswheres[] = "({$wpdb->posts}.post_author = $user_id " . "AND (" . join(
+                        ' OR ',
+                            $r_status
+                    ) . "))";
                 } else {
                     $statuswheres[] = "(" . join(' OR ', $r_status) . ")";
                 }
             }
             if (!empty($p_status)) {
                 if (!empty($q['perm']) && 'readable' == $q['perm'] && !current_user_can($read_private_cap)) {
-                    $statuswheres[] = "({$wpdb->posts}.post_author = $user_id " . "AND (" . join(' OR ',
-                            $p_status) . "))";
+                    $statuswheres[] = "({$wpdb->posts}.post_author = $user_id " . "AND (" . join(
+                        ' OR ',
+                            $p_status
+                    ) . "))";
                 } else {
                     $statuswheres[] = "(" . join(' OR ', $p_status) . ")";
                 }
@@ -2507,8 +2533,11 @@ class WP_Query
             if ($post_status_join) {
                 $join .= " LEFT JOIN {$wpdb->posts} AS p2 ON ({$wpdb->posts}.post_parent = p2.ID) ";
                 foreach ($statuswheres as $index => $statuswhere) {
-                    $statuswheres[$index] = "($statuswhere OR ({$wpdb->posts}.post_status = 'inherit' AND " . str_replace($wpdb->posts,
-                            'p2', $statuswhere) . "))";
+                    $statuswheres[$index] = "($statuswhere OR ({$wpdb->posts}.post_status = 'inherit' AND " . str_replace(
+                        $wpdb->posts,
+                            'p2',
+                        $statuswhere
+                    ) . "))";
                 }
             }
             $where_status = implode(' OR ', $statuswheres);
@@ -2521,8 +2550,7 @@ class WP_Query
             // Add public states.
             $public_states = get_post_stati(array('public' => true));
             foreach ((array)$public_states as $state) {
-                if ('publish' == $state) // Publish is hard-coded above.
-                {
+                if ('publish' == $state) { // Publish is hard-coded above.
                     continue;
                 }
                 $where .= " OR {$wpdb->posts}.post_status = '$state'";
@@ -2548,9 +2576,9 @@ class WP_Query
         }
 
         /*
-		 * Apply filters on where and join prior to paging so that any
-		 * manipulations to them are reflected in the paging by day queries.
-		 */
+         * Apply filters on where and join prior to paging so that any
+         * manipulations to them are reflected in the paging by day queries.
+         */
         if (!$q['suppress_filters']) {
             /**
              * Filters the WHERE clause of the query.
@@ -2651,8 +2679,10 @@ class WP_Query
                  * @param string $climits The JOIN clause of the query.
                  * @param WP_Query &$this The WP_Query instance (passed by reference).
                  */
-                $climits = apply_filters_ref_array('comment_feed_limits',
-                    array('LIMIT ' . get_option('posts_per_rss'), &$this));
+                $climits = apply_filters_ref_array(
+                    'comment_feed_limits',
+                    array('LIMIT ' . get_option('posts_per_rss'), &$this)
+                );
             }
             $cgroupby = (!empty($cgroupby)) ? 'GROUP BY ' . $cgroupby : '';
             $corderby = (!empty($corderby)) ? 'ORDER BY ' . $corderby : '';
@@ -2680,9 +2710,9 @@ class WP_Query
         $pieces = array('where', 'groupby', 'join', 'orderby', 'distinct', 'fields', 'limits');
 
         /*
-		 * Apply post-paging filters on where and join. Only plugins that
-		 * manipulate paging queries should use these hooks.
-		 */
+         * Apply post-paging filters on where and join. Only plugins that
+         * manipulate paging queries should use these hooks.
+         */
         if (!$q['suppress_filters']) {
             /**
              * Filters the WHERE clause of the query.
@@ -2792,9 +2822,9 @@ class WP_Query
         do_action('posts_selection', $where . $groupby . $orderby . $limits . $join);
 
         /*
-		 * Filters again for the benefit of caching plugins.
-		 * Regular plugins should use the hooks above.
-		 */
+         * Filters again for the benefit of caching plugins.
+         * Regular plugins should use the hooks above.
+         */
         if (!$q['suppress_filters']) {
             /**
              * Filters the WHERE clause of the query.
@@ -3048,8 +3078,10 @@ class WP_Query
             $cjoin = apply_filters_ref_array('comment_feed_join', array('', &$this));
 
             /** This filter is documented in wp-includes/query.php */
-            $cwhere = apply_filters_ref_array('comment_feed_where',
-                array("WHERE comment_post_ID = '{$this->posts[0]->ID}' AND comment_approved = '1'", &$this));
+            $cwhere = apply_filters_ref_array(
+                'comment_feed_where',
+                array("WHERE comment_post_ID = '{$this->posts[0]->ID}' AND comment_approved = '1'", &$this)
+            );
 
             /** This filter is documented in wp-includes/query.php */
             $cgroupby = apply_filters_ref_array('comment_feed_groupby', array('', &$this));
@@ -3060,8 +3092,10 @@ class WP_Query
             $corderby = (!empty($corderby)) ? 'ORDER BY ' . $corderby : '';
 
             /** This filter is documented in wp-includes/query.php */
-            $climits = apply_filters_ref_array('comment_feed_limits',
-                array('LIMIT ' . get_option('posts_per_rss'), &$this));
+            $climits = apply_filters_ref_array(
+                'comment_feed_limits',
+                array('LIMIT ' . get_option('posts_per_rss'), &$this)
+            );
 
             $comments_request = "SELECT {$wpdb->comments}.* FROM {$wpdb->comments} $cjoin $cwhere $cgroupby $corderby $climits";
             $comments = $wpdb->get_results($comments_request);
@@ -3082,7 +3116,6 @@ class WP_Query
 
             // If the post_status was specifically requested, let it pass through.
             if (!$post_status_obj->public && !in_array($status, $q_status)) {
-
                 if (!is_user_logged_in()) {
                     // User must be logged in to view unpublished posts.
                     $this->posts = array();
@@ -3188,8 +3221,12 @@ class WP_Query
             $this->posts = array_map('get_post', $this->posts);
 
             if ($q['cache_results']) {
-                update_post_caches($this->posts, $post_type, $q['update_post_term_cache'],
-                    $q['update_post_meta_cache']);
+                update_post_caches(
+                    $this->posts,
+                    $post_type,
+                    $q['update_post_term_cache'],
+                    $q['update_post_meta_cache']
+                );
             }
 
             $this->post = reset($this->posts);
@@ -3233,8 +3270,10 @@ class WP_Query
              * @param string $found_posts The query to run to find the found posts.
              * @param WP_Query &$this The WP_Query instance (passed by reference).
              */
-            $this->found_posts = $wpdb->get_var(apply_filters_ref_array('found_posts_query',
-                array('SELECT FOUND_ROWS()', &$this)));
+            $this->found_posts = $wpdb->get_var(apply_filters_ref_array(
+                'found_posts_query',
+                array('SELECT FOUND_ROWS()', &$this)
+            ));
         } else {
             $this->found_posts = count($this->posts);
         }
@@ -3264,7 +3303,6 @@ class WP_Query
      */
     public function next_post()
     {
-
         $this->current_post++;
 
         $this->post = $this->posts[$this->current_post];
@@ -3287,8 +3325,7 @@ class WP_Query
         global $post;
         $this->in_the_loop = true;
 
-        if ($this->current_post == -1) // loop has just started
-        {
+        if ($this->current_post == -1) { // loop has just started
             /**
              * Fires once the loop is started.
              *
@@ -3816,8 +3853,10 @@ class WP_Query
         $term_array = (array)$term;
 
         // Check that the taxonomy matches.
-        if (!(isset($queried_object->taxonomy) && count($tax_array) && in_array($queried_object->taxonomy,
-                $tax_array))) {
+        if (!(isset($queried_object->taxonomy) && count($tax_array) && in_array(
+            $queried_object->taxonomy,
+                $tax_array
+        ))) {
             return false;
         }
 
@@ -4260,9 +4299,9 @@ class WP_Query
         }
 
         /*
-		 * Force full post content when viewing the permalink for the $post,
-		 * or when on an RSS feed. Otherwise respect the 'more' tag.
-		 */
+         * Force full post content when viewing the permalink for the $post,
+         * or when on an RSS feed. Otherwise respect the 'more' tag.
+         */
         if ($post->ID === get_queried_object_id() && ($this->is_page() || $this->is_single())) {
             $more = 1;
         } elseif ($this->is_feed()) {

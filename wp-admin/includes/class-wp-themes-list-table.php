@@ -17,7 +17,6 @@
  */
 class WP_Themes_List_Table extends WP_List_Table
 {
-
     protected $search_terms = array();
     public $features = array();
 
@@ -57,8 +56,10 @@ class WP_Themes_List_Table extends WP_List_Table
         $themes = wp_get_themes(array('allowed' => true));
 
         if (!empty($_REQUEST['s'])) {
-            $this->search_terms = array_unique(array_filter(array_map('trim',
-                explode(',', strtolower(wp_unslash($_REQUEST['s']))))));
+            $this->search_terms = array_unique(array_filter(array_map(
+                'trim',
+                explode(',', strtolower(wp_unslash($_REQUEST['s'])))
+            )));
         }
 
         if (!empty($_REQUEST['features'])) {
@@ -103,28 +104,37 @@ class WP_Themes_List_Table extends WP_List_Table
         $blog_id = get_current_blog_id();
         if (is_multisite()) {
             if (current_user_can('install_themes') && current_user_can('manage_network_themes')) {
-                printf(__('You only have one theme enabled for this site right now. Visit the Network Admin to <a href="%1$s">enable</a> or <a href="%2$s">install</a> more themes.'),
-                    network_admin_url('site-themes.php?id=' . $blog_id), network_admin_url('theme-install.php'));
+                printf(
+                    __('You only have one theme enabled for this site right now. Visit the Network Admin to <a href="%1$s">enable</a> or <a href="%2$s">install</a> more themes.'),
+                    network_admin_url('site-themes.php?id=' . $blog_id),
+                    network_admin_url('theme-install.php')
+                );
 
                 return;
             } elseif (current_user_can('manage_network_themes')) {
-                printf(__('You only have one theme enabled for this site right now. Visit the Network Admin to <a href="%1$s">enable</a> more themes.'),
-                    network_admin_url('site-themes.php?id=' . $blog_id));
+                printf(
+                    __('You only have one theme enabled for this site right now. Visit the Network Admin to <a href="%1$s">enable</a> more themes.'),
+                    network_admin_url('site-themes.php?id=' . $blog_id)
+                );
 
                 return;
             }
             // Else, fallthrough. install_themes doesn't help if you can't enable it.
         } else {
             if (current_user_can('install_themes')) {
-                printf(__('You only have one theme installed right now. Live a little! You can choose from over 1,000 free themes in the WordPress Theme Directory at any time: just click on the <a href="%s">Install Themes</a> tab above.'),
-                    admin_url('theme-install.php'));
+                printf(
+                    __('You only have one theme installed right now. Live a little! You can choose from over 1,000 free themes in the WordPress Theme Directory at any time: just click on the <a href="%s">Install Themes</a> tab above.'),
+                    admin_url('theme-install.php')
+                );
 
                 return;
             }
         }
         // Fallthrough.
-        printf(__('Only the current theme is available to you. Contact the %s administrator for information about accessing additional themes.'),
-            get_site_option('site_name'));
+        printf(
+            __('Only the current theme is available to you. Contact the %s administrator for information about accessing additional themes.'),
+            get_site_option('site_name')
+        );
     }
 
     /**
@@ -134,8 +144,7 @@ class WP_Themes_List_Table extends WP_List_Table
     {
         if ($this->get_pagination_arg('total_pages') <= 1) {
             return;
-        }
-        ?>
+        } ?>
         <div class="tablenav themes <?php echo $which; ?>">
             <?php $this->pagination($which); ?>
             <span class="spinner"></span>
@@ -149,8 +158,7 @@ class WP_Themes_List_Table extends WP_List_Table
      */
     public function display()
     {
-        wp_nonce_field("fetch-list-" . get_class($this), '_ajax_fetch_list_nonce');
-        ?>
+        wp_nonce_field("fetch-list-" . get_class($this), '_ajax_fetch_list_nonce'); ?>
         <?php $this->tablenav('top'); ?>
 
         <div id="availablethemes">
@@ -196,40 +204,44 @@ class WP_Themes_List_Table extends WP_List_Table
             <div class="available-theme"><?php
 
             $template = $theme->get_template();
-            $stylesheet = $theme->get_stylesheet();
-            $title = $theme->display('Name');
-            $version = $theme->display('Version');
-            $author = $theme->display('Author');
+        $stylesheet = $theme->get_stylesheet();
+        $title = $theme->display('Name');
+        $version = $theme->display('Version');
+        $author = $theme->display('Author');
 
-            $activate_link = wp_nonce_url("themes.php?action=activate&amp;template=" . urlencode($template) . "&amp;stylesheet=" . urlencode($stylesheet),
-                'switch-theme_' . $stylesheet);
+        $activate_link = wp_nonce_url(
+                "themes.php?action=activate&amp;template=" . urlencode($template) . "&amp;stylesheet=" . urlencode($stylesheet),
+                'switch-theme_' . $stylesheet
+            );
 
-            $actions = array();
-            $actions['activate'] = '<a href="' . $activate_link . '" class="activatelink" title="'
+        $actions = array();
+        $actions['activate'] = '<a href="' . $activate_link . '" class="activatelink" title="'
                 . esc_attr(sprintf(__('Activate &#8220;%s&#8221;'), $title)) . '">' . __('Activate') . '</a>';
 
-            if (current_user_can('edit_theme_options') && current_user_can('customize')) {
-                $actions['preview'] .= '<a href="' . wp_customize_url($stylesheet) . '" class="load-customize hide-if-no-customize">'
+        if (current_user_can('edit_theme_options') && current_user_can('customize')) {
+            $actions['preview'] .= '<a href="' . wp_customize_url($stylesheet) . '" class="load-customize hide-if-no-customize">'
                     . __('Live Preview') . '</a>';
-            }
+        }
 
-            if (!is_multisite() && current_user_can('delete_themes')) {
-                $actions['delete'] = '<a class="submitdelete deletion" href="' . wp_nonce_url('themes.php?action=delete&amp;stylesheet=' . urlencode($stylesheet),
-                        'delete-theme_' . $stylesheet)
-                    . '" onclick="' . "return confirm( '" . esc_js(sprintf(__("You are about to delete this theme '%s'\n  'Cancel' to stop, 'OK' to delete."),
-                        $title))
+        if (!is_multisite() && current_user_can('delete_themes')) {
+            $actions['delete'] = '<a class="submitdelete deletion" href="' . wp_nonce_url(
+                    'themes.php?action=delete&amp;stylesheet=' . urlencode($stylesheet),
+                        'delete-theme_' . $stylesheet
+                )
+                    . '" onclick="' . "return confirm( '" . esc_js(sprintf(
+                        __("You are about to delete this theme '%s'\n  'Cancel' to stop, 'OK' to delete."),
+                        $title
+                    ))
                     . "' );" . '">' . __('Delete') . '</a>';
-            }
+        }
 
-            /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
-            $actions = apply_filters('theme_action_links', $actions, $theme);
+        /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
+        $actions = apply_filters('theme_action_links', $actions, $theme);
 
-            /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
-            $actions = apply_filters("theme_action_links_$stylesheet", $actions, $theme);
-            $delete_action = isset($actions['delete']) ? '<div class="delete-theme">' . $actions['delete'] . '</div>' : '';
-            unset($actions['delete']);
-
-            ?>
+        /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
+        $actions = apply_filters("theme_action_links_$stylesheet", $actions, $theme);
+        $delete_action = isset($actions['delete']) ? '<div class="delete-theme">' . $actions['delete'] . '</div>' : '';
+        unset($actions['delete']); ?>
 
             <span class="screenshot hide-if-customize">
 				<?php if ($screenshot = $theme->get_screenshot()) : ?>
@@ -261,10 +273,12 @@ class WP_Themes_List_Table extends WP_List_Table
                 <p><strong><?php _e('Version:'); ?></strong> <?php echo $version; ?></p>
                 <p><?php echo $theme->display('Description'); ?></p>
                 <?php if ($theme->parent()) {
-                    printf(' <p class="howto">' . __('This <a href="%1$s">child theme</a> requires its parent theme, %2$s.') . '</p>',
+            printf(
+                        ' <p class="howto">' . __('This <a href="%1$s">child theme</a> requires its parent theme, %2$s.') . '</p>',
                         __('https://codex.wordpress.org/Child_Themes'),
-                        $theme->parent()->display('Name'));
-                } ?>
+                        $theme->parent()->display('Name')
+                    );
+        } ?>
             </div>
 
             </div>

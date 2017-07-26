@@ -40,7 +40,8 @@ if (!function_exists('twentyseventeen_time_link')) :
             $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
         }
 
-        $time_string = sprintf($time_string,
+        $time_string = sprintf(
+            $time_string,
             get_the_date(DATE_W3C),
             get_the_date(),
             get_the_modified_date(DATE_W3C),
@@ -75,7 +76,6 @@ if (!function_exists('twentyseventeen_entry_footer')) :
 
         // We don't want to output .entry-footer if it will be empty, so make sure its not.
         if (((twentyseventeen_categorized_blog() && $categories_list) || $tags_list) || get_edit_post_link()) {
-
             echo '<footer class="entry-footer">';
 
             if ('post' === get_post_type()) {
@@ -84,13 +84,17 @@ if (!function_exists('twentyseventeen_entry_footer')) :
 
                     // Make sure there's more than one category before displaying.
                     if ($categories_list && twentyseventeen_categorized_blog()) {
-                        echo '<span class="cat-links">' . twentyseventeen_get_svg(array('icon' => 'folder-open')) . '<span class="screen-reader-text">' . __('Categories',
-                                'twentyseventeen') . '</span>' . $categories_list . '</span>';
+                        echo '<span class="cat-links">' . twentyseventeen_get_svg(array('icon' => 'folder-open')) . '<span class="screen-reader-text">' . __(
+                            'Categories',
+                                'twentyseventeen'
+                        ) . '</span>' . $categories_list . '</span>';
                     }
 
                     if ($tags_list) {
-                        echo '<span class="tags-links">' . twentyseventeen_get_svg(array('icon' => 'hashtag')) . '<span class="screen-reader-text">' . __('Tags',
-                                'twentyseventeen') . '</span>' . $tags_list . '</span>';
+                        echo '<span class="tags-links">' . twentyseventeen_get_svg(array('icon' => 'hashtag')) . '<span class="screen-reader-text">' . __(
+                            'Tags',
+                                'twentyseventeen'
+                        ) . '</span>' . $tags_list . '</span>';
                     }
 
                     echo '</span>';
@@ -154,8 +158,10 @@ function twentyseventeen_front_page_section($partial = null, $id = 0)
         wp_reset_postdata();
     } elseif (is_customize_preview()) {
         // The output placeholder anchor.
-        echo '<article class="panel-placeholder panel twentyseventeen-panel twentyseventeen-panel' . $id . '" id="panel' . $id . '"><span class="twentyseventeen-panel-title">' . sprintf(__('Front Page Section %1$s Placeholder',
-                'twentyseventeen'), $id) . '</span></article>';
+        echo '<article class="panel-placeholder panel twentyseventeen-panel twentyseventeen-panel' . $id . '" id="panel' . $id . '"><span class="twentyseventeen-panel-title">' . sprintf(__(
+            'Front Page Section %1$s Placeholder',
+                'twentyseventeen'
+        ), $id) . '</span></article>';
     }
 }
 

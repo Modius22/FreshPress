@@ -75,7 +75,9 @@ function add_metadata($meta_type, $object_id, $meta_key, $meta_value, $unique = 
 
     if ($unique && $wpdb->get_var($wpdb->prepare(
             "SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
-            $meta_key, $object_id))) {
+            $meta_key,
+        $object_id
+    ))) {
         return false;
     }
 
@@ -204,8 +206,11 @@ function update_metadata($meta_type, $object_id, $meta_key, $meta_value, $prev_v
         }
     }
 
-    $meta_ids = $wpdb->get_col($wpdb->prepare("SELECT $id_column FROM $table WHERE meta_key = %s AND $column = %d",
-        $meta_key, $object_id));
+    $meta_ids = $wpdb->get_col($wpdb->prepare(
+        "SELECT $id_column FROM $table WHERE meta_key = %s AND $column = %d",
+        $meta_key,
+        $object_id
+    ));
     if (empty($meta_ids)) {
         return add_metadata($meta_type, $object_id, $raw_meta_key, $passed_value);
     }
@@ -383,8 +388,10 @@ function delete_metadata($meta_type, $object_id, $meta_key, $meta_value = '', $d
             $value_clause = $wpdb->prepare(" AND meta_value = %s", $meta_value);
         }
 
-        $object_ids = $wpdb->get_col($wpdb->prepare("SELECT $type_column FROM $table WHERE meta_key = %s $value_clause",
-            $meta_key));
+        $object_ids = $wpdb->get_col($wpdb->prepare(
+            "SELECT $type_column FROM $table WHERE meta_key = %s $value_clause",
+            $meta_key
+        ));
     }
 
     /**
@@ -796,7 +803,6 @@ function delete_metadata_by_mid($meta_type, $meta_id)
         }
 
         return $result;
-
     }
 
     // Meta id was not found.
@@ -855,8 +861,10 @@ function update_meta_cache($meta_type, $object_ids)
     // Get meta info
     $id_list = join(',', $ids);
     $id_column = 'user' == $meta_type ? 'umeta_id' : 'meta_id';
-    $meta_list = $wpdb->get_results("SELECT $column, meta_key, meta_value FROM $table WHERE $column IN ($id_list) ORDER BY $id_column ASC",
-        ARRAY_A);
+    $meta_list = $wpdb->get_results(
+        "SELECT $column, meta_key, meta_value FROM $table WHERE $column IN ($id_list) ORDER BY $id_column ASC",
+        ARRAY_A
+    );
 
     if (!empty($meta_list)) {
         foreach ($meta_list as $metarow) {

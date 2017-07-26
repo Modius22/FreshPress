@@ -26,8 +26,11 @@ $comment = wp_handle_comment_submission(wp_unslash($_POST));
 if (is_wp_error($comment)) {
     $data = intval($comment->get_error_data());
     if (!empty($data)) {
-        wp_die('<p>' . $comment->get_error_message() . '</p>', __('Comment Submission Failure'),
-            array('response' => $data, 'back_link' => true));
+        wp_die(
+            '<p>' . $comment->get_error_message() . '</p>',
+            __('Comment Submission Failure'),
+            array('response' => $data, 'back_link' => true)
+        );
     } else {
         exit;
     }

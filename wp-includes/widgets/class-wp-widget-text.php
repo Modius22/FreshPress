@@ -69,8 +69,12 @@ class WP_Widget_Text extends WP_Widget
     {
 
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-        $title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance,
-            $this->id_base);
+        $title = apply_filters(
+            'widget_title',
+            empty($instance['title']) ? '' : $instance['title'],
+            $instance,
+            $this->id_base
+        );
 
         $text = !empty($instance['text']) ? $instance['text'] : '';
 
@@ -101,7 +105,6 @@ class WP_Widget_Text extends WP_Widget
                  * @param WP_Widget_Text $this Current Text widget instance.
                  */
                 $text = apply_filters('widget_text_content', $text, $instance, $this);
-
             } elseif ($instance['filter']) {
                 $text = wpautop($text); // Back-compat for instances prior to 4.8.
             }
@@ -110,9 +113,7 @@ class WP_Widget_Text extends WP_Widget
         echo $args['before_widget'];
         if (!empty($title)) {
             echo $args['before_title'] . $title . $args['after_title'];
-        }
-
-        ?>
+        } ?>
         <div class="textwidget"><?php echo $text; ?></div>
         <?php
         echo $args['after_widget'];
@@ -181,8 +182,7 @@ class WP_Widget_Text extends WP_Widget
                 'title' => '',
                 'text' => '',
             )
-        );
-        ?>
+        ); ?>
         <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>"
                class="title" type="hidden" value="<?php echo esc_attr($instance['title']); ?>">
         <input id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"

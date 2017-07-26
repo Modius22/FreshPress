@@ -77,8 +77,8 @@ echo '<?xml version="1.0"?' . ">\n";
                              xmlUrl="<?php echo esc_attr($bookmark->link_rss); ?>"
                              htmlUrl="<?php echo esc_attr($bookmark->link_url); ?>"
                              updated="<?php if ('0000-00-00 00:00:00' != $bookmark->link_updated) {
-                                 echo $bookmark->link_updated;
-                             } ?>"/>
+                        echo $bookmark->link_updated;
+                    } ?>"/>
                     <?php
                 endforeach; // $bookmarks
                 ?>

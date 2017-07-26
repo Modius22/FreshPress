@@ -367,7 +367,6 @@ function _wp_menu_item_classes_by_context(&$menu_items)
     $front_page_id = (int)get_option('page_on_front');
 
     foreach ((array)$menu_items as $key => $menu_item) {
-
         $menu_items[$key]->current = false;
 
         $classes = (array)$menu_item->classes;
@@ -381,8 +380,10 @@ function _wp_menu_item_classes_by_context(&$menu_items)
         }
 
         // if the menu item corresponds to a taxonomy term for the currently-queried non-hierarchical post object
-        if ($wp_query->is_singular && 'taxonomy' == $menu_item->type && in_array($menu_item->object_id,
-                $possible_object_parents)) {
+        if ($wp_query->is_singular && 'taxonomy' == $menu_item->type && in_array(
+            $menu_item->object_id,
+                $possible_object_parents
+        )) {
             $active_parent_object_ids[] = (int)$menu_item->object_id;
             $active_parent_item_ids[] = (int)$menu_item->db_id;
             $active_object = $queried_object->post_type;
@@ -434,14 +435,22 @@ function _wp_menu_item_classes_by_context(&$menu_items)
                 $_root_relative_current = strtok(untrailingslashit($_SERVER['REQUEST_URI']), '?');
             }
             $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_root_relative_current);
-            $raw_item_url = strpos($menu_item->url, '#') ? substr($menu_item->url, 0,
-                strpos($menu_item->url, '#')) : $menu_item->url;
+            $raw_item_url = strpos($menu_item->url, '#') ? substr(
+                $menu_item->url,
+                0,
+                strpos($menu_item->url, '#')
+            ) : $menu_item->url;
             $item_url = set_url_scheme(untrailingslashit($raw_item_url));
-            $_indexless_current = untrailingslashit(preg_replace('/' . preg_quote($wp_rewrite->index, '/') . '$/', '',
-                $current_url));
+            $_indexless_current = untrailingslashit(preg_replace(
+                '/' . preg_quote($wp_rewrite->index, '/') . '$/',
+                '',
+                $current_url
+            ));
 
-            if ($raw_item_url && in_array($item_url,
-                    array($current_url, $_indexless_current, $_root_relative_current))) {
+            if ($raw_item_url && in_array(
+                $item_url,
+                    array($current_url, $_indexless_current, $_root_relative_current)
+            )) {
                 $classes[] = 'current-menu-item';
                 $menu_items[$key]->current = true;
                 $_anc_id = (int)$menu_item->db_id;
@@ -453,8 +462,10 @@ function _wp_menu_item_classes_by_context(&$menu_items)
                     $active_ancestor_item_ids[] = $_anc_id;
                 }
 
-                if (in_array(home_url(),
-                    array(untrailingslashit($current_url), untrailingslashit($_indexless_current)))) {
+                if (in_array(
+                    home_url(),
+                    array(untrailingslashit($current_url), untrailingslashit($_indexless_current))
+                )) {
                     // Back compat for home link to match wp_page_menu()
                     $classes[] = 'current_page_item';
                 }

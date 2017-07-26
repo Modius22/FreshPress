@@ -748,8 +748,10 @@ class WP_Object_Cache
         echo "</p>";
         echo '<ul>';
         foreach ($this->cache as $group => $cache) {
-            echo "<li><strong>Group:</strong> $group - ( " . number_format(strlen(serialize($cache)) / KB_IN_BYTES,
-                    2) . 'k )</li>';
+            echo "<li><strong>Group:</strong> $group - ( " . number_format(
+                strlen(serialize($cache)) / KB_IN_BYTES,
+                    2
+            ) . 'k )</li>';
         }
         echo '</ul>';
     }
@@ -782,8 +784,10 @@ class WP_Object_Cache
      */
     protected function _exists($key, $group)
     {
-        return isset($this->cache[$group]) && (isset($this->cache[$group][$key]) || array_key_exists($key,
-                    $this->cache[$group]));
+        return isset($this->cache[$group]) && (isset($this->cache[$group][$key]) || array_key_exists(
+            $key,
+                    $this->cache[$group]
+        ));
     }
 
     /**

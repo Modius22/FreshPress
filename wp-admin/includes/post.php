@@ -20,7 +20,6 @@
  */
 function _wp_translate_postdata($update = false, $post_data = null)
 {
-
     if (empty($post_data)) {
         $post_data = &$_POST;
     }
@@ -63,10 +62,10 @@ function _wp_translate_postdata($update = false, $post_data = null)
 
     $post_data['user_ID'] = get_current_user_id();
 
-    if (!empty ($post_data['post_author_override'])) {
+    if (!empty($post_data['post_author_override'])) {
         $post_data['post_author'] = (int)$post_data['post_author_override'];
     } else {
-        if (!empty ($post_data['post_author'])) {
+        if (!empty($post_data['post_author'])) {
             $post_data['post_author'] = (int)$post_data['post_author'];
         } else {
             $post_data['post_author'] = (int)$post_data['user_ID'];
@@ -83,11 +82,15 @@ function _wp_translate_postdata($update = false, $post_data = null)
             }
         } else {
             if ('page' == $post_data['post_type']) {
-                return new WP_Error('edit_others_pages',
-                    __('Sorry, you are not allowed to create pages as this user.'));
+                return new WP_Error(
+                    'edit_others_pages',
+                    __('Sorry, you are not allowed to create pages as this user.')
+                );
             } else {
-                return new WP_Error('edit_others_posts',
-                    __('Sorry, you are not allowed to create posts as this user.'));
+                return new WP_Error(
+                    'edit_others_posts',
+                    __('Sorry, you are not allowed to create posts as this user.')
+                );
             }
         }
     }
@@ -137,8 +140,10 @@ function _wp_translate_postdata($update = false, $post_data = null)
 
     // Posts 'submitted for approval' present are submitted to $_POST the same as if they were being published.
     // Change status from 'publish' to 'pending' if user lacks permissions to publish or to resave published posts.
-    if (isset($post_data['post_status']) && (in_array($post_data['post_status'],
-                $published_statuses) && !current_user_can($ptype->cap->publish_posts))) {
+    if (isset($post_data['post_status']) && (in_array(
+        $post_data['post_status'],
+                $published_statuses
+    ) && !current_user_can($ptype->cap->publish_posts))) {
         if (!in_array($previous_status, $published_statuses) || !current_user_can('edit_post', $post_id)) {
             $post_data['post_status'] = 'pending';
         }
@@ -254,13 +259,13 @@ function edit_post($post_data = null)
 
     if (isset($post_data['visibility'])) {
         switch ($post_data['visibility']) {
-            case 'public' :
+            case 'public':
                 $post_data['post_password'] = '';
                 break;
-            case 'password' :
+            case 'password':
                 unset($post_data['sticky']);
                 break;
-            case 'private' :
+            case 'private':
                 $post_data['post_status'] = 'private';
                 $post_data['post_password'] = '';
                 unset($post_data['sticky']);
@@ -322,12 +327,18 @@ function edit_post($post_data = null)
             if ($meta->post_id != $post_ID) {
                 continue;
             }
-            if (is_protected_meta($meta->meta_key, 'post') || !current_user_can('edit_post_meta', $post_ID,
-                    $meta->meta_key)) {
+            if (is_protected_meta($meta->meta_key, 'post') || !current_user_can(
+                'edit_post_meta',
+                $post_ID,
+                    $meta->meta_key
+            )) {
                 continue;
             }
-            if (is_protected_meta($value['key'], 'post') || !current_user_can('edit_post_meta', $post_ID,
-                    $value['key'])) {
+            if (is_protected_meta($value['key'], 'post') || !current_user_can(
+                'edit_post_meta',
+                $post_ID,
+                    $value['key']
+            )) {
                 continue;
             }
             update_meta($key, $value['key'], $value['value']);
@@ -342,8 +353,11 @@ function edit_post($post_data = null)
             if ($meta->post_id != $post_ID) {
                 continue;
             }
-            if (is_protected_meta($meta->meta_key, 'post') || !current_user_can('delete_post_meta', $post_ID,
-                    $meta->meta_key)) {
+            if (is_protected_meta($meta->meta_key, 'post') || !current_user_can(
+                'delete_post_meta',
+                $post_ID,
+                    $meta->meta_key
+            )) {
                 continue;
             }
             delete_meta($key);
@@ -376,10 +390,10 @@ function edit_post($post_data = null)
             }
 
             /*
-			 * Assume that a 'tax_input' string is a comma-separated list of term names.
-			 * Some languages may use a character other than a comma as a delimiter, so we standardize on
-			 * commas before parsing the list.
-			 */
+             * Assume that a 'tax_input' string is a comma-separated list of term names.
+             * Some languages may use a character other than a comma as a delimiter, so we standardize on
+             * commas before parsing the list.
+             */
             if (!is_array($terms)) {
                 $comma = _x(',', 'tag delimiter');
                 if (',' !== $comma) {
@@ -572,8 +586,10 @@ function bulk_edit_posts($post_data = null)
 
         $post_type_object = get_post_type_object(get_post_type($post_ID));
 
-        if (!isset($post_type_object) || (isset($children) && in_array($post_ID,
-                    $children)) || !current_user_can('edit_post', $post_ID)) {
+        if (!isset($post_type_object) || (isset($children) && in_array(
+            $post_ID,
+                    $children
+        )) || !current_user_can('edit_post', $post_ID)) {
             $skipped[] = $post_ID;
             continue;
         }
@@ -678,8 +694,10 @@ function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
             'post_status' => 'auto-draft'
         ));
         $post = get_post($post_id);
-        if (current_theme_supports('post-formats') && post_type_supports($post->post_type,
-                'post-formats') && get_option('default_post_format')) {
+        if (current_theme_supports('post-formats') && post_type_supports(
+            $post->post_type,
+                'post-formats'
+        ) && get_option('default_post_format')) {
             set_post_format($post, get_option('default_post_format'));
         }
     } else {
@@ -760,22 +778,22 @@ function post_exists($title, $content = '', $date = '')
     $query = "SELECT ID FROM $wpdb->posts WHERE 1=1";
     $args = array();
 
-    if (!empty ($date)) {
+    if (!empty($date)) {
         $query .= ' AND post_date = %s';
         $args[] = $post_date;
     }
 
-    if (!empty ($title)) {
+    if (!empty($title)) {
         $query .= ' AND post_title = %s';
         $args[] = $post_title;
     }
 
-    if (!empty ($content)) {
+    if (!empty($content)) {
         $query .= ' AND post_content = %s';
         $args[] = $post_content;
     }
 
-    if (!empty ($args)) {
+    if (!empty($args)) {
         return (int)$wpdb->get_var($wpdb->prepare($query, $args));
     }
 
@@ -819,13 +837,13 @@ function wp_write_post()
 
     if (isset($_POST['visibility'])) {
         switch ($_POST['visibility']) {
-            case 'public' :
+            case 'public':
                 $_POST['post_password'] = '';
                 break;
-            case 'password' :
+            case 'password':
                 unset($_POST['sticky']);
                 break;
-            case 'private' :
+            case 'private':
                 $_POST['post_status'] = 'private';
                 $_POST['post_password'] = '';
                 unset($_POST['sticky']);
@@ -900,11 +918,11 @@ function add_meta($post_ID)
         $metavalue = trim($metavalue);
     }
 
-    if (('0' === $metavalue || !empty ($metavalue)) && ((('#NONE#' != $metakeyselect) && !empty ($metakeyselect)) || !empty ($metakeyinput))) {
+    if (('0' === $metavalue || !empty($metavalue)) && ((('#NONE#' != $metakeyselect) && !empty($metakeyselect)) || !empty($metakeyinput))) {
         /*
-		 * We have a key/value pair. If both the select and the input
-		 * for the key have data, the input takes precedence.
-		 */
+         * We have a key/value pair. If both the select and the input
+         * for the key have data, the input takes precedence.
+         */
         if ('#NONE#' != $metakeyselect) {
             $metakey = $metakeyselect;
         }
@@ -1034,8 +1052,11 @@ function _fix_attachment_links($post)
     }
 
     // Short if there aren't any links or no '?attachment_id=' strings (strpos cannot be zero)
-    if (!strpos($content, '?attachment_id=') || !preg_match_all('/<a ([^>]+)>[\s\S]+?<\/a>/', $content,
-            $link_matches)) {
+    if (!strpos($content, '?attachment_id=') || !preg_match_all(
+        '/<a ([^>]+)>[\s\S]+?<\/a>/',
+        $content,
+            $link_matches
+    )) {
         return;
     }
 
@@ -1195,8 +1216,10 @@ function get_available_post_mime_types($type = 'attachment')
 {
     global $wpdb;
 
-    $types = $wpdb->get_col($wpdb->prepare("SELECT DISTINCT post_mime_type FROM $wpdb->posts WHERE post_type = %s",
-        $type));
+    $types = $wpdb->get_col($wpdb->prepare(
+        "SELECT DISTINCT post_mime_type FROM $wpdb->posts WHERE post_type = %s",
+        $type
+    ));
     return $types;
 }
 
@@ -1355,8 +1378,13 @@ function get_sample_permalink($id, $title = null, $name = null)
         $post->post_name = sanitize_title($name ? $name : $title, $post->ID);
     }
 
-    $post->post_name = wp_unique_post_slug($post->post_name, $post->ID, $post->post_status, $post->post_type,
-        $post->post_parent);
+    $post->post_name = wp_unique_post_slug(
+        $post->post_name,
+        $post->ID,
+        $post->post_status,
+        $post->post_type,
+        $post->post_parent
+    );
 
     $post->filter = 'sample';
 
@@ -1462,8 +1490,11 @@ function get_sample_permalink_html($id, $new_title = null, $new_slug = null)
         }
 
         $post_name_html = '<span id="editable-post-name">' . esc_html($post_name_abridged) . '</span>';
-        $display_link = str_replace(array('%pagename%', '%postname%'), $post_name_html,
-            esc_html(urldecode($permalink)));
+        $display_link = str_replace(
+            array('%pagename%', '%postname%'),
+            $post_name_html,
+            esc_html(urldecode($permalink))
+        );
 
         $return = '<strong>' . __('Permalink:') . "</strong>\n";
         $return .= '<span id="sample-permalink"><a href="' . esc_url($view_link) . '"' . $preview_target . '>' . $display_link . "</a></span>\n";
@@ -1507,7 +1538,8 @@ function _wp_post_thumbnail_html($thumbnail_id = null, $post = null)
     $set_thumbnail_link = '<p class="hide-if-no-js"><a href="%s" id="set-post-thumbnail"%s class="thickbox">%s</a></p>';
     $upload_iframe_src = get_upload_iframe_src('image', $post->ID);
 
-    $content = sprintf($set_thumbnail_link,
+    $content = sprintf(
+        $set_thumbnail_link,
         esc_url($upload_iframe_src),
         '', // Empty when there's no featured image set, `aria-describedby` attribute otherwise.
         esc_html($post_type_object->labels->set_featured_image)
@@ -1538,7 +1570,8 @@ function _wp_post_thumbnail_html($thumbnail_id = null, $post = null)
         $thumbnail_html = wp_get_attachment_image($thumbnail_id, $size);
 
         if (!empty($thumbnail_html)) {
-            $content = sprintf($set_thumbnail_link,
+            $content = sprintf(
+                $set_thumbnail_link,
                 esc_url($upload_iframe_src),
                 ' aria-describedby="set-post-thumbnail-desc"',
                 $thumbnail_html
@@ -1669,7 +1702,6 @@ function _admin_notice_post_locked()
 
     if ($locked && ($sendback = wp_get_referer()) &&
         false === strpos($sendback, 'post.php') && false === strpos($sendback, 'post-new.php')) {
-
         $sendback_text = __('Go back');
     } else {
         $sendback = admin_url('edit.php');
@@ -1681,9 +1713,7 @@ function _admin_notice_post_locked()
         $sendback_text = get_post_type_object($post->post_type)->labels->all_items;
     }
 
-    $hidden = $locked ? '' : ' hidden';
-
-    ?>
+    $hidden = $locked ? '' : ' hidden'; ?>
     <div id="post-lock-dialog" class="notification-dialog-wrap<?php echo $hidden; ?>">
         <div class="notification-dialog-background"></div>
         <div class="notification-dialog">
@@ -1715,19 +1745,18 @@ function _admin_notice_post_locked()
                  * @param WP_User $user User object.
                  */
                 $override = apply_filters('override_post_lock', true, $post, $user);
-                $tab_last = $override ? '' : ' wp-tab-last';
-
-                ?>
+                $tab_last = $override ? '' : ' wp-tab-last'; ?>
                 <div class="post-locked-message">
                     <div class="post-locked-avatar"><?php echo get_avatar($user->ID, 64); ?></div>
                     <p class="currently-editing wp-tab-first" tabindex="0">
                         <?php
                         _e('This content is currently locked.');
-                        if ($override) {
-                            printf(' ' . __('If you take over, %s will be blocked from continuing to edit.'),
-                                esc_html($user->display_name));
-                        }
-                        ?>
+                if ($override) {
+                    printf(
+                                ' ' . __('If you take over, %s will be blocked from continuing to edit.'),
+                                esc_html($user->display_name)
+                            );
+                } ?>
                     </p>
                     <?php
                     /**
@@ -1737,27 +1766,30 @@ function _admin_notice_post_locked()
                      *
                      * @param WP_Post $post Post object.
                      */
-                    do_action('post_locked_dialog', $post);
-                    ?>
+                    do_action('post_locked_dialog', $post); ?>
                     <p>
                         <a class="button" href="<?php echo esc_url($sendback); ?>"><?php echo $sendback_text; ?></a>
-                        <?php if ($preview_link) { ?>
+                        <?php if ($preview_link) {
+                        ?>
                             <a class="button<?php echo $tab_last; ?>"
                                href="<?php echo esc_url($preview_link); ?>"><?php _e('Preview'); ?></a>
                             <?php
-                        }
+                    }
 
-                        // Allow plugins to prevent some users overriding the post lock
-                        if ($override) {
-                            ?>
+                // Allow plugins to prevent some users overriding the post lock
+                if ($override) {
+                    ?>
                             <a class="button button-primary wp-tab-last"
-                               href="<?php echo esc_url(add_query_arg('get-post-lock', '1',
-                                   wp_nonce_url(get_edit_post_link($post->ID, 'url'),
-                                       'lock-post_' . $post->ID))); ?>"><?php _e('Take over'); ?></a>
+                               href="<?php echo esc_url(add_query_arg(
+                                'get-post-lock',
+                                '1',
+                                   wp_nonce_url(
+                                       get_edit_post_link($post->ID, 'url'),
+                                       'lock-post_' . $post->ID
+                                   )
+                            )); ?>"><?php _e('Take over'); ?></a>
                             <?php
-                        }
-
-                        ?>
+                } ?>
                     </p>
                 </div>
                 <?php
@@ -1780,15 +1812,12 @@ function _admin_notice_post_locked()
                      *
                      * @param WP_Post $post Post object.
                      */
-                    do_action('post_lock_lost_dialog', $post);
-                    ?>
+                    do_action('post_lock_lost_dialog', $post); ?>
                     <p><a class="button button-primary wp-tab-last"
                           href="<?php echo esc_url($sendback); ?>"><?php echo $sendback_text; ?></a></p>
                 </div>
                 <?php
-            }
-
-            ?>
+            } ?>
         </div>
     </div>
     <?php
@@ -1870,7 +1899,6 @@ function wp_create_post_autosave($post_data)
  */
 function post_preview()
 {
-
     $post_ID = (int)$_POST['post_ID'];
     $_POST['ID'] = $post_ID;
 

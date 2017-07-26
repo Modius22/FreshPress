@@ -169,8 +169,12 @@ function wp_save_post_revision($post_id)
          * @param WP_Post $post The post object.
          *
          */
-        if (isset($last_revision) && apply_filters('wp_save_post_revision_check_for_changes', $check_for_changes = true,
-                $last_revision, $post)) {
+        if (isset($last_revision) && apply_filters(
+            'wp_save_post_revision_check_for_changes',
+            $check_for_changes = true,
+                $last_revision,
+            $post
+        )) {
             $post_has_changed = false;
 
             foreach (array_keys(_wp_post_revision_fields($post)) as $field) {
@@ -193,8 +197,12 @@ function wp_save_post_revision($post_id)
              * @param WP_Post $post The post object.
              *
              */
-            $post_has_changed = (bool)apply_filters('wp_save_post_revision_post_has_changed', $post_has_changed,
-                $last_revision, $post);
+            $post_has_changed = (bool)apply_filters(
+                'wp_save_post_revision_post_has_changed',
+                $post_has_changed,
+                $last_revision,
+                $post
+            );
 
             //don't save revision if post unchanged
             if (!$post_has_changed) {
@@ -495,8 +503,10 @@ function wp_get_post_revisions($post_id = 0, $args = null)
         return array();
     }
 
-    $args = array_merge($args,
-        array('post_parent' => $post->ID, 'post_type' => 'revision', 'post_status' => 'inherit'));
+    $args = array_merge(
+        $args,
+        array('post_parent' => $post->ID, 'post_type' => 'revision', 'post_status' => 'inherit')
+    );
 
     if (!$revisions = get_children($args)) {
         return array();
@@ -717,8 +727,11 @@ function _wp_upgrade_revisions_of_post($post, $revisions)
     // Add post option exclusively
     $lock = "revision-upgrade-{$post->ID}";
     $now = time();
-    $result = $wpdb->query($wpdb->prepare("INSERT IGNORE INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, 'no') /* LOCK */",
-        $lock, $now));
+    $result = $wpdb->query($wpdb->prepare(
+        "INSERT IGNORE INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, 'no') /* LOCK */",
+        $lock,
+        $now
+    ));
     if (!$result) {
         // If we couldn't get a lock, see how old the previous lock is
         $locked = get_option($lock);
@@ -783,7 +796,6 @@ function _wp_upgrade_revisions_of_post($post, $revisions)
         if ($result) {
             wp_cache_delete($this_revision->ID, 'posts');
         }
-
     } while ($prev_revision);
 
     delete_option($lock);

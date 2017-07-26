@@ -146,9 +146,9 @@ function wp_ajax_ajax_tag_search()
     $term_search_min_chars = (int)apply_filters('term_search_min_chars', 2, $tax, $s);
 
     /*
-	 * Require $term_search_min_chars chars for matching (default: 2)
-	 * ensure it's a non-negative, non-zero integer.
-	 */
+     * Require $term_search_min_chars chars for matching (default: 2)
+     * ensure it's a non-negative, non-zero integer.
+     */
     if (($term_search_min_chars == 0) || (strlen($s) < $term_search_min_chars)) {
         wp_die();
     }
@@ -190,8 +190,10 @@ function wp_ajax_wp_compression_test()
             if (!isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
                 wp_die(-1);
             }
-            if (false !== stripos($_SERVER['HTTP_ACCEPT_ENCODING'],
-                    'deflate') && function_exists('gzdeflate') && !$force_gzip) {
+            if (false !== stripos(
+                $_SERVER['HTTP_ACCEPT_ENCODING'],
+                    'deflate'
+            ) && function_exists('gzdeflate') && !$force_gzip) {
                 header('Content-Encoding: deflate');
                 $out = gzdeflate($test_str, 1);
             } elseif (false !== stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && function_exists('gzencode')) {
@@ -343,18 +345,18 @@ function wp_ajax_get_community_events()
         }
 
         /*
-		 * The location should only be updated when it changes. The API doesn't always return
-		 * a full location; sometimes it's missing the description or country. The location
-		 * that was saved during the initial request is known to be good and complete, though.
-		 * It should be left in tact until the user explicitly changes it (either by manually
-		 * searching for a new location, or by changing their IP address).
-		 *
-		 * If the location were updated with an incomplete response from the API, then it could
-		 * break assumptions that the UI makes (e.g., that there will always be a description
-		 * that corresponds to a latitude/longitude location).
-		 *
-		 * The location is stored network-wide, so that the user doesn't have to set it on each site.
-		 */
+         * The location should only be updated when it changes. The API doesn't always return
+         * a full location; sometimes it's missing the description or country. The location
+         * that was saved during the initial request is known to be good and complete, though.
+         * It should be left in tact until the user explicitly changes it (either by manually
+         * searching for a new location, or by changing their IP address).
+         *
+         * If the location were updated with an incomplete response from the API, then it could
+         * break assumptions that the UI makes (e.g., that there will always be a description
+         * that corresponds to a latitude/longitude location).
+         *
+         * The location is stored network-wide, so that the user doesn't have to set it on each site.
+         */
         if ($ip_changed || $search) {
             update_user_option($user_id, 'community-events-location', $events['location'], true);
         }
@@ -378,7 +380,7 @@ function wp_ajax_dashboard_widgets()
     }
 
     switch ($_GET['widget']) {
-        case 'dashboard_primary' :
+        case 'dashboard_primary':
             wp_dashboard_primary();
             break;
     }
@@ -559,8 +561,7 @@ function _wp_ajax_add_hierarchical_term()
             $cat_id = $cat_id['term_id'];
         }
         $checked_categories[] = $cat_id;
-        if ($parent) // Do these all at once in a second
-        {
+        if ($parent) { // Do these all at once in a second
             continue;
         }
 
@@ -663,8 +664,7 @@ function wp_ajax_delete_comment()
             wp_die(time());
         }
         $r = wp_untrash_comment($comment);
-        if (!isset($_POST['comment_status']) || $_POST['comment_status'] != 'trash') // undo trash, not in trash
-        {
+        if (!isset($_POST['comment_status']) || $_POST['comment_status'] != 'trash') { // undo trash, not in trash
             $delta = 1;
         }
     } elseif (isset($_POST['spam']) && 1 == $_POST['spam']) {
@@ -677,8 +677,7 @@ function wp_ajax_delete_comment()
             wp_die(time());
         }
         $r = wp_unspam_comment($comment);
-        if (!isset($_POST['comment_status']) || $_POST['comment_status'] != 'spam') // undo spam, not in spam
-        {
+        if (!isset($_POST['comment_status']) || $_POST['comment_status'] != 'spam') { // undo spam, not in spam
             $delta = 1;
         }
     } elseif (isset($_POST['delete']) && 1 == $_POST['delete']) {
@@ -687,8 +686,7 @@ function wp_ajax_delete_comment()
         wp_die(-1);
     }
 
-    if ($r) // Decide if we need to send back '1' or a more complicated response including page links and comment counts
-    {
+    if ($r) { // Decide if we need to send back '1' or a more complicated response including page links and comment counts
         _wp_ajax_delete_comment_response($comment->comment_ID, $delta);
     }
     wp_die(0);
@@ -761,8 +759,11 @@ function wp_ajax_delete_meta()
         wp_die(1);
     }
 
-    if (is_protected_meta($meta->meta_key, 'post') || !current_user_can('delete_post_meta', $meta->post_id,
-            $meta->meta_key)) {
+    if (is_protected_meta($meta->meta_key, 'post') || !current_user_can(
+        'delete_post_meta',
+        $meta->post_id,
+            $meta->meta_key
+    )) {
         wp_die(-1);
     }
     if (delete_meta($meta->meta_id)) {
@@ -1195,8 +1196,16 @@ function wp_ajax_replyto_comment($action)
         $comment_parent = absint($_POST['comment_ID']);
     }
     $comment_auto_approved = false;
-    $commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url',
-        'comment_content', 'comment_type', 'comment_parent', 'user_ID');
+    $commentdata = compact(
+        'comment_post_ID',
+        'comment_author',
+        'comment_author_email',
+        'comment_author_url',
+        'comment_content',
+        'comment_type',
+        'comment_parent',
+        'user_ID'
+    );
 
     // Automatically approve parent comment.
     if (!empty($_POST['approve_parent'])) {
@@ -1290,8 +1299,10 @@ function wp_ajax_edit_comment()
 
     $position = (isset($_POST['position']) && (int)$_POST['position']) ? (int)$_POST['position'] : '-1';
     $checkbox = (isset($_POST['checkbox']) && true == $_POST['checkbox']) ? 1 : 0;
-    $wp_list_table = _get_list_table($checkbox ? 'WP_Comments_List_Table' : 'WP_Post_Comments_List_Table',
-        array('screen' => 'edit-comments'));
+    $wp_list_table = _get_list_table(
+        $checkbox ? 'WP_Comments_List_Table' : 'WP_Post_Comments_List_Table',
+        array('screen' => 'edit-comments')
+    );
 
     $comment = get_comment($comment_id);
     if (empty($comment->comment_ID)) {
@@ -1340,15 +1351,15 @@ function wp_ajax_add_menu_item()
             !empty($menu_item_data['menu-item-object-id'])
         ) {
             switch ($menu_item_data['menu-item-type']) {
-                case 'post_type' :
+                case 'post_type':
                     $_object = get_post($menu_item_data['menu-item-object-id']);
                     break;
 
-                case 'post_type_archive' :
+                case 'post_type_archive':
                     $_object = get_post_type_object($menu_item_data['menu-item-object']);
                     break;
 
-                case 'taxonomy' :
+                case 'taxonomy':
                     $_object = get_term($menu_item_data['menu-item-object-id'], $menu_item_data['menu-item-object']);
                     break;
             }
@@ -1428,8 +1439,11 @@ function wp_ajax_add_meta()
             $post_data['post_status'] = 'draft';
             $now = current_time('timestamp', 1);
             /* translators: 1: Post creation date, 2: Post creation time */
-            $post_data['post_title'] = sprintf(__('Draft created on %1$s at %2$s'), date(__('F j, Y'), $now),
-                date(__('g:i a'), $now));
+            $post_data['post_title'] = sprintf(
+                __('Draft created on %1$s at %2$s'),
+                date(__('F j, Y'), $now),
+                date(__('g:i a'), $now)
+            );
 
             $pid = edit_post($post_data);
             if ($pid) {
@@ -1578,8 +1592,10 @@ function wp_ajax_closed_postboxes()
     }
 
     if (is_array($hidden)) {
-        $hidden = array_diff($hidden,
-            array('submitdiv', 'linksubmitdiv', 'manage-menu', 'create-menu')); // postboxes that are always shown
+        $hidden = array_diff(
+            $hidden,
+            array('submitdiv', 'linksubmitdiv', 'manage-menu', 'create-menu')
+        ); // postboxes that are always shown
         update_user_option($user->ID, "metaboxhidden_$page", $hidden, true);
     }
 
@@ -1843,8 +1859,10 @@ function wp_ajax_inline_save()
     if ($last = wp_check_post_lock($post_ID)) {
         $last_user = get_userdata($last);
         $last_user_name = $last_user ? $last_user->display_name : __('Someone');
-        printf($_POST['post_type'] == 'page' ? __('Saving is disabled: %s is currently editing this page.') : __('Saving is disabled: %s is currently editing this post.'),
-            esc_html($last_user_name));
+        printf(
+            $_POST['post_type'] == 'page' ? __('Saving is disabled: %s is currently editing this page.') : __('Saving is disabled: %s is currently editing this post.'),
+            esc_html($last_user_name)
+        );
         wp_die();
     }
 
@@ -1885,8 +1903,12 @@ function wp_ajax_inline_save()
         foreach ($data['tax_input'] as $taxonomy => $terms) {
             $tax_object = get_taxonomy($taxonomy);
             /** This filter is documented in wp-admin/includes/class-wp-posts-list-table.php */
-            if (!apply_filters('quick_edit_show_taxonomy', $tax_object->show_in_quick_edit, $taxonomy,
-                $post['post_type'])) {
+            if (!apply_filters(
+                'quick_edit_show_taxonomy',
+                $tax_object->show_in_quick_edit,
+                $taxonomy,
+                $post['post_type']
+            )) {
                 unset($data['tax_input'][$taxonomy]);
             }
         }
@@ -1895,8 +1917,13 @@ function wp_ajax_inline_save()
     // Hack: wp_unique_post_slug() doesn't work for drafts, so we will fake that our post is published.
     if (!empty($data['post_name']) && in_array($post['post_status'], array('draft', 'pending'))) {
         $post['post_status'] = 'publish';
-        $data['post_name'] = wp_unique_post_slug($data['post_name'], $post['ID'], $post['post_status'],
-            $post['post_type'], $post['post_parent']);
+        $data['post_name'] = wp_unique_post_slug(
+            $data['post_name'],
+            $post['ID'],
+            $post['post_status'],
+            $post['post_type'],
+            $post['post_parent']
+        );
     }
 
     // Update the post.
@@ -2014,17 +2041,17 @@ function wp_ajax_find_posts()
         $alt = ('alternate' == $alt) ? '' : 'alternate';
 
         switch ($post->post_status) {
-            case 'publish' :
-            case 'private' :
+            case 'publish':
+            case 'private':
                 $stat = __('Published');
                 break;
-            case 'future' :
+            case 'future':
                 $stat = __('Scheduled');
                 break;
-            case 'pending' :
+            case 'pending':
                 $stat = __('Pending Review');
                 break;
-            case 'draft' :
+            case 'draft':
                 $stat = __('Draft');
                 break;
         }
@@ -2134,7 +2161,6 @@ function wp_ajax_save_widget()
 
     // Delete.
     if (isset($_POST['delete_widget']) && $_POST['delete_widget']) {
-
         if (!isset($wp_registered_widgets[$widget_id])) {
             wp_die($error);
         }
@@ -2149,7 +2175,6 @@ function wp_ajax_save_widget()
 
         /** This action is documented in wp-admin/widgets.php */
         do_action('delete_widget', $widget_id, $sidebar_id, $id_base);
-
     } elseif ($settings && preg_match('/__i__|%i%/', key($settings))) {
         if (!$multi_number) {
             wp_die($error);
@@ -2162,7 +2187,6 @@ function wp_ajax_save_widget()
     $_POST['widget-id'] = $sidebar;
 
     foreach ((array)$wp_registered_widget_updates as $name => $control) {
-
         if ($name == $id_base) {
             if (!is_callable($control['callback'])) {
                 continue;
@@ -2253,10 +2277,10 @@ function wp_ajax_upload_attachment()
 {
     check_ajax_referer('media-form');
     /*
-	 * This function does not use wp_send_json_success() / wp_send_json_error()
-	 * as the html4 Plupload handler requires a text/html content-type for older IE.
-	 * See https://core.trac.wordpress.org/ticket/31037
-	 */
+     * This function does not use wp_send_json_success() / wp_send_json_error()
+     * as the html4 Plupload handler requires a text/html content-type for older IE.
+     * See https://core.trac.wordpress.org/ticket/31037
+     */
 
     if (!current_user_can('upload_files')) {
         echo wp_json_encode(array(
@@ -2358,15 +2382,15 @@ function wp_ajax_image_editor()
 
     $msg = false;
     switch ($_POST['do']) {
-        case 'save' :
+        case 'save':
             $msg = wp_save_image($attachment_id);
             $msg = wp_json_encode($msg);
             wp_die($msg);
             break;
-        case 'scale' :
+        case 'scale':
             $msg = wp_save_image($attachment_id);
             break;
-        case 'restore' :
+        case 'restore':
             $msg = wp_restore_image($attachment_id);
             break;
     }
@@ -2546,8 +2570,12 @@ function wp_ajax_wp_fullscreen_save_post()
 
     if ($last_id = get_post_meta($post_id, '_edit_last', true)) {
         $last_user = get_userdata($last_id);
-        $last_edited = sprintf(__('Last edited by %1$s on %2$s at %3$s'), esc_html($last_user->display_name),
-            $last_date, $last_time);
+        $last_edited = sprintf(
+            __('Last edited by %1$s on %2$s at %3$s'),
+            esc_html($last_user->display_name),
+            $last_date,
+            $last_time
+        );
     } else {
         $last_edited = sprintf(__('Last edited on %1$s at %2$s'), $last_date, $last_time);
     }
@@ -2606,10 +2634,12 @@ function wp_ajax_dismiss_wp_pointer()
         wp_die(0);
     }
 
-//	check_ajax_referer( 'dismiss-pointer_' . $pointer );
+    //	check_ajax_referer( 'dismiss-pointer_' . $pointer );
 
-    $dismissed = array_filter(explode(',',
-        (string)get_user_meta(get_current_user_id(), 'dismissed_wp_pointers', true)));
+    $dismissed = array_filter(explode(
+        ',',
+        (string)get_user_meta(get_current_user_id(), 'dismissed_wp_pointers', true)
+    ));
 
     if (in_array($pointer, $dismissed)) {
         wp_die(0);
@@ -2853,8 +2883,12 @@ function wp_ajax_save_attachment_compat()
 
     foreach (get_attachment_taxonomies($post) as $taxonomy) {
         if (isset($attachment_data[$taxonomy])) {
-            wp_set_object_terms($id, array_map('trim', preg_split('/,+/', $attachment_data[$taxonomy])), $taxonomy,
-                false);
+            wp_set_object_terms(
+                $id,
+                array_map('trim', preg_split('/,+/', $attachment_data[$taxonomy])),
+                $taxonomy,
+                false
+            );
         }
     }
 
@@ -3522,8 +3556,15 @@ function wp_ajax_crop_image()
 
     $context = str_replace('_', '-', $_POST['context']);
     $data = array_map('absint', $_POST['cropDetails']);
-    $cropped = wp_crop_image($attachment_id, $data['x1'], $data['y1'], $data['width'], $data['height'],
-        $data['dst_width'], $data['dst_height']);
+    $cropped = wp_crop_image(
+        $attachment_id,
+        $data['x1'],
+        $data['y1'],
+        $data['width'],
+        $data['height'],
+        $data['dst_width'],
+        $data['dst_height']
+    );
 
     if (!$cropped || is_wp_error($cropped)) {
         wp_send_json_error(array('message' => __('Image could not be processed.')));
@@ -3754,9 +3795,9 @@ function wp_ajax_install_theme()
     }
 
     /*
-	 * See WP_Theme_Install_List_Table::_get_theme_status() if we wanted to check
-	 * on post-install status.
-	 */
+     * See WP_Theme_Install_List_Table::_get_theme_status() if we wanted to check
+     * on post-install status.
+     */
     wp_send_json_success($status);
 }
 
@@ -4080,13 +4121,13 @@ function wp_ajax_update_plugin()
         $plugin_update_data = current($result);
 
         /*
-		 * If the `update_plugins` site transient is empty (e.g. when you update
-		 * two plugins in quick succession before the transient repopulates),
-		 * this may be the return.
-		 *
-		 * Preferably something can be done to ensure `update_plugins` isn't empty.
-		 * For now, surface some sort of error here.
-		 */
+         * If the `update_plugins` site transient is empty (e.g. when you update
+         * two plugins in quick succession before the transient repopulates),
+         * this may be the return.
+         *
+         * Preferably something can be done to ensure `update_plugins` isn't empty.
+         * For now, surface some sort of error here.
+         */
         if (true === $plugin_update_data) {
             $status['errorMessage'] = __('Plugin update failed.');
             wp_send_json_error($status);

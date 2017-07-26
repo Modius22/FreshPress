@@ -95,7 +95,6 @@ class Plugin_Upgrader extends WP_Upgrader
      */
     public function install($package, $args = array())
     {
-
         $defaults = array(
             'clear_update_cache' => true,
         );
@@ -152,7 +151,6 @@ class Plugin_Upgrader extends WP_Upgrader
      */
     public function upgrade($plugin, $args = array())
     {
-
         $defaults = array(
             'clear_update_cache' => true,
         );
@@ -226,7 +224,6 @@ class Plugin_Upgrader extends WP_Upgrader
      */
     public function bulk_upgrade($plugins, $args = array())
     {
-
         $defaults = array(
             'clear_update_cache' => true,
         );
@@ -353,8 +350,7 @@ class Plugin_Upgrader extends WP_Upgrader
         }
 
         $working_directory = str_replace($wp_filesystem->wp_content_dir(), trailingslashit(WP_CONTENT_DIR), $source);
-        if (!is_dir($working_directory)) // Sanity check, if the above fails, let's not prevent installation.
-        {
+        if (!is_dir($working_directory)) { // Sanity check, if the above fails, let's not prevent installation.
             return $source;
         }
 
@@ -372,8 +368,11 @@ class Plugin_Upgrader extends WP_Upgrader
         }
 
         if (!$plugins_found) {
-            return new WP_Error('incompatible_archive_no_plugins', $this->strings['incompatible_archive'],
-                __('No valid plugins were found.'));
+            return new WP_Error(
+                'incompatible_archive_no_plugins',
+                $this->strings['incompatible_archive'],
+                __('No valid plugins were found.')
+            );
         }
 
         return $source;
@@ -423,9 +422,7 @@ class Plugin_Upgrader extends WP_Upgrader
      */
     public function deactivate_plugin_before_upgrade($return, $plugin)
     {
-
-        if (is_wp_error($return)) //Bypass.
-        {
+        if (is_wp_error($return)) { //Bypass.
             return $return;
         }
 
@@ -480,15 +477,15 @@ class Plugin_Upgrader extends WP_Upgrader
         $plugins_dir = $wp_filesystem->wp_plugins_dir();
         $this_plugin_dir = trailingslashit(dirname($plugins_dir . $plugin));
 
-        if (!$wp_filesystem->exists($this_plugin_dir)) //If it's already vanished.
-        {
+        if (!$wp_filesystem->exists($this_plugin_dir)) { //If it's already vanished.
             return $removed;
         }
 
         // If plugin is in its own directory, recursively delete the directory.
-        if (strpos($plugin,
-                '/') && $this_plugin_dir != $plugins_dir) //base check on if plugin includes directory separator AND that it's not the root plugin folder
-        {
+        if (strpos(
+            $plugin,
+                '/'
+        ) && $this_plugin_dir != $plugins_dir) { //base check on if plugin includes directory separator AND that it's not the root plugin folder
             $deleted = $wp_filesystem->delete($this_plugin_dir, true);
         } else {
             $deleted = $wp_filesystem->delete($plugins_dir . $plugin);

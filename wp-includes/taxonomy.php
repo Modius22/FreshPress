@@ -390,8 +390,10 @@ function register_taxonomy($taxonomy, $object_type, $args = array())
 
     if (empty($taxonomy) || strlen($taxonomy) > 32) {
         _doing_it_wrong(__FUNCTION__, __('Taxonomy names must be between 1 and 32 characters in length.'), '4.2.0');
-        return new WP_Error('taxonomy_length_invalid',
-            __('Taxonomy names must be between 1 and 32 characters in length.'));
+        return new WP_Error(
+            'taxonomy_length_invalid',
+            __('Taxonomy names must be between 1 and 32 characters in length.')
+        );
     }
 
     $taxonomy_object = new WP_Taxonomy($taxonomy, $object_type, $args);
@@ -891,17 +893,17 @@ function get_term_by($field, $value, $taxonomy = '', $output = OBJECT, $filter =
     );
 
     switch ($field) {
-        case 'slug' :
+        case 'slug':
             $args['slug'] = $value;
             break;
-        case 'name' :
+        case 'name':
             $args['name'] = $value;
             break;
-        case 'term_taxonomy_id' :
+        case 'term_taxonomy_id':
             $args['term_taxonomy_id'] = $value;
             unset($args['taxonomy']);
             break;
-        default :
+        default:
             return false;
     }
 
@@ -1087,12 +1089,12 @@ function get_terms($args = array(), $deprecated = '')
     );
 
     /*
-	 * Legacy argument format ($taxonomy, $args) takes precedence.
-	 *
-	 * We detect legacy argument format by checking if
-	 * (a) a second non-empty parameter is passed, or
-	 * (b) the first parameter shares no keys with the default array (ie, it's a list of taxonomies)
-	 */
+     * Legacy argument format ($taxonomy, $args) takes precedence.
+     *
+     * We detect legacy argument format by checking if
+     * (a) a second non-empty parameter is passed, or
+     * (b) the first parameter shares no keys with the default array (ie, it's a list of taxonomies)
+     */
     $_args = wp_parse_args($args);
     $key_intersect = array_intersect_key($term_query->query_var_defaults, (array)$_args);
     $do_legacy_args = $deprecated || empty($key_intersect);
@@ -1142,8 +1144,13 @@ function get_terms($args = array(), $deprecated = '')
      * @param array $args An array of get_terms() arguments.
      * @param WP_Term_Query $term_query The WP_Term_Query object.
      */
-    return apply_filters('get_terms', $terms, $term_query->query_vars['taxonomy'], $term_query->query_vars,
-        $term_query);
+    return apply_filters(
+        'get_terms',
+        $terms,
+        $term_query->query_vars['taxonomy'],
+        $term_query->query_vars,
+        $term_query
+    );
 }
 
 /**
@@ -1167,8 +1174,11 @@ function add_term_meta($term_id, $meta_key, $meta_value, $unique = false)
     }
 
     if (wp_term_is_shared($term_id)) {
-        return new WP_Error('ambiguous_term_id',
-            __('Term meta cannot be added to terms that are shared between taxonomies.'), $term_id);
+        return new WP_Error(
+            'ambiguous_term_id',
+            __('Term meta cannot be added to terms that are shared between taxonomies.'),
+            $term_id
+        );
     }
 
     $added = add_metadata('term', $term_id, $meta_key, $meta_value, $unique);
@@ -1253,8 +1263,11 @@ function update_term_meta($term_id, $meta_key, $meta_value, $prev_value = '')
     }
 
     if (wp_term_is_shared($term_id)) {
-        return new WP_Error('ambiguous_term_id',
-            __('Term meta cannot be added to terms that are shared between taxonomies.'), $term_id);
+        return new WP_Error(
+            'ambiguous_term_id',
+            __('Term meta cannot be added to terms that are shared between taxonomies.'),
+            $term_id
+        );
     }
 
     $updated = update_metadata('term', $term_id, $meta_key, $meta_value, $prev_value);
@@ -1318,8 +1331,10 @@ function term_exists($term, $taxonomy = '', $parent = null)
         }
         $where = 't.term_id = %d';
         if (!empty($taxonomy)) {
-            return $wpdb->get_row($wpdb->prepare($tax_select . $where . " AND tt.taxonomy = %s", $term, $taxonomy),
-                ARRAY_A);
+            return $wpdb->get_row(
+                $wpdb->prepare($tax_select . $where . " AND tt.taxonomy = %s", $term, $taxonomy),
+                ARRAY_A
+            );
         } else {
             return $wpdb->get_var($wpdb->prepare($select . $where, $term));
         }
@@ -1346,22 +1361,30 @@ function term_exists($term, $taxonomy = '', $parent = null)
         $where_fields[] = $taxonomy;
         $else_where_fields[] = $taxonomy;
 
-        if ($result = $wpdb->get_row($wpdb->prepare("SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy as tt ON tt.term_id = t.term_id WHERE $where AND tt.taxonomy = %s $orderby $limit",
-            $where_fields), ARRAY_A)) {
+        if ($result = $wpdb->get_row($wpdb->prepare(
+            "SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy as tt ON tt.term_id = t.term_id WHERE $where AND tt.taxonomy = %s $orderby $limit",
+            $where_fields
+        ), ARRAY_A)) {
             return $result;
         }
 
-        return $wpdb->get_row($wpdb->prepare("SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy as tt ON tt.term_id = t.term_id WHERE $else_where AND tt.taxonomy = %s $orderby $limit",
-            $else_where_fields), ARRAY_A);
+        return $wpdb->get_row($wpdb->prepare(
+            "SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy as tt ON tt.term_id = t.term_id WHERE $else_where AND tt.taxonomy = %s $orderby $limit",
+            $else_where_fields
+        ), ARRAY_A);
     }
 
-    if ($result = $wpdb->get_var($wpdb->prepare("SELECT term_id FROM $wpdb->terms as t WHERE $where $orderby $limit",
-        $where_fields))) {
+    if ($result = $wpdb->get_var($wpdb->prepare(
+        "SELECT term_id FROM $wpdb->terms as t WHERE $where $orderby $limit",
+        $where_fields
+    ))) {
         return $result;
     }
 
-    return $wpdb->get_var($wpdb->prepare("SELECT term_id FROM $wpdb->terms as t WHERE $else_where $orderby $limit",
-        $else_where_fields));
+    return $wpdb->get_var($wpdb->prepare(
+        "SELECT term_id FROM $wpdb->terms as t WHERE $else_where $orderby $limit",
+        $else_where_fields
+    ));
 }
 
 /**
@@ -1561,7 +1584,6 @@ function sanitize_term_field($field, $value, $term_id, $taxonomy, $context)
              */
             $value = apply_filters('pre_category_nicename', $value);
         }
-
     } elseif ('rss' == $context) {
 
         /**
@@ -1776,8 +1798,11 @@ function wp_delete_term($term, $taxonomy, $args = array())
          */
         do_action('edit_term_taxonomies', $edit_tt_ids);
 
-        $wpdb->update($wpdb->term_taxonomy, compact('parent'),
-            array('parent' => $term_obj->term_id) + compact('taxonomy'));
+        $wpdb->update(
+            $wpdb->term_taxonomy,
+            compact('parent'),
+            array('parent' => $term_obj->term_id) + compact('taxonomy')
+        );
 
         // Clean the cache for all child terms.
         $edit_term_ids = wp_list_pluck($edit_ids, 'term_id');
@@ -1796,8 +1821,10 @@ function wp_delete_term($term, $taxonomy, $args = array())
     // Get the term before deleting it or its term relationships so we can pass to actions below.
     $deleted_term = get_term($term, $taxonomy);
 
-    $object_ids = (array)$wpdb->get_col($wpdb->prepare("SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id = %d",
-        $tt_id));
+    $object_ids = (array)$wpdb->get_col($wpdb->prepare(
+        "SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id = %d",
+        $tt_id
+    ));
 
     foreach ($object_ids as $object_id) {
         $terms = wp_get_object_terms($object_id, $taxonomy, array('fields' => 'ids', 'orderby' => 'none'));
@@ -1943,9 +1970,9 @@ function wp_get_object_terms($object_ids, $taxonomies, $args = array())
     $args = wp_parse_args($args);
 
     /*
-	 * When one or more queried taxonomies is registered with an 'args' array,
-	 * those params override the `$args` passed to this function.
-	 */
+     * When one or more queried taxonomies is registered with an 'args' array,
+     * those params override the `$args` passed to this function.
+     */
     $terms = array();
     if (count($taxonomies) > 1) {
         foreach ($taxonomies as $index => $taxonomy) {
@@ -2103,9 +2130,9 @@ function wp_insert_term($term, $taxonomy, $args = array())
             $term_group = $alias->term_group;
         } elseif (!empty($alias->term_id)) {
             /*
-			 * The alias is not in a group, so we create a new one
-			 * and add the alias to it.
-			 */
+             * The alias is not in a group, so we create a new one
+             * and add the alias to it.
+             */
             $term_group = $wpdb->get_var("SELECT MAX(term_group) FROM $wpdb->terms") + 1;
 
             wp_update_term($alias->term_id, $taxonomy, array(
@@ -2115,9 +2142,9 @@ function wp_insert_term($term, $taxonomy, $args = array())
     }
 
     /*
-	 * Prevent the creation of terms with duplicate names at the same level of a taxonomy hierarchy,
-	 * unless a unique slug has been explicitly provided.
-	 */
+     * Prevent the creation of terms with duplicate names at the same level of a taxonomy hierarchy,
+     * unless a unique slug has been explicitly provided.
+     */
     $name_matches = get_terms($taxonomy, array(
         'name' => $name,
         'hide_empty' => false,
@@ -2125,9 +2152,9 @@ function wp_insert_term($term, $taxonomy, $args = array())
     ));
 
     /*
-	 * The `name` match in `get_terms()` doesn't differentiate accented characters,
-	 * so we do a stricter comparison here.
-	 */
+     * The `name` match in `get_terms()` doesn't differentiate accented characters,
+     * so we do a stricter comparison here.
+     */
     $name_match = null;
     if ($name_matches) {
         foreach ($name_matches as $_match) {
@@ -2145,20 +2172,28 @@ function wp_insert_term($term, $taxonomy, $args = array())
                 $siblings = get_terms($taxonomy, array('get' => 'all', 'parent' => $parent));
 
                 $existing_term = null;
-                if ((!$slug_provided || $name_match->slug === $slug) && in_array($name,
-                        wp_list_pluck($siblings, 'name'))) {
+                if ((!$slug_provided || $name_match->slug === $slug) && in_array(
+                    $name,
+                        wp_list_pluck($siblings, 'name')
+                )) {
                     $existing_term = $name_match;
                 } elseif ($slug_match && in_array($slug, wp_list_pluck($siblings, 'slug'))) {
                     $existing_term = $slug_match;
                 }
 
                 if ($existing_term) {
-                    return new WP_Error('term_exists',
-                        __('A term with the name provided already exists with this parent.'), $existing_term->term_id);
+                    return new WP_Error(
+                        'term_exists',
+                        __('A term with the name provided already exists with this parent.'),
+                        $existing_term->term_id
+                    );
                 }
             } else {
-                return new WP_Error('term_exists', __('A term with the name provided already exists in this taxonomy.'),
-                    $name_match->term_id);
+                return new WP_Error(
+                    'term_exists',
+                    __('A term with the name provided already exists in this taxonomy.'),
+                    $name_match->term_id
+                );
             }
         }
     }
@@ -2196,8 +2231,11 @@ function wp_insert_term($term, $taxonomy, $args = array())
         do_action('edited_terms', $term_id, $taxonomy);
     }
 
-    $tt_id = $wpdb->get_var($wpdb->prepare("SELECT tt.term_taxonomy_id FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d",
-        $taxonomy, $term_id));
+    $tt_id = $wpdb->get_var($wpdb->prepare(
+        "SELECT tt.term_taxonomy_id FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d",
+        $taxonomy,
+        $term_id
+    ));
 
     if (!empty($tt_id)) {
         return array('term_id' => $term_id, 'term_taxonomy_id' => $tt_id);
@@ -2206,13 +2244,19 @@ function wp_insert_term($term, $taxonomy, $args = array())
     $tt_id = (int)$wpdb->insert_id;
 
     /*
-	 * Sanity check: if we just created a term with the same parent + taxonomy + slug but a higher term_id than
-	 * an existing term, then we have unwittingly created a duplicate term. Delete the dupe, and use the term_id
-	 * and term_taxonomy_id of the older term instead. Then return out of the function so that the "create" hooks
-	 * are not fired.
-	 */
-    $duplicate_term = $wpdb->get_row($wpdb->prepare("SELECT t.term_id, tt.term_taxonomy_id FROM $wpdb->terms t INNER JOIN $wpdb->term_taxonomy tt ON ( tt.term_id = t.term_id ) WHERE t.slug = %s AND tt.parent = %d AND tt.taxonomy = %s AND t.term_id < %d AND tt.term_taxonomy_id != %d",
-        $slug, $parent, $taxonomy, $term_id, $tt_id));
+     * Sanity check: if we just created a term with the same parent + taxonomy + slug but a higher term_id than
+     * an existing term, then we have unwittingly created a duplicate term. Delete the dupe, and use the term_id
+     * and term_taxonomy_id of the older term instead. Then return out of the function so that the "create" hooks
+     * are not fired.
+     */
+    $duplicate_term = $wpdb->get_row($wpdb->prepare(
+        "SELECT t.term_id, tt.term_taxonomy_id FROM $wpdb->terms t INNER JOIN $wpdb->term_taxonomy tt ON ( tt.term_id = t.term_id ) WHERE t.slug = %s AND tt.parent = %d AND tt.taxonomy = %s AND t.term_id < %d AND tt.term_taxonomy_id != %d",
+        $slug,
+        $parent,
+        $taxonomy,
+        $term_id,
+        $tt_id
+    ));
     if ($duplicate_term) {
         $wpdb->delete($wpdb->terms, array('term_id' => $term_id));
         $wpdb->delete($wpdb->term_taxonomy, array('term_taxonomy_id' => $tt_id));
@@ -2353,8 +2397,11 @@ function wp_set_object_terms($object_id, $terms, $taxonomy, $append = false)
         $tt_id = $term_info['term_taxonomy_id'];
         $tt_ids[] = $tt_id;
 
-        if ($wpdb->get_var($wpdb->prepare("SELECT term_taxonomy_id FROM $wpdb->term_relationships WHERE object_id = %d AND term_taxonomy_id = %d",
-            $object_id, $tt_id))) {
+        if ($wpdb->get_var($wpdb->prepare(
+            "SELECT term_taxonomy_id FROM $wpdb->term_relationships WHERE object_id = %d AND term_taxonomy_id = %d",
+            $object_id,
+            $tt_id
+        ))) {
             continue;
         }
 
@@ -2394,8 +2441,10 @@ function wp_set_object_terms($object_id, $terms, $taxonomy, $append = false)
 
         if ($delete_tt_ids) {
             $in_delete_tt_ids = "'" . implode("', '", $delete_tt_ids) . "'";
-            $delete_term_ids = $wpdb->get_col($wpdb->prepare("SELECT tt.term_id FROM $wpdb->term_taxonomy AS tt WHERE tt.taxonomy = %s AND tt.term_taxonomy_id IN ($in_delete_tt_ids)",
-                $taxonomy));
+            $delete_term_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT tt.term_id FROM $wpdb->term_taxonomy AS tt WHERE tt.taxonomy = %s AND tt.term_taxonomy_id IN ($in_delete_tt_ids)",
+                $taxonomy
+            ));
             $delete_term_ids = array_map('intval', $delete_term_ids);
 
             $remove = wp_remove_object_terms($object_id, $delete_term_ids, $taxonomy);
@@ -2416,10 +2465,15 @@ function wp_set_object_terms($object_id, $terms, $taxonomy, $append = false)
             }
         }
         if ($values) {
-            if (false === $wpdb->query("INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join(',',
-                        $values) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)")) {
-                return new WP_Error('db_insert_error', __('Could not insert term relationship into the database'),
-                    $wpdb->last_error);
+            if (false === $wpdb->query("INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join(
+                ',',
+                        $values
+            ) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)")) {
+                return new WP_Error(
+                    'db_insert_error',
+                    __('Could not insert term relationship into the database'),
+                    $wpdb->last_error
+                );
             }
         }
     }
@@ -2519,8 +2573,10 @@ function wp_remove_object_terms($object_id, $terms, $taxonomy)
          * @param string $taxonomy Taxonomy slug.
          */
         do_action('delete_term_relationships', $object_id, $tt_ids, $taxonomy);
-        $deleted = $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->term_relationships WHERE object_id = %d AND term_taxonomy_id IN ($in_tt_ids)",
-            $object_id));
+        $deleted = $wpdb->query($wpdb->prepare(
+            "DELETE FROM $wpdb->term_relationships WHERE object_id = %d AND term_taxonomy_id IN ($in_tt_ids)",
+            $object_id
+        ));
 
         wp_cache_delete($object_id, $taxonomy . '_relationships');
         wp_cache_delete('last_changed', 'terms');
@@ -2581,9 +2637,9 @@ function wp_unique_term_slug($slug, $term)
     }
 
     /*
-	 * If the taxonomy supports hierarchy and the term has a parent, make the slug unique
-	 * by incorporating parent slugs.
-	 */
+     * If the taxonomy supports hierarchy and the term has a parent, make the slug unique
+     * by incorporating parent slugs.
+     */
     $parent_suffix = '';
     if ($needs_suffix && is_taxonomy_hierarchical($term->taxonomy) && !empty($term->parent)) {
         $the_parent = $term->parent;
@@ -2620,8 +2676,11 @@ function wp_unique_term_slug($slug, $term)
             $slug .= $parent_suffix;
         } else {
             if (!empty($term->term_id)) {
-                $query = $wpdb->prepare("SELECT slug FROM $wpdb->terms WHERE slug = %s AND term_id != %d", $slug,
-                    $term->term_id);
+                $query = $wpdb->prepare(
+                    "SELECT slug FROM $wpdb->terms WHERE slug = %s AND term_id != %d",
+                    $slug,
+                    $term->term_id
+                );
             } else {
                 $query = $wpdb->prepare("SELECT slug FROM $wpdb->terms WHERE slug = %s", $slug);
             }
@@ -2631,8 +2690,10 @@ function wp_unique_term_slug($slug, $term)
                 do {
                     $alt_slug = $slug . "-$num";
                     $num++;
-                    $slug_check = $wpdb->get_var($wpdb->prepare("SELECT slug FROM $wpdb->terms WHERE slug = %s",
-                        $alt_slug));
+                    $slug_check = $wpdb->get_var($wpdb->prepare(
+                        "SELECT slug FROM $wpdb->terms WHERE slug = %s",
+                        $alt_slug
+                    ));
                 } while ($slug_check);
                 $slug = $alt_slug;
             }
@@ -2748,9 +2809,9 @@ function wp_update_term($term_id, $taxonomy, $args = array())
             $term_group = $alias->term_group;
         } elseif (!empty($alias->term_id)) {
             /*
-			 * The alias is not in a group, so we create a new one
-			 * and add the alias to it.
-			 */
+             * The alias is not in a group, so we create a new one
+             * and add the alias to it.
+             */
             $term_group = $wpdb->get_var("SELECT MAX(term_group) FROM $wpdb->terms") + 1;
 
             wp_update_term($alias->term_id, $taxonomy, array(
@@ -2785,13 +2846,18 @@ function wp_update_term($term_id, $taxonomy, $args = array())
             $slug = wp_unique_term_slug($slug, (object)$args);
         } else {
             /* translators: 1: Taxonomy term slug */
-            return new WP_Error('duplicate_term_slug',
-                sprintf(__('The slug &#8220;%s&#8221; is already in use by another term'), $slug));
+            return new WP_Error(
+                'duplicate_term_slug',
+                sprintf(__('The slug &#8220;%s&#8221; is already in use by another term'), $slug)
+            );
         }
     }
 
-    $tt_id = (int)$wpdb->get_var($wpdb->prepare("SELECT tt.term_taxonomy_id FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d",
-        $taxonomy, $term_id));
+    $tt_id = (int)$wpdb->get_var($wpdb->prepare(
+        "SELECT tt.term_taxonomy_id FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d",
+        $taxonomy,
+        $term_id
+    ));
 
     // Check whether this is a shared term that needs splitting.
     $_term_id = _split_shared_term($term_id, $tt_id);
@@ -2849,8 +2915,11 @@ function wp_update_term($term_id, $taxonomy, $args = array())
      */
     do_action('edit_term_taxonomy', $tt_id, $taxonomy);
 
-    $wpdb->update($wpdb->term_taxonomy, compact('term_id', 'taxonomy', 'description', 'parent'),
-        array('term_taxonomy_id' => $tt_id));
+    $wpdb->update(
+        $wpdb->term_taxonomy,
+        compact('term_id', 'taxonomy', 'description', 'parent'),
+        array('term_taxonomy_id' => $tt_id)
+    );
 
     /**
      * Fires immediately after a term-taxonomy relationship is updated.
@@ -3450,9 +3519,13 @@ function _pad_term_counts(&$terms, $taxonomy)
     // Get the object and term ids and stick them in a lookup table.
     $tax_obj = get_taxonomy($taxonomy);
     $object_types = esc_sql($tax_obj->object_type);
-    $results = $wpdb->get_results("SELECT object_id, term_taxonomy_id FROM $wpdb->term_relationships INNER JOIN $wpdb->posts ON object_id = ID WHERE term_taxonomy_id IN (" . implode(',',
-            array_keys($term_ids)) . ") AND post_type IN ('" . implode("', '",
-            $object_types) . "') AND post_status = 'publish'");
+    $results = $wpdb->get_results("SELECT object_id, term_taxonomy_id FROM $wpdb->term_relationships INNER JOIN $wpdb->posts ON object_id = ID WHERE term_taxonomy_id IN (" . implode(
+        ',',
+            array_keys($term_ids)
+    ) . ") AND post_type IN ('" . implode(
+                "', '",
+            $object_types
+            ) . "') AND post_status = 'publish'");
     foreach ($results as $row) {
         $id = $term_ids[$row->term_taxonomy_id];
         $term_items[$id][$row->object_id] = isset($term_items[$id][$row->object_id]) ? ++$term_items[$id][$row->object_id] : 1;
@@ -3502,8 +3575,10 @@ function _prime_term_caches($term_ids, $update_meta_cache = true)
 
     $non_cached_ids = _get_non_cached_ids($term_ids, 'terms');
     if (!empty($non_cached_ids)) {
-        $fresh_terms = $wpdb->get_results(sprintf("SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE t.term_id IN (%s)",
-            join(",", array_map('intval', $non_cached_ids))));
+        $fresh_terms = $wpdb->get_results(sprintf(
+            "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE t.term_id IN (%s)",
+            join(",", array_map('intval', $non_cached_ids))
+        ));
 
         update_term_cache($fresh_terms, $update_meta_cache);
 
@@ -3557,13 +3632,17 @@ function _update_post_term_count($terms, $taxonomy)
 
         // Attachments can be 'inherit' status, we need to base count off the parent's status if so.
         if ($check_attachments) {
-            $count += (int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts p1 WHERE p1.ID = $wpdb->term_relationships.object_id AND ( post_status = 'publish' OR ( post_status = 'inherit' AND post_parent > 0 AND ( SELECT post_status FROM $wpdb->posts WHERE ID = p1.post_parent ) = 'publish' ) ) AND post_type = 'attachment' AND term_taxonomy_id = %d",
-                $term));
+            $count += (int)$wpdb->get_var($wpdb->prepare(
+                "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts p1 WHERE p1.ID = $wpdb->term_relationships.object_id AND ( post_status = 'publish' OR ( post_status = 'inherit' AND post_parent > 0 AND ( SELECT post_status FROM $wpdb->posts WHERE ID = p1.post_parent ) = 'publish' ) ) AND post_type = 'attachment' AND term_taxonomy_id = %d",
+                $term
+            ));
         }
 
         if ($object_types) {
-            $count += (int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status = 'publish' AND post_type IN ('" . implode("', '",
-                    $object_types) . "') AND term_taxonomy_id = %d", $term));
+            $count += (int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status = 'publish' AND post_type IN ('" . implode(
+                "', '",
+                    $object_types
+            ) . "') AND term_taxonomy_id = %d", $term));
         }
 
         /** This action is documented in wp-includes/taxonomy.php */
@@ -3592,8 +3671,10 @@ function _update_generic_term_count($terms, $taxonomy)
     global $wpdb;
 
     foreach ((array)$terms as $term) {
-        $count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->term_relationships WHERE term_taxonomy_id = %d",
-            $term));
+        $count = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $wpdb->term_relationships WHERE term_taxonomy_id = %d",
+            $term
+        ));
 
         /** This action is documented in wp-includes/taxonomy.php */
         do_action('edit_term_taxonomy', $term, $taxonomy->name);
@@ -3642,19 +3723,24 @@ function _split_shared_term($term_id, $term_taxonomy_id, $record = true)
     }
 
     // If there are no shared term_taxonomy rows, there's nothing to do here.
-    $shared_tt_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->term_taxonomy tt WHERE tt.term_id = %d AND tt.term_taxonomy_id != %d",
-        $term_id, $term_taxonomy_id));
+    $shared_tt_count = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $wpdb->term_taxonomy tt WHERE tt.term_id = %d AND tt.term_taxonomy_id != %d",
+        $term_id,
+        $term_taxonomy_id
+    ));
 
     if (!$shared_tt_count) {
         return $term_id;
     }
 
     /*
-	 * Verify that the term_taxonomy_id passed to the function is actually associated with the term_id.
-	 * If there's a mismatch, it may mean that the term is already split. Return the actual term_id from the db.
-	 */
-    $check_term_id = $wpdb->get_var($wpdb->prepare("SELECT term_id FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d",
-        $term_taxonomy_id));
+     * Verify that the term_taxonomy_id passed to the function is actually associated with the term_id.
+     * If there's a mismatch, it may mean that the term is already split. Return the actual term_id from the db.
+     */
+    $check_term_id = $wpdb->get_var($wpdb->prepare(
+        "SELECT term_id FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d",
+        $term_taxonomy_id
+    ));
     if ($check_term_id != $term_id) {
         return $check_term_id;
     }
@@ -3677,22 +3763,29 @@ function _split_shared_term($term_id, $term_taxonomy_id, $record = true)
     $new_term_id = (int)$wpdb->insert_id;
 
     // Update the existing term_taxonomy to point to the newly created term.
-    $wpdb->update($wpdb->term_taxonomy,
+    $wpdb->update(
+        $wpdb->term_taxonomy,
         array('term_id' => $new_term_id),
         array('term_taxonomy_id' => $term_taxonomy_id)
     );
 
     // Reassign child terms to the new parent.
     if (empty($term_taxonomy)) {
-        $term_taxonomy = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d",
-            $term_taxonomy_id));
+        $term_taxonomy = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d",
+            $term_taxonomy_id
+        ));
     }
 
-    $children_tt_ids = $wpdb->get_col($wpdb->prepare("SELECT term_taxonomy_id FROM $wpdb->term_taxonomy WHERE parent = %d AND taxonomy = %s",
-        $term_id, $term_taxonomy->taxonomy));
+    $children_tt_ids = $wpdb->get_col($wpdb->prepare(
+        "SELECT term_taxonomy_id FROM $wpdb->term_taxonomy WHERE parent = %d AND taxonomy = %s",
+        $term_id,
+        $term_taxonomy->taxonomy
+    ));
     if (!empty($children_tt_ids)) {
         foreach ($children_tt_ids as $child_tt_id) {
-            $wpdb->update($wpdb->term_taxonomy,
+            $wpdb->update(
+                $wpdb->term_taxonomy,
                 array('parent' => $new_term_id),
                 array('term_taxonomy_id' => $child_tt_id)
             );
@@ -3704,8 +3797,10 @@ function _split_shared_term($term_id, $term_taxonomy_id, $record = true)
     }
 
     // Clean the cache for term taxonomies formerly shared with the current term.
-    $shared_term_taxonomies = $wpdb->get_row($wpdb->prepare("SELECT taxonomy FROM $wpdb->term_taxonomy WHERE term_id = %d",
-        $term_id));
+    $shared_term_taxonomies = $wpdb->get_row($wpdb->prepare(
+        "SELECT taxonomy FROM $wpdb->term_taxonomy WHERE term_id = %d",
+        $term_id
+    ));
     if ($shared_term_taxonomies) {
         foreach ($shared_term_taxonomies as $shared_term_taxonomy) {
             clean_term_cache($term_id, $shared_term_taxonomy);
@@ -3764,8 +3859,11 @@ function _wp_batch_split_terms()
     $lock_name = 'term_split.lock';
 
     // Try to lock.
-    $lock_result = $wpdb->query($wpdb->prepare("INSERT IGNORE INTO `$wpdb->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */",
-        $lock_name, time()));
+    $lock_result = $wpdb->query($wpdb->prepare(
+        "INSERT IGNORE INTO `$wpdb->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */",
+        $lock_name,
+        time()
+    ));
 
     if (!$lock_result) {
         $lock_result = get_option($lock_name);
@@ -3833,8 +3931,11 @@ function _wp_batch_split_terms()
         }
 
         // Split the term.
-        $split_term_data[$term_id][$shared_tt->taxonomy] = _split_shared_term($shared_terms[$term_id], $shared_tt,
-            false);
+        $split_term_data[$term_id][$shared_tt->taxonomy] = _split_shared_term(
+            $shared_terms[$term_id],
+            $shared_tt,
+            false
+        );
     }
 
     // Rebuild the cached hierarchy for each affected taxonomy.
@@ -4010,8 +4111,10 @@ function wp_term_is_shared($term_id)
         return false;
     }
 
-    $tt_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->term_taxonomy WHERE term_id = %d",
-        $term_id));
+    $tt_count = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $wpdb->term_taxonomy WHERE term_id = %d",
+        $term_id
+    ));
 
     return $tt_count > 1;
 }

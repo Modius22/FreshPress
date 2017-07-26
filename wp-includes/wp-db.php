@@ -62,7 +62,7 @@ class wpdb
      * @access private
      * @var bool
      */
-    var $show_errors = false;
+    public $show_errors = false;
 
     /**
      * Whether to suppress errors during the DB bootstrapping.
@@ -71,7 +71,7 @@ class wpdb
      * @since 2.5.0
      * @var bool
      */
-    var $suppress_errors = false;
+    public $suppress_errors = false;
 
     /**
      * The last error during query.
@@ -106,7 +106,7 @@ class wpdb
      * @access private
      * @var int
      */
-    var $rows_affected = 0;
+    public $rows_affected = 0;
 
     /**
      * The ID generated for an AUTO_INCREMENT column by the previous query (usually INSERT).
@@ -124,7 +124,7 @@ class wpdb
      * @access private
      * @var array
      */
-    var $last_query;
+    public $last_query;
 
     /**
      * Results of the last query made
@@ -133,7 +133,7 @@ class wpdb
      * @access private
      * @var array|null
      */
-    var $last_result;
+    public $last_result;
 
     /**
      * MySQL result, which is either a resource or boolean.
@@ -197,7 +197,7 @@ class wpdb
      * @access private
      * @var array
      */
-    var $queries;
+    public $queries;
 
     /**
      * The number of times to retry reconnecting before dying.
@@ -238,7 +238,7 @@ class wpdb
      * @access private
      * @var bool
      */
-    var $ready = false;
+    public $ready = false;
 
     /**
      * Blog ID.
@@ -266,7 +266,7 @@ class wpdb
      * @see wpdb::tables()
      * @var array
      */
-    var $tables = array(
+    public $tables = array(
         'posts',
         'comments',
         'links',
@@ -289,7 +289,7 @@ class wpdb
      * @see wpdb::tables()
      * @var array
      */
-    var $old_tables = array('categories', 'post2cat', 'link2cat');
+    public $old_tables = array('categories', 'post2cat', 'link2cat');
 
     /**
      * List of WordPress global tables
@@ -299,7 +299,7 @@ class wpdb
      * @see wpdb::tables()
      * @var array
      */
-    var $global_tables = array('users', 'usermeta');
+    public $global_tables = array('users', 'usermeta');
 
     /**
      * List of Multisite global tables
@@ -309,7 +309,7 @@ class wpdb
      * @see wpdb::tables()
      * @var array
      */
-    var $ms_global_tables = array(
+    public $ms_global_tables = array(
         'blogs',
         'signups',
         'site',
@@ -655,11 +655,11 @@ class wpdb
         }
 
         /* Use ext/mysqli if it exists and:
-		 *  - WP_USE_EXT_MYSQL is defined as false, or
-		 *  - We are a development version of WordPress, or
-		 *  - We are running PHP 5.5 or greater, or
-		 *  - ext/mysql is not loaded.
-		 */
+         *  - WP_USE_EXT_MYSQL is defined as false, or
+         *  - We are a development version of WordPress, or
+         *  - We are running PHP 5.5 or greater, or
+         *  - ext/mysql is not loaded.
+         */
         if (function_exists('mysqli_connect')) {
             if (defined('WP_USE_EXT_MYSQL')) {
                 $this->use_mysqli = !WP_USE_EXT_MYSQL;
@@ -958,7 +958,6 @@ class wpdb
      */
     public function set_prefix($prefix, $set_table_names = true)
     {
-
         if (preg_match('|[^a-z0-9_]|i', $prefix)) {
             return new WP_Error('invalid_db_prefix', 'Invalid database prefix');
         }
@@ -1079,28 +1078,28 @@ class wpdb
     public function tables($scope = 'all', $prefix = true, $blog_id = 0)
     {
         switch ($scope) {
-            case 'all' :
+            case 'all':
                 $tables = array_merge($this->global_tables, $this->tables);
                 if (is_multisite()) {
                     $tables = array_merge($tables, $this->ms_global_tables);
                 }
                 break;
-            case 'blog' :
+            case 'blog':
                 $tables = $this->tables;
                 break;
-            case 'global' :
+            case 'global':
                 $tables = $this->global_tables;
                 if (is_multisite()) {
                     $tables = array_merge($tables, $this->ms_global_tables);
                 }
                 break;
-            case 'ms_global' :
+            case 'ms_global':
                 $tables = $this->ms_global_tables;
                 break;
-            case 'old' :
+            case 'old':
                 $tables = $this->old_tables;
                 break;
-            default :
+            default:
                 return array();
         }
 
@@ -1210,7 +1209,7 @@ class wpdb
      * @param string $string
      * @return string
      */
-    function _weak_escape($string)
+    public function _weak_escape($string)
     {
         if (func_num_args() === 1 && function_exists('_deprecated_function')) {
             _deprecated_function(__METHOD__, '3.6.0', 'wpdb::prepare() or esc_sql()');
@@ -1229,7 +1228,7 @@ class wpdb
      * @param  string $string to escape
      * @return string escaped
      */
-    function _real_escape($string)
+    public function _real_escape($string)
     {
         if ($this->dbh) {
             if ($this->use_mysqli) {
@@ -1242,11 +1241,17 @@ class wpdb
         $class = get_class($this);
         if (function_exists('__')) {
             /* translators: %s: database access abstraction class, usually wpdb or a class extending wpdb */
-            _doing_it_wrong($class, sprintf(__('%s must set a database connection for use with escaping.'), $class),
-                '3.6.0');
+            _doing_it_wrong(
+                $class,
+                sprintf(__('%s must set a database connection for use with escaping.'), $class),
+                '3.6.0'
+            );
         } else {
-            _doing_it_wrong($class, sprintf('%s must set a database connection for use with escaping.', $class),
-                '3.6.0');
+            _doing_it_wrong(
+                $class,
+                sprintf('%s must set a database connection for use with escaping.', $class),
+                '3.6.0'
+            );
         }
         return addslashes($string);
     }
@@ -1369,8 +1374,11 @@ class wpdb
 
         // This is not meant to be foolproof -- but it will catch obviously incorrect usage.
         if (strpos($query, '%') === false) {
-            _doing_it_wrong('wpdb::prepare',
-                sprintf(__('The query argument of %s must have a placeholder.'), 'wpdb::prepare()'), '3.9.0');
+            _doing_it_wrong(
+                'wpdb::prepare',
+                sprintf(__('The query argument of %s must have a placeholder.'), 'wpdb::prepare()'),
+                '3.9.0'
+            );
         }
 
         $args = func_get_args();
@@ -1446,8 +1454,12 @@ class wpdb
 
         if ($caller = $this->get_caller()) {
             /* translators: 1: Database error message, 2: SQL query, 3: Name of the calling function */
-            $error_str = sprintf(__('WordPress database error %1$s for query %2$s made by %3$s'), $str,
-                $this->last_query, $caller);
+            $error_str = sprintf(
+                __('WordPress database error %1$s for query %2$s made by %3$s'),
+                $str,
+                $this->last_query,
+                $caller
+            );
         } else {
             /* translators: 1: Database error message, 2: SQL query */
             $error_str = sprintf(__('WordPress database error %1$s for query %2$s'), $str, $this->last_query);
@@ -1592,9 +1604,9 @@ class wpdb
         $this->is_mysql = true;
 
         /*
-		 * Deprecated in 3.9+ when using MySQLi. No equivalent
-		 * $new_link parameter exists for mysqli_* functions.
-		 */
+         * Deprecated in 3.9+ when using MySQLi. No equivalent
+         * $new_link parameter exists for mysqli_* functions.
+         */
         $new_link = defined('MYSQL_NEW_LINK') ? MYSQL_NEW_LINK : true;
         $client_flags = defined('MYSQL_CLIENT_FLAGS') ? MYSQL_CLIENT_FLAGS : 0;
 
@@ -1622,21 +1634,37 @@ class wpdb
             }
 
             if (WP_DEBUG) {
-                mysqli_real_connect($this->dbh, $host, $this->dbuser, $this->dbpassword, null, $port, $socket,
-                    $client_flags);
+                mysqli_real_connect(
+                    $this->dbh,
+                    $host,
+                    $this->dbuser,
+                    $this->dbpassword,
+                    null,
+                    $port,
+                    $socket,
+                    $client_flags
+                );
             } else {
-                @mysqli_real_connect($this->dbh, $host, $this->dbuser, $this->dbpassword, null, $port, $socket,
-                    $client_flags);
+                @mysqli_real_connect(
+                    $this->dbh,
+                    $host,
+                    $this->dbuser,
+                    $this->dbpassword,
+                    null,
+                    $port,
+                    $socket,
+                    $client_flags
+                );
             }
 
             if ($this->dbh->connect_errno) {
                 $this->dbh = null;
 
                 /* It's possible ext/mysqli is misconfigured. Fall back to ext/mysql if:
-		 		 *  - We haven't previously connected, and
-		 		 *  - WP_USE_EXT_MYSQL isn't set to false, and
-		 		 *  - ext/mysql is loaded.
-		 		 */
+                  *  - We haven't previously connected, and
+                  *  - WP_USE_EXT_MYSQL isn't set to false, and
+                  *  - ext/mysql is loaded.
+                  */
                 $attempt_fallback = true;
 
                 if ($this->has_connected) {
@@ -2052,7 +2080,7 @@ class wpdb
      * @param string $type Optional. What type of operation is this? INSERT or REPLACE. Defaults to INSERT.
      * @return int|false The number of rows affected, or false on error.
      */
-    function _insert_replace_helper($table, $data, $format = null, $type = 'INSERT')
+    public function _insert_replace_helper($table, $data, $format = null, $type = 'INSERT')
     {
         $this->insert_id = 0;
 
@@ -2307,9 +2335,9 @@ class wpdb
         foreach ($data as $field => $value) {
             if ('%d' === $value['format'] || '%f' === $value['format']) {
                 /*
-				 * We can skip this field if we know it isn't a string.
-				 * This checks %d/%f versus ! %s because its sprintf() could take more.
-				 */
+                 * We can skip this field if we know it isn't a string.
+                 * This checks %d/%f versus ! %s because its sprintf() could take more.
+                 */
                 $value['charset'] = false;
             } else {
                 $value['charset'] = $this->get_col_charset($table, $field);
@@ -2340,9 +2368,9 @@ class wpdb
         foreach ($data as $field => $value) {
             if ('%d' === $value['format'] || '%f' === $value['format']) {
                 /*
-				 * We can skip this field if we know it isn't a string.
-				 * This checks %d/%f versus ! %s because its sprintf() could take more.
-				 */
+                 * We can skip this field if we know it isn't a string.
+                 * This checks %d/%f versus ! %s because its sprintf() could take more.
+                 */
                 $value['length'] = false;
             } else {
                 $value['length'] = $this->get_col_length($table, $field);
@@ -2596,8 +2624,10 @@ class wpdb
             list($type) = explode('(', $column->Type);
 
             // A binary/blob means the whole query gets treated like this.
-            if (in_array(strtoupper($type),
-                array('BINARY', 'VARBINARY', 'TINYBLOB', 'MEDIUMBLOB', 'BLOB', 'LONGBLOB'))) {
+            if (in_array(
+                strtoupper($type),
+                array('BINARY', 'VARBINARY', 'TINYBLOB', 'MEDIUMBLOB', 'BLOB', 'LONGBLOB')
+            )) {
                 $this->table_charset[$tablekey] = 'binary';
                 return 'binary';
             }
@@ -2869,8 +2899,11 @@ class wpdb
                 continue;
             }
 
-            if (!in_array($col->Collation, array('utf8_general_ci', 'utf8_bin', 'utf8mb4_general_ci', 'utf8mb4_bin'),
-                true)) {
+            if (!in_array(
+                $col->Collation,
+                array('utf8_general_ci', 'utf8_bin', 'utf8mb4_general_ci', 'utf8mb4_bin'),
+                true
+            )) {
                 return false;
             }
         }
@@ -3004,13 +3037,18 @@ class wpdb
                     }
 
                     if (is_array($value['length'])) {
-                        $queries[$col] = $this->prepare("CONVERT( LEFT( CONVERT( %s USING $charset ), %.0f ) USING $connection_charset )",
-                            $value['value'], $value['length']['length']);
+                        $queries[$col] = $this->prepare(
+                            "CONVERT( LEFT( CONVERT( %s USING $charset ), %.0f ) USING $connection_charset )",
+                            $value['value'],
+                            $value['length']['length']
+                        );
                     } else {
                         if ('binary' !== $charset) {
                             // If we don't have a length, there's no need to convert binary - it will always return the same result.
-                            $queries[$col] = $this->prepare("CONVERT( CONVERT( %s USING $charset ) USING $connection_charset )",
-                                $value['value']);
+                            $queries[$col] = $this->prepare(
+                                "CONVERT( CONVERT( %s USING $charset ) USING $connection_charset )",
+                                $value['value']
+                            );
                         }
                     }
 
@@ -3164,8 +3202,11 @@ class wpdb
         }
 
         // SHOW TABLE STATUS and SHOW TABLES WHERE Name = 'wp_posts'
-        if (preg_match('/^\s*SHOW\s+(?:TABLE\s+STATUS|(?:FULL\s+)?TABLES).+WHERE\s+Name\s*=\s*("|\')((?:[0-9a-zA-Z$_.-]|[\xC2-\xDF][\x80-\xBF])+)\\1/is',
-            $query, $maybe)) {
+        if (preg_match(
+            '/^\s*SHOW\s+(?:TABLE\s+STATUS|(?:FULL\s+)?TABLES).+WHERE\s+Name\s*=\s*("|\')((?:[0-9a-zA-Z$_.-]|[\xC2-\xDF][\x80-\xBF])+)\\1/is',
+            $query,
+            $maybe
+        )) {
             return $maybe[2];
         }
 
@@ -3174,8 +3215,11 @@ class wpdb
         // It is usually a pattern for matching a prefix so we just
         // strip the trailing % and unescape the _ to get 'wp_123_'
         // which drop-ins can use for routing these SQL statements.
-        if (preg_match('/^\s*SHOW\s+(?:TABLE\s+STATUS|(?:FULL\s+)?TABLES)\s+(?:WHERE\s+Name\s+)?LIKE\s*("|\')((?:[\\\\0-9a-zA-Z$_.-]|[\xC2-\xDF][\x80-\xBF])+)%?\\1/is',
-            $query, $maybe)) {
+        if (preg_match(
+            '/^\s*SHOW\s+(?:TABLE\s+STATUS|(?:FULL\s+)?TABLES)\s+(?:WHERE\s+Name\s+)?LIKE\s*("|\')((?:[\\\\0-9a-zA-Z$_.-]|[\xC2-\xDF][\x80-\xBF])+)%?\\1/is',
+            $query,
+            $maybe
+        )) {
             return str_replace('\\_', '_', $maybe[2]);
         }
 
@@ -3351,9 +3395,14 @@ class wpdb
         // Make sure the server has the required MySQL version
         if (version_compare($this->db_version(), $required_mysql_version, '<')) {
             /* translators: 1: WordPress version number, 2: Minimum required MySQL version number */
-            return new WP_Error('database_version',
-                sprintf(__('<strong>ERROR</strong>: WordPress %1$s requires MySQL %2$s or higher'), $wp_version,
-                    $required_mysql_version));
+            return new WP_Error(
+                'database_version',
+                sprintf(
+                    __('<strong>ERROR</strong>: WordPress %1$s requires MySQL %2$s or higher'),
+                    $wp_version,
+                    $required_mysql_version
+                )
+            );
         }
     }
 
@@ -3415,13 +3464,13 @@ class wpdb
         $version = $this->db_version();
 
         switch (strtolower($db_cap)) {
-            case 'collation' :    // @since 2.5.0
-            case 'group_concat' : // @since 2.7.0
-            case 'subqueries' :   // @since 2.7.0
+            case 'collation':    // @since 2.5.0
+            case 'group_concat': // @since 2.7.0
+            case 'subqueries':   // @since 2.7.0
                 return version_compare($version, '4.1', '>=');
-            case 'set_charset' :
+            case 'set_charset':
                 return version_compare($version, '5.0.7', '>=');
-            case 'utf8mb4' :      // @since 4.1.0
+            case 'utf8mb4':      // @since 4.1.0
                 if (version_compare($version, '5.5.3', '<')) {
                     return false;
                 }
@@ -3432,16 +3481,17 @@ class wpdb
                 }
 
                 /*
-				 * libmysql has supported utf8mb4 since 5.5.3, same as the MySQL server.
-				 * mysqlnd has supported utf8mb4 since 5.0.9.
-				 */
+                 * libmysql has supported utf8mb4 since 5.5.3, same as the MySQL server.
+                 * mysqlnd has supported utf8mb4 since 5.0.9.
+                 */
                 if (false !== strpos($client_version, 'mysqlnd')) {
                     $client_version = preg_replace('/^\D+([\d.]+).*/', '$1', $client_version);
                     return version_compare($client_version, '5.0.9', '>=');
                 } else {
                     return version_compare($client_version, '5.5.3', '>=');
                 }
-            case 'utf8mb4_520' : // @since 4.6.0
+                // no break
+            case 'utf8mb4_520': // @since 4.6.0
                 return version_compare($version, '5.6', '>=');
         }
 

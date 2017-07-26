@@ -75,8 +75,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         }
 
         if (!current_user_can('upload_files')) {
-            return new WP_Error('rest_cannot_create', __('Sorry, you are not allowed to upload media on this site.'),
-                array('status' => 400));
+            return new WP_Error(
+                'rest_cannot_create',
+                __('Sorry, you are not allowed to upload media on this site.'),
+                array('status' => 400)
+            );
         }
 
         // Attaching media to a post requires ability to edit said post.
@@ -85,8 +88,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             $post_parent_type = get_post_type_object($parent->post_type);
 
             if (!current_user_can($post_parent_type->cap->edit_post, $request['post'])) {
-                return new WP_Error('rest_cannot_edit', __('Sorry, you are not allowed to upload media to this post.'),
-                    array('status' => rest_authorization_required_code()));
+                return new WP_Error(
+                    'rest_cannot_edit',
+                    __('Sorry, you are not allowed to upload media to this post.'),
+                    array('status' => rest_authorization_required_code())
+                );
             }
         }
 
@@ -104,9 +110,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      */
     public function create_item($request)
     {
-
-        if (!empty($request['post']) && in_array(get_post_type($request['post']), array('revision', 'attachment'),
-                true)) {
+        if (!empty($request['post']) && in_array(
+            get_post_type($request['post']),
+            array('revision', 'attachment'),
+                true
+        )) {
             return new WP_Error('rest_invalid_param', __('Invalid parent type.'), array('status' => 400));
         }
 
@@ -214,8 +222,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      */
     public function update_item($request)
     {
-        if (!empty($request['post']) && in_array(get_post_type($request['post']), array('revision', 'attachment'),
-                true)) {
+        if (!empty($request['post']) && in_array(
+            get_post_type($request['post']),
+            array('revision', 'attachment'),
+                true
+        )) {
             return new WP_Error('rest_invalid_param', __('Invalid parent type.'), array('status' => 400));
         }
 
@@ -327,9 +338,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         if (empty($data['media_details'])) {
             $data['media_details'] = new stdClass;
         } elseif (!empty($data['media_details']['sizes'])) {
-
             foreach ($data['media_details']['sizes'] as $size => &$size_data) {
-
                 if (isset($size_data['mime-type'])) {
                     $size_data['mime_type'] = $size_data['mime-type'];
                     unset($size_data['mime-type']);
@@ -392,7 +401,6 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      */
     public function get_item_schema()
     {
-
         $schema = parent::get_item_schema();
 
         $schema['properties']['alt_text'] = array(
@@ -510,16 +518,21 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         }
 
         if (empty($headers['content_disposition'])) {
-            return new WP_Error('rest_upload_no_content_disposition', __('No Content-Disposition supplied.'),
-                array('status' => 400));
+            return new WP_Error(
+                'rest_upload_no_content_disposition',
+                __('No Content-Disposition supplied.'),
+                array('status' => 400)
+            );
         }
 
         $filename = self::get_filename_from_disposition($headers['content_disposition']);
 
         if (empty($filename)) {
-            return new WP_Error('rest_upload_invalid_disposition',
+            return new WP_Error(
+                'rest_upload_invalid_disposition',
                 __('Invalid Content-Disposition supplied. Content-Disposition needs to be formatted as `attachment; filename="image.png"` or similar.'),
-                array('status' => 400));
+                array('status' => 400)
+            );
         }
 
         if (!empty($headers['content_md5'])) {
@@ -528,8 +541,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             $actual = md5($data);
 
             if ($expected !== $actual) {
-                return new WP_Error('rest_upload_hash_mismatch', __('Content hash did not match expected.'),
-                    array('status' => 412));
+                return new WP_Error(
+                    'rest_upload_hash_mismatch',
+                    __('Content hash did not match expected.'),
+                    array('status' => 412)
+                );
             }
         }
 
@@ -720,8 +736,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             $actual = md5_file($files['file']['tmp_name']);
 
             if ($expected !== $actual) {
-                return new WP_Error('rest_upload_hash_mismatch', __('Content hash did not match expected.'),
-                    array('status' => 412));
+                return new WP_Error(
+                    'rest_upload_hash_mismatch',
+                    __('Content hash did not match expected.'),
+                    array('status' => 412)
+                );
             }
         }
 
@@ -773,5 +792,4 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
 
         return $media_types;
     }
-
 }

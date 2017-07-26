@@ -15,7 +15,6 @@
  */
 class WP_Upgrader_Skin
 {
-
     public $upgrader;
     public $done_header = false;
     public $done_footer = false;

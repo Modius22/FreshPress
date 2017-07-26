@@ -302,8 +302,11 @@ class WP_oEmbed
 
             // Turn the asterisk-type provider URLs into regex
             if (!$regex) {
-                $matchmask = '#' . str_replace('___wildcard___', '(.+)',
-                        preg_quote(str_replace('*', '___wildcard___', $matchmask), '#')) . '#i';
+                $matchmask = '#' . str_replace(
+                    '___wildcard___',
+                    '(.+)',
+                        preg_quote(str_replace('*', '___wildcard___', $matchmask), '#')
+                ) . '#i';
                 $matchmask = preg_replace('|^#http\\\://|', '#https?\://', $matchmask);
             }
 

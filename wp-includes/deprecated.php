@@ -145,7 +145,6 @@ function previous_post(
     $limitprev = 1,
     $excluded_categories = ''
 ) {
-
     _deprecated_function(__FUNCTION__, '2.0.0', 'previous_post_link()');
 
     if (empty($in_same_cat) || 'no' == $in_same_cat) {
@@ -447,8 +446,18 @@ function get_linksbyname(
         $cat_id = $cat->term_id;
     }
 
-    get_links($cat_id, $before, $after, $between, $show_images, $orderby, $show_description, $show_rating, $limit,
-        $show_updated);
+    get_links(
+        $cat_id,
+        $before,
+        $after,
+        $between,
+        $show_images,
+        $orderby,
+        $show_description,
+        $show_rating,
+        $limit,
+        $show_updated
+    );
 }
 
 /**
@@ -601,8 +610,18 @@ function get_linksbyname_withrating(
 ) {
     _deprecated_function(__FUNCTION__, '2.1.0', 'get_bookmarks()');
 
-    get_linksbyname($cat_name, $before, $after, $between, $show_images, $orderby, $show_description, true, $limit,
-        $show_updated);
+    get_linksbyname(
+        $cat_name,
+        $before,
+        $after,
+        $between,
+        $show_images,
+        $orderby,
+        $show_description,
+        true,
+        $limit,
+        $show_updated
+    );
 }
 
 /**
@@ -638,8 +657,18 @@ function get_links_withrating(
 ) {
     _deprecated_function(__FUNCTION__, '2.1.0', 'get_bookmarks()');
 
-    get_links($category, $before, $after, $between, $show_images, $orderby, $show_description, true, $limit,
-        $show_updated);
+    get_links(
+        $category,
+        $before,
+        $after,
+        $between,
+        $show_images,
+        $orderby,
+        $show_description,
+        true,
+        $limit,
+        $show_updated
+    );
 }
 
 /**
@@ -706,9 +735,26 @@ function list_cats(
 ) {
     _deprecated_function(__FUNCTION__, '2.1.0', 'wp_list_categories()');
 
-    $query = compact('optionall', 'all', 'sort_column', 'sort_order', 'file', 'list', 'optiondates', 'optioncount',
-        'hide_empty', 'use_desc_for_title', 'children',
-        'child_of', 'categories', 'recurse', 'feed', 'feed_image', 'exclude', 'hierarchical');
+    $query = compact(
+        'optionall',
+        'all',
+        'sort_column',
+        'sort_order',
+        'file',
+        'list',
+        'optiondates',
+        'optioncount',
+        'hide_empty',
+        'use_desc_for_title',
+        'children',
+        'child_of',
+        'categories',
+        'recurse',
+        'feed',
+        'feed_image',
+        'exclude',
+        'hierarchical'
+    );
     return wp_list_cats($query);
 }
 
@@ -795,8 +841,17 @@ function dropdown_cats(
         $show_option_none = __('None');
     }
 
-    $vars = compact('show_option_all', 'show_option_none', 'orderby', 'order',
-        'show_last_update', 'show_count', 'hide_empty', 'selected', 'exclude');
+    $vars = compact(
+        'show_option_all',
+        'show_option_none',
+        'orderby',
+        'order',
+        'show_last_update',
+        'show_count',
+        'hide_empty',
+        'selected',
+        'exclude'
+    );
     $query = add_query_arg($vars, '');
     return wp_dropdown_categories($query);
 }
@@ -1073,8 +1128,7 @@ function get_links(
         $orderby = substr($orderby, 1);
     }
 
-    if ($category == -1) //get_bookmarks uses '' to signify all categories
-    {
+    if ($category == -1) { //get_bookmarks uses '' to signify all categories
         $category = '';
     }
 
@@ -1115,8 +1169,10 @@ function get_links(
 
         if ($show_updated) {
             if (substr($row->link_updated_f, 0, 2) != '00') {
-                $title .= ' (' . __('Last updated') . ' ' . date(get_option('links_updated_date_format'),
-                        $row->link_updated_f + (get_option('gmt_offset') * HOUR_IN_SECONDS)) . ')';
+                $title .= ' (' . __('Last updated') . ' ' . date(
+                    get_option('links_updated_date_format'),
+                        $row->link_updated_f + (get_option('gmt_offset') * HOUR_IN_SECONDS)
+                ) . ')';
             }
         }
 
@@ -1136,8 +1192,7 @@ function get_links(
         if ($row->link_image != null && $show_images) {
             if (strpos($row->link_image, 'http') !== false) {
                 $output .= "<img src=\"$row->link_image\" $alt $title />";
-            } else // If it's a relative path
-            {
+            } else { // If it's a relative path
                 $output .= "<img src=\"" . get_option('siteurl') . "$row->link_image\" $alt $title />";
             }
         } else {
@@ -1204,8 +1259,10 @@ function get_links_list($order = 'name')
             // Handle each category.
 
             // Display the category name
-            echo '  <li id="linkcat-' . $cat->term_id . '" class="linkcat"><h2>' . apply_filters('link_category',
-                    $cat->name) . "</h2>\n\t<ul>\n";
+            echo '  <li id="linkcat-' . $cat->term_id . '" class="linkcat"><h2>' . apply_filters(
+                'link_category',
+                    $cat->name
+            ) . "</h2>\n\t<ul>\n";
             // Call get_links() with all the appropriate params
             get_links($cat->term_id, '<li>', "</li>", "\n", true, 'name', false);
 
@@ -1922,8 +1979,11 @@ function make_url_footnote($content)
         $link_url = $matches[2][$i];
         $link_text = $matches[4][$i];
         $content = str_replace($link_match, $link_text . ' ' . $link_number, $content);
-        $link_url = ((strtolower(substr($link_url, 0, 7)) != 'http://') && (strtolower(substr($link_url, 0,
-                    8)) != 'https://')) ? get_option('home') . $link_url : $link_url;
+        $link_url = ((strtolower(substr($link_url, 0, 7)) != 'http://') && (strtolower(substr(
+            $link_url,
+            0,
+                    8
+        )) != 'https://')) ? get_option('home') . $link_url : $link_url;
         $links_summary .= "\n" . $link_number . ' ' . $link_url;
     }
     $content = strip_tags($content);
@@ -2024,7 +2084,6 @@ function __ngettext_noop()
     _deprecated_function(__FUNCTION__, '2.8.0', '_n_noop()');
     $args = func_get_args();
     return call_user_func_array('_n_noop', $args);
-
 }
 
 /**
@@ -2147,7 +2206,6 @@ function get_attachment_icon($id = 0, $fullsize = false, $max_dims = false)
 
     // Do we need to constrain the image?
     if (($max_dims = apply_filters('attachment_max_dims', $max_dims)) && file_exists($src_file)) {
-
         $imagesize = getimagesize($src_file);
 
         if (($imagesize[0] > $max_dims[0]) || $imagesize[1] > $max_dims[1]) {
@@ -2476,19 +2534,29 @@ function delete_usermeta($user_id, $meta_key, $meta_value = '')
     }
     $meta_value = trim($meta_value);
 
-    $cur = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s", $user_id,
-        $meta_key));
+    $cur = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s",
+        $user_id,
+        $meta_key
+    ));
 
     if ($cur && $cur->umeta_id) {
         do_action('delete_usermeta', $cur->umeta_id, $user_id, $meta_key, $meta_value);
     }
 
     if (!empty($meta_value)) {
-        $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s AND meta_value = %s",
-            $user_id, $meta_key, $meta_value));
+        $wpdb->query($wpdb->prepare(
+            "DELETE FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s AND meta_value = %s",
+            $user_id,
+            $meta_key,
+            $meta_value
+        ));
     } else {
-        $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s", $user_id,
-            $meta_key));
+        $wpdb->query($wpdb->prepare(
+            "DELETE FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s",
+            $user_id,
+            $meta_key
+        ));
     }
 
     clean_user_cache($user_id);
@@ -2534,8 +2602,11 @@ function get_usermeta($user_id, $meta_key = '')
         if (false !== $user && isset($user->$meta_key)) {
             $metas = array($user->$meta_key);
         } else {
-            $metas = $wpdb->get_col($wpdb->prepare("SELECT meta_value FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s",
-                $user_id, $meta_key));
+            $metas = $wpdb->get_col($wpdb->prepare(
+                "SELECT meta_value FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s",
+                $user_id,
+                $meta_key
+            ));
         }
     } else {
         $metas = $wpdb->get_col($wpdb->prepare("SELECT meta_value FROM $wpdb->usermeta WHERE user_id = %d", $user_id));
@@ -2595,8 +2666,11 @@ function update_usermeta($user_id, $meta_key, $meta_value)
         return delete_usermeta($user_id, $meta_key);
     }
 
-    $cur = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s", $user_id,
-        $meta_key));
+    $cur = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s",
+        $user_id,
+        $meta_key
+    ));
 
     if ($cur) {
         do_action('update_usermeta', $cur->umeta_id, $user_id, $meta_key, $meta_value);
@@ -2743,9 +2817,11 @@ function funky_javascript_fix($text)
     global $is_macIE, $is_winIE;
 
     if ($is_winIE || $is_macIE) {
-        $text = preg_replace_callback("/\%u([0-9A-F]{4,4})/",
+        $text = preg_replace_callback(
+            "/\%u([0-9A-F]{4,4})/",
             "funky_javascript_callback",
-            $text);
+            $text
+        );
     }
 
     return $text;
@@ -3020,8 +3096,10 @@ function get_index_rel_link()
 {
     _deprecated_function(__FUNCTION__, '3.3.0');
 
-    $link = "<link rel='index' title='" . esc_attr(get_bloginfo('name',
-            'display')) . "' href='" . esc_url(user_trailingslashit(get_bloginfo('url', 'display'))) . "' />\n";
+    $link = "<link rel='index' title='" . esc_attr(get_bloginfo(
+        'name',
+            'display'
+    )) . "' href='" . esc_url(user_trailingslashit(get_bloginfo('url', 'display'))) . "' />\n";
     return apply_filters("index_rel_link", $link);
 }
 
@@ -4040,8 +4118,10 @@ function wp_get_http($url, $file_path = false, $red = 1)
     $headers['response'] = wp_remote_retrieve_response_code($response);
 
     // WP_HTTP no longer follows redirects for HEAD requests.
-    if ('HEAD' == $options['method'] && in_array($headers['response'],
-            array(301, 302)) && isset($headers['location'])) {
+    if ('HEAD' == $options['method'] && in_array(
+        $headers['response'],
+            array(301, 302)
+    ) && isset($headers['location'])) {
         return wp_get_http($headers['location'], $file_path, ++$red);
     }
 

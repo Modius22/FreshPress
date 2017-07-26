@@ -67,8 +67,10 @@ function current_time($type, $gmt = 0)
 {
     switch ($type) {
         case 'mysql':
-            return ($gmt) ? gmdate('Y-m-d H:i:s') : gmdate('Y-m-d H:i:s',
-                (time() + (get_option('gmt_offset') * HOUR_IN_SECONDS)));
+            return ($gmt) ? gmdate('Y-m-d H:i:s') : gmdate(
+                'Y-m-d H:i:s',
+                (time() + (get_option('gmt_offset') * HOUR_IN_SECONDS))
+            );
         case 'timestamp':
             return ($gmt) ? time() : time() + (get_option('gmt_offset') * HOUR_IN_SECONDS);
         default:
@@ -103,9 +105,9 @@ function date_i18n($dateformatstring, $unixtimestamp = false, $gmt = false)
     }
 
     /*
-	 * Store original value for language with untypical grammars.
-	 * See https://core.trac.wordpress.org/ticket/9396
-	 */
+     * Store original value for language with untypical grammars.
+     * See https://core.trac.wordpress.org/ticket/9396
+     */
     $req_format = $dateformatstring;
 
     if ((!empty($wp_locale->month)) && (!empty($wp_locale->weekday))) {
@@ -136,8 +138,11 @@ function date_i18n($dateformatstring, $unixtimestamp = false, $gmt = false)
                 if (false !== strpos($dateformatstring, $timezone_format)) {
                     $formatted = date_format($date_object, $timezone_format);
                     $dateformatstring = ' ' . $dateformatstring;
-                    $dateformatstring = preg_replace("/([^\\\])$timezone_format/", "\\1" . backslashit($formatted),
-                        $dateformatstring);
+                    $dateformatstring = preg_replace(
+                        "/([^\\\])$timezone_format/",
+                        "\\1" . backslashit($formatted),
+                        $dateformatstring
+                    );
                     $dateformatstring = substr($dateformatstring, 1, strlen($dateformatstring) - 1);
                 }
             }
@@ -180,8 +185,8 @@ function wp_maybe_decline_date($date)
     }
 
     /* translators: If months in your language require a genitive case,
-	 * translate this to 'on'. Do not translate into your own language.
-	 */
+     * translate this to 'on'. Do not translate into your own language.
+     */
     if ('on' === _x('off', 'decline months names: on or off')) {
         // Match a format like 'j F Y' or 'j. F'
         if (@preg_match('#^\d{1,2}\.? [^\d ]+#u', $date)) {
@@ -227,8 +232,12 @@ function number_format_i18n($number, $decimals = 0)
     global $wp_locale;
 
     if (isset($wp_locale)) {
-        $formatted = number_format($number, absint($decimals), $wp_locale->number_format['decimal_point'],
-            $wp_locale->number_format['thousands_sep']);
+        $formatted = number_format(
+            $number,
+            absint($decimals),
+            $wp_locale->number_format['decimal_point'],
+            $wp_locale->number_format['thousands_sep']
+        );
     } else {
         $formatted = number_format($number, absint($decimals));
     }
@@ -338,8 +347,7 @@ function get_weekstartend($mysqlstring, $start_of_week = '')
  */
 function maybe_unserialize($original)
 {
-    if (is_serialized($original)) // don't attempt to unserialize data that wasn't serialized going in
-    {
+    if (is_serialized($original)) { // don't attempt to unserialize data that wasn't serialized going in
         return @unserialize($original);
     }
     return $original;
@@ -395,7 +403,7 @@ function is_serialized($data, $strict = true)
     }
     $token = $data[0];
     switch ($token) {
-        case 's' :
+        case 's':
             if ($strict) {
                 if ('"' !== substr($data, -2, 1)) {
                     return false;
@@ -404,12 +412,13 @@ function is_serialized($data, $strict = true)
                 return false;
             }
         // or else fall through
-        case 'a' :
-        case 'O' :
+        // no break
+        case 'a':
+        case 'O':
             return (bool)preg_match("/^{$token}:[0-9]+:/s", $data);
-        case 'b' :
-        case 'i' :
-        case 'd' :
+        case 'b':
+        case 'i':
+        case 'd':
             $end = $strict ? '$' : '';
             return (bool)preg_match("/^{$token}:[0-9.E-]+;$end/", $data);
     }
@@ -596,8 +605,11 @@ function do_enclose($content, $post_ID)
 
     foreach ($pung as $link_test) {
         if (!in_array($link_test, $post_links_temp)) { // link no longer in post
-            $mids = $wpdb->get_col($wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE %s",
-                $post_ID, $wpdb->esc_like($link_test) . '%'));
+            $mids = $wpdb->get_col($wpdb->prepare(
+                "SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE %s",
+                $post_ID,
+                $wpdb->esc_like($link_test) . '%'
+            ));
             foreach ($mids as $mid) {
                 delete_metadata_by_mid('post', $mid);
             }
@@ -632,9 +644,11 @@ function do_enclose($content, $post_ID)
     $post_links = apply_filters('enclosure_links', $post_links, $post_ID);
 
     foreach ((array)$post_links as $url) {
-        if ($url != '' && !$wpdb->get_var($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE %s",
-                $post_ID, $wpdb->esc_like($url) . '%'))) {
-
+        if ($url != '' && !$wpdb->get_var($wpdb->prepare(
+            "SELECT post_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE %s",
+                $post_ID,
+            $wpdb->esc_like($url) . '%'
+        ))) {
             if ($headers = wp_get_http_headers($url)) {
                 $len = isset($headers['content-length']) ? (int)$headers['content-length'] : 0;
                 $type = isset($headers['content-type']) ? $headers['content-type'] : '';
@@ -1434,9 +1448,9 @@ function is_blog_installed()
     global $wpdb;
 
     /*
-	 * Check cache first. If options table goes away and we have true
-	 * cached, oh well.
-	 */
+     * Check cache first. If options table goes away and we have true
+     * cached, oh well.
+     */
     if (wp_cache_get('is_blog_installed')) {
         return true;
     }
@@ -1468,10 +1482,10 @@ function is_blog_installed()
     $suppress = $wpdb->suppress_errors();
 
     /*
-	 * Loop over the WP tables. If none exist, then scratch install is allowed.
-	 * If one or more exist, suggest table repair since we got here because the
-	 * options table could not be accessed.
-	 */
+     * Loop over the WP tables. If none exist, then scratch install is allowed.
+     * If one or more exist, suggest table repair since we got here because the
+     * options table could not be accessed.
+     */
     $wp_tables = $wpdb->tables();
     foreach ($wp_tables as $table) {
         // The existence of custom user tables shouldn't suggest an insane state or prevent a clean install.
@@ -1701,9 +1715,9 @@ function wp_mkdir_p($target)
     }
 
     /*
-	 * Safe mode fails with a trailing slash under certain PHP versions.
-	 * Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
-	 */
+     * Safe mode fails with a trailing slash under certain PHP versions.
+     * Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
+     */
     $target = rtrim($target, '/');
     if (empty($target)) {
         $target = '/';
@@ -1729,9 +1743,9 @@ function wp_mkdir_p($target)
     if (@mkdir($target, $dir_perms, true)) {
 
         /*
-		 * If a umask is set that modifies $dir_perms, we'll have to re-set
-		 * the $dir_perms correctly with chmod()
-		 */
+         * If a umask is set that modifies $dir_perms, we'll have to re-set
+         * the $dir_perms correctly with chmod()
+         */
         if ($dir_perms != ($dir_perms & ~umask())) {
             $folder_parts = explode('/', substr($target, strlen($target_parent) + 1));
             for ($i = 1, $c = count($folder_parts); $i <= $c; $i++) {
@@ -1758,9 +1772,9 @@ function wp_mkdir_p($target)
 function path_is_absolute($path)
 {
     /*
-	 * This is definitive if true but fails if $path does not exist or contains
-	 * a symbolic link.
-	 */
+     * This is definitive if true but fails if $path does not exist or contains
+     * a symbolic link.
+     */
     if (realpath($path) == $path) {
         return true;
     }
@@ -1911,7 +1925,6 @@ function wp_is_writable($path)
  */
 function win_is_writable($path)
 {
-
     if ($path[strlen($path) - 1] == '/') { // if it looks like a directory, check a random file within the directory
         return win_is_writable($path . uniqid(mt_rand()) . '.tmp');
     } elseif (is_dir($path)) { // If it's a directory (and not a file) check a random file within the directory
@@ -2063,9 +2076,9 @@ function _wp_upload_dir($time = null)
     }
 
     /*
-	 * Honor the value of UPLOADS. This happens as long as ms-files rewriting is disabled.
-	 * We also sometimes obey UPLOADS when rewriting is enabled -- see the next block.
-	 */
+     * Honor the value of UPLOADS. This happens as long as ms-files rewriting is disabled.
+     * We also sometimes obey UPLOADS when rewriting is enabled -- see the next block.
+     */
     if (defined('UPLOADS') && !(is_multisite() && get_site_option('ms_files_rewriting'))) {
         $dir = ABSPATH . UPLOADS;
         $url = trailingslashit($siteurl) . UPLOADS;
@@ -2073,16 +2086,15 @@ function _wp_upload_dir($time = null)
 
     // If multisite (and if not the main site in a post-MU network)
     if (is_multisite() && !(is_main_network() && is_main_site() && defined('MULTISITE'))) {
-
         if (!get_site_option('ms_files_rewriting')) {
             /*
-			 * If ms-files rewriting is disabled (networks created post-3.5), it is fairly
-			 * straightforward: Append sites/%d if we're not on the main site (for post-MU
-			 * networks). (The extra directory prevents a four-digit ID from conflicting with
-			 * a year-based directory for the main site. But if a MU-era network has disabled
-			 * ms-files rewriting manually, they don't need the extra directory, as they never
-			 * had wp-content/uploads for the main site.)
-			 */
+             * If ms-files rewriting is disabled (networks created post-3.5), it is fairly
+             * straightforward: Append sites/%d if we're not on the main site (for post-MU
+             * networks). (The extra directory prevents a four-digit ID from conflicting with
+             * a year-based directory for the main site. But if a MU-era network has disabled
+             * ms-files rewriting manually, they don't need the extra directory, as they never
+             * had wp-content/uploads for the main site.)
+             */
 
             if (defined('MULTISITE')) {
                 $ms_dir = '/sites/' . get_current_blog_id();
@@ -2092,21 +2104,20 @@ function _wp_upload_dir($time = null)
 
             $dir .= $ms_dir;
             $url .= $ms_dir;
-
         } elseif (defined('UPLOADS') && !ms_is_switched()) {
             /*
-			 * Handle the old-form ms-files.php rewriting if the network still has that enabled.
-			 * When ms-files rewriting is enabled, then we only listen to UPLOADS when:
-			 * 1) We are not on the main site in a post-MU network, as wp-content/uploads is used
-			 *    there, and
-			 * 2) We are not switched, as ms_upload_constants() hardcodes these constants to reflect
-			 *    the original blog ID.
-			 *
-			 * Rather than UPLOADS, we actually use BLOGUPLOADDIR if it is set, as it is absolute.
-			 * (And it will be set, see ms_upload_constants().) Otherwise, UPLOADS can be used, as
-			 * as it is relative to ABSPATH. For the final piece: when UPLOADS is used with ms-files
-			 * rewriting in multisite, the resulting URL is /files. (#WP22702 for background.)
-			 */
+             * Handle the old-form ms-files.php rewriting if the network still has that enabled.
+             * When ms-files rewriting is enabled, then we only listen to UPLOADS when:
+             * 1) We are not on the main site in a post-MU network, as wp-content/uploads is used
+             *    there, and
+             * 2) We are not switched, as ms_upload_constants() hardcodes these constants to reflect
+             *    the original blog ID.
+             *
+             * Rather than UPLOADS, we actually use BLOGUPLOADDIR if it is set, as it is absolute.
+             * (And it will be set, see ms_upload_constants().) Otherwise, UPLOADS can be used, as
+             * as it is relative to ABSPATH. For the final piece: when UPLOADS is used with ms-files
+             * rewriting in multisite, the resulting URL is /files. (#WP22702 for background.)
+             */
 
             if (defined('BLOGUPLOADDIR')) {
                 $dir = untrailingslashit(BLOGUPLOADDIR);
@@ -2179,9 +2190,9 @@ function wp_unique_filename($dir, $filename, $unique_filename_callback = null)
     }
 
     /*
-	 * Increment the file number until we have a unique file to save in $dir.
-	 * Use callback if supplied.
-	 */
+     * Increment the file number until we have a unique file to save in $dir.
+     * Use callback if supplied.
+     */
     if ($unique_filename_callback && is_callable($unique_filename_callback)) {
         $filename = call_user_func($unique_filename_callback, $dir, $name, $ext);
     } else {
@@ -2326,8 +2337,11 @@ function wp_upload_bits($name, $deprecated, $bits, $time = null)
     $url = $upload['url'] . "/$filename";
 
     /** This filter is documented in wp-admin/includes/file.php */
-    return apply_filters('wp_handle_upload',
-        array('file' => $new_file, 'url' => $url, 'type' => $wp_filetype['type'], 'error' => false), 'sideload');
+    return apply_filters(
+        'wp_handle_upload',
+        array('file' => $new_file, 'url' => $url, 'type' => $wp_filetype['type'], 'error' => false),
+        'sideload'
+    );
 }
 
 /**
@@ -2466,10 +2480,10 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null)
         finfo_close($finfo);
 
         /*
-		 * If $real_mime doesn't match what we're expecting, we need to do some extra
-		 * vetting of application mime types to make sure this type of file is allowed.
-		 * Other mime types are assumed to be safe, but should be considered unverified.
-		 */
+         * If $real_mime doesn't match what we're expecting, we need to do some extra
+         * vetting of application mime types to make sure this type of file is allowed.
+         * Other mime types are assumed to be safe, but should be considered unverified.
+         */
         if ($real_mime && ($real_mime !== $type) && (0 === strpos($real_mime, 'application'))) {
             $allowed = get_allowed_mime_types();
 
@@ -2491,8 +2505,13 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null)
      *                                          $file being in a tmp directory).
      * @param array $mimes Key is the file extension with value as the mime type.
      */
-    return apply_filters('wp_check_filetype_and_ext', compact('ext', 'type', 'proper_filename'), $file, $filename,
-        $mimes);
+    return apply_filters(
+        'wp_check_filetype_and_ext',
+        compact('ext', 'type', 'proper_filename'),
+        $file,
+        $filename,
+        $mimes
+    );
 }
 
 /**
@@ -2508,10 +2527,10 @@ function wp_check_filetype_and_ext($file, $filename, $mimes = null)
 function wp_get_image_mime($file)
 {
     /*
-	 * Use exif_imagetype() to check the mimetype if available or fall back to
-	 * getimagesize() if exif isn't avaialbe. If either function throws an Exception
-	 * we assume the file could not be validated.
-	 */
+     * Use exif_imagetype() to check the mimetype if available or fall back to
+     * getimagesize() if exif isn't avaialbe. If either function throws an Exception
+     * we assume the file could not be validated.
+     */
     try {
         if (is_callable('exif_imagetype')) {
             $imagetype = exif_imagetype($file);
@@ -2804,7 +2823,8 @@ function wp_nonce_ays($action)
         $html = __('Are you sure you want to do this?');
         if (wp_get_referer()) {
             $html .= '</p><p>';
-            $html .= sprintf('<a href="%s">%s</a>',
+            $html .= sprintf(
+                '<a href="%s">%s</a>',
                 esc_url(remove_query_arg('updated', wp_get_referer())),
                 __('Please try again.')
             );
@@ -2850,7 +2870,6 @@ function wp_nonce_ays($action)
  */
 function wp_die($message = '', $title = '', $args = array())
 {
-
     if (is_int($args)) {
         $args = array('response' => $args);
     } elseif (is_int($title)) {
@@ -2919,13 +2938,13 @@ function _default_wp_die_handler($message, $title = '', $args = array())
         }
         $errors = $message->get_error_messages();
         switch (count($errors)) {
-            case 0 :
+            case 0:
                 $message = '';
                 break;
-            case 1 :
+            case 1:
                 $message = "<p>{$errors[0]}</p>";
                 break;
-            default :
+            default:
                 $message = "<ul>\n\t\t<li>" . join("</li>\n\t\t<li>", $errors) . "</li>\n\t</ul>";
                 break;
         }
@@ -2945,17 +2964,16 @@ function _default_wp_die_handler($message, $title = '', $args = array())
             header('Content-Type: text/html; charset=utf-8');
         }
 
-        if (empty($title)) {
-            $title = $have_gettext ? __('WordPress &rsaquo; Error') : 'WordPress &rsaquo; Error';
-        }
+    if (empty($title)) {
+        $title = $have_gettext ? __('WordPress &rsaquo; Error') : 'WordPress &rsaquo; Error';
+    }
 
-        $text_direction = 'ltr';
-        if (isset($r['text_direction']) && 'rtl' == $r['text_direction']) {
-            $text_direction = 'rtl';
-        } elseif (function_exists('is_rtl') && is_rtl()) {
-            $text_direction = 'rtl';
-        }
-        ?>
+    $text_direction = 'ltr';
+    if (isset($r['text_direction']) && 'rtl' == $r['text_direction']) {
+        $text_direction = 'rtl';
+    } elseif (function_exists('is_rtl') && is_rtl()) {
+        $text_direction = 'rtl';
+    } ?>
         <!DOCTYPE html>
         <!-- Ticket #11289, IE bug fix: always pad the error page with enough characters such that it is greater than 512 bytes, even after gzip compression abcdefghijklmnopqrstuvwxyz1234567890aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz11223344556677889900abacbcbdcdcededfefegfgfhghgihihjijikjkjlklkmlmlnmnmononpopoqpqprqrqsrsrtstsubcbcdcdedefefgfabcadefbghicjkldmnoepqrfstugvwxhyz1i234j567k890laabmbccnddeoeffpgghqhiirjjksklltmmnunoovppqwqrrxsstytuuzvvw0wxx1yyz2z113223434455666777889890091abc2def3ghi4jkl5mno6pqr7stu8vwx9yz11aab2bcc3dd4ee5ff6gg7hh8ii9j0jk1kl2lmm3nnoo4p5pq6qrr7ss8tt9uuvv0wwx1x2yyzz13aba4cbcb5dcdc6dedfef8egf9gfh0ghg1ihi2hji3jik4jkj5lkl6kml7mln8mnm9ono
 -->
@@ -2970,8 +2988,7 @@ function _default_wp_die_handler($message, $title = '', $args = array())
             <?php
             if (function_exists('wp_no_robots')) {
                 wp_no_robots();
-            }
-            ?>
+            } ?>
             <title><?php echo $title ?></title>
             <style type="text/css">
                 html {
@@ -3092,14 +3109,13 @@ function _default_wp_die_handler($message, $title = '', $args = array())
                 }
 
                 <?php
-		if ( 'rtl' == $text_direction ) {
-			echo 'body { font-family: Tahoma, Arial; }';
-		}
-		?>
+        if ('rtl' == $text_direction) {
+            echo 'body { font-family: Tahoma, Arial; }';
+        } ?>
             </style>
         </head>
         <body id="error-page">
-    <?php endif; // ! did_action( 'admin_head' ) ?>
+    <?php endif; // ! did_action( 'admin_head' )?>
     <?php echo $message; ?>
     </body>
     </html>
@@ -3196,10 +3212,10 @@ function _scalar_wp_die_handler($message = '')
 function wp_json_encode($data, $options = 0, $depth = 512)
 {
     /*
-	 * json_encode() has had extra params added over the years.
-	 * $options was added in 5.3, and $depth in 5.5.
-	 * We need to make sure we call it with the correct arguments.
-	 */
+     * json_encode() has had extra params added over the years.
+     * $options was added in 5.3, and $depth in 5.5.
+     * We need to make sure we call it with the correct arguments.
+     */
     if (version_compare(PHP_VERSION, '5.5', '>=')) {
         $args = array($data, $options, $depth);
     } elseif (version_compare(PHP_VERSION, '5.3', '>=')) {
@@ -3675,10 +3691,10 @@ function smilies_init()
     }
 
     /*
-	 * NOTE: we sort the smilies in reverse key order. This is to make sure
-	 * we match the longest possible smilie (:???: vs :?) as the regular
-	 * expression used below is first-match
-	 */
+     * NOTE: we sort the smilies in reverse key order. This is to make sure
+     * we match the longest possible smilie (:???: vs :?) as the regular
+     * expression used below is first-match
+     */
     krsort($wpsmiliestrans);
 
     $spaces = wp_spaces_regexp();
@@ -3706,7 +3722,6 @@ function smilies_init()
     }
 
     $wp_smiliessearch .= ')(?=' . $spaces . '|$)/m';
-
 }
 
 /**
@@ -4024,8 +4039,7 @@ function dead_db()
     // Otherwise, be terse.
     status_header(500);
     nocache_headers();
-    header('Content-Type: text/html; charset=utf-8');
-    ?>
+    header('Content-Type: text/html; charset=utf-8'); ?>
     <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml"<?php if (is_rtl()) {
         echo ' dir="rtl"';
@@ -4099,20 +4113,34 @@ function _deprecated_function($function, $version, $replacement = null)
         if (function_exists('__')) {
             if (!is_null($replacement)) {
                 /* translators: 1: PHP function name, 2: version number, 3: alternative function name */
-                trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
-                    $function, $version, $replacement));
+                trigger_error(sprintf(
+                    __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
+                    $function,
+                    $version,
+                    $replacement
+                ));
             } else {
                 /* translators: 1: PHP function name, 2: version number */
-                trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
-                    $function, $version));
+                trigger_error(sprintf(
+                    __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
+                    $function,
+                    $version
+                ));
             }
         } else {
             if (!is_null($replacement)) {
-                trigger_error(sprintf('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-                    $function, $version, $replacement));
+                trigger_error(sprintf(
+                    '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
+                    $function,
+                    $version,
+                    $replacement
+                ));
             } else {
-                trigger_error(sprintf('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
-                    $function, $version));
+                trigger_error(sprintf(
+                    '%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
+                    $function,
+                    $version
+                ));
             }
         }
     }
@@ -4166,24 +4194,41 @@ function _deprecated_constructor($class, $version, $parent_class = '')
         if (function_exists('__')) {
             if (!empty($parent_class)) {
                 /* translators: 1: PHP class name, 2: PHP parent class name, 3: version number, 4: __construct() method */
-                trigger_error(sprintf(__('The called constructor method for %1$s in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead.'),
-                    $class, $parent_class, $version, '<pre>__construct()</pre>'));
+                trigger_error(sprintf(
+                    __('The called constructor method for %1$s in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead.'),
+                    $class,
+                    $parent_class,
+                    $version,
+                    '<pre>__construct()</pre>'
+                ));
             } else {
                 /* translators: 1: PHP class name, 2: version number, 3: __construct() method */
-                trigger_error(sprintf(__('The called constructor method for %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
-                    $class, $version, '<pre>__construct()</pre>'));
+                trigger_error(sprintf(
+                    __('The called constructor method for %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
+                    $class,
+                    $version,
+                    '<pre>__construct()</pre>'
+                ));
             }
         } else {
             if (!empty($parent_class)) {
-                trigger_error(sprintf('The called constructor method for %1$s in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead.',
-                    $class, $parent_class, $version, '<pre>__construct()</pre>'));
+                trigger_error(sprintf(
+                    'The called constructor method for %1$s in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead.',
+                    $class,
+                    $parent_class,
+                    $version,
+                    '<pre>__construct()</pre>'
+                ));
             } else {
-                trigger_error(sprintf('The called constructor method for %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-                    $class, $version, '<pre>__construct()</pre>'));
+                trigger_error(sprintf(
+                    'The called constructor method for %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
+                    $class,
+                    $version,
+                    '<pre>__construct()</pre>'
+                ));
             }
         }
     }
-
 }
 
 /**
@@ -4233,20 +4278,34 @@ function _deprecated_file($file, $version, $replacement = null, $message = '')
         if (function_exists('__')) {
             if (!is_null($replacement)) {
                 /* translators: 1: PHP file name, 2: version number, 3: alternative file name */
-                trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
-                        $file, $version, $replacement) . $message);
+                trigger_error(sprintf(
+                    __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
+                        $file,
+                    $version,
+                    $replacement
+                ) . $message);
             } else {
                 /* translators: 1: PHP file name, 2: version number */
-                trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
-                        $file, $version) . $message);
+                trigger_error(sprintf(
+                    __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
+                        $file,
+                    $version
+                ) . $message);
             }
         } else {
             if (!is_null($replacement)) {
-                trigger_error(sprintf('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-                        $file, $version, $replacement) . $message);
+                trigger_error(sprintf(
+                    '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
+                        $file,
+                    $version,
+                    $replacement
+                ) . $message);
             } else {
-                trigger_error(sprintf('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
-                        $file, $version) . $message);
+                trigger_error(sprintf(
+                    '%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
+                        $file,
+                    $version
+                ) . $message);
             }
         }
     }
@@ -4303,20 +4362,34 @@ function _deprecated_argument($function, $version, $message = null)
         if (function_exists('__')) {
             if (!is_null($message)) {
                 /* translators: 1: PHP function name, 2: version number, 3: optional message regarding the change */
-                trigger_error(sprintf(__('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s'),
-                    $function, $version, $message));
+                trigger_error(sprintf(
+                    __('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s'),
+                    $function,
+                    $version,
+                    $message
+                ));
             } else {
                 /* translators: 1: PHP function name, 2: version number */
-                trigger_error(sprintf(__('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available.'),
-                    $function, $version));
+                trigger_error(sprintf(
+                    __('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available.'),
+                    $function,
+                    $version
+                ));
             }
         } else {
             if (!is_null($message)) {
-                trigger_error(sprintf('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s',
-                    $function, $version, $message));
+                trigger_error(sprintf(
+                    '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s',
+                    $function,
+                    $version,
+                    $message
+                ));
             } else {
-                trigger_error(sprintf('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available.',
-                    $function, $version));
+                trigger_error(sprintf(
+                    '%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available.',
+                    $function,
+                    $version
+                ));
             }
         }
     }
@@ -4367,12 +4440,19 @@ function _deprecated_hook($hook, $version, $replacement = null, $message = null)
         $message = empty($message) ? '' : ' ' . $message;
         if (!is_null($replacement)) {
             /* translators: 1: WordPress hook name, 2: version number, 3: alternative hook name */
-            trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
-                    $hook, $version, $replacement) . $message);
+            trigger_error(sprintf(
+                __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
+                    $hook,
+                $version,
+                $replacement
+            ) . $message);
         } else {
             /* translators: 1: WordPress hook name, 2: version number */
-            trigger_error(sprintf(__('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
-                    $hook, $version) . $message);
+            trigger_error(sprintf(
+                __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
+                    $hook,
+                $version
+            ) . $message);
         }
     }
 }
@@ -4423,23 +4503,33 @@ function _doing_it_wrong($function, $message, $version)
                 $version = sprintf(__('(This message was added in version %s.)'), $version);
             }
             /* translators: %s: Codex URL */
-            $message .= ' ' . sprintf(__('Please see <a href="%s">Debugging in WordPress</a> for more information.'),
+            $message .= ' ' . sprintf(
+                __('Please see <a href="%s">Debugging in WordPress</a> for more information.'),
                     __('https://codex.wordpress.org/Debugging_in_WordPress')
                 );
             /* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Version information message */
-            trigger_error(sprintf(__('%1$s was called <strong>incorrectly</strong>. %2$s %3$s'), $function, $message,
-                $version));
+            trigger_error(sprintf(
+                __('%1$s was called <strong>incorrectly</strong>. %2$s %3$s'),
+                $function,
+                $message,
+                $version
+            ));
         } else {
             if (is_null($version)) {
                 $version = '';
             } else {
                 $version = sprintf('(This message was added in version %s.)', $version);
             }
-            $message .= sprintf(' Please see <a href="%s">Debugging in WordPress</a> for more information.',
+            $message .= sprintf(
+                ' Please see <a href="%s">Debugging in WordPress</a> for more information.',
                 'https://codex.wordpress.org/Debugging_in_WordPress'
             );
-            trigger_error(sprintf('%1$s was called <strong>incorrectly</strong>. %2$s %3$s', $function, $message,
-                $version));
+            trigger_error(sprintf(
+                '%1$s was called <strong>incorrectly</strong>. %2$s %3$s',
+                $function,
+                $message,
+                $version
+            ));
         }
     }
 }
@@ -4509,16 +4599,18 @@ function iis7_supports_permalinks()
     $supports_permalinks = false;
     if ($is_iis7) {
         /* First we check if the DOMDocument class exists. If it does not exist, then we cannot
-		 * easily update the xml configuration file, hence we just bail out and tell user that
-		 * pretty permalinks cannot be used.
-		 *
-		 * Next we check if the URL Rewrite Module 1.1 is loaded and enabled for the web site. When
-		 * URL Rewrite 1.1 is loaded it always sets a server variable called 'IIS_UrlRewriteModule'.
-		 * Lastly we make sure that PHP is running via FastCGI. This is important because if it runs
-		 * via ISAPI then pretty permalinks will not work.
-		 */
-        $supports_permalinks = class_exists('DOMDocument',
-                false) && isset($_SERVER['IIS_UrlRewriteModule']) && (PHP_SAPI == 'cgi-fcgi');
+         * easily update the xml configuration file, hence we just bail out and tell user that
+         * pretty permalinks cannot be used.
+         *
+         * Next we check if the URL Rewrite Module 1.1 is loaded and enabled for the web site. When
+         * URL Rewrite 1.1 is loaded it always sets a server variable called 'IIS_UrlRewriteModule'.
+         * Lastly we make sure that PHP is running via FastCGI. This is important because if it runs
+         * via ISAPI then pretty permalinks will not work.
+         */
+        $supports_permalinks = class_exists(
+            'DOMDocument',
+                false
+        ) && isset($_SERVER['IIS_UrlRewriteModule']) && (PHP_SAPI == 'cgi-fcgi');
     }
 
     /**
@@ -4608,15 +4700,16 @@ function wp_guess_url()
         $script_filename_dir = dirname($_SERVER['SCRIPT_FILENAME']);
 
         // The request is for the admin
-        if (strpos($_SERVER['REQUEST_URI'], 'wp-admin') !== false || strpos($_SERVER['REQUEST_URI'],
-                'wp-login.php') !== false) {
+        if (strpos($_SERVER['REQUEST_URI'], 'wp-admin') !== false || strpos(
+            $_SERVER['REQUEST_URI'],
+                'wp-login.php'
+        ) !== false) {
             $path = preg_replace('#/(wp-admin/.*|wp-login.php)#i', '', $_SERVER['REQUEST_URI']);
 
             // The request is for a file in ABSPATH
         } elseif ($script_filename_dir . '/' == $abspath_fix) {
             // Strip off any file/query params in the path
             $path = preg_replace('#/[^/]*$#i', '', $_SERVER['PHP_SELF']);
-
         } else {
             if (false !== strpos($_SERVER['SCRIPT_FILENAME'], $abspath_fix)) {
                 // Request is hitting a file inside ABSPATH
@@ -4625,8 +4718,10 @@ function wp_guess_url()
                 $path = preg_replace('#/' . preg_quote($directory, '#') . '/[^/]*$#i', '', $_SERVER['REQUEST_URI']);
             } elseif (false !== strpos($abspath_fix, $script_filename_dir)) {
                 // Request is hitting a file above ABSPATH
-                $subdirectory = substr($abspath_fix,
-                    strpos($abspath_fix, $script_filename_dir) + strlen($script_filename_dir));
+                $subdirectory = substr(
+                    $abspath_fix,
+                    strpos($abspath_fix, $script_filename_dir) + strlen($script_filename_dir)
+                );
                 // Strip off any file/query params from the path, appending the sub directory to the install
                 $path = preg_replace('#/[^/]*$#i', '', $_SERVER['REQUEST_URI']) . $subdirectory;
             } else {
@@ -5080,7 +5175,6 @@ function wp_timezone_choice($selected_zone, $locale = null)
             $selected = 'selected="selected" ';
         }
         $structure[] = '<option ' . $selected . 'value="' . esc_attr($offset_value) . '">' . esc_html($offset_name) . "</option>";
-
     }
     $structure[] = '</optgroup>';
 
@@ -5119,8 +5213,10 @@ function wp_scheduled_delete()
 
     $delete_timestamp = time() - (DAY_IN_SECONDS * EMPTY_TRASH_DAYS);
 
-    $posts_to_delete = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wp_trash_meta_time' AND meta_value < '%d'",
-        $delete_timestamp), ARRAY_A);
+    $posts_to_delete = $wpdb->get_results($wpdb->prepare(
+        "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wp_trash_meta_time' AND meta_value < '%d'",
+        $delete_timestamp
+    ), ARRAY_A);
 
     foreach ((array)$posts_to_delete as $post) {
         $post_id = (int)$post['post_id'];
@@ -5138,8 +5234,10 @@ function wp_scheduled_delete()
         }
     }
 
-    $comments_to_delete = $wpdb->get_results($wpdb->prepare("SELECT comment_id FROM $wpdb->commentmeta WHERE meta_key = '_wp_trash_meta_time' AND meta_value < '%d'",
-        $delete_timestamp), ARRAY_A);
+    $comments_to_delete = $wpdb->get_results($wpdb->prepare(
+        "SELECT comment_id FROM $wpdb->commentmeta WHERE meta_key = '_wp_trash_meta_time' AND meta_value < '%d'",
+        $delete_timestamp
+    ), ARRAY_A);
 
     foreach ((array)$comments_to_delete as $comment) {
         $comment_id = (int)$comment['comment_id'];
@@ -5335,16 +5433,16 @@ function send_nosniff_header()
 function _wp_mysql_week($column)
 {
     switch ($start_of_week = (int)get_option('start_of_week')) {
-        case 1 :
+        case 1:
             return "WEEK( $column, 1 )";
-        case 2 :
-        case 3 :
-        case 4 :
-        case 5 :
-        case 6 :
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
             return "WEEK( DATE_SUB( $column, INTERVAL $start_of_week DAY ), 0 )";
-        case 0 :
-        default :
+        case 0:
+        default:
             return "WEEK( $column, 0 )";
     }
 }
@@ -5408,11 +5506,15 @@ function wp_find_hierarchy_loop_tortoise_hare(
     while (
         $tortoise
         &&
-        ($evanescent_hare = isset($override[$hare]) ? $override[$hare] : call_user_func_array($callback,
-            array_merge(array($hare), $callback_args)))
+        ($evanescent_hare = isset($override[$hare]) ? $override[$hare] : call_user_func_array(
+            $callback,
+            array_merge(array($hare), $callback_args)
+        ))
         &&
-        ($hare = isset($override[$evanescent_hare]) ? $override[$evanescent_hare] : call_user_func_array($callback,
-            array_merge(array($evanescent_hare), $callback_args)))
+        ($hare = isset($override[$evanescent_hare]) ? $override[$evanescent_hare] : call_user_func_array(
+            $callback,
+            array_merge(array($evanescent_hare), $callback_args)
+        ))
     ) {
         if ($_return_loop) {
             $return[$tortoise] = $return[$evanescent_hare] = $return[$hare] = true;
@@ -5424,8 +5526,10 @@ function wp_find_hierarchy_loop_tortoise_hare(
         }
 
         // Increment tortoise by one step
-        $tortoise = isset($override[$tortoise]) ? $override[$tortoise] : call_user_func_array($callback,
-            array_merge(array($tortoise), $callback_args));
+        $tortoise = isset($override[$tortoise]) ? $override[$tortoise] : call_user_func_array(
+            $callback,
+            array_merge(array($tortoise), $callback_args)
+        );
     }
 
     return false;
@@ -5541,8 +5645,11 @@ function wp_debug_backtrace_summary($ignore_class = null, $skip_frames = 0, $pre
             if (in_array($call['function'], array('do_action', 'apply_filters'))) {
                 $caller[] = "{$call['function']}('{$call['args'][0]}')";
             } elseif (in_array($call['function'], array('include', 'include_once', 'require', 'require_once'))) {
-                $caller[] = $call['function'] . "('" . str_replace(array(WP_CONTENT_DIR, ABSPATH), '',
-                        $call['args'][0]) . "')";
+                $caller[] = $call['function'] . "('" . str_replace(
+                    array(WP_CONTENT_DIR, ABSPATH),
+                    '',
+                        $call['args'][0]
+                ) . "')";
             } else {
                 $caller[] = $call['function'];
             }
@@ -5718,9 +5825,7 @@ function wp_auth_check_html()
      * @param bool $same_domain Whether the authentication check originated at the same domain.
      */
     $same_domain = apply_filters('wp_auth_check_same_domain', $same_domain);
-    $wrap_class = $same_domain ? 'hidden' : 'hidden fallback';
-
-    ?>
+    $wrap_class = $same_domain ? 'hidden' : 'hidden fallback'; ?>
     <div id="wp-auth-check-wrap" class="<?php echo $wrap_class; ?>">
         <div id="wp-auth-check-bg"></div>
         <div id="wp-auth-check">
@@ -5733,9 +5838,7 @@ function wp_auth_check_html()
                 <div id="wp-auth-check-form" class="loading"
                      data-src="<?php echo esc_url(add_query_arg(array('interim-login' => 1), $login_url)); ?>"></div>
                 <?php
-            }
-
-            ?>
+            } ?>
             <div class="wp-auth-fallback">
                 <p><b class="wp-auth-fallback-expired" tabindex="0"><?php _e('Session expired'); ?></b></p>
                 <p><a href="<?php echo esc_url($login_url); ?>" target="_blank"><?php _e('Please log in again.'); ?></a>
@@ -5805,12 +5908,10 @@ function get_tag_regex($tag)
 function _canonical_charset($charset)
 {
     if ('utf-8' === strtolower($charset) || 'utf8' === strtolower($charset)) {
-
         return 'UTF-8';
     }
 
     if ('iso-8859-1' === strtolower($charset) || 'iso8859-1' === strtolower($charset)) {
-
         return 'ISO-8859-1';
     }
 
@@ -5941,9 +6042,7 @@ function wp_post_preview_js()
     }
 
     // Has to match the window name used in post_submit_meta_box()
-    $name = 'wp-preview-' . (int)$post->ID;
-
-    ?>
+    $name = 'wp-preview-' . (int)$post->ID; ?>
     <script>
         ( function () {
             var query = document.location.search;
@@ -6098,12 +6197,16 @@ function wp_raise_memory_limit($context = 'admin')
  */
 function wp_generate_uuid4()
 {
-    return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+    return sprintf(
+        '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
         mt_rand(0, 0xffff),
         mt_rand(0, 0x0fff) | 0x4000,
         mt_rand(0, 0x3fff) | 0x8000,
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff)
     );
 }
 

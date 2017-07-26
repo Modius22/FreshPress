@@ -21,8 +21,10 @@ get_current_screen()->add_help_tab(array(
         '<p>' . __('The menu is for editing information specific to individual sites, particularly if the admin area of a site is unavailable.') . '</p>' .
         '<p>' . __('<strong>Info</strong> &mdash; The site URL is rarely edited as this can cause the site to not work properly. The Registered date and Last Updated date are displayed. Network admins can mark a site as archived, spam, deleted and mature, to remove from public listings or disable.') . '</p>' .
         '<p>' . __('<strong>Users</strong> &mdash; This displays the users associated with this site. You can also change their role, reset their password, or remove them from the site. Removing the user from the site does not remove the user from the network.') . '</p>' .
-        '<p>' . sprintf(__('<strong>Themes</strong> &mdash; This area shows themes that are not already enabled across the network. Enabling a theme in this menu makes it accessible to this site. It does not activate the theme, but allows it to show in the site&#8217;s Appearance menu. To enable a theme for the entire network, see the <a href="%s">Network Themes</a> screen.'),
-            network_admin_url('themes.php')) . '</p>' .
+        '<p>' . sprintf(
+            __('<strong>Themes</strong> &mdash; This area shows themes that are not already enabled across the network. Enabling a theme in this menu makes it accessible to this site. It does not activate the theme, but allows it to show in the site&#8217;s Appearance menu. To enable a theme for the entire network, see the <a href="%s">Network Themes</a> screen.'),
+            network_admin_url('themes.php')
+        ) . '</p>' .
         '<p>' . __('<strong>Settings</strong> &mdash; This page shows a list of all settings associated with this site. Some are created by WordPress and others are created by plugins you activate. Note that some fields are grayed out and say Serialized Data. You cannot modify these values due to the way the setting is stored in the database.') . '</p>'
 ));
 
@@ -122,7 +124,8 @@ require(ABSPATH . 'wp-admin/admin-header.php');
                 $sql = "SELECT * FROM {$blog_prefix}options
 			WHERE option_name NOT LIKE %s
 			AND option_name NOT LIKE %s";
-                $query = $wpdb->prepare($sql,
+                $query = $wpdb->prepare(
+                    $sql,
                     $wpdb->esc_like('_') . '%',
                     '%' . $wpdb->esc_like('user_roles')
                 );
@@ -146,8 +149,11 @@ require(ABSPATH . 'wp-admin/admin-header.php');
                         ?>
                         <tr class="form-field">
                             <th scope="row"><label
-                                        for="<?php echo esc_attr($option->option_name) ?>"><?php echo ucwords(str_replace("_",
-                                        " ", $option->option_name)) ?></label></th>
+                                        for="<?php echo esc_attr($option->option_name) ?>"><?php echo ucwords(str_replace(
+                            "_",
+                                        " ",
+                            $option->option_name
+                        )) ?></label></th>
                             <td><textarea class="<?php echo $class; ?>" rows="5" cols="40"
                                           name="option[<?php echo esc_attr($option->option_name) ?>]"
                                           id="<?php echo esc_attr($option->option_name) ?>"<?php disabled($disabled) ?>><?php echo esc_textarea($option->option_value) ?></textarea>
@@ -158,17 +164,24 @@ require(ABSPATH . 'wp-admin/admin-header.php');
                         ?>
                         <tr class="form-field">
                             <th scope="row"><label
-                                        for="<?php echo esc_attr($option->option_name) ?>"><?php echo esc_html(ucwords(str_replace("_",
-                                        " ", $option->option_name))); ?></label></th>
-                            <?php if ($is_main_site && in_array($option->option_name, array('siteurl', 'home'))) { ?>
+                                        for="<?php echo esc_attr($option->option_name) ?>"><?php echo esc_html(ucwords(str_replace(
+                            "_",
+                                        " ",
+                            $option->option_name
+                        ))); ?></label></th>
+                            <?php if ($is_main_site && in_array($option->option_name, array('siteurl', 'home'))) {
+                            ?>
                                 <td><code><?php echo esc_html($option->option_value) ?></code></td>
-                            <?php } else { ?>
+                            <?php
+                        } else {
+                            ?>
                                 <td><input class="<?php echo $class; ?>"
                                            name="option[<?php echo esc_attr($option->option_name) ?>]" type="text"
                                            id="<?php echo esc_attr($option->option_name) ?>"
                                            value="<?php echo esc_attr($option->option_value) ?>"
                                            size="40" <?php disabled($disabled) ?> /></td>
-                            <?php } ?>
+                            <?php
+                        } ?>
                         </tr>
                         <?php
                     }

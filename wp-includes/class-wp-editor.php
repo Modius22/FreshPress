@@ -191,8 +191,10 @@ final class _WP_Editors
                 $buttons .= '<button type="button" id="' . $editor_id_attr . '-tmce" class="wp-switch-editor switch-tmce"' .
                     ' data-wp-editor-id="' . $editor_id_attr . '">' . __('Visual') . "</button>\n";
                 $buttons .= '<button type="button" id="' . $editor_id_attr . '-html" class="wp-switch-editor switch-html"' .
-                    ' data-wp-editor-id="' . $editor_id_attr . '">' . _x('Text',
-                        'Name for the Text editor tab (formerly HTML)') . "</button>\n";
+                    ' data-wp-editor-id="' . $editor_id_attr . '">' . _x(
+                        'Text',
+                        'Name for the Text editor tab (formerly HTML)'
+                    ) . "</button>\n";
             } else {
                 $default_editor = 'tinymce';
             }
@@ -262,11 +264,13 @@ final class _WP_Editors
          *
          * @param string $output Editor's HTML markup.
          */
-        $the_editor = apply_filters('the_editor',
+        $the_editor = apply_filters(
+            'the_editor',
             '<div id="wp-' . $editor_id_attr . '-editor-container" class="wp-editor-container">' .
             $quicktags_toolbar .
             '<textarea' . $editor_class . $height . $tabindex . $autocomplete . ' cols="40" name="' . esc_attr($set['textarea_name']) . '" ' .
-            'id="' . $editor_id_attr . '">%s</textarea></div>');
+            'id="' . $editor_id_attr . '">%s</textarea></div>'
+        );
 
         // Prepare the content for the Visual or Text editor, only when TinyMCE is used (back-compat).
         if (self::$this_tinymce) {
@@ -332,7 +336,6 @@ final class _WP_Editors
         }
 
         if (self::$this_quicktags) {
-
             $qtInit = array(
                 'id' => $editor_id,
                 'buttons' => ''
@@ -366,7 +369,6 @@ final class _WP_Editors
         }
 
         if (self::$this_tinymce) {
-
             if (empty(self::$first_init)) {
                 $baseurl = self::get_baseurl();
                 $mce_locale = self::get_mce_locale();
@@ -382,9 +384,11 @@ final class _WP_Editors
                      * @param array $plugins An array of teenyMCE plugins.
                      * @param string $editor_id Unique editor identifier, e.g. 'content'.
                      */
-                    $plugins = apply_filters('teeny_mce_plugins',
+                    $plugins = apply_filters(
+                        'teeny_mce_plugins',
                         array('colorpicker', 'lists', 'fullscreen', 'image', 'wordpress', 'wpeditimage', 'wplink'),
-                        $editor_id);
+                        $editor_id
+                    );
                 } else {
 
                     /**
@@ -510,14 +514,22 @@ final class _WP_Editors
                                 if ('en' != $mce_locale && empty($strings)) {
                                     if (@is_file($path . 'en.js')) {
                                         $str1 = @file_get_contents($path . 'en.js');
-                                        $strings .= preg_replace('/([\'"])en\./', '$1' . $mce_locale . '.', $str1,
-                                                1) . "\n";
+                                        $strings .= preg_replace(
+                                            '/([\'"])en\./',
+                                            '$1' . $mce_locale . '.',
+                                            $str1,
+                                                1
+                                        ) . "\n";
                                     }
 
                                     if (@is_file($path . 'en_dlg.js')) {
                                         $str2 = @file_get_contents($path . 'en_dlg.js');
-                                        $strings .= preg_replace('/([\'"])en\./', '$1' . $mce_locale . '.', $str2,
-                                                1) . "\n";
+                                        $strings .= preg_replace(
+                                            '/([\'"])en\./',
+                                            '$1' . $mce_locale . '.',
+                                            $str2,
+                                                1
+                                        ) . "\n";
                                     }
                                 }
 
@@ -709,8 +721,11 @@ final class _WP_Editors
                 $page_template = get_page_template_slug($post);
 
                 if ($page_template !== false) {
-                    $page_template = empty($page_template) ? 'default' : str_replace('.', '-',
-                        basename($page_template, '.php'));
+                    $page_template = empty($page_template) ? 'default' : str_replace(
+                        '.',
+                        '-',
+                        basename($page_template, '.php')
+                    );
                     $body_class .= ' page-template-' . sanitize_html_class($page_template);
                 }
             }
@@ -742,13 +757,13 @@ final class _WP_Editors
             }
 
             /*
-			 * For people who really REALLY know what they're doing with TinyMCE
-			 * You can modify $mceInit to add, remove, change elements of the config
-			 * before tinyMCE.init. Setting "valid_elements", "invalid_elements"
-			 * and "extended_valid_elements" can be done through this filter. Best
-			 * is to use the default cleanup by not specifying valid_elements,
-			 * as TinyMCE checks against the full set of HTML 5.0 elements and attributes.
-			 */
+             * For people who really REALLY know what they're doing with TinyMCE
+             * You can modify $mceInit to add, remove, change elements of the config
+             * before tinyMCE.init. Setting "valid_elements", "invalid_elements"
+             * and "extended_valid_elements" can be done through this filter. Best
+             * is to use the default cleanup by not specifying valid_elements,
+             * as TinyMCE checks against the full set of HTML 5.0 elements and attributes.
+             */
             if ($set['teeny']) {
 
                 /**
@@ -800,8 +815,8 @@ final class _WP_Editors
             } elseif (!empty($value) && is_string($value) && (
                     ('{' == $value{0} && '}' == $value{strlen($value) - 1}) ||
                     ('[' == $value{0} && ']' == $value{strlen($value) - 1}) ||
-                    preg_match('/^\(?function ?\(/', $value))) {
-
+                    preg_match('/^\(?function ?\(/', $value)
+            )) {
                 $options .= $key . ':' . $value . ',';
                 continue;
             }
@@ -924,9 +939,7 @@ final class _WP_Editors
         $settings = self::_parse_init($settings);
 
         $suffix = SCRIPT_DEBUG ? '' : '.min';
-        $baseurl = self::get_baseurl();
-
-        ?>
+        $baseurl = self::get_baseurl(); ?>
         <script type="text/javascript">
             window.wp = window.wp || {};
             window.wp.editor = window.wp.editor || {};
@@ -1359,26 +1372,26 @@ final class _WP_Editors
         }
 
         /*
-		Imagetools plugin (not included):
-			'Edit image' => __( 'Edit image' ),
-			'Image options' => __( 'Image options' ),
-			'Back' => __( 'Back' ),
-			'Invert' => __( 'Invert' ),
-			'Flip horizontally' => __( 'Flip horizontally' ),
-			'Flip vertically' => __( 'Flip vertically' ),
-			'Crop' => __( 'Crop' ),
-			'Orientation' => __( 'Orientation' ),
-			'Resize' => __( 'Resize' ),
-			'Rotate clockwise' => __( 'Rotate clockwise' ),
-			'Rotate counterclockwise' => __( 'Rotate counterclockwise' ),
-			'Sharpen' => __( 'Sharpen' ),
-			'Brightness' => __( 'Brightness' ),
-			'Color levels' => __( 'Color levels' ),
-			'Contrast' => __( 'Contrast' ),
-			'Gamma' => __( 'Gamma' ),
-			'Zoom in' => __( 'Zoom in' ),
-			'Zoom out' => __( 'Zoom out' ),
-		*/
+        Imagetools plugin (not included):
+            'Edit image' => __( 'Edit image' ),
+            'Image options' => __( 'Image options' ),
+            'Back' => __( 'Back' ),
+            'Invert' => __( 'Invert' ),
+            'Flip horizontally' => __( 'Flip horizontally' ),
+            'Flip vertically' => __( 'Flip vertically' ),
+            'Crop' => __( 'Crop' ),
+            'Orientation' => __( 'Orientation' ),
+            'Resize' => __( 'Resize' ),
+            'Rotate clockwise' => __( 'Rotate clockwise' ),
+            'Rotate counterclockwise' => __( 'Rotate counterclockwise' ),
+            'Sharpen' => __( 'Sharpen' ),
+            'Brightness' => __( 'Brightness' ),
+            'Color levels' => __( 'Color levels' ),
+            'Contrast' => __( 'Contrast' ),
+            'Gamma' => __( 'Gamma' ),
+            'Zoom in' => __( 'Zoom in' ),
+            'Zoom out' => __( 'Zoom out' ),
+        */
 
         return self::$translation;
     }
@@ -1536,8 +1549,7 @@ final class _WP_Editors
          *
          * @param array $mce_settings TinyMCE settings array.
          */
-        do_action('before_wp_tiny_mce', self::$mce_settings);
-        ?>
+        do_action('before_wp_tiny_mce', self::$mce_settings); ?>
 
         <script type="text/javascript">
             tinyMCEPreInit = {
@@ -1547,9 +1559,7 @@ final class _WP_Editors
 
                 if (self::$drag_drop_upload) {
                     echo 'dragDropUpload: true,';
-                }
-
-                ?>
+                } ?>
                 mceInit: <?php echo $mceInit; ?>,
                 qtInit: <?php echo $qtInit; ?>,
                 ref: <?php echo self::_parse_init($ref); ?>,
@@ -1579,9 +1589,7 @@ final class _WP_Editors
          *
          * @param array $mce_settings TinyMCE settings array.
          */
-        do_action('wp_tiny_mce_init', self::$mce_settings);
-
-        ?>
+        do_action('wp_tiny_mce_init', self::$mce_settings); ?>
         <script type="text/javascript">
             <?php
 
@@ -1589,11 +1597,9 @@ final class _WP_Editors
                 echo self::$ext_plugins . "\n";
             }
 
-            if (!is_admin()) {
-                echo 'var ajaxurl = "' . admin_url('admin-ajax.php', 'relative') . '";';
-            }
-
-            ?>
+        if (!is_admin()) {
+            echo 'var ajaxurl = "' . admin_url('admin-ajax.php', 'relative') . '";';
+        } ?>
 
             ( function () {
                 var init, id, $wrap;
@@ -1765,8 +1771,7 @@ final class _WP_Editors
 
         self::$link_dialog_printed = true;
 
-        // display: none is required here, see #WP27605
-        ?>
+        // display: none is required here, see #WP27605?>
         <div id="wp-link-backdrop" style="display: none"></div>
         <div id="wp-link-wrap" class="wp-core-ui" style="display: none" role="dialog"
              aria-labelledby="link-modal-title">

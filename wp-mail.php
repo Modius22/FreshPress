@@ -47,8 +47,10 @@ $phone_delim = '::';
 
 $pop3 = new POP3();
 
-if (!$pop3->connect(get_option('mailserver_url'),
-        get_option('mailserver_port')) || !$pop3->user(get_option('mailserver_login'))) {
+if (!$pop3->connect(
+    get_option('mailserver_url'),
+        get_option('mailserver_port')
+) || !$pop3->user(get_option('mailserver_login'))) {
     wp_die(esc_html($pop3->ERROR));
 }
 
@@ -64,7 +66,6 @@ if (0 === $count) {
 }
 
 for ($i = 1; $i <= $count; $i++) {
-
     $message = $pop3->get($i);
 
     $bodysignal = false;
@@ -95,13 +96,18 @@ for ($i = 1; $i <= $count; $i++) {
             }
             if (preg_match('/Content-Transfer-Encoding: /i', $line)) {
                 $content_transfer_encoding = trim($line);
-                $content_transfer_encoding = substr($content_transfer_encoding, 27,
-                    strlen($content_transfer_encoding) - 27);
+                $content_transfer_encoding = substr(
+                    $content_transfer_encoding,
+                    27,
+                    strlen($content_transfer_encoding) - 27
+                );
                 $content_transfer_encoding = explode(';', $content_transfer_encoding);
                 $content_transfer_encoding = $content_transfer_encoding[0];
             }
-            if (($content_type == 'multipart/alternative') && (false !== strpos($line,
-                        'boundary="')) && ('' == $boundary)) {
+            if (($content_type == 'multipart/alternative') && (false !== strpos(
+                $line,
+                        'boundary="'
+            )) && ('' == $boundary)) {
                 $boundary = trim($line);
                 $boundary = explode('"', $boundary);
                 $boundary = $boundary[1];
@@ -143,8 +149,11 @@ for ($i = 1; $i <= $count; $i++) {
 
             if (preg_match('/Date: /i', $line)) { // of the form '20 Mar 2002 20:32:37 +0100'
                 $ddate = str_replace('Date: ', '', trim($line));
-                $ddate = preg_replace('!\s*\(.+\)\s*$!', '',
-                    $ddate);    // remove parenthesised timezone string if it exists, as this confuses strtotime
+                $ddate = preg_replace(
+                    '!\s*\(.+\)\s*$!',
+                    '',
+                    $ddate
+                );    // remove parenthesised timezone string if it exists, as this confuses strtotime
                 $ddate_U = strtotime($ddate);
                 $post_date = gmdate('Y-m-d H:i:s', $ddate_U + $time_difference);
                 $post_date_gmt = gmdate('Y-m-d H:i:s', $ddate_U);
@@ -219,8 +228,15 @@ for ($i = 1; $i <= $count; $i++) {
 
     $post_category = array(get_option('default_email_category'));
 
-    $post_data = compact('post_content', 'post_title', 'post_date', 'post_date_gmt', 'post_author', 'post_category',
-        'post_status');
+    $post_data = compact(
+        'post_content',
+        'post_title',
+        'post_date',
+        'post_date_gmt',
+        'post_author',
+        'post_category',
+        'post_status'
+    );
     $post_data = wp_slash($post_data);
 
     $post_ID = wp_insert_post($post_data);
@@ -260,7 +276,6 @@ for ($i = 1; $i <= $count; $i++) {
                 '<strong>' . $i . '</strong>'
             ) . '</p>';
     }
-
 }
 
 $pop3->quit();

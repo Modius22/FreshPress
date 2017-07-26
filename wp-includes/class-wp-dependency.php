@@ -105,5 +105,4 @@ class _WP_Dependency
         $this->extra[$name] = $data;
         return true;
     }
-
 }

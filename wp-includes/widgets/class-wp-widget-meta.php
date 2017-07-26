@@ -48,14 +48,17 @@ class WP_Widget_Meta extends WP_Widget
     public function widget($args, $instance)
     {
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-        $title = apply_filters('widget_title', empty($instance['title']) ? __('Meta') : $instance['title'], $instance,
-            $this->id_base);
+        $title = apply_filters(
+            'widget_title',
+            empty($instance['title']) ? __('Meta') : $instance['title'],
+            $instance,
+            $this->id_base
+        );
 
         echo $args['before_widget'];
         if ($title) {
             echo $args['before_title'] . $title . $args['after_title'];
-        }
-        ?>
+        } ?>
         <ul>
             <?php wp_register(); ?>
             <li><?php wp_loginout(); ?></li>
@@ -73,14 +76,14 @@ class WP_Widget_Meta extends WP_Widget
              *
              * @param string $title_text Default title text for the WordPress.org link.
              */
-            echo apply_filters('widget_meta_poweredby', sprintf('<li><a href="%s" title="%s">%s</a></li>',
+            echo apply_filters('widget_meta_poweredby', sprintf(
+                '<li><a href="%s" title="%s">%s</a></li>',
                 esc_url(__('https://wordpress.org/')),
                 esc_attr__('Powered by WordPress, state-of-the-art semantic personal publishing platform.'),
                 _x('WordPress.org', 'meta widget link text')
             ));
 
-            wp_meta();
-            ?>
+        wp_meta(); ?>
         </ul>
         <?php
         echo $args['after_widget'];
@@ -116,8 +119,7 @@ class WP_Widget_Meta extends WP_Widget
     public function form($instance)
     {
         $instance = wp_parse_args((array)$instance, array('title' => ''));
-        $title = sanitize_text_field($instance['title']);
-        ?>
+        $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input
                     class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                     name="<?php echo $this->get_field_name('title'); ?>" type="text"

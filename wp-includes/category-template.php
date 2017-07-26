@@ -46,7 +46,6 @@ function get_category_link($category)
  */
 function get_category_parents($id, $link = false, $separator = '/', $nicename = false, $deprecated = array())
 {
-
     if (!empty($deprecated)) {
         _deprecated_argument(__FUNCTION__, '4.8.0');
     }
@@ -363,9 +362,12 @@ function wp_dropdown_categories($args = '')
 
     // Back compat.
     if (isset($args['type']) && 'link' == $args['type']) {
-        _deprecated_argument(__FUNCTION__, '3.0.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '3.0.0',
             /* translators: 1: "type => link", 2: "taxonomy => link_category" */
-            sprintf(__('%1$s is deprecated. Use %2$s instead.'),
+            sprintf(
+                __('%1$s is deprecated. Use %2$s instead.'),
                 '<code>type => link</code>',
                 '<code>taxonomy => link_category</code>'
             )
@@ -423,7 +425,6 @@ function wp_dropdown_categories($args = '')
     }
 
     if (!empty($categories)) {
-
         if ($r['show_option_all']) {
 
             /** This filter is documented in wp-includes/category-template.php */
@@ -594,7 +595,6 @@ function wp_list_categories($args = '')
         }
     } else {
         if (!empty($show_option_all)) {
-
             $posts_page = '';
 
             // For taxonomies that belong only to custom post types, point to a valid archive.
@@ -720,8 +720,10 @@ function wp_tag_cloud($args = '')
     );
     $args = wp_parse_args($args, $defaults);
 
-    $tags = get_terms($args['taxonomy'],
-        array_merge($args, array('orderby' => 'count', 'order' => 'DESC'))); // Always query top tags
+    $tags = get_terms(
+        $args['taxonomy'],
+        array_merge($args, array('orderby' => 'count', 'order' => 'DESC'))
+    ); // Always query top tags
 
     if (empty($tags) || is_wp_error($tags)) {
         return;
@@ -944,8 +946,10 @@ function wp_generate_tag_cloud($tags, $args = '')
         $real_count = $real_counts[$key];
 
         if ($translate_nooped_plural) {
-            $formatted_count = sprintf(translate_nooped_plural($translate_nooped_plural, $real_count),
-                number_format_i18n($real_count));
+            $formatted_count = sprintf(
+                translate_nooped_plural($translate_nooped_plural, $real_count),
+                number_format_i18n($real_count)
+            );
         } else {
             $formatted_count = call_user_func($args['topic_count_text_callback'], $real_count, $tag, $args);
         }
@@ -960,8 +964,11 @@ function wp_generate_tag_cloud($tags, $args = '')
             'real_count' => $real_count,
             'class' => 'tag-cloud-link tag-link-' . $tag_id,
             'font_size' => $args['smallest'] + ($count - $min_count) * $font_step,
-            'aria_label' => $aria_label ? sprintf(' aria-label="%1$s (%2$s)"', esc_attr($tag->name),
-                esc_attr($formatted_count)) : '',
+            'aria_label' => $aria_label ? sprintf(
+                ' aria-label="%1$s (%2$s)"',
+                esc_attr($tag->name),
+                esc_attr($formatted_count)
+            ) : '',
             'show_count' => $args['show_count'] ? '<span class="tag-link-count"> (' . $real_count . ')</span>' : '',
         );
     }
@@ -993,10 +1000,10 @@ function wp_generate_tag_cloud($tags, $args = '')
     }
 
     switch ($args['format']) {
-        case 'array' :
+        case 'array':
             $return =& $a;
             break;
-        case 'list' :
+        case 'list':
             /*
              * Force role="list", as some browsers (sic: Safari 10) don't expose to assistive
              * technologies the default role when the list is styled with `list-style: none`.
@@ -1006,7 +1013,7 @@ function wp_generate_tag_cloud($tags, $args = '')
             $return .= join("</li>\n\t<li>", $a);
             $return .= "</li>\n</ul>\n";
             break;
-        default :
+        default:
             $return = join($args['separator'], $a);
             break;
     }
@@ -1189,8 +1196,14 @@ function get_the_tag_list($before = '', $sep = '', $after = '', $id = 0)
      * @param string $after String to use after tags.
      * @param int $id Post ID.
      */
-    return apply_filters('the_tags', get_the_term_list($id, 'post_tag', $before, $sep, $after), $before, $sep, $after,
-        $id);
+    return apply_filters(
+        'the_tags',
+        get_the_term_list($id, 'post_tag', $before, $sep, $after),
+        $before,
+        $sep,
+        $after,
+        $id
+    );
 }
 
 /**
@@ -1399,8 +1412,10 @@ function get_term_parents_list($term_id, $taxonomy, $args = array())
         $name = ('slug' === $args['format']) ? $parent->slug : $parent->name;
 
         if ($args['link']) {
-            $list .= '<a href="' . esc_url(get_term_link($parent->term_id,
-                    $taxonomy)) . '">' . $name . '</a>' . $args['separator'];
+            $list .= '<a href="' . esc_url(get_term_link(
+                $parent->term_id,
+                    $taxonomy
+            )) . '">' . $name . '</a>' . $args['separator'];
         } else {
             $list .= $name . $args['separator'];
         }

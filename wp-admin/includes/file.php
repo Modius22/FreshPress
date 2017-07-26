@@ -226,13 +226,14 @@ function validate_file_to_edit($file, $allowed_files = '')
     }
 
     switch ($code) {
-        case 1 :
+        case 1:
             wp_die(__('Sorry, that file cannot be edited.'));
 
         // case 2 :
         // wp_die( __('Sorry, can&#8217;t call files with their real path.' ));
 
-        case 3 :
+        // no break
+        case 3:
             wp_die(__('Sorry, that file cannot be edited.'));
     }
 }
@@ -361,8 +362,10 @@ function _wp_handle_upload(&$file, $overrides, $time, $action)
             $file['name'] = $proper_filename;
         }
         if ((!$type || !$ext) && !current_user_can('unfiltered_upload')) {
-            return call_user_func_array($upload_error_handler,
-                array(&$file, __('Sorry, this file type is not permitted for security reasons.')));
+            return call_user_func_array(
+                $upload_error_handler,
+                array(&$file, __('Sorry, this file type is not permitted for security reasons.'))
+            );
         }
         if (!$type) {
             $type = $file['type'];
@@ -567,9 +570,14 @@ function verify_file_md5($filename, $expected_md5)
         return true;
     }
 
-    return new WP_Error('md5_mismatch',
-        sprintf(__('The checksum of the file (%1$s) does not match the expected checksum value (%2$s).'),
-            bin2hex($file_md5), bin2hex($expected_raw_md5)));
+    return new WP_Error(
+        'md5_mismatch',
+        sprintf(
+            __('The checksum of the file (%1$s) does not match the expected checksum value (%2$s).'),
+            bin2hex($file_md5),
+            bin2hex($expected_raw_md5)
+        )
+    );
 }
 
 /**
@@ -610,8 +618,7 @@ function unzip_file($file, $to)
             }
 
             $dir = implode('/', array_slice($path, 0, $i + 1));
-            if (preg_match('!^[a-z]:$!i', $dir)) // Skip it if it looks like a Windows Drive letter.
-            {
+            if (preg_match('!^[a-z]:$!i', $dir)) { // Skip it if it looks like a Windows Drive letter.
                 continue;
             }
 
@@ -677,8 +684,7 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
             return new WP_Error('stat_failed_ziparchive', __('Could not retrieve file from archive.'));
         }
 
-        if ('__MACOSX/' === substr($info['name'], 0, 9)) // Skip the OS X-created __MACOSX directory
-        {
+        if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Skip the OS X-created __MACOSX directory
             continue;
         }
 
@@ -701,26 +707,29 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
     if (wp_doing_cron()) {
         $available_space = @disk_free_space(WP_CONTENT_DIR);
         if ($available_space && ($uncompressed_size * 2.1) > $available_space) {
-            return new WP_Error('disk_full_unzip_file', __('Could not copy files. You may have run out of disk space.'),
-                compact('uncompressed_size', 'available_space'));
+            return new WP_Error(
+                'disk_full_unzip_file',
+                __('Could not copy files. You may have run out of disk space.'),
+                compact('uncompressed_size', 'available_space')
+            );
         }
     }
 
     $needed_dirs = array_unique($needed_dirs);
     foreach ($needed_dirs as $dir) {
         // Check the parent folders of the folders all exist within the creation array.
-        if (untrailingslashit($to) == $dir) // Skip over the working directory, We know this exists (or will exist)
-        {
+        if (untrailingslashit($to) == $dir) { // Skip over the working directory, We know this exists (or will exist)
             continue;
         }
-        if (strpos($dir, $to) === false) // If the directory is not within the working directory, Skip it
-        {
+        if (strpos($dir, $to) === false) { // If the directory is not within the working directory, Skip it
             continue;
         }
 
         $parent_folder = dirname($dir);
-        while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array($parent_folder,
-                $needed_dirs)) {
+        while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array(
+            $parent_folder,
+                $needed_dirs
+        )) {
             $needed_dirs[] = $parent_folder;
             $parent_folder = dirname($parent_folder);
         }
@@ -731,8 +740,11 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
     foreach ($needed_dirs as $_dir) {
         // Only check to see if the Dir exists upon creation failure. Less I/O this way.
         if (!$wp_filesystem->mkdir($_dir, FS_CHMOD_DIR) && !$wp_filesystem->is_dir($_dir)) {
-            return new WP_Error('mkdir_failed_ziparchive', __('Could not create directory.'),
-                substr($_dir, strlen($to)));
+            return new WP_Error(
+                'mkdir_failed_ziparchive',
+                __('Could not create directory.'),
+                substr($_dir, strlen($to))
+            );
         }
     }
     unset($needed_dirs);
@@ -742,13 +754,11 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
             return new WP_Error('stat_failed_ziparchive', __('Could not retrieve file from archive.'));
         }
 
-        if ('/' == substr($info['name'], -1)) // directory
-        {
+        if ('/' == substr($info['name'], -1)) { // directory
             continue;
         }
 
-        if ('__MACOSX/' === substr($info['name'], 0, 9)) // Don't extract the OS X-created __MACOSX directory files
-        {
+        if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Don't extract the OS X-created __MACOSX directory files
             continue;
         }
 
@@ -809,8 +819,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
 
     // Determine any children directories needed (From within the archive)
     foreach ($archive_files as $file) {
-        if ('__MACOSX/' === substr($file['filename'], 0, 9)) // Skip the OS X-created __MACOSX directory
-        {
+        if ('__MACOSX/' === substr($file['filename'], 0, 9)) { // Skip the OS X-created __MACOSX directory
             continue;
         }
 
@@ -827,26 +836,29 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
     if (wp_doing_cron()) {
         $available_space = @disk_free_space(WP_CONTENT_DIR);
         if ($available_space && ($uncompressed_size * 2.1) > $available_space) {
-            return new WP_Error('disk_full_unzip_file', __('Could not copy files. You may have run out of disk space.'),
-                compact('uncompressed_size', 'available_space'));
+            return new WP_Error(
+                'disk_full_unzip_file',
+                __('Could not copy files. You may have run out of disk space.'),
+                compact('uncompressed_size', 'available_space')
+            );
         }
     }
 
     $needed_dirs = array_unique($needed_dirs);
     foreach ($needed_dirs as $dir) {
         // Check the parent folders of the folders all exist within the creation array.
-        if (untrailingslashit($to) == $dir) // Skip over the working directory, We know this exists (or will exist)
-        {
+        if (untrailingslashit($to) == $dir) { // Skip over the working directory, We know this exists (or will exist)
             continue;
         }
-        if (strpos($dir, $to) === false) // If the directory is not within the working directory, Skip it
-        {
+        if (strpos($dir, $to) === false) { // If the directory is not within the working directory, Skip it
             continue;
         }
 
         $parent_folder = dirname($dir);
-        while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array($parent_folder,
-                $needed_dirs)) {
+        while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array(
+            $parent_folder,
+                $needed_dirs
+        )) {
             $needed_dirs[] = $parent_folder;
             $parent_folder = dirname($parent_folder);
         }
@@ -868,8 +880,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
             continue;
         }
 
-        if ('__MACOSX/' === substr($file['filename'], 0, 9)) // Don't extract the OS X-created __MACOSX directory files
-        {
+        if ('__MACOSX/' === substr($file['filename'], 0, 9)) { // Don't extract the OS X-created __MACOSX directory files
             continue;
         }
 
@@ -980,8 +991,11 @@ function WP_Filesystem($args = false, $context = false, $allow_relaxed_file_owne
          * @param string $path Path to the specific filesystem method class file.
          * @param string $method The filesystem method to use.
          */
-        $abstraction_file = apply_filters('filesystem_method_file',
-            ABSPATH . 'wp-admin/includes/class-wp-filesystem-' . $method . '.php', $method);
+        $abstraction_file = apply_filters(
+            'filesystem_method_file',
+            ABSPATH . 'wp-admin/includes/class-wp-filesystem-' . $method . '.php',
+            $method
+        );
 
         if (!file_exists($abstraction_file)) {
             return;
@@ -1062,7 +1076,6 @@ function get_filesystem_method($args = array(), $context = '', $allow_relaxed_fi
     $context = trailingslashit($context);
 
     if (!$method) {
-
         $temp_file_name = $context . 'temp-write-test-' . time();
         $temp_handle = @fopen($temp_file_name, 'w');
         if ($temp_handle) {
@@ -1172,8 +1185,16 @@ function request_filesystem_credentials(
      *                                             Default false.
      * @param array $extra_fields Extra POST fields.
      */
-    $req_cred = apply_filters('request_filesystem_credentials', '', $form_post, $type, $error, $context, $extra_fields,
-        $allow_relaxed_file_ownership);
+    $req_cred = apply_filters(
+        'request_filesystem_credentials',
+        '',
+        $form_post,
+        $type,
+        $error,
+        $context,
+        $extra_fields,
+        $allow_relaxed_file_ownership
+    );
     if ('' !== $req_cred) {
         return $req_cred;
     }
@@ -1242,8 +1263,7 @@ function request_filesystem_credentials(
             ('ssh' == $credentials['connection_type'] && !empty($credentials['public_key']) && !empty($credentials['private_key']))
         )) {
         $stored_credentials = $credentials;
-        if (!empty($stored_credentials['port'])) //save port as part of hostname to simplify above code.
-        {
+        if (!empty($stored_credentials['port'])) { //save port as part of hostname to simplify above code.
             $stored_credentials['hostname'] .= ':' . $stored_credentials['port'];
         }
 
@@ -1272,8 +1292,7 @@ function request_filesystem_credentials(
     if (extension_loaded('ftp') || extension_loaded('sockets') || function_exists('fsockopen')) {
         $types['ftp'] = __('FTP');
     }
-    if (extension_loaded('ftp')) //Only this supports FTPS
-    {
+    if (extension_loaded('ftp')) { //Only this supports FTPS
         $types['ftps'] = __('FTPS (SSL)');
     }
     if (extension_loaded('ssh2') && function_exists('stream_get_contents')) {
@@ -1293,46 +1312,42 @@ function request_filesystem_credentials(
      * @param string $context Full path to the directory that is tested
      *                            for being writable.
      */
-    $types = apply_filters('fs_ftp_connection_types', $types, $credentials, $type, $error, $context);
-
-    ?>
+    $types = apply_filters('fs_ftp_connection_types', $types, $credentials, $type, $error, $context); ?>
     <form action="<?php echo esc_url($form_post) ?>" method="post">
         <div id="request-filesystem-credentials-form" class="request-filesystem-credentials-form">
             <?php
             // Print a H1 heading in the FTP credentials modal dialog, default is a H2.
             $heading_tag = 'h2';
-            if ('plugins.php' === $pagenow || 'plugin-install.php' === $pagenow) {
-                $heading_tag = 'h1';
-            }
-            echo "<$heading_tag id='request-filesystem-credentials-title'>" . __('Connection Information') . "</$heading_tag>";
-            ?>
+    if ('plugins.php' === $pagenow || 'plugin-install.php' === $pagenow) {
+        $heading_tag = 'h1';
+    }
+    echo "<$heading_tag id='request-filesystem-credentials-title'>" . __('Connection Information') . "</$heading_tag>"; ?>
             <p id="request-filesystem-credentials-desc"><?php
                 $label_user = __('Username');
-                $label_pass = __('Password');
-                _e('To perform the requested action, WordPress needs to access your web server.');
-                echo ' ';
-                if ((isset($types['ftp']) || isset($types['ftps']))) {
-                    if (isset($types['ssh'])) {
-                        _e('Please enter your FTP or SSH credentials to proceed.');
-                        $label_user = __('FTP/SSH Username');
-                        $label_pass = __('FTP/SSH Password');
-                    } else {
-                        _e('Please enter your FTP credentials to proceed.');
-                        $label_user = __('FTP Username');
-                        $label_pass = __('FTP Password');
-                    }
-                    echo ' ';
-                }
-                _e('If you do not remember your credentials, you should contact your web host.');
-                ?></p>
+    $label_pass = __('Password');
+    _e('To perform the requested action, WordPress needs to access your web server.');
+    echo ' ';
+    if ((isset($types['ftp']) || isset($types['ftps']))) {
+        if (isset($types['ssh'])) {
+            _e('Please enter your FTP or SSH credentials to proceed.');
+            $label_user = __('FTP/SSH Username');
+            $label_pass = __('FTP/SSH Password');
+        } else {
+            _e('Please enter your FTP credentials to proceed.');
+            $label_user = __('FTP Username');
+            $label_pass = __('FTP Password');
+        }
+        echo ' ';
+    }
+    _e('If you do not remember your credentials, you should contact your web host.'); ?></p>
             <label for="hostname">
                 <span class="field-title"><?php _e('Hostname') ?></span>
                 <input name="hostname" type="text" id="hostname" aria-describedby="request-filesystem-credentials-desc"
                        class="code" placeholder="<?php esc_attr_e('example: www.wordpress.org') ?>"
                        value="<?php echo esc_attr($hostname);
-                       if (!empty($port)) {
-                           echo ":$port";
-                       } ?>"<?php disabled(defined('FTP_HOST')); ?> />
+    if (!empty($port)) {
+        echo ":$port";
+    } ?>"<?php disabled(defined('FTP_HOST')); ?> />
             </label>
             <div class="ftp-username">
                 <label for="username">
@@ -1345,35 +1360,33 @@ function request_filesystem_credentials(
                 <label for="password">
                     <span class="field-title"><?php echo $label_pass; ?></span>
                     <input name="password" type="password" id="password" value="<?php if (defined('FTP_PASS')) {
-                        echo '*****';
-                    } ?>"<?php disabled(defined('FTP_PASS')); ?> />
+        echo '*****';
+    } ?>"<?php disabled(defined('FTP_PASS')); ?> />
                     <em><?php if (!defined('FTP_PASS')) {
-                            _e('This password will not be stored on the server.');
-                        } ?></em>
+        _e('This password will not be stored on the server.');
+    } ?></em>
                 </label>
             </div>
             <fieldset>
                 <legend><?php _e('Connection Type'); ?></legend>
                 <?php
                 $disabled = disabled((defined('FTP_SSL') && FTP_SSL) || (defined('FTP_SSH') && FTP_SSH), true, false);
-                foreach ($types as $name => $text) : ?>
+    foreach ($types as $name => $text) : ?>
                     <label for="<?php echo esc_attr($name) ?>">
                         <input type="radio" name="connection_type" id="<?php echo esc_attr($name) ?>"
                                value="<?php echo esc_attr($name) ?>"<?php checked($name, $connection_type);
-                        echo $disabled; ?> />
+    echo $disabled; ?> />
                         <?php echo $text; ?>
                     </label>
                     <?php
-                endforeach;
-                ?>
+                endforeach; ?>
             </fieldset>
             <?php
             if (isset($types['ssh'])) {
                 $hidden_class = '';
                 if ('ssh' != $connection_type || empty($connection_type)) {
                     $hidden_class = ' class="hidden"';
-                }
-                ?>
+                } ?>
                 <fieldset id="ssh-keys"<?php echo $hidden_class; ?>>
                     <legend><?php _e('Authentication Keys'); ?></legend>
                     <label for="public_key">
@@ -1391,12 +1404,11 @@ function request_filesystem_credentials(
                 <?php
             }
 
-            foreach ((array)$extra_fields as $field) {
-                if (isset($submitted_form[$field])) {
-                    echo '<input type="hidden" name="' . esc_attr($field) . '" value="' . esc_attr($submitted_form[$field]) . '" />';
-                }
-            }
-            ?>
+    foreach ((array)$extra_fields as $field) {
+        if (isset($submitted_form[$field])) {
+            echo '<input type="hidden" name="' . esc_attr($field) . '" value="' . esc_attr($submitted_form[$field]) . '" />';
+        }
+    } ?>
             <p class="request-filesystem-credentials-action-buttons">
                 <?php wp_nonce_field('filesystem-credentials', '_fs_nonce', false, true); ?>
                 <button class="button cancel-button" data-js-action="close"
@@ -1423,8 +1435,7 @@ function wp_print_request_filesystem_credentials_modal()
     $request_filesystem_credentials = ($filesystem_method != 'direct' && !$filesystem_credentials_are_stored);
     if (!$request_filesystem_credentials) {
         return;
-    }
-    ?>
+    } ?>
     <div id="request-filesystem-credentials-dialog"
          class="notification-dialog-wrap request-filesystem-credentials-dialog">
         <div class="notification-dialog-background"></div>

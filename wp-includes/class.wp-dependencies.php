@@ -165,16 +165,14 @@ class WP_Dependencies
             $handle = $handle_parts[0];
             $queued = in_array($handle, $this->to_do, true);
 
-            if (in_array($handle, $this->done, true)) // Already done
-            {
+            if (in_array($handle, $this->done, true)) { // Already done
                 continue;
             }
 
             $moved = $this->set_group($handle, $recursion, $group);
             $new_group = $this->groups[$handle];
 
-            if ($queued && !$moved) // already queued and in the right group
-            {
+            if ($queued && !$moved) { // already queued and in the right group
                 continue;
             }
 
@@ -182,12 +180,17 @@ class WP_Dependencies
             if (!isset($this->registered[$handle])) {
                 $keep_going = false;
             } // Item doesn't exist.
-            elseif ($this->registered[$handle]->deps && array_diff($this->registered[$handle]->deps,
-                    array_keys($this->registered))) {
+            elseif ($this->registered[$handle]->deps && array_diff(
+                $this->registered[$handle]->deps,
+                    array_keys($this->registered)
+            )) {
                 $keep_going = false;
             } // Item requires dependencies that don't exist.
-            elseif ($this->registered[$handle]->deps && !$this->all_deps($this->registered[$handle]->deps, true,
-                    $new_group)) {
+            elseif ($this->registered[$handle]->deps && !$this->all_deps(
+                $this->registered[$handle]->deps,
+                true,
+                    $new_group
+            )) {
                 $keep_going = false;
             } // Item requires dependencies that don't exist.
 
@@ -200,8 +203,7 @@ class WP_Dependencies
                 } // We're at the top level. Move on to the next one.
             }
 
-            if ($queued) // Already grabbed it and its dependencies.
-            {
+            if ($queued) { // Already grabbed it and its dependencies.
                 continue;
             }
 
@@ -398,25 +400,25 @@ class WP_Dependencies
     public function query($handle, $list = 'registered')
     {
         switch ($list) {
-            case 'registered' :
+            case 'registered':
             case 'scripts': // back compat
                 if (isset($this->registered[$handle])) {
                     return $this->registered[$handle];
                 }
                 return false;
 
-            case 'enqueued' :
-            case 'queue' :
+            case 'enqueued':
+            case 'queue':
                 if (in_array($handle, $this->queue)) {
                     return true;
                 }
                 return $this->recurse_deps($this->queue, $handle);
 
-            case 'to_do' :
+            case 'to_do':
             case 'to_print': // back compat
                 return in_array($handle, $this->to_do);
 
-            case 'done' :
+            case 'done':
             case 'printed': // back compat
                 return in_array($handle, $this->done);
         }
@@ -446,5 +448,4 @@ class WP_Dependencies
 
         return true;
     }
-
 }

@@ -306,8 +306,10 @@ class WP_Locale
     public function rtl_src_admin_notice()
     {
         /* translators: %s: Name of the directory (build) */
-        echo '<div class="error"><p>' . sprintf(__('The %s directory of the develop repository must be used for RTL.'),
-                '<code>build</code>') . '</p></div>';
+        echo '<div class="error"><p>' . sprintf(
+            __('The %s directory of the develop repository must be used for RTL.'),
+                '<code>build</code>'
+        ) . '</p></div>';
     }
 
     /**

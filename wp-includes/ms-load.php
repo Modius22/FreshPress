@@ -109,7 +109,8 @@ function ms_site_check()
             $admin_email = str_replace('@', ' AT ', get_site_option('admin_email', 'support@' . get_network()->domain));
             wp_die(
             /* translators: %s: admin email link */
-                sprintf(__('This site has not been activated yet. If you are having problems activating your site, please contact %s.'),
+                sprintf(
+                    __('This site has not been activated yet. If you are having problems activating your site, please contact %s.'),
                     sprintf('<a href="mailto:%s">%s</a>', $admin_email)
                 )
             );
@@ -310,8 +311,10 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
 
         if (0 === strcasecmp($current_site->domain, $domain) && 0 === strcasecmp($current_site->path, $path)) {
             $current_blog = get_site_by_path($domain, $path);
-        } elseif ('/' !== $current_site->path && 0 === strcasecmp($current_site->domain,
-                $domain) && 0 === stripos($path, $current_site->path)) {
+        } elseif ('/' !== $current_site->path && 0 === strcasecmp(
+            $current_site->domain,
+                $domain
+        ) && 0 === stripos($path, $current_site->path)) {
             // If the current network has a path and also matches the domain and path of the request,
             // we need to look for a site using the first path segment following the network's path.
             $current_blog = get_site_by_path($domain, $path, 1 + count(explode('/', trim($current_site->path, '/'))));
@@ -319,7 +322,6 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
             // Otherwise, use the first path segment (as usual).
             $current_blog = get_site_by_path($domain, $path, 1);
         }
-
     } elseif (!$subdomain) {
         /*
          * A "subdomain" install can be re-interpreted to mean "can support any domain".
@@ -440,10 +442,15 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
     if (empty($current_site->blog_id)) {
         if ($current_blog->domain === $current_site->domain && $current_blog->path === $current_site->path) {
             $current_site->blog_id = $current_blog->blog_id;
-        } elseif (!$current_site->blog_id = wp_cache_get('network:' . $current_site->id . ':main_site',
-            'site-options')) {
-            $current_site->blog_id = $wpdb->get_var($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs WHERE domain = %s AND path = %s",
-                $current_site->domain, $current_site->path));
+        } elseif (!$current_site->blog_id = wp_cache_get(
+            'network:' . $current_site->id . ':main_site',
+            'site-options'
+        )) {
+            $current_site->blog_id = $wpdb->get_var($wpdb->prepare(
+                "SELECT blog_id FROM $wpdb->blogs WHERE domain = %s AND path = %s",
+                $current_site->domain,
+                $current_site->path
+            ));
             wp_cache_add('network:' . $current_site->id . ':main_site', $current_site->blog_id, 'site-options');
         }
     }
@@ -498,7 +505,8 @@ function ms_not_installed($domain, $path)
     }
     $msg .= '<p><strong>' . __('What do I do now?') . '</strong> ';
     /* translators: %s: Codex URL */
-    $msg .= sprintf(__('Read the <a href="%s" target="_blank">bug report</a> page. Some of the guidelines there may help you figure out what went wrong.'),
+    $msg .= sprintf(
+        __('Read the <a href="%s" target="_blank">bug report</a> page. Some of the guidelines there may help you figure out what went wrong.'),
         __('https://codex.wordpress.org/Debugging_a_WordPress_Network')
     );
     $msg .= ' ' . __('If you&#8217;re still stuck with this message, then check that your database contains the following tables:') . '</p><ul>';

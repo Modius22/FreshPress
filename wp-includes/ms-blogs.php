@@ -140,11 +140,18 @@ function get_blog_details($fields = null, $get_all = true)
             }
             if (substr($fields['domain'], 0, 4) == 'www.') {
                 $nowww = substr($fields['domain'], 4);
-                $blog = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) AND path = %s ORDER BY CHAR_LENGTH(domain) DESC",
-                    $nowww, $fields['domain'], $fields['path']));
+                $blog = $wpdb->get_row($wpdb->prepare(
+                    "SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) AND path = %s ORDER BY CHAR_LENGTH(domain) DESC",
+                    $nowww,
+                    $fields['domain'],
+                    $fields['path']
+                ));
             } else {
-                $blog = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->blogs WHERE domain = %s AND path = %s",
-                    $fields['domain'], $fields['path']));
+                $blog = $wpdb->get_row($wpdb->prepare(
+                    "SELECT * FROM $wpdb->blogs WHERE domain = %s AND path = %s",
+                    $fields['domain'],
+                    $fields['path']
+                ));
             }
             if ($blog) {
                 wp_cache_set($blog->blog_id . 'short', $blog, 'blog-details');
@@ -160,11 +167,16 @@ function get_blog_details($fields = null, $get_all = true)
             }
             if (substr($fields['domain'], 0, 4) == 'www.') {
                 $nowww = substr($fields['domain'], 4);
-                $blog = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) ORDER BY CHAR_LENGTH(domain) DESC",
-                    $nowww, $fields['domain']));
+                $blog = $wpdb->get_row($wpdb->prepare(
+                    "SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) ORDER BY CHAR_LENGTH(domain) DESC",
+                    $nowww,
+                    $fields['domain']
+                ));
             } else {
-                $blog = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->blogs WHERE domain = %s",
-                    $fields['domain']));
+                $blog = $wpdb->get_row($wpdb->prepare(
+                    "SELECT * FROM $wpdb->blogs WHERE domain = %s",
+                    $fields['domain']
+                ));
             }
             if ($blog) {
                 wp_cache_set($blog->blog_id . 'short', $blog, 'blog-details');
@@ -589,8 +601,10 @@ function _prime_site_caches($ids)
 
     $non_cached_ids = _get_non_cached_ids($ids, 'sites');
     if (!empty($non_cached_ids)) {
-        $fresh_sites = $wpdb->get_results(sprintf("SELECT * FROM $wpdb->blogs WHERE blog_id IN (%s)",
-            join(",", array_map('intval', $non_cached_ids))));
+        $fresh_sites = $wpdb->get_results(sprintf(
+            "SELECT * FROM $wpdb->blogs WHERE blog_id IN (%s)",
+            join(",", array_map('intval', $non_cached_ids))
+        ));
 
         update_site_cache($fresh_sites);
     }
@@ -1103,8 +1117,11 @@ function update_blog_status($blog_id, $pref, $value, $deprecated = null)
         return $value;
     }
 
-    $result = $wpdb->update($wpdb->blogs, array($pref => $value, 'last_updated' => current_time('mysql', true)),
-        array('blog_id' => $blog_id));
+    $result = $wpdb->update(
+        $wpdb->blogs,
+        array($pref => $value, 'last_updated' => current_time('mysql', true)),
+        array('blog_id' => $blog_id)
+    );
 
     if (false === $result) {
         return false;
@@ -1202,8 +1219,12 @@ function get_last_updated($deprecated = '', $start = 0, $quantity = 40)
         _deprecated_argument(__FUNCTION__, 'MU');
     } // never used
 
-    return $wpdb->get_results($wpdb->prepare("SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d",
-        $wpdb->siteid, $start, $quantity), ARRAY_A);
+    return $wpdb->get_results($wpdb->prepare(
+        "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d",
+        $wpdb->siteid,
+        $start,
+        $quantity
+    ), ARRAY_A);
 }
 
 /**
@@ -1334,8 +1355,10 @@ function _prime_network_caches($network_ids)
 
     $non_cached_ids = _get_non_cached_ids($network_ids, 'networks');
     if (!empty($non_cached_ids)) {
-        $fresh_networks = $wpdb->get_results(sprintf("SELECT $wpdb->site.* FROM $wpdb->site WHERE id IN (%s)",
-            join(",", array_map('intval', $non_cached_ids))));
+        $fresh_networks = $wpdb->get_results(sprintf(
+            "SELECT $wpdb->site.* FROM $wpdb->site WHERE id IN (%s)",
+            join(",", array_map('intval', $non_cached_ids))
+        ));
 
         update_network_cache($fresh_networks);
     }

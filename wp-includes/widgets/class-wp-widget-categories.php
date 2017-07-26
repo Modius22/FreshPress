@@ -48,8 +48,12 @@ class WP_Widget_Categories extends WP_Widget
         static $first_dropdown = true;
 
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-        $title = apply_filters('widget_title', empty($instance['title']) ? __('Categories') : $instance['title'],
-            $instance, $this->id_base);
+        $title = apply_filters(
+            'widget_title',
+            empty($instance['title']) ? __('Categories') : $instance['title'],
+            $instance,
+            $this->id_base
+        );
 
         $c = !empty($instance['count']) ? '1' : '0';
         $h = !empty($instance['hierarchical']) ? '1' : '0';
@@ -84,8 +88,7 @@ class WP_Widget_Categories extends WP_Widget
              *
              * @param array $cat_args An array of Categories widget drop-down arguments.
              */
-            wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args));
-            ?>
+            wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args)); ?>
 
             <script type='text/javascript'>
                 /* <![CDATA[ */
@@ -110,15 +113,14 @@ class WP_Widget_Categories extends WP_Widget
                 <?php
                 $cat_args['title_li'] = '';
 
-                /**
-                 * Filters the arguments for the Categories widget.
-                 *
-                 * @since 2.8.0
-                 *
-                 * @param array $cat_args An array of Categories widget options.
-                 */
-                wp_list_categories(apply_filters('widget_categories_args', $cat_args));
-                ?>
+            /**
+             * Filters the arguments for the Categories widget.
+             *
+             * @since 2.8.0
+             *
+             * @param array $cat_args An array of Categories widget options.
+             */
+            wp_list_categories(apply_filters('widget_categories_args', $cat_args)); ?>
             </ul>
             <?php
         }
@@ -163,8 +165,7 @@ class WP_Widget_Categories extends WP_Widget
         $title = sanitize_text_field($instance['title']);
         $count = isset($instance['count']) ? (bool)$instance['count'] : false;
         $hierarchical = isset($instance['hierarchical']) ? (bool)$instance['hierarchical'] : false;
-        $dropdown = isset($instance['dropdown']) ? (bool)$instance['dropdown'] : false;
-        ?>
+        $dropdown = isset($instance['dropdown']) ? (bool)$instance['dropdown'] : false; ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                    name="<?php echo $this->get_field_name('title'); ?>" type="text"
@@ -183,5 +184,4 @@ class WP_Widget_Categories extends WP_Widget
             <label for="<?php echo $this->get_field_id('hierarchical'); ?>"><?php _e('Show hierarchy'); ?></label></p>
         <?php
     }
-
 }

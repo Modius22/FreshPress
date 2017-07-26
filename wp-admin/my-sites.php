@@ -52,10 +52,12 @@ get_current_screen()->set_help_sidebar(
 
 require_once(ABSPATH . 'wp-admin/admin-header.php');
 
-if ($updated) { ?>
+if ($updated) {
+    ?>
     <div id="message" class="updated notice is-dismissible"><p><strong><?php _e('Settings saved.'); ?></strong></p>
     </div>
-<?php } ?>
+<?php
+} ?>
 
     <div class="wrap">
         <h1 class="wp-heading-inline"><?php
@@ -66,8 +68,11 @@ if ($updated) { ?>
         if (in_array(get_site_option('registration'), array('all', 'blog'))) {
             /** This filter is documented in wp-login.php */
             $sign_up_url = apply_filters('wp_signup_location', network_site_url('wp-signup.php'));
-            printf(' <a href="%s" class="page-title-action">%s</a>', esc_url($sign_up_url),
-                esc_html_x('Add New', 'site'));
+            printf(
+                ' <a href="%s" class="page-title-action">%s</a>',
+                esc_url($sign_up_url),
+                esc_html_x('Add New', 'site')
+            );
         }
 
         if (empty($blogs)) :
@@ -122,9 +127,11 @@ if ($updated) { ?>
                          * @param string $string The HTML site link markup.
                          * @param object $user_blog An object containing the site data.
                          */
-                        echo "<p class='my-sites-actions'>" . apply_filters('myblogs_blog_actions',
+                        echo "<p class='my-sites-actions'>" . apply_filters(
+                            'myblogs_blog_actions',
                                 "<a href='" . esc_url(get_home_url($user_blog->userblog_id)) . "'>" . __('Visit') . "</a> | <a href='" . esc_url(get_admin_url($user_blog->userblog_id)) . "'>" . __('Dashboard') . "</a>",
-                                $user_blog) . "</p>";
+                                $user_blog
+                        ) . "</p>";
                         /** This filter is documented in wp-admin/my-sites.php */
                         echo apply_filters('myblogs_options', '', $user_blog);
                         echo "</li>";

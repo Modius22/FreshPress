@@ -72,8 +72,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     <fieldset>
                         <legend class="screen-reader-text"><span><?php _e('Other comment settings'); ?></span></legend>
                         <label for="require_name_email"><input type="checkbox" name="require_name_email"
-                                                               id="require_name_email" value="1" <?php checked('1',
-                                get_option('require_name_email')); ?> /> <?php _e('Comment author must fill out name and email'); ?>
+                                                               id="require_name_email" value="1" <?php checked(
+    '1',
+                                get_option('require_name_email')
+); ?> /> <?php _e('Comment author must fill out name and email'); ?>
                         </label>
                         <br/>
                         <label for="comment_registration">
@@ -81,8 +83,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                    value="1" <?php checked('1', get_option('comment_registration')); ?> />
                             <?php _e('Users must be registered and logged in to comment'); ?>
                             <?php if (!get_option('users_can_register') && is_multisite()) {
-                                echo ' ' . __('(Signup has been disabled. Only members of this site can comment.)');
-                            } ?>
+    echo ' ' . __('(Signup has been disabled. Only members of this site can comment.)');
+} ?>
                         </label>
                         <br/>
 
@@ -123,8 +125,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                             ?></label>
                         <br/>
                         <label for="page_comments">
-                            <input name="page_comments" type="checkbox" id="page_comments" value="1" <?php checked('1',
-                                get_option('page_comments')); ?> />
+                            <input name="page_comments" type="checkbox" id="page_comments" value="1" <?php checked(
+                                '1',
+                                get_option('page_comments')
+                            ); ?> />
                             <?php
                             $default_comments_page = '</label> <label for="default_comments_page"><select name="default_comments_page" id="default_comments_page"><option value="newest"';
                             if ('newest' == get_option('default_comments_page')) {
@@ -155,8 +159,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                             }
                             $comment_order .= '>' . __('newer') . '</option></select>';
 
-                            printf(__('Comments should be displayed with the %s comments at the top of each page'),
-                                $comment_order);
+                            printf(
+                                __('Comments should be displayed with the %s comments at the top of each page'),
+                                $comment_order
+                            );
 
                             ?></label>
                     </fieldset>
@@ -191,8 +197,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                             <?php _e('Comment must be manually approved'); ?> </label>
                         <br/>
                         <label for="comment_whitelist"><input type="checkbox" name="comment_whitelist"
-                                                              id="comment_whitelist" value="1" <?php checked('1',
-                                get_option('comment_whitelist')); ?> /> <?php _e('Comment author must have a previously approved comment'); ?>
+                                                              id="comment_whitelist" value="1" <?php checked(
+                                '1',
+                                get_option('comment_whitelist')
+                            ); ?> /> <?php _e('Comment author must have a previously approved comment'); ?>
                         </label>
                     </fieldset>
                 </td>
@@ -203,8 +211,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     <fieldset>
                         <legend class="screen-reader-text"><span><?php _e('Comment Moderation'); ?></span></legend>
                         <p>
-                            <label for="comment_max_links"><?php printf(__('Hold a comment in the queue if it contains %s or more links. (A common characteristic of comment spam is a large number of hyperlinks.)'),
-                                    '<input name="comment_max_links" type="number" step="1" min="0" id="comment_max_links" value="' . esc_attr(get_option('comment_max_links')) . '" class="small-text" />'); ?></label>
+                            <label for="comment_max_links"><?php printf(
+                                    __('Hold a comment in the queue if it contains %s or more links. (A common characteristic of comment spam is a large number of hyperlinks.)'),
+                                    '<input name="comment_max_links" type="number" step="1" min="0" id="comment_max_links" value="' . esc_attr(get_option('comment_max_links')) . '" class="small-text" />'
+                                ); ?></label>
                         </p>
 
                         <p>
@@ -260,8 +270,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                 </td>
             </tr>
             <tr class="avatar-settings<?php if (!$show_avatars) {
-                echo ' hide-if-js';
-            } ?>">
+            echo ' hide-if-js';
+        } ?>">
                 <th scope="row"><?php _e('Maximum Rating'); ?></th>
                 <td>
                     <fieldset>
@@ -288,8 +298,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                 </td>
             </tr>
             <tr class="avatar-settings<?php if (!$show_avatars) {
-                echo ' hide-if-js';
-            } ?>">
+                            echo ' hide-if-js';
+                        } ?>">
                 <th scope="row"><?php _e('Default Avatar'); ?></th>
                 <td class="defaultavatarpicker">
                     <fieldset>
@@ -328,8 +338,13 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                         foreach ($avatar_defaults as $default_key => $default_name) {
                             $selected = ($default == $default_key) ? 'checked="checked" ' : '';
                             $avatar_list .= "\n\t<label><input type='radio' name='avatar_default' id='avatar_{$default_key}' value='" . esc_attr($default_key) . "' {$selected}/> ";
-                            $avatar_list .= get_avatar($user_email, 32, $default_key, '',
-                                array('force_default' => true));
+                            $avatar_list .= get_avatar(
+                                $user_email,
+                                32,
+                                $default_key,
+                                '',
+                                array('force_default' => true)
+                            );
                             $avatar_list .= ' ' . $default_name . '</label>';
                             $avatar_list .= '<br />';
                         }

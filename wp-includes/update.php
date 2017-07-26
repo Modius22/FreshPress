@@ -155,8 +155,10 @@ function wp_version_check($extra_stats = array(), $force_check = false)
     foreach ($offers as &$offer) {
         foreach ($offer as $offer_key => $value) {
             if ('packages' == $offer_key) {
-                $offer['packages'] = (object)array_intersect_key(array_map('esc_url', $offer['packages']),
-                    array_fill_keys(array('full', 'no_content', 'new_bundled', 'partial', 'rollback'), ''));
+                $offer['packages'] = (object)array_intersect_key(
+                    array_map('esc_url', $offer['packages']),
+                    array_fill_keys(array('full', 'no_content', 'new_bundled', 'partial', 'rollback'), '')
+                );
             } elseif ('download' == $offer_key) {
                 $offer['download'] = esc_url($value);
             } else {
@@ -247,17 +249,17 @@ function wp_update_plugins($extra_stats = array())
 
     // Check for update on a different schedule, depending on the page.
     switch (current_filter()) {
-        case 'upgrader_process_complete' :
+        case 'upgrader_process_complete':
             $timeout = 0;
             break;
-        case 'load-update-core.php' :
+        case 'load-update-core.php':
             $timeout = MINUTE_IN_SECONDS;
             break;
-        case 'load-plugins.php' :
-        case 'load-update.php' :
+        case 'load-plugins.php':
+        case 'load-update.php':
             $timeout = HOUR_IN_SECONDS;
             break;
-        default :
+        default:
             if ($doing_cron) {
                 $timeout = 0;
             } else {
@@ -277,7 +279,7 @@ function wp_update_plugins($extra_stats = array())
             }
         }
 
-        if (isset ($current->response) && is_array($current->response)) {
+        if (isset($current->response) && is_array($current->response)) {
             foreach ($current->response as $plugin_file => $update_details) {
                 if (!isset($plugins[$plugin_file])) {
                     $plugin_changed = true;
@@ -436,17 +438,17 @@ function wp_update_themes($extra_stats = array())
 
     // Check for update on a different schedule, depending on the page.
     switch (current_filter()) {
-        case 'upgrader_process_complete' :
+        case 'upgrader_process_complete':
             $timeout = 0;
             break;
-        case 'load-update-core.php' :
+        case 'load-update-core.php':
             $timeout = MINUTE_IN_SECONDS;
             break;
-        case 'load-themes.php' :
-        case 'load-update.php' :
+        case 'load-themes.php':
+        case 'load-update.php':
             $timeout = HOUR_IN_SECONDS;
             break;
-        default :
+        default:
             $timeout = $doing_cron ? 0 : 12 * HOUR_IN_SECONDS;
     }
 
@@ -460,7 +462,7 @@ function wp_update_themes($extra_stats = array())
             }
         }
 
-        if (isset ($last_update->response) && is_array($last_update->response)) {
+        if (isset($last_update->response) && is_array($last_update->response)) {
             foreach ($last_update->response as $slug => $update_details) {
                 if (!isset($checked[$slug])) {
                     $theme_changed = true;
@@ -616,8 +618,10 @@ function wp_get_update_data()
 
     if (($core = current_user_can('update_core')) && function_exists('get_core_updates')) {
         $update_wordpress = get_core_updates(array('dismissed' => false));
-        if (!empty($update_wordpress) && !in_array($update_wordpress[0]->response,
-                array('development', 'latest')) && current_user_can('update_core')) {
+        if (!empty($update_wordpress) && !in_array(
+            $update_wordpress[0]->response,
+                array('development', 'latest')
+        ) && current_user_can('update_core')) {
             $counts['wordpress'] = 1;
         }
     }
@@ -634,8 +638,10 @@ function wp_get_update_data()
     }
     if ($counts['plugins']) {
         /* translators: 1: Number of updates available to plugins */
-        $titles['plugins'] = sprintf(_n('%d Plugin Update', '%d Plugin Updates', $counts['plugins']),
-            $counts['plugins']);
+        $titles['plugins'] = sprintf(
+            _n('%d Plugin Update', '%d Plugin Updates', $counts['plugins']),
+            $counts['plugins']
+        );
     }
     if ($counts['themes']) {
         /* translators: 1: Number of updates available to themes */

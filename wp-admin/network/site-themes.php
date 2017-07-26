@@ -21,8 +21,10 @@ get_current_screen()->add_help_tab(array(
         '<p>' . __('The menu is for editing information specific to individual sites, particularly if the admin area of a site is unavailable.') . '</p>' .
         '<p>' . __('<strong>Info</strong> &mdash; The site URL is rarely edited as this can cause the site to not work properly. The Registered date and Last Updated date are displayed. Network admins can mark a site as archived, spam, deleted and mature, to remove from public listings or disable.') . '</p>' .
         '<p>' . __('<strong>Users</strong> &mdash; This displays the users associated with this site. You can also change their role, reset their password, or remove them from the site. Removing the user from the site does not remove the user from the network.') . '</p>' .
-        '<p>' . sprintf(__('<strong>Themes</strong> &mdash; This area shows themes that are not already enabled across the network. Enabling a theme in this menu makes it accessible to this site. It does not activate the theme, but allows it to show in the site&#8217;s Appearance menu. To enable a theme for the entire network, see the <a href="%s">Network Themes</a> screen.'),
-            network_admin_url('themes.php')) . '</p>' .
+        '<p>' . sprintf(
+            __('<strong>Themes</strong> &mdash; This area shows themes that are not already enabled across the network. Enabling a theme in this menu makes it accessible to this site. It does not activate the theme, but allows it to show in the site&#8217;s Appearance menu. To enable a theme for the entire network, see the <a href="%s">Network Themes</a> screen.'),
+            network_admin_url('themes.php')
+        ) . '</p>' .
         '<p>' . __('<strong>Settings</strong> &mdash; This page shows a list of all settings associated with this site. Some are created by WordPress and others are created by plugins you activate. Note that some fields are grayed out and say Serialized Data. You cannot modify these values due to the way the setting is stored in the database.') . '</p>'
 ));
 
@@ -197,8 +199,10 @@ require(ABSPATH . 'wp-admin/admin-header.php'); ?>
         } else {
             $message = _n('%s theme enabled.', '%s themes enabled.', $enabled);
         }
-        echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf($message,
-                number_format_i18n($enabled)) . '</p></div>';
+        echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+            $message,
+                number_format_i18n($enabled)
+        ) . '</p></div>';
     } elseif (isset($_GET['disabled'])) {
         $disabled = absint($_GET['disabled']);
         if (1 == $disabled) {
@@ -206,8 +210,10 @@ require(ABSPATH . 'wp-admin/admin-header.php'); ?>
         } else {
             $message = _n('%s theme disabled.', '%s themes disabled.', $disabled);
         }
-        echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf($message,
-                number_format_i18n($disabled)) . '</p></div>';
+        echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+            $message,
+                number_format_i18n($disabled)
+        ) . '</p></div>';
     } elseif (isset($_GET['error']) && 'none' == $_GET['error']) {
         echo '<div id="message" class="error notice is-dismissible"><p>' . __('No theme selected.') . '</p></div>';
     } ?>

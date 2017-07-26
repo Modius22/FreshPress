@@ -269,14 +269,20 @@ function remove_user_from_blog($user_id, $blog_id = '', $reassign = '')
         $link_ids = $wpdb->get_col($wpdb->prepare("SELECT link_id FROM $wpdb->links WHERE link_owner = %d", $user_id));
 
         if (!empty($post_ids)) {
-            $wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET post_author = %d WHERE post_author = %d", $reassign,
-                $user_id));
+            $wpdb->query($wpdb->prepare(
+                "UPDATE $wpdb->posts SET post_author = %d WHERE post_author = %d",
+                $reassign,
+                $user_id
+            ));
             array_walk($post_ids, 'clean_post_cache');
         }
 
         if (!empty($link_ids)) {
-            $wpdb->query($wpdb->prepare("UPDATE $wpdb->links SET link_owner = %d WHERE link_owner = %d", $reassign,
-                $user_id));
+            $wpdb->query($wpdb->prepare(
+                "UPDATE $wpdb->links SET link_owner = %d WHERE link_owner = %d",
+                $reassign,
+                $user_id
+            ));
             array_walk($link_ids, 'clean_bookmark_cache');
         }
     }
@@ -326,8 +332,7 @@ function get_blog_id_from_url($domain, $path = '/')
     $path = strtolower($path);
     $id = wp_cache_get(md5($domain . $path), 'blog-id-cache');
 
-    if ($id == -1) // blog does not exist
-    {
+    if ($id == -1) { // blog does not exist
         return 0;
     } elseif ($id) {
         return (int)$id;
@@ -469,8 +474,10 @@ function wpmu_validate_user_signup($user_name, $user_email)
     if (!is_email($user_email)) {
         $errors->add('user_email', __('Please enter a valid email address.'));
     } elseif (is_email_address_unsafe($user_email)) {
-        $errors->add('user_email',
-            __('You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider.'));
+        $errors->add(
+            'user_email',
+            __('You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider.')
+        );
     }
 
     if (strlen($user_name) < 4) {
@@ -514,8 +521,10 @@ function wpmu_validate_user_signup($user_name, $user_email)
         if ($diff > 2 * DAY_IN_SECONDS) {
             $wpdb->delete($wpdb->signups, array('user_login' => $user_name));
         } else {
-            $errors->add('user_name',
-                __('That username is currently reserved but may be available in a couple of days.'));
+            $errors->add(
+                'user_name',
+                __('That username is currently reserved but may be available in a couple of days.')
+            );
         }
     }
 
@@ -526,8 +535,10 @@ function wpmu_validate_user_signup($user_name, $user_email)
         if ($diff > 2 * DAY_IN_SECONDS) {
             $wpdb->delete($wpdb->signups, array('user_email' => $user_email));
         } else {
-            $errors->add('user_email',
-                __('That email address has already been used. Please check your inbox for an activation email. It will become available in a couple of days if you do nothing.'));
+            $errors->add(
+                'user_email',
+                __('That email address has already been used. Please check your inbox for an activation email. It will become available in a couple of days if you do nothing.')
+            );
         }
     }
 
@@ -599,9 +610,9 @@ function wpmu_validate_blog_signup($blogname, $blog_title, $user = '')
     }
 
     /*
-	 * On sub dir installs, some names are so illegal, only a filter can
-	 * spring them from jail.
-	 */
+     * On sub dir installs, some names are so illegal, only a filter can
+     * spring them from jail.
+     */
     if (!is_subdomain_install()) {
         $illegal_names = array_merge($illegal_names, get_subdirectory_reserved_names());
     }
@@ -629,14 +640,21 @@ function wpmu_validate_blog_signup($blogname, $blog_title, $user = '')
 
     if (strlen($blogname) < $minimum_site_name_length) {
         /* translators: %s: minimum site name length */
-        $errors->add('blogname',
-            sprintf(_n('Site name must be at least %s character.', 'Site name must be at least %s characters.',
-                $minimum_site_name_length), number_format_i18n($minimum_site_name_length)));
+        $errors->add(
+            'blogname',
+            sprintf(_n(
+                'Site name must be at least %s character.',
+                'Site name must be at least %s characters.',
+                $minimum_site_name_length
+            ), number_format_i18n($minimum_site_name_length))
+        );
     }
 
     // do not allow users to create a blog that conflicts with a page on the main blog.
-    if (!is_subdomain_install() && $wpdb->get_var($wpdb->prepare("SELECT post_name FROM " . $wpdb->get_blog_prefix($current_network->site_id) . "posts WHERE post_type = 'page' AND post_name = %s",
-            $blogname))) {
+    if (!is_subdomain_install() && $wpdb->get_var($wpdb->prepare(
+        "SELECT post_name FROM " . $wpdb->get_blog_prefix($current_network->site_id) . "posts WHERE post_type = 'page' AND post_name = %s",
+            $blogname
+    ))) {
         $errors->add('blogname', __('Sorry, you may not use that site name.'));
     }
 
@@ -682,8 +700,11 @@ function wpmu_validate_blog_signup($blogname, $blog_title, $user = '')
     }
 
     // Has someone already signed up for this domain?
-    $signup = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->signups WHERE domain = %s AND path = %s", $mydomain,
-        $path)); // TODO: Check email too?
+    $signup = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $wpdb->signups WHERE domain = %s AND path = %s",
+        $mydomain,
+        $path
+    )); // TODO: Check email too?
     if (!empty($signup)) {
         $diff = current_time('timestamp', true) - mysql2date('U', $signup->registered);
         // If registered more than two days ago, cancel registration and let this signup go through.
@@ -886,8 +907,16 @@ function wpmu_signup_blog_notification($domain, $path, $title, $user_login, $use
      * @param string $key Activation key created in wpmu_signup_blog().
      * @param array $meta Signup meta data. By default, contains the requested privacy setting and lang_id.
      */
-    if (!apply_filters('wpmu_signup_blog_notification', $domain, $path, $title, $user_login, $user_email, $key,
-        $meta)) {
+    if (!apply_filters(
+        'wpmu_signup_blog_notification',
+        $domain,
+        $path,
+        $title,
+        $user_login,
+        $user_email,
+        $key,
+        $meta
+    )) {
         return false;
     }
 
@@ -926,9 +955,16 @@ function wpmu_signup_blog_notification($domain, $path, $title, $user_login, $use
      * @param string $key Activation key created in wpmu_signup_blog().
      * @param array $meta Signup meta data. By default, contains the requested privacy setting and lang_id.
      */
-        apply_filters('wpmu_signup_blog_notification_email',
+        apply_filters(
+            'wpmu_signup_blog_notification_email',
             __("To activate your blog, please click the following link:\n\n%s\n\nAfter you activate, you will receive *another email* with your login.\n\nAfter you activate, you can visit your site here:\n\n%s"),
-            $domain, $path, $title, $user_login, $user_email, $key, $meta
+            $domain,
+            $path,
+            $title,
+            $user_login,
+            $user_email,
+            $key,
+            $meta
         ),
         $activate_url,
         esc_url("http://{$domain}{$path}"),
@@ -950,10 +986,17 @@ function wpmu_signup_blog_notification($domain, $path, $title, $user_login, $use
      * @param string $key Activation key created in wpmu_signup_blog().
      * @param array $meta Signup meta data. By default, contains the requested privacy setting and lang_id.
      */
-        apply_filters('wpmu_signup_blog_notification_subject',
+        apply_filters(
+            'wpmu_signup_blog_notification_subject',
             /* translators: New site notification email subject. 1: Network name, 2: New site URL */
             _x('[%1$s] Activate %2$s', 'New site notification email subject'),
-            $domain, $path, $title, $user_login, $user_email, $key, $meta
+            $domain,
+            $path,
+            $title,
+            $user_login,
+            $user_email,
+            $key,
+            $meta
         ),
         $from_name,
         esc_url('http://' . $domain . $path)
@@ -1028,9 +1071,13 @@ function wpmu_signup_user_notification($user_login, $user_email, $key, $meta = a
      * @param string $key Activation key created in wpmu_signup_user().
      * @param array $meta Signup meta data. Default empty array.
      */
-        apply_filters('wpmu_signup_user_notification_email',
+        apply_filters(
+            'wpmu_signup_user_notification_email',
             __("To activate your user, please click the following link:\n\n%s\n\nAfter you activate, you will receive *another email* with your login."),
-            $user_login, $user_email, $key, $meta
+            $user_login,
+            $user_email,
+            $key,
+            $meta
         ),
         site_url("wp-activate.php?key=$key")
     );
@@ -1047,10 +1094,14 @@ function wpmu_signup_user_notification($user_login, $user_email, $key, $meta = a
      * @param string $key Activation key created in wpmu_signup_user().
      * @param array $meta Signup meta data. Default empty array.
      */
-        apply_filters('wpmu_signup_user_notification_subject',
+        apply_filters(
+            'wpmu_signup_user_notification_subject',
             /* translators: New user notification email subject. 1: Network name, 2: New user login */
             _x('[%1$s] Activate %2$s', 'New user notification email subject'),
-            $user_login, $user_email, $key, $meta
+            $user_login,
+            $user_email,
+            $key,
+            $meta
         ),
         $from_name,
         $user_login
@@ -1464,8 +1515,10 @@ function insert_blog($domain, $path, $site_id)
     $path = trailingslashit($path);
     $site_id = (int)$site_id;
 
-    $result = $wpdb->insert($wpdb->blogs,
-        array('site_id' => $site_id, 'domain' => $domain, 'path' => $path, 'registered' => current_time('mysql')));
+    $result = $wpdb->insert(
+        $wpdb->blogs,
+        array('site_id' => $site_id, 'domain' => $domain, 'path' => $path, 'registered' => current_time('mysql'))
+    );
     if (!$result) {
         return false;
     }
@@ -1521,14 +1574,12 @@ function install_blog($blog_id, $blog_title = '')
     $siteurl = $home = untrailingslashit($url);
 
     if (!is_subdomain_install()) {
-
         if ('https' === parse_url(get_site_option('siteurl'), PHP_URL_SCHEME)) {
             $siteurl = set_url_scheme($siteurl, 'https');
         }
         if ('https' === parse_url(get_home_url(get_network()->site_id), PHP_URL_SCHEME)) {
             $home = set_url_scheme($home, 'https');
         }
-
     }
 
     update_option('siteurl', $siteurl);
@@ -1659,8 +1710,15 @@ We hope you enjoy your new site. Thanks!
      * @param string $title Site title.
      * @param array $meta Signup meta data. By default, contains the requested privacy setting and lang_id.
      */
-    $welcome_email = apply_filters('update_welcome_email', $welcome_email, $blog_id, $user_id, $password, $title,
-        $meta);
+    $welcome_email = apply_filters(
+        'update_welcome_email',
+        $welcome_email,
+        $blog_id,
+        $user_id,
+        $password,
+        $title,
+        $meta
+    );
     $admin_email = get_site_option('admin_email');
 
     if ($admin_email == '') {
@@ -1685,8 +1743,10 @@ We hope you enjoy your new site. Thanks!
      *
      * @param string $subject Subject of the email.
      */
-    $subject = apply_filters('update_welcome_subject',
-        sprintf($subject, $current_network->site_name, wp_unslash($title)));
+    $subject = apply_filters(
+        'update_welcome_subject',
+        sprintf($subject, $current_network->site_name, wp_unslash($title))
+    );
     wp_mail($user->user_email, wp_specialchars_decode($subject), $message, $message_headers);
 
     if ($switched_locale) {
@@ -1778,8 +1838,10 @@ function wpmu_welcome_user_notification($user_id, $password, $meta = array())
      *
      * @param string $subject Subject of the email.
      */
-    $subject = apply_filters('update_welcome_user_subject',
-        sprintf($subject, $current_network->site_name, $user->user_login));
+    $subject = apply_filters(
+        'update_welcome_user_subject',
+        sprintf($subject, $current_network->site_name, $user->user_login)
+    );
     wp_mail($user->user_email, wp_specialchars_decode($subject), $message, $message_headers);
 
     if ($switched_locale) {
@@ -1833,8 +1895,10 @@ function get_most_recent_post_of_user($user_id)
     // published by $user_id
     foreach ((array)$user_blogs as $blog) {
         $prefix = $wpdb->get_blog_prefix($blog->userblog_id);
-        $recent_post = $wpdb->get_row($wpdb->prepare("SELECT ID, post_date_gmt FROM {$prefix}posts WHERE post_author = %d AND post_type = 'post' AND post_status = 'publish' ORDER BY post_date_gmt DESC LIMIT 1",
-            $user_id), ARRAY_A);
+        $recent_post = $wpdb->get_row($wpdb->prepare(
+            "SELECT ID, post_date_gmt FROM {$prefix}posts WHERE post_author = %d AND post_type = 'post' AND post_status = 'publish' ORDER BY post_date_gmt DESC LIMIT 1",
+            $user_id
+        ), ARRAY_A);
 
         // Make sure we found a post
         if (isset($recent_post['ID'])) {
@@ -1980,8 +2044,10 @@ function check_upload_mimes($mimes)
 function update_posts_count($deprecated = '')
 {
     global $wpdb;
-    update_option('post_count',
-        (int)$wpdb->get_var("SELECT COUNT(ID) FROM {$wpdb->posts} WHERE post_status = 'publish' and post_type = 'post'"));
+    update_option(
+        'post_count',
+        (int)$wpdb->get_var("SELECT COUNT(ID) FROM {$wpdb->posts} WHERE post_status = 'publish' and post_type = 'post'")
+    );
 }
 
 /**
@@ -2043,14 +2109,20 @@ function global_terms($term_id, $deprecated = '')
     $term_id = intval($term_id);
     $c = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->terms WHERE term_id = %d", $term_id));
 
-    $global_id = $wpdb->get_var($wpdb->prepare("SELECT cat_ID FROM $wpdb->sitecategories WHERE category_nicename = %s",
-        $c->slug));
+    $global_id = $wpdb->get_var($wpdb->prepare(
+        "SELECT cat_ID FROM $wpdb->sitecategories WHERE category_nicename = %s",
+        $c->slug
+    ));
     if ($global_id == null) {
-        $used_global_id = $wpdb->get_var($wpdb->prepare("SELECT cat_ID FROM $wpdb->sitecategories WHERE cat_ID = %d",
-            $c->term_id));
+        $used_global_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT cat_ID FROM $wpdb->sitecategories WHERE cat_ID = %d",
+            $c->term_id
+        ));
         if (null == $used_global_id) {
-            $wpdb->insert($wpdb->sitecategories,
-                array('cat_ID' => $term_id, 'cat_name' => $c->name, 'category_nicename' => $c->slug));
+            $wpdb->insert(
+                $wpdb->sitecategories,
+                array('cat_ID' => $term_id, 'cat_name' => $c->name, 'category_nicename' => $c->slug)
+            );
             $global_id = $wpdb->insert_id;
             if (empty($global_id)) {
                 return $term_id;
@@ -2059,8 +2131,10 @@ function global_terms($term_id, $deprecated = '')
             $max_global_id = $wpdb->get_var("SELECT MAX(cat_ID) FROM $wpdb->sitecategories");
             $max_local_id = $wpdb->get_var("SELECT MAX(term_id) FROM $wpdb->terms");
             $new_global_id = max($max_global_id, $max_local_id) + mt_rand(100, 400);
-            $wpdb->insert($wpdb->sitecategories,
-                array('cat_ID' => $new_global_id, 'cat_name' => $c->name, 'category_nicename' => $c->slug));
+            $wpdb->insert(
+                $wpdb->sitecategories,
+                array('cat_ID' => $new_global_id, 'cat_name' => $c->name, 'category_nicename' => $c->slug)
+            );
             $global_id = $wpdb->insert_id;
         }
     } elseif ($global_id != $term_id) {
@@ -2122,8 +2196,10 @@ function upload_is_file_too_big($upload)
     }
 
     if (strlen($upload['bits']) > (KB_IN_BYTES * get_site_option('fileupload_maxk', 1500))) {
-        return sprintf(__('This file is too big. Files must be less than %d KB in size.') . '<br />',
-            get_site_option('fileupload_maxk', 1500));
+        return sprintf(
+            __('This file is too big. Files must be less than %d KB in size.') . '<br />',
+            get_site_option('fileupload_maxk', 1500)
+        );
     }
 
     return $upload;
@@ -2178,8 +2254,10 @@ function maybe_redirect_404()
      *
      * @param string $no_blog_redirect The redirect URL defined in NOBLOGREDIRECT.
      */
-    if (is_main_site() && is_404() && defined('NOBLOGREDIRECT') && ($destination = apply_filters('blog_redirect_404',
-            NOBLOGREDIRECT))) {
+    if (is_main_site() && is_404() && defined('NOBLOGREDIRECT') && ($destination = apply_filters(
+        'blog_redirect_404',
+            NOBLOGREDIRECT
+    ))) {
         if ($destination == '%siteurl%') {
             $destination = network_home_url();
         }
@@ -2216,12 +2294,17 @@ function maybe_add_existing_user_to_blog()
     }
 
     if (empty($details) || is_wp_error(add_existing_user_to_blog($details))) {
-        wp_die(sprintf(__('An error occurred adding you to this site. Back to the <a href="%s">homepage</a>.'),
-            home_url()));
+        wp_die(sprintf(
+            __('An error occurred adding you to this site. Back to the <a href="%s">homepage</a>.'),
+            home_url()
+        ));
     }
 
-    wp_die(sprintf(__('You have been added to this site. Please visit the <a href="%s">homepage</a> or <a href="%s">log in</a> using your username and password.'),
-        home_url(), admin_url()), __('WordPress &rsaquo; Success'), array('response' => 200));
+    wp_die(sprintf(
+        __('You have been added to this site. Please visit the <a href="%s">homepage</a> or <a href="%s">log in</a> using your username and password.'),
+        home_url(),
+        admin_url()
+    ), __('WordPress &rsaquo; Success'), array('response' => 200));
 }
 
 /**

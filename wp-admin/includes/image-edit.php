@@ -41,9 +41,7 @@ function wp_image_editor($post_id, $msg = false)
         } elseif (isset($msg->msg)) {
             $note = "<div class='updated'><p>$msg->msg</p></div>";
         }
-    }
-
-    ?>
+    } ?>
     <div class="imgedit-wrap wp-clearfix">
         <div id="imgedit-panel-<?php echo $post_id; ?>">
 
@@ -58,8 +56,10 @@ function wp_image_editor($post_id, $msg = false)
                             <p><?php _e('You can proportionally scale the original image. For best results, scaling should be done before you crop, flip, or rotate. Images can only be scaled down, not up.'); ?></p>
                         </div>
                         <?php if (isset($meta['width'], $meta['height'])): ?>
-                            <p><?php printf(__('Original dimensions %s'),
-                                    $meta['width'] . ' &times; ' . $meta['height']); ?></p>
+                            <p><?php printf(
+        __('Original dimensions %s'),
+                                    $meta['width'] . ' &times; ' . $meta['height']
+    ); ?></p>
                         <?php endif ?>
                         <div class="imgedit-submit">
 
@@ -91,7 +91,8 @@ function wp_image_editor($post_id, $msg = false)
                     </div>
                 </div>
 
-                <?php if ($can_restore) { ?>
+                <?php if ($can_restore) {
+        ?>
 
                     <div class="imgedit-group">
                         <div class="imgedit-group-top">
@@ -103,11 +104,9 @@ function wp_image_editor($post_id, $msg = false)
                             <div class="imgedit-help">
                                 <p><?php _e('Discard any changes and restore the original image.');
 
-                                    if (!defined('IMAGE_EDIT_OVERWRITE') || !IMAGE_EDIT_OVERWRITE) {
-                                        echo ' ' . __('Previously edited copies of the image will not be deleted.');
-                                    }
-
-                                    ?></p>
+        if (!defined('IMAGE_EDIT_OVERWRITE') || !IMAGE_EDIT_OVERWRITE) {
+            echo ' ' . __('Previously edited copies of the image will not be deleted.');
+        } ?></p>
                                 <div class="imgedit-submit">
                                     <input type="button"
                                            onclick="imageEdit.action(<?php echo "$post_id, '$nonce'"; ?>, 'restore')"
@@ -118,7 +117,8 @@ function wp_image_editor($post_id, $msg = false)
                         </div>
                     </div>
 
-                <?php } ?>
+                <?php
+    } ?>
 
                 <div class="imgedit-group">
                     <div class="imgedit-group-top">
@@ -177,8 +177,7 @@ function wp_image_editor($post_id, $msg = false)
                 </div>
 
                 <?php if ($thumb && $sub_sizes) {
-                    $thumb_img = wp_constrain_dimensions($thumb['width'], $thumb['height'], 160, 120);
-                    ?>
+        $thumb_img = wp_constrain_dimensions($thumb['width'], $thumb['height'], 160, 120); ?>
 
                     <div class="imgedit-group imgedit-applyto">
                         <div class="imgedit-group-top">
@@ -219,7 +218,8 @@ function wp_image_editor($post_id, $msg = false)
                         </div>
                     </div>
 
-                <?php } ?>
+                <?php
+    } ?>
 
             </div>
 
@@ -235,8 +235,7 @@ function wp_image_editor($post_id, $msg = false)
                         'mime_type' => get_post_mime_type($post_id),
                         'methods' => array('rotate')
                     ))) {
-                        $note_no_rotate = '';
-                        ?>
+                        $note_no_rotate = ''; ?>
                         <button type="button" class="imgedit-rleft button"
                                 onclick="imageEdit.rotate( 90, <?php echo "$post_id, '$nonce'"; ?>, this)"><span
                                     class="screen-reader-text"><?php esc_html_e('Rotate counter-clockwise'); ?></span>
@@ -244,12 +243,13 @@ function wp_image_editor($post_id, $msg = false)
                         <button type="button" class="imgedit-rright button"
                                 onclick="imageEdit.rotate(-90, <?php echo "$post_id, '$nonce'"; ?>, this)"><span
                                     class="screen-reader-text"><?php esc_html_e('Rotate clockwise'); ?></span></button>
-                    <?php } else {
-                        $note_no_rotate = '<p class="note-no-rotate"><em>' . __('Image rotation is not supported by your web host.') . '</em></p>';
-                        ?>
+                    <?php
+                    } else {
+                        $note_no_rotate = '<p class="note-no-rotate"><em>' . __('Image rotation is not supported by your web host.') . '</em></p>'; ?>
                         <button type="button" class="imgedit-rleft button disabled" disabled></button>
                         <button type="button" class="imgedit-rright button disabled" disabled></button>
-                    <?php } ?>
+                    <?php
+                    } ?>
 
                     <button type="button" onclick="imageEdit.flip(1, <?php echo "$post_id, '$nonce'"; ?>, this)"
                             class="imgedit-flipv button"><span
@@ -281,9 +281,13 @@ function wp_image_editor($post_id, $msg = false)
                 <div id="imgedit-crop-<?php echo $post_id; ?>" class="imgedit-crop-wrap">
                     <img id="image-preview-<?php echo $post_id; ?>"
                          onload="imageEdit.imgLoaded('<?php echo $post_id; ?>')"
-                         src="<?php echo admin_url('admin-ajax.php',
-                             'relative'); ?>?action=imgedit-preview&amp;_ajax_nonce=<?php echo $nonce; ?>&amp;postid=<?php echo $post_id; ?>&amp;rand=<?php echo rand(1,
-                             99999); ?>" alt=""/>
+                         src="<?php echo admin_url(
+                            'admin-ajax.php',
+                             'relative'
+                        ); ?>?action=imgedit-preview&amp;_ajax_nonce=<?php echo $nonce; ?>&amp;postid=<?php echo $post_id; ?>&amp;rand=<?php echo rand(
+                                 1,
+                             99999
+                             ); ?>" alt=""/>
                 </div>
 
                 <div class="imgedit-submit">
@@ -655,8 +659,13 @@ function image_edit_apply_changes($image, $changes)
                     $image->crop($sel->x * $scale, $sel->y * $scale, $sel->w * $scale, $sel->h * $scale);
                 } else {
                     $scale = 1 / _image_get_preview_ratio(imagesx($image), imagesy($image)); // discard preview scaling
-                    $image = _crop_image_resource($image, $sel->x * $scale, $sel->y * $scale, $sel->w * $scale,
-                        $sel->h * $scale);
+                    $image = _crop_image_resource(
+                        $image,
+                        $sel->x * $scale,
+                        $sel->y * $scale,
+                        $sel->w * $scale,
+                        $sel->h * $scale
+                    );
                 }
                 break;
         }
@@ -781,9 +790,11 @@ function wp_restore_image($post_id)
     }
 
     if (!wp_update_attachment_metadata($post_id, $meta) ||
-        ($old_backup_sizes !== $backup_sizes && !update_post_meta($post_id, '_wp_attachment_backup_sizes',
-                $backup_sizes))) {
-
+        ($old_backup_sizes !== $backup_sizes && !update_post_meta(
+            $post_id,
+            '_wp_attachment_backup_sizes',
+                $backup_sizes
+        ))) {
         $msg->error = __('Cannot save image metadata.');
         return $msg;
     }
@@ -874,7 +885,6 @@ function wp_save_image($post_id)
 
     if (defined('IMAGE_EDIT_OVERWRITE') && IMAGE_EDIT_OVERWRITE &&
         isset($backup_sizes['full-orig']) && $backup_sizes['full-orig']['file'] != $basename) {
-
         if ('thumbnail' == $target) {
             $new_path = "{$dirname}/{$filename}-temp.{$ext}";
         } else {

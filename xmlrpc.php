@@ -30,8 +30,7 @@ if (isset($HTTP_RAW_POST_DATA)) {
 include(dirname(__FILE__) . '/wp-load.php');
 
 if (isset($_GET['rsd'])) { // http://cyber.law.harvard.edu/blogs/gems/tech/rsd.html
-    header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
-    ?>
+    header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true); ?>
     <?php echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>'; ?>
     <rsd version="1.0" xmlns="http://archipelago.phrasewise.com/rsd">
         <service>
@@ -54,8 +53,7 @@ if (isset($_GET['rsd'])) { // http://cyber.law.harvard.edu/blogs/gems/tech/rsd.h
                  *
                  * @since 3.5.0
                  */
-                do_action('xmlrpc_rsd_apis');
-                ?>
+                do_action('xmlrpc_rsd_apis'); ?>
             </apis>
         </service>
     </rsd>

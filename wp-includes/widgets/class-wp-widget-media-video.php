@@ -33,10 +33,14 @@ class WP_Widget_Media_Video extends WP_Widget_Media
         $this->l10n = array_merge($this->l10n, array(
             'no_media_selected' => __('No video selected'),
             'add_media' => _x('Add Video', 'label for button in the video widget'),
-            'replace_media' => _x('Replace Video',
-                'label for button in the video widget; should preferably not be longer than ~13 characters long'),
-            'edit_media' => _x('Edit Video',
-                'label for button in the video widget; should preferably not be longer than ~13 characters long'),
+            'replace_media' => _x(
+                'Replace Video',
+                'label for button in the video widget; should preferably not be longer than ~13 characters long'
+            ),
+            'edit_media' => _x(
+                'Edit Video',
+                'label for button in the video widget; should preferably not be longer than ~13 characters long'
+            ),
             'missing_attachment' => sprintf(
             /* translators: placeholder is URL to media library */
                 __('We can&#8217;t find that video. Check your <a href="%s">media library</a> and make sure it wasn&#8217;t deleted.'),
@@ -46,8 +50,10 @@ class WP_Widget_Media_Video extends WP_Widget_Media
             'media_library_state_multi' => _n_noop('Video Widget (%d)', 'Video Widget (%d)'),
             'media_library_state_single' => __('Video Widget'),
             /* translators: placeholder is a list of valid video file extensions */
-            'unsupported_file_type' => sprintf(__('Sorry, we can&#8217;t display the video file type selected. Please select a supported video file (%1$s) or stream (YouTube or Vimeo) instead.'),
-                '<code>.' . implode('</code>, <code>.', wp_get_video_extensions()) . '</code>'),
+            'unsupported_file_type' => sprintf(
+                __('Sorry, we can&#8217;t display the video file type selected. Please select a supported video file (%1$s) or stream (YouTube or Vimeo) instead.'),
+                '<code>.' . implode('</code>, <code>.', wp_get_video_extensions()) . '</code>'
+            ),
         ));
     }
 
@@ -203,8 +209,10 @@ class WP_Widget_Media_Video extends WP_Widget_Media
 
         $exported_schema = array();
         foreach ($this->get_instance_schema() as $field => $field_schema) {
-            $exported_schema[$field] = wp_array_slice_assoc($field_schema,
-                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update'));
+            $exported_schema[$field] = wp_array_slice_assoc(
+                $field_schema,
+                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update')
+            );
         }
         wp_add_inline_script(
             $handle,

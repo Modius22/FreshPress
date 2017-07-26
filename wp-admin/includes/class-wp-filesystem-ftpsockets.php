@@ -51,13 +51,13 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
         }
 
         // Check if the options provided are OK.
-        if (empty ($opt['username'])) {
+        if (empty($opt['username'])) {
             $this->errors->add('empty_username', __('FTP username is required'));
         } else {
             $this->options['username'] = $opt['username'];
         }
 
-        if (empty ($opt['password'])) {
+        if (empty($opt['password'])) {
             $this->errors->add('empty_password', __('FTP password is required'));
         } else {
             $this->options['password'] = $opt['password'];
@@ -78,9 +78,11 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
         $this->ftp->setTimeout(FS_CONNECT_TIMEOUT);
 
         if (!$this->ftp->SetServer($this->options['hostname'], $this->options['port'])) {
-            $this->errors->add('connect',
+            $this->errors->add(
+                'connect',
                 /* translators: %s: hostname:port */
-                sprintf(__('Failed to connect to FTP Server %s'),
+                sprintf(
+                    __('Failed to connect to FTP Server %s'),
                     $this->options['hostname'] . ':' . $this->options['port']
                 )
             );
@@ -88,9 +90,11 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
         }
 
         if (!$this->ftp->connect()) {
-            $this->errors->add('connect',
+            $this->errors->add(
+                'connect',
                 /* translators: %s: hostname:port */
-                sprintf(__('Failed to connect to FTP Server %s'),
+                sprintf(
+                    __('Failed to connect to FTP Server %s'),
                     $this->options['hostname'] . ':' . $this->options['port']
                 )
             );
@@ -98,9 +102,11 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
         }
 
         if (!$this->ftp->login($this->options['username'], $this->options['password'])) {
-            $this->errors->add('auth',
+            $this->errors->add(
+                'auth',
                 /* translators: %s: username */
-                sprintf(__('Username/Password incorrect for %s'),
+                sprintf(
+                    __('Username/Password incorrect for %s'),
                     $this->options['username']
                 )
             );
@@ -543,7 +549,6 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
 
         $list = $this->ftp->dirlist($path);
         if (empty($list) && !$this->exists($path)) {
-
             reset_mbstring_encoding();
 
             return false;
@@ -551,7 +556,6 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
 
         $ret = array();
         foreach ($list as $struc) {
-
             if ('.' == $struc['name'] || '..' == $struc['name']) {
                 continue;
             }

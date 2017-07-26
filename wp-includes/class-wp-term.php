@@ -137,8 +137,10 @@ final class WP_Term
         // If there isn't a cached version, hit the database.
         if (!$_term || ($taxonomy && $taxonomy !== $_term->taxonomy)) {
             // Grab all matching terms, in case any are shared between taxonomies.
-            $terms = $wpdb->get_results($wpdb->prepare("SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE t.term_id = %d",
-                $term_id));
+            $terms = $wpdb->get_results($wpdb->prepare(
+                "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE t.term_id = %d",
+                $term_id
+            ));
             if (!$terms) {
                 return false;
             }
@@ -166,8 +168,11 @@ final class WP_Term
 
                     // Only hit if we've already identified a term in a valid taxonomy.
                     if ($_term) {
-                        return new WP_Error('ambiguous_term_id', __('Term ID is shared between multiple taxonomies'),
-                            $term_id);
+                        return new WP_Error(
+                            'ambiguous_term_id',
+                            __('Term ID is shared between multiple taxonomies'),
+                            $term_id
+                        );
                     }
 
                     $_term = $t;
@@ -250,7 +255,7 @@ final class WP_Term
     public function __get($key)
     {
         switch ($key) {
-            case 'data' :
+            case 'data':
                 $data = new stdClass();
                 $columns = array(
                     'term_id',

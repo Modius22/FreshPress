@@ -135,7 +135,7 @@ function wp_insert_category($catarr, $wp_error = false)
     $catarr['cat_ID'] = (int)$catarr['cat_ID'];
 
     // Are we updating or creating?
-    $update = !empty ($catarr['cat_ID']);
+    $update = !empty($catarr['cat_ID']);
 
     $name = $catarr['cat_name'];
     $description = $catarr['category_description'];

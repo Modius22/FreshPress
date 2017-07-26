@@ -1196,7 +1196,6 @@ function wp_get_pomo_file_data($po_file)
  */
 function wp_dropdown_languages($args = array())
 {
-
     $args = wp_parse_args($args, array(
         'id' => '',
         'name' => '',

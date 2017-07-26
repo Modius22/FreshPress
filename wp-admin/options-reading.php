@@ -22,8 +22,10 @@ get_current_screen()->add_help_tab(array(
     'id' => 'overview',
     'title' => __('Overview'),
     'content' => '<p>' . __('This screen contains the settings that affect the display of your content.') . '</p>' .
-        '<p>' . sprintf(__('You can choose what&#8217;s displayed on the front page of your site. It can be posts in reverse chronological order (classic blog), or a fixed/static page. To set a static home page, you first need to create two <a href="%s">Pages</a>. One will become the front page, and the other will be where your posts are displayed.'),
-            'post-new.php?post_type=page') . '</p>' .
+        '<p>' . sprintf(
+            __('You can choose what&#8217;s displayed on the front page of your site. It can be posts in reverse chronological order (classic blog), or a fixed/static page. To set a static home page, you first need to create two <a href="%s">Pages</a>. One will become the front page, and the other will be where your posts are displayed.'),
+            'post-new.php?post_type=page'
+        ) . '</p>' .
         '<p>' . __('You can also control the display of your content in RSS feeds, including the maximum number of posts to display and whether to show full text or a summary.') . '</p>' .
         '<p>' . __('You must click the Save Changes button at the bottom of the screen for new settings to take effect.') . '</p>',
 ));
@@ -52,8 +54,14 @@ include(ABSPATH . 'wp-admin/admin-header.php');
         settings_fields('reading');
 
         if (!in_array(get_option('blog_charset'), array('utf8', 'utf-8', 'UTF8', 'UTF-8'))) {
-            add_settings_field('blog_charset', __('Encoding for pages and feeds'), 'options_reading_blog_charset',
-                'reading', 'default', array('label_for' => 'blog_charset'));
+            add_settings_field(
+                'blog_charset',
+                __('Encoding for pages and feeds'),
+                'options_reading_blog_charset',
+                'reading',
+                'default',
+                array('label_for' => 'blog_charset')
+            );
         }
         ?>
 
@@ -85,27 +93,33 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                             <p><label>
                                     <input name="show_on_front" type="radio" value="page"
                                            class="tog" <?php checked('page', get_option('show_on_front')); ?> />
-                                    <?php printf(__('A <a href="%s">static page</a> (select below)'),
-                                        'edit.php?post_type=page'); ?>
+                                    <?php printf(
+                __('A <a href="%s">static page</a> (select below)'),
+                                        'edit.php?post_type=page'
+            ); ?>
                                 </label>
                             </p>
                             <ul>
-                                <li><label for="page_on_front"><?php printf(__('Front page: %s'),
+                                <li><label for="page_on_front"><?php printf(
+                                            __('Front page: %s'),
                                             wp_dropdown_pages(array(
                                                 'name' => 'page_on_front',
                                                 'echo' => 0,
                                                 'show_option_none' => __('&mdash; Select &mdash;'),
                                                 'option_none_value' => '0',
                                                 'selected' => get_option('page_on_front')
-                                            ))); ?></label></li>
-                                <li><label for="page_for_posts"><?php printf(__('Posts page: %s'),
+                                            ))
+                                        ); ?></label></li>
+                                <li><label for="page_for_posts"><?php printf(
+                                                __('Posts page: %s'),
                                             wp_dropdown_pages(array(
                                                 'name' => 'page_for_posts',
                                                 'echo' => 0,
                                                 'show_option_none' => __('&mdash; Select &mdash;'),
                                                 'option_none_value' => '0',
                                                 'selected' => get_option('page_for_posts')
-                                            ))); ?></label></li>
+                                            ))
+                                            ); ?></label></li>
                             </ul>
                             <?php if ('page' == get_option('show_on_front') && get_option('page_for_posts') == get_option('page_on_front')) : ?>
                                 <div id="front-page-warning" class="error inline">
@@ -137,10 +151,14 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                         <fieldset>
                             <legend class="screen-reader-text">
                                 <span><?php _e('For each article in a feed, show'); ?> </span></legend>
-                            <p><label><input name="rss_use_excerpt" type="radio" value="0" <?php checked(0,
-                                        get_option('rss_use_excerpt')); ?> /> <?php _e('Full text'); ?></label><br/>
-                                <label><input name="rss_use_excerpt" type="radio" value="1" <?php checked(1,
-                                        get_option('rss_use_excerpt')); ?> /> <?php _e('Summary'); ?></label></p>
+                            <p><label><input name="rss_use_excerpt" type="radio" value="0" <?php checked(
+                                                0,
+                                        get_option('rss_use_excerpt')
+                                            ); ?> /> <?php _e('Full text'); ?></label><br/>
+                                <label><input name="rss_use_excerpt" type="radio" value="1" <?php checked(
+                                            1,
+                                        get_option('rss_use_excerpt')
+                                        ); ?> /> <?php _e('Summary'); ?></label></p>
                         </fieldset>
                     </td>
                 </tr>
@@ -153,12 +171,16 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                 <span><?php has_action('blog_privacy_selector') ? _e('Site Visibility') : _e('Search Engine Visibility'); ?> </span>
                             </legend>
                             <?php if (has_action('blog_privacy_selector')) : ?>
-                                <input id="blog-public" type="radio" name="blog_public" value="1" <?php checked('1',
-                                    get_option('blog_public')); ?> />
+                                <input id="blog-public" type="radio" name="blog_public" value="1" <?php checked(
+                                            '1',
+                                    get_option('blog_public')
+                                        ); ?> />
                                 <label for="blog-public"><?php _e('Allow search engines to index this site'); ?></label>
                                 <br/>
-                                <input id="blog-norobots" type="radio" name="blog_public" value="0" <?php checked('0',
-                                    get_option('blog_public')); ?> />
+                                <input id="blog-norobots" type="radio" name="blog_public" value="0" <?php checked(
+                                        '0',
+                                    get_option('blog_public')
+                                    ); ?> />
                                 <label for="blog-norobots"><?php _e('Discourage search engines from indexing this site'); ?></label>
                                 <p class="description"><?php _e('Note: Neither of these options blocks access to your site &mdash; it is up to search engines to honor your request.'); ?></p>
                                 <?php
@@ -179,8 +201,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                 ?>
                             <?php else : ?>
                                 <label for="blog_public"><input name="blog_public" type="checkbox" id="blog_public"
-                                                                value="0" <?php checked('0',
-                                        get_option('blog_public')); ?> />
+                                                                value="0" <?php checked(
+                                    '0',
+                                        get_option('blog_public')
+                                ); ?> />
                                     <?php _e('Discourage search engines from indexing this site'); ?></label>
                                 <p class="description"><?php _e('It is up to search engines to honor this request.'); ?></p>
                             <?php endif; ?>

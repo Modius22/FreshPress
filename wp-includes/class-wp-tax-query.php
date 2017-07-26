@@ -160,7 +160,6 @@ class WP_Tax_Query
 
                 // First-order clause.
             } elseif (self::is_first_order_clause($query)) {
-
                 $cleaned_clause = array_merge($defaults, $query);
                 $cleaned_clause['terms'] = (array)$cleaned_clause['terms'];
                 $cleaned_query[] = $cleaned_clause;
@@ -243,9 +242,13 @@ class WP_Tax_Query
      */
     protected static function is_first_order_clause($query)
     {
-        return is_array($query) && (empty($query) || array_key_exists('terms', $query) || array_key_exists('taxonomy',
-                    $query) || array_key_exists('include_children', $query) || array_key_exists('field',
-                    $query) || array_key_exists('operator', $query));
+        return is_array($query) && (empty($query) || array_key_exists('terms', $query) || array_key_exists(
+            'taxonomy',
+                    $query
+        ) || array_key_exists('include_children', $query) || array_key_exists(
+                        'field',
+                    $query
+                    ) || array_key_exists('operator', $query));
     }
 
     /**
@@ -385,8 +388,10 @@ class WP_Tax_Query
 
         // Generate a single WHERE clause with proper brackets and indentation.
         if (!empty($sql_chunks['where'])) {
-            $sql['where'] = '( ' . "\n  " . $indent . implode(' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
-                    $sql_chunks['where']) . "\n" . $indent . ')';
+            $sql['where'] = '( ' . "\n  " . $indent . implode(
+                ' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
+                    $sql_chunks['where']
+            ) . "\n" . $indent . ')';
         }
 
         return $sql;
@@ -430,7 +435,6 @@ class WP_Tax_Query
         $operator = strtoupper($clause['operator']);
 
         if ('IN' == $operator) {
-
             if (empty($terms)) {
                 return self::$no_results;
             }
@@ -459,9 +463,7 @@ class WP_Tax_Query
 
 
             $where = "$alias.term_taxonomy_id $operator ($terms)";
-
         } elseif ('NOT IN' == $operator) {
-
             if (empty($terms)) {
                 return $sql;
             }
@@ -473,9 +475,7 @@ class WP_Tax_Query
 				FROM $wpdb->term_relationships
 				WHERE term_taxonomy_id IN ($terms)
 			)";
-
         } elseif ('AND' == $operator) {
-
             if (empty($terms)) {
                 return $sql;
             }
@@ -490,9 +490,7 @@ class WP_Tax_Query
 				WHERE term_taxonomy_id IN ($terms)
 				AND object_id = $this->primary_table.$this->primary_id_column
 			) = $num_terms";
-
         } elseif ('NOT EXISTS' === $operator || 'EXISTS' === $operator) {
-
             $where = $wpdb->prepare("$operator (
 				SELECT 1
 				FROM $wpdb->term_relationships
@@ -501,7 +499,6 @@ class WP_Tax_Query
 				WHERE $wpdb->term_taxonomy.taxonomy = %s
 				AND $wpdb->term_relationships.object_id = $this->primary_table.$this->primary_id_column
 			)", $clause['taxonomy']);
-
         }
 
         $sql['join'][] = $join;

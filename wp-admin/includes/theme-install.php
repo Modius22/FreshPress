@@ -86,8 +86,7 @@ function install_theme_search_form($type_selector = true)
     $term = isset($_REQUEST['s']) ? wp_unslash($_REQUEST['s']) : '';
     if (!$type_selector) {
         echo '<p class="install-help">' . __('Search for themes by keyword.') . '</p>';
-    }
-    ?>
+    } ?>
     <form id="search-themes" method="get">
         <input type="hidden" name="tab" value="search"/>
         <?php if ($type_selector) : ?>
@@ -108,8 +107,7 @@ function install_theme_search_form($type_selector = true)
                     case 'tag':
                         _e('Search by tag');
                         break;
-                }
-                ?></label>
+                } ?></label>
         <?php else : ?>
             <label class="screen-reader-text" for="s"><?php _e('Search by keyword'); ?></label>
         <?php endif; ?>
@@ -126,8 +124,7 @@ function install_theme_search_form($type_selector = true)
  */
 function install_themes_dashboard()
 {
-    install_theme_search_form(false);
-    ?>
+    install_theme_search_form(false); ?>
     <h4><?php _e('Feature Filter') ?></h4>
     <p class="install-help"><?php _e('Find a theme based on specific features.'); ?></p>
 
@@ -135,17 +132,16 @@ function install_themes_dashboard()
         <input type="hidden" name="tab" value="search"/>
         <?php
         $feature_list = get_theme_feature_list();
-        echo '<div class="feature-filter">';
+    echo '<div class="feature-filter">';
 
-        foreach ((array)$feature_list as $feature_name => $features) {
+    foreach ((array)$feature_list as $feature_name => $features) {
+        $feature_name = esc_html($feature_name);
+        echo '<div class="feature-name">' . $feature_name . '</div>';
+
+        echo '<ol class="feature-group">';
+        foreach ($features as $feature => $feature_name) {
             $feature_name = esc_html($feature_name);
-            echo '<div class="feature-name">' . $feature_name . '</div>';
-
-            echo '<ol class="feature-group">';
-            foreach ($features as $feature => $feature_name) {
-                $feature_name = esc_html($feature_name);
-                $feature = esc_attr($feature);
-                ?>
+            $feature = esc_attr($feature); ?>
 
                 <li>
                     <input type="checkbox" name="features[]" id="feature-id-<?php echo $feature; ?>"
@@ -153,11 +149,12 @@ function install_themes_dashboard()
                     <label for="feature-id-<?php echo $feature; ?>"><?php echo $feature_name; ?></label>
                 </li>
 
-            <?php } ?>
+            <?php
+        } ?>
             </ol>
             <br class="clear"/>
             <?php
-        } ?>
+    } ?>
 
         </div>
         <br class="clear"/>
@@ -219,7 +216,6 @@ function display_themes()
     }
     $wp_list_table->prepare_items();
     $wp_list_table->display();
-
 }
 
 /**

@@ -417,7 +417,7 @@ function wp_http_supports($capabilities = array(), $url = null)
 function get_http_origin()
 {
     $origin = '';
-    if (!empty ($_SERVER['HTTP_ORIGIN'])) {
+    if (!empty($_SERVER['HTTP_ORIGIN'])) {
         $origin = $_SERVER['HTTP_ORIGIN'];
     }
 
@@ -575,8 +575,7 @@ function wp_http_validate_url($url)
             $ip = $host;
         } else {
             $ip = gethostbyname($host);
-            if ($ip === $host) // Error condition for gethostbyname()
-            {
+            if ($ip === $host) { // Error condition for gethostbyname()
                 $ip = false;
             }
         }
@@ -667,8 +666,10 @@ function ms_allowed_http_request_hosts($is_external, $host)
     if (isset($queried[$host])) {
         return $queried[$host];
     }
-    $queried[$host] = (bool)$wpdb->get_var($wpdb->prepare("SELECT domain FROM $wpdb->blogs WHERE domain = %s LIMIT 1",
-        $host));
+    $queried[$host] = (bool)$wpdb->get_var($wpdb->prepare(
+        "SELECT domain FROM $wpdb->blogs WHERE domain = %s LIMIT 1",
+        $host
+    ));
     return $queried[$host];
 }
 

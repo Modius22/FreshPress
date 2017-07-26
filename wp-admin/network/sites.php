@@ -95,8 +95,7 @@ if (isset($_GET['action'])) {
         $site_details = get_site($id);
         $site_address = untrailingslashit($site_details->domain . $site_details->path);
 
-        require_once(ABSPATH . 'wp-admin/admin-header.php');
-        ?>
+        require_once(ABSPATH . 'wp-admin/admin-header.php'); ?>
         <div class="wrap">
             <h1><?php _e('Confirm your action'); ?></h1>
             <form action="sites.php?action=<?php echo esc_attr($site_action); ?>" method="post">
@@ -164,8 +163,13 @@ if (isset($_GET['action'])) {
                     $redirect_to = wp_get_referer();
                     $blogs = (array)$_POST['allblogs'];
                     /** This action is documented in wp-admin/network/site-themes.php */
-                    $redirect_to = apply_filters('handle_network_bulk_actions-' . get_current_screen()->id,
-                        $redirect_to, $doaction, $blogs, $id);
+                    $redirect_to = apply_filters(
+                        'handle_network_bulk_actions-' . get_current_screen()->id,
+                        $redirect_to,
+                        $doaction,
+                        $blogs,
+                        $id
+                    );
                     wp_safe_redirect($redirect_to);
                     exit();
                 }

@@ -111,8 +111,10 @@ class WP_Network
         $_network = wp_cache_get($network_id, 'networks');
 
         if (!$_network) {
-            $_network = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->site} WHERE id = %d LIMIT 1",
-                $network_id));
+            $_network = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->site} WHERE id = %d LIMIT 1",
+                $network_id
+            ));
 
             if (empty($_network) || is_wp_error($_network)) {
                 return false;
@@ -159,7 +161,7 @@ class WP_Network
     public function __get($key)
     {
         switch ($key) {
-            case 'id';
+            case 'id':
                 return (int)$this->id;
             case 'blog_id':
                 return $this->blog_id;

@@ -883,9 +883,11 @@ class WP_REST_Request implements ArrayAccess
         }
 
         if ($invalid_params) {
-            return new WP_Error('rest_invalid_param',
+            return new WP_Error(
+                'rest_invalid_param',
                 sprintf(__('Invalid parameter(s): %s'), implode(', ', array_keys($invalid_params))),
-                array('status' => 400, 'params' => $invalid_params));
+                array('status' => 400, 'params' => $invalid_params)
+            );
         }
 
         return true;
@@ -917,7 +919,6 @@ class WP_REST_Request implements ArrayAccess
         }
 
         foreach ($attributes['args'] as $key => $arg) {
-
             $param = $this->get_param($key);
             if (isset($arg['required']) && true === $arg['required'] && null === $param) {
                 $required[] = $key;
@@ -925,9 +926,11 @@ class WP_REST_Request implements ArrayAccess
         }
 
         if (!empty($required)) {
-            return new WP_Error('rest_missing_callback_param',
+            return new WP_Error(
+                'rest_missing_callback_param',
                 sprintf(__('Missing parameter(s): %s'), implode(', ', $required)),
-                array('status' => 400, 'params' => $required));
+                array('status' => 400, 'params' => $required)
+            );
         }
 
         /*
@@ -938,7 +941,6 @@ class WP_REST_Request implements ArrayAccess
         $invalid_params = array();
 
         foreach ($attributes['args'] as $key => $arg) {
-
             $param = $this->get_param($key);
 
             if (null !== $param && !empty($arg['validate_callback'])) {
@@ -955,13 +957,14 @@ class WP_REST_Request implements ArrayAccess
         }
 
         if ($invalid_params) {
-            return new WP_Error('rest_invalid_param',
+            return new WP_Error(
+                'rest_invalid_param',
                 sprintf(__('Invalid parameter(s): %s'), implode(', ', array_keys($invalid_params))),
-                array('status' => 400, 'params' => $invalid_params));
+                array('status' => 400, 'params' => $invalid_params)
+            );
         }
 
         return true;
-
     }
 
     /**

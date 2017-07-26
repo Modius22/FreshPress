@@ -263,8 +263,11 @@ class WP_Customize_Setting
 
         if (!empty($this->id_data['keys'])) {
             // Note the preview-applied flag is cleared at priority 9 to ensure it is cleared before a deferred-preview runs.
-            add_action("customize_post_value_set_{$this->id}",
-                array($this, '_clear_aggregated_multidimensional_preview_applied_flag'), 9);
+            add_action(
+                "customize_post_value_set_{$this->id}",
+                array($this, '_clear_aggregated_multidimensional_preview_applied_flag'),
+                9
+            );
             $this->is_multidimensional_aggregated = true;
         }
     }
@@ -277,7 +280,7 @@ class WP_Customize_Setting
      * @since 4.5.0
      * @ignore
      */
-    static public function reset_aggregated_multidimensionals()
+    public static function reset_aggregated_multidimensionals()
     {
         self::$aggregated_multidimensionals = array();
     }
@@ -376,7 +379,7 @@ class WP_Customize_Setting
         }
 
         switch ($this->type) {
-            case 'theme_mod' :
+            case 'theme_mod':
                 if (!$is_multidimensional) {
                     add_filter("theme_mod_{$id_base}", array($this, '_preview_filter'));
                 } else {
@@ -387,7 +390,7 @@ class WP_Customize_Setting
                     self::$aggregated_multidimensionals[$this->type][$id_base]['previewed_instances'][$this->id] = $this;
                 }
                 break;
-            case 'option' :
+            case 'option':
                 if (!$is_multidimensional) {
                     add_filter("pre_option_{$id_base}", array($this, '_preview_filter'));
                 } else {
@@ -399,7 +402,7 @@ class WP_Customize_Setting
                     self::$aggregated_multidimensionals[$this->type][$id_base]['previewed_instances'][$this->id] = $this;
                 }
                 break;
-            default :
+            default:
 
                 /**
                  * Fires when the WP_Customize_Setting::preview() method is called for settings
@@ -942,8 +945,7 @@ class WP_Customize_Setting
     {
         if (!isset($value)) {
             return $root;
-        } elseif (empty($keys)) // If there are no keys, we're replacing the root.
-        {
+        } elseif (empty($keys)) { // If there are no keys, we're replacing the root.
             return $value;
         }
 
@@ -968,8 +970,7 @@ class WP_Customize_Setting
      */
     final protected function multidimensional_get($root, $keys, $default = null)
     {
-        if (empty($keys)) // If there are no keys, test the root.
-        {
+        if (empty($keys)) { // If there are no keys, test the root.
             return isset($root) ? $root : $default;
         }
 

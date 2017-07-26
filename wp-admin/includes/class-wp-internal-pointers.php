@@ -112,9 +112,7 @@ final class WP_Internal_Pointers
     {
         if (empty($pointer_id) || empty($selector) || empty($args) || empty($args['content'])) {
             return;
-        }
-
-        ?>
+        } ?>
         <script type="text/javascript">
             (function ($) {
                 var options = <?php echo wp_json_encode($args); ?>, setup;

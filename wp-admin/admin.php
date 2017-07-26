@@ -266,7 +266,6 @@ if (isset($plugin_page)) {
 
     exit();
 } elseif (isset($_GET['import'])) {
-
     $importer = $_GET['import'];
 
     if (!current_user_can('import')) {

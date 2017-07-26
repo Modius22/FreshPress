@@ -110,8 +110,11 @@ class Theme_Upgrader extends WP_Upgrader
         $this->skin->feedback('parent_theme_search');
 
         if (!$theme_info->parent()->errors()) {
-            $this->skin->feedback('parent_theme_currently_installed', $theme_info->parent()->display('Name'),
-                $theme_info->parent()->display('Version'));
+            $this->skin->feedback(
+                'parent_theme_currently_installed',
+                $theme_info->parent()->display('Name'),
+                $theme_info->parent()->display('Version')
+            );
             // We already have the theme, fall through.
             return $install_result;
         }
@@ -139,8 +142,11 @@ class Theme_Upgrader extends WP_Upgrader
 
         $this->skin->feedback('parent_theme_prepare_install', $api->name, $api->version);
 
-        add_filter('install_theme_complete_actions', '__return_false',
-            999); // Don't show any actions after installing the theme.
+        add_filter(
+            'install_theme_complete_actions',
+            '__return_false',
+            999
+        ); // Don't show any actions after installing the theme.
 
         // Install the parent theme
         $parent_result = $this->run(array(
@@ -203,7 +209,6 @@ class Theme_Upgrader extends WP_Upgrader
      */
     public function install($package, $args = array())
     {
-
         $defaults = array(
             'clear_update_cache' => true,
         );
@@ -262,7 +267,6 @@ class Theme_Upgrader extends WP_Upgrader
      */
     public function upgrade($theme, $args = array())
     {
-
         $defaults = array(
             'clear_update_cache' => true,
         );
@@ -335,7 +339,6 @@ class Theme_Upgrader extends WP_Upgrader
      */
     public function bulk_upgrade($themes, $args = array())
     {
-
         $defaults = array(
             'clear_update_cache' => true,
         );
@@ -464,28 +467,35 @@ class Theme_Upgrader extends WP_Upgrader
 
         // Check the folder contains a valid theme
         $working_directory = str_replace($wp_filesystem->wp_content_dir(), trailingslashit(WP_CONTENT_DIR), $source);
-        if (!is_dir($working_directory)) // Sanity check, if the above fails, let's not prevent installation.
-        {
+        if (!is_dir($working_directory)) { // Sanity check, if the above fails, let's not prevent installation.
             return $source;
         }
 
         // A proper archive should have a style.css file in the single subdirectory
         if (!file_exists($working_directory . 'style.css')) {
-            return new WP_Error('incompatible_archive_theme_no_style', $this->strings['incompatible_archive'],
+            return new WP_Error(
+                'incompatible_archive_theme_no_style',
+                $this->strings['incompatible_archive'],
                 /* translators: %s: style.css */
-                sprintf(__('The theme is missing the %s stylesheet.'),
+                sprintf(
+                    __('The theme is missing the %s stylesheet.'),
                     '<code>style.css</code>'
                 )
             );
         }
 
-        $info = get_file_data($working_directory . 'style.css',
-            array('Name' => 'Theme Name', 'Template' => 'Template'));
+        $info = get_file_data(
+            $working_directory . 'style.css',
+            array('Name' => 'Theme Name', 'Template' => 'Template')
+        );
 
         if (empty($info['Name'])) {
-            return new WP_Error('incompatible_archive_theme_no_name', $this->strings['incompatible_archive'],
+            return new WP_Error(
+                'incompatible_archive_theme_no_name',
+                $this->strings['incompatible_archive'],
                 /* translators: %s: style.css */
-                sprintf(__('The %s stylesheet doesn&#8217;t contain a valid theme header.'),
+                sprintf(
+                    __('The %s stylesheet doesn&#8217;t contain a valid theme header.'),
                     '<code>style.css</code>'
                 )
             );
@@ -493,9 +503,12 @@ class Theme_Upgrader extends WP_Upgrader
 
         // If it's not a child theme, it must have at least an index.php to be legit.
         if (empty($info['Template']) && !file_exists($working_directory . 'index.php')) {
-            return new WP_Error('incompatible_archive_theme_no_index', $this->strings['incompatible_archive'],
+            return new WP_Error(
+                'incompatible_archive_theme_no_index',
+                $this->strings['incompatible_archive'],
                 /* translators: %s: index.php */
-                sprintf(__('The theme is missing the %s file.'),
+                sprintf(
+                    __('The theme is missing the %s file.'),
                     '<code>index.php</code>'
                 )
             );
@@ -525,8 +538,7 @@ class Theme_Upgrader extends WP_Upgrader
 
         $theme = isset($theme['theme']) ? $theme['theme'] : '';
 
-        if ($theme != get_stylesheet()) //If not current
-        {
+        if ($theme != get_stylesheet()) { //If not current
             return $return;
         }
         //Change to maintenance mode now.
@@ -558,8 +570,7 @@ class Theme_Upgrader extends WP_Upgrader
 
         $theme = isset($theme['theme']) ? $theme['theme'] : '';
 
-        if ($theme != get_stylesheet()) // If not current
-        {
+        if ($theme != get_stylesheet()) { // If not current
             return $return;
         }
 
@@ -631,7 +642,6 @@ class Theme_Upgrader extends WP_Upgrader
      */
     public function theme_info($theme = null)
     {
-
         if (empty($theme)) {
             if (!empty($this->result['destination_name'])) {
                 $theme = $this->result['destination_name'];
@@ -641,5 +651,4 @@ class Theme_Upgrader extends WP_Upgrader
         }
         return wp_get_theme($theme);
     }
-
 }

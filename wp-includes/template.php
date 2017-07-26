@@ -224,7 +224,6 @@ function get_category_template()
     $templates = array();
 
     if (!empty($category->slug)) {
-
         $slug_decoded = urldecode($category->slug);
         if ($slug_decoded !== $category->slug) {
             $templates[] = "category-{$slug_decoded}.php";
@@ -271,7 +270,6 @@ function get_tag_template()
     $templates = array();
 
     if (!empty($tag->slug)) {
-
         $slug_decoded = urldecode($tag->slug);
         if ($slug_decoded !== $tag->slug) {
             $templates[] = "tag-{$slug_decoded}.php";

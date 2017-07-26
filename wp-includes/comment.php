@@ -65,9 +65,9 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
         $num_links = apply_filters('comment_max_links_url', $num_links, $url, $comment);
 
         /*
-		 * If the number of links in the comment exceeds the allowed amount,
-		 * fail the check by returning false.
-		 */
+         * If the number of links in the comment exceeds the allowed amount,
+         * fail the check by returning false.
+         */
         if ($num_links >= $max_links) {
             return false;
         }
@@ -88,15 +88,15 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
             }
 
             /*
-			 * Do some escaping magic so that '#' (number of) characters in the spam
-			 * words don't break things:
-			 */
+             * Do some escaping magic so that '#' (number of) characters in the spam
+             * words don't break things:
+             */
             $word = preg_quote($word, '#');
 
             /*
-			 * Check the comment fields for moderation keywords. If any are found,
-			 * fail the check for the given field by returning false.
-			 */
+             * Check the comment fields for moderation keywords. If any are found,
+             * fail the check for the given field by returning false.
+             */
             $pattern = "#$word#i";
             if (preg_match($pattern, $author)) {
                 return false;
@@ -120,22 +120,27 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
     }
 
     /*
-	 * Check if the option to approve comments by previously-approved authors is enabled.
-	 *
-	 * If it is enabled, check whether the comment author has a previously-approved comment,
-	 * as well as whether there are any moderation keywords (if set) present in the author
-	 * email address. If both checks pass, return true. Otherwise, return false.
-	 */
+     * Check if the option to approve comments by previously-approved authors is enabled.
+     *
+     * If it is enabled, check whether the comment author has a previously-approved comment,
+     * as well as whether there are any moderation keywords (if set) present in the author
+     * email address. If both checks pass, return true. Otherwise, return false.
+     */
     if (1 == get_option('comment_whitelist')) {
         if ('trackback' != $comment_type && 'pingback' != $comment_type && $author != '' && $email != '') {
             $comment_user = get_user_by('email', wp_unslash($email));
             if (!empty($comment_user->ID)) {
-                $ok_to_comment = $wpdb->get_var($wpdb->prepare("SELECT comment_approved FROM $wpdb->comments WHERE user_id = %d AND comment_approved = '1' LIMIT 1",
-                    $comment_user->ID));
+                $ok_to_comment = $wpdb->get_var($wpdb->prepare(
+                    "SELECT comment_approved FROM $wpdb->comments WHERE user_id = %d AND comment_approved = '1' LIMIT 1",
+                    $comment_user->ID
+                ));
             } else {
                 // expected_slashed ($author, $email)
-                $ok_to_comment = $wpdb->get_var($wpdb->prepare("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = %s AND comment_author_email = %s and comment_approved = '1' LIMIT 1",
-                    $author, $email));
+                $ok_to_comment = $wpdb->get_var($wpdb->prepare(
+                    "SELECT comment_approved FROM $wpdb->comments WHERE comment_author = %s AND comment_author_email = %s and comment_approved = '1' LIMIT 1",
+                    $author,
+                    $email
+                ));
             }
             if ((1 == $ok_to_comment) &&
                 (empty($mod_keys) || false === strpos($email, $mod_keys))) {
@@ -282,12 +287,12 @@ function get_comment_statuses()
 function get_default_comment_status($post_type = 'post', $comment_type = 'comment')
 {
     switch ($comment_type) {
-        case 'pingback' :
-        case 'trackback' :
+        case 'pingback':
+        case 'trackback':
             $supports = 'trackbacks';
             $option = 'ping';
             break;
-        default :
+        default:
             $supports = 'comments';
             $option = 'comment';
     }
@@ -348,8 +353,10 @@ function get_lastcommentmodified($timezone = 'server')
         case 'server':
             $add_seconds_server = date('Z');
 
-            $comment_modified_date = $wpdb->get_var($wpdb->prepare("SELECT DATE_ADD(comment_date_gmt, INTERVAL %s SECOND) FROM $wpdb->comments WHERE comment_approved = '1' ORDER BY comment_date_gmt DESC LIMIT 1",
-                $add_seconds_server));
+            $comment_modified_date = $wpdb->get_var($wpdb->prepare(
+                "SELECT DATE_ADD(comment_date_gmt, INTERVAL %s SECOND) FROM $wpdb->comments WHERE comment_approved = '1' ORDER BY comment_date_gmt DESC LIMIT 1",
+                $add_seconds_server
+            ));
             break;
     }
 
@@ -562,12 +569,30 @@ function wp_set_comment_cookies($comment, $user)
      */
     $comment_cookie_lifetime = apply_filters('comment_cookie_lifetime', 30000000);
     $secure = ('https' === parse_url(home_url(), PHP_URL_SCHEME));
-    setcookie('comment_author_' . COOKIEHASH, $comment->comment_author, time() + $comment_cookie_lifetime, COOKIEPATH,
-        COOKIE_DOMAIN, $secure);
-    setcookie('comment_author_email_' . COOKIEHASH, $comment->comment_author_email, time() + $comment_cookie_lifetime,
-        COOKIEPATH, COOKIE_DOMAIN, $secure);
-    setcookie('comment_author_url_' . COOKIEHASH, esc_url($comment->comment_author_url),
-        time() + $comment_cookie_lifetime, COOKIEPATH, COOKIE_DOMAIN, $secure);
+    setcookie(
+        'comment_author_' . COOKIEHASH,
+        $comment->comment_author,
+        time() + $comment_cookie_lifetime,
+        COOKIEPATH,
+        COOKIE_DOMAIN,
+        $secure
+    );
+    setcookie(
+        'comment_author_email_' . COOKIEHASH,
+        $comment->comment_author_email,
+        time() + $comment_cookie_lifetime,
+        COOKIEPATH,
+        COOKIE_DOMAIN,
+        $secure
+    );
+    setcookie(
+        'comment_author_url_' . COOKIEHASH,
+        esc_url($comment->comment_author_url),
+        time() + $comment_cookie_lifetime,
+        COOKIEPATH,
+        COOKIE_DOMAIN,
+        $secure
+    );
 }
 
 /**
@@ -608,8 +633,10 @@ function sanitize_comment_cookies()
          *
          * @param string $author_email_cookie The comment author email cookie.
          */
-        $comment_author_email = apply_filters('pre_comment_author_email',
-            $_COOKIE['comment_author_email_' . COOKIEHASH]);
+        $comment_author_email = apply_filters(
+            'pre_comment_author_email',
+            $_COOKIE['comment_author_email_' . COOKIEHASH]
+        );
         $comment_author_email = wp_unslash($comment_author_email);
         $comment_author_email = esc_attr($comment_author_email);
         $_COOKIE['comment_author_email_' . COOKIEHASH] = $comment_author_email;
@@ -695,8 +722,11 @@ function wp_allow_comment($commentdata, $avoid_die = false)
          */
         do_action('comment_duplicate_trigger', $commentdata);
         if (true === $avoid_die) {
-            return new WP_Error('comment_duplicate',
-                __('Duplicate comment detected; it looks as though you&#8217;ve already said that!'), 409);
+            return new WP_Error(
+                'comment_duplicate',
+                __('Duplicate comment detected; it looks as though you&#8217;ve already said that!'),
+                409
+            );
         } else {
             if (wp_doing_ajax()) {
                 die(__('Duplicate comment detected; it looks as though you&#8217;ve already said that!'));
@@ -842,7 +872,6 @@ function check_comment_flood_db()
  */
 function wp_check_comment_flood($is_flood, $ip, $email, $date, $avoid_die = false)
 {
-
     global $wpdb;
 
     // Another callback has declared a flood. Trust it.
@@ -1188,25 +1217,38 @@ function wp_check_comment_data_max_lengths($comment_data)
 {
     $max_lengths = wp_get_comment_fields_max_lengths();
 
-    if (isset($comment_data['comment_author']) && mb_strlen($comment_data['comment_author'],
-            '8bit') > $max_lengths['comment_author']) {
+    if (isset($comment_data['comment_author']) && mb_strlen(
+        $comment_data['comment_author'],
+            '8bit'
+    ) > $max_lengths['comment_author']) {
         return new WP_Error('comment_author_column_length', __('<strong>ERROR</strong>: your name is too long.'), 200);
     }
 
     if (isset($comment_data['comment_author_email']) && strlen($comment_data['comment_author_email']) > $max_lengths['comment_author_email']) {
-        return new WP_Error('comment_author_email_column_length',
-            __('<strong>ERROR</strong>: your email address is too long.'), 200);
+        return new WP_Error(
+            'comment_author_email_column_length',
+            __('<strong>ERROR</strong>: your email address is too long.'),
+            200
+        );
     }
 
     if (isset($comment_data['comment_author_url']) && strlen($comment_data['comment_author_url']) > $max_lengths['comment_author_url']) {
-        return new WP_Error('comment_author_url_column_length', __('<strong>ERROR</strong>: your url is too long.'),
-            200);
+        return new WP_Error(
+            'comment_author_url_column_length',
+            __('<strong>ERROR</strong>: your url is too long.'),
+            200
+        );
     }
 
-    if (isset($comment_data['comment_content']) && mb_strlen($comment_data['comment_content'],
-            '8bit') > $max_lengths['comment_content']) {
-        return new WP_Error('comment_content_column_length', __('<strong>ERROR</strong>: your comment is too long.'),
-            200);
+    if (isset($comment_data['comment_content']) && mb_strlen(
+        $comment_data['comment_content'],
+            '8bit'
+    ) > $max_lengths['comment_content']) {
+        return new WP_Error(
+            'comment_content_column_length',
+            __('<strong>ERROR</strong>: your comment is too long.'),
+            200
+        );
     }
 
     return true;
@@ -1365,17 +1407,24 @@ function wp_delete_comment($comment_id, $force_delete = false)
     do_action('delete_comment', $comment->comment_ID);
 
     // Move children up a level.
-    $children = $wpdb->get_col($wpdb->prepare("SELECT comment_ID FROM $wpdb->comments WHERE comment_parent = %d",
-        $comment->comment_ID));
+    $children = $wpdb->get_col($wpdb->prepare(
+        "SELECT comment_ID FROM $wpdb->comments WHERE comment_parent = %d",
+        $comment->comment_ID
+    ));
     if (!empty($children)) {
-        $wpdb->update($wpdb->comments, array('comment_parent' => $comment->comment_parent),
-            array('comment_parent' => $comment->comment_ID));
+        $wpdb->update(
+            $wpdb->comments,
+            array('comment_parent' => $comment->comment_parent),
+            array('comment_parent' => $comment->comment_ID)
+        );
         clean_comment_cache($children);
     }
 
     // Delete metadata
-    $meta_ids = $wpdb->get_col($wpdb->prepare("SELECT meta_id FROM $wpdb->commentmeta WHERE comment_id = %d",
-        $comment->comment_ID));
+    $meta_ids = $wpdb->get_col($wpdb->prepare(
+        "SELECT meta_id FROM $wpdb->commentmeta WHERE comment_id = %d",
+        $comment->comment_ID
+    ));
     foreach ($meta_ids as $mid) {
         delete_metadata_by_mid('comment', $mid);
     }
@@ -1644,10 +1693,10 @@ function wp_get_comment_status($comment_id)
 function wp_transition_comment_status($new_status, $old_status, $comment)
 {
     /*
-	 * Translate raw statuses to human readable formats for the hooks.
-	 * This is not a complete list of comment status, it's only the ones
-	 * that need to be renamed
-	 */
+     * Translate raw statuses to human readable formats for the hooks.
+     * This is not a complete list of comment status, it's only the ones
+     * that need to be renamed
+     */
     $comment_statuses = array(
         0 => 'unapproved',
         'hold' => 'unapproved', // wp_set_comment_status() uses "hold"
@@ -1767,8 +1816,10 @@ function wp_get_current_commenter()
      * @type string $comment_author_url The URL address of the `$comment_author`. Default empty.
      * }
      */
-    return apply_filters('wp_get_current_commenter',
-        compact('comment_author', 'comment_author_email', 'comment_author_url'));
+    return apply_filters(
+        'wp_get_current_commenter',
+        compact('comment_author', 'comment_author_email', 'comment_author_url')
+    );
 }
 
 /**
@@ -1829,9 +1880,22 @@ function wp_insert_comment($commentdata)
 
     $user_id = !isset($data['user_id']) ? 0 : $data['user_id'];
 
-    $compacted = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url',
-        'comment_author_IP', 'comment_date', 'comment_date_gmt', 'comment_content', 'comment_karma', 'comment_approved',
-        'comment_agent', 'comment_type', 'comment_parent', 'user_id');
+    $compacted = compact(
+        'comment_post_ID',
+        'comment_author',
+        'comment_author_email',
+        'comment_author_url',
+        'comment_author_IP',
+        'comment_date',
+        'comment_date_gmt',
+        'comment_content',
+        'comment_karma',
+        'comment_approved',
+        'comment_agent',
+        'comment_type',
+        'comment_parent',
+        'user_id'
+    );
     if (!$wpdb->insert($wpdb->comments, $compacted)) {
         return false;
     }
@@ -1908,8 +1972,10 @@ function wp_filter_comment($commentdata)
      *
      * @param string $comment_agent The comment author's browser user agent.
      */
-    $commentdata['comment_agent'] = apply_filters('pre_comment_user_agent',
-        (isset($commentdata['comment_agent']) ? $commentdata['comment_agent'] : ''));
+    $commentdata['comment_agent'] = apply_filters(
+        'pre_comment_user_agent',
+        (isset($commentdata['comment_agent']) ? $commentdata['comment_agent'] : '')
+    );
     /** This filter is documented in wp-includes/comment.php */
     $commentdata['comment_author'] = apply_filters('pre_comment_author_name', $commentdata['comment_author']);
     /**
@@ -1931,8 +1997,10 @@ function wp_filter_comment($commentdata)
     /** This filter is documented in wp-includes/comment.php */
     $commentdata['comment_author_url'] = apply_filters('pre_comment_author_url', $commentdata['comment_author_url']);
     /** This filter is documented in wp-includes/comment.php */
-    $commentdata['comment_author_email'] = apply_filters('pre_comment_author_email',
-        $commentdata['comment_author_email']);
+    $commentdata['comment_author_email'] = apply_filters(
+        'pre_comment_author_email',
+        $commentdata['comment_author_email']
+    );
     $commentdata['filtered'] = true;
     return $commentdata;
 }
@@ -1949,8 +2017,7 @@ function wp_filter_comment($commentdata)
  */
 function wp_throttle_comment_flood($block, $time_lastcomment, $time_newcomment)
 {
-    if ($block) // a plugin has already blocked... we'll let that decision stand
-    {
+    if ($block) { // a plugin has already blocked... we'll let that decision stand
         return $block;
     }
     if (($time_newcomment - $time_lastcomment) < 15) {
@@ -2064,8 +2131,11 @@ function wp_new_comment($commentdata, $avoid_die = false)
 
         foreach ($fields as $field) {
             if (isset($commentdata[$field])) {
-                $commentdata[$field] = $wpdb->strip_invalid_text_for_column($wpdb->comments, $field,
-                    $commentdata[$field]);
+                $commentdata[$field] = $wpdb->strip_invalid_text_for_column(
+                    $wpdb->comments,
+                    $field,
+                    $commentdata[$field]
+                );
             }
         }
 
@@ -2151,9 +2221,9 @@ function wp_new_comment_notify_postauthor($comment_ID)
     $maybe_notify = apply_filters('notify_post_author', $maybe_notify, $comment_ID);
 
     /*
-	 * wp_notify_postauthor() checks if notifying the author of their own comment.
-	 * By default, it won't, but filters can override this.
-	 */
+     * wp_notify_postauthor() checks if notifying the author of their own comment.
+     * By default, it won't, but filters can override this.
+     */
     if (!$maybe_notify) {
         return false;
     }
@@ -2207,8 +2277,11 @@ function wp_set_comment_status($comment_id, $comment_status, $wp_error = false)
 
     $comment_old = clone get_comment($comment_id);
 
-    if (!$wpdb->update($wpdb->comments, array('comment_approved' => $status),
-        array('comment_ID' => $comment_old->comment_ID))) {
+    if (!$wpdb->update(
+        $wpdb->comments,
+        array('comment_approved' => $status),
+        array('comment_ID' => $comment_old->comment_ID)
+    )) {
         if ($wp_error) {
             return new WP_Error('db_update_error', __('Could not update comment status'), $wpdb->last_error);
         } else {
@@ -2427,7 +2500,6 @@ function wp_update_comment_count($post_id, $do_deferred = false)
     } elseif ($post_id) {
         return wp_update_comment_count_now($post_id);
     }
-
 }
 
 /**
@@ -2469,8 +2541,10 @@ function wp_update_comment_count_now($post_id)
     $new = apply_filters('pre_wp_update_comment_count_now', null, $old, $post_id);
 
     if (is_null($new)) {
-        $new = (int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_approved = '1'",
-            $post_id));
+        $new = (int)$wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_approved = '1'",
+            $post_id
+        ));
     } else {
         $new = (int)$new;
     }
@@ -2524,8 +2598,7 @@ function discover_pingback_server_uri($url, $deprecated = '')
     /** @todo Should use Filter Extension or custom preg_match instead. */
     $parsed_url = parse_url($url);
 
-    if (!isset($parsed_url['host'])) // Not a URL. This should never happen.
-    {
+    if (!isset($parsed_url['host'])) { // Not a URL. This should never happen.
         return false;
     }
 
@@ -2732,8 +2805,10 @@ function pingback($content, $post_id)
     // We don't wanna ping first and second types, even if they have a valid <link/>
 
     foreach ((array)$post_links_temp as $link_test) :
-        if (!in_array($link_test,
-                $pung) && (url_to_postid($link_test) != $post->ID) // If we haven't pung it already and it isn't a link to itself
+        if (!in_array(
+            $link_test,
+                $pung
+        ) && (url_to_postid($link_test) != $post->ID) // If we haven't pung it already and it isn't a link to itself
             && !is_local_attachment($link_test)) : // Also, let's never ping local attachments.
             if ($test = @parse_url($link_test)) {
                 if (isset($test['query'])) {
@@ -2742,7 +2817,7 @@ function pingback($content, $post_id)
                     $post_links[] = $link_test;
                 }
             }
-        endif;
+    endif;
     endforeach;
 
     $post_links = array_unique($post_links);
@@ -2780,15 +2855,22 @@ function pingback($content, $post_id)
              * @param string $pagelinkedto URL of page linked to.
              * @param string $pagelinkedfrom URL of page linked from.
              */
-            $client->useragent = apply_filters('pingback_useragent',
-                $client->useragent . ' -- WordPress/' . get_bloginfo('version'), $client->useragent,
-                $pingback_server_url, $pagelinkedto, $pagelinkedfrom);
+            $client->useragent = apply_filters(
+                'pingback_useragent',
+                $client->useragent . ' -- WordPress/' . get_bloginfo('version'),
+                $client->useragent,
+                $pingback_server_url,
+                $pagelinkedto,
+                $pagelinkedfrom
+            );
             // when set to true, this outputs debug messages by itself
             $client->debug = false;
 
-            if ($client->query('pingback.ping', $pagelinkedfrom,
-                    $pagelinkedto) || (isset($client->error->code) && 48 == $client->error->code)) // Already registered
-            {
+            if ($client->query(
+                'pingback.ping',
+                $pagelinkedfrom,
+                    $pagelinkedto
+            ) || (isset($client->error->code) && 48 == $client->error->code)) { // Already registered
                 add_ping($post, $pagelinkedto);
             }
         }
@@ -2850,10 +2932,16 @@ function trackback($trackback_url, $title, $excerpt, $ID)
         return;
     }
 
-    $wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET pinged = CONCAT(pinged, '\n', %s) WHERE ID = %d",
-        $trackback_url, $ID));
-    return $wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET to_ping = TRIM(REPLACE(to_ping, %s, '')) WHERE ID = %d",
-        $trackback_url, $ID));
+    $wpdb->query($wpdb->prepare(
+        "UPDATE $wpdb->posts SET pinged = CONCAT(pinged, '\n', %s) WHERE ID = %d",
+        $trackback_url,
+        $ID
+    ));
+    return $wpdb->query($wpdb->prepare(
+        "UPDATE $wpdb->posts SET to_ping = TRIM(REPLACE(to_ping, %s, '')) WHERE ID = %d",
+        $trackback_url,
+        $ID
+    ));
 }
 
 /**
@@ -2876,9 +2964,12 @@ function weblog_ping($server = '', $path = '')
     // when set to true, this outputs debug messages by itself
     $client->debug = false;
     $home = trailingslashit(home_url());
-    if (!$client->query('weblogUpdates.extendedPing', get_option('blogname'), $home,
-        get_bloginfo('rss2_url'))) // then try a normal ping
-    {
+    if (!$client->query(
+        'weblogUpdates.extendedPing',
+        get_option('blogname'),
+        $home,
+        get_bloginfo('rss2_url')
+    )) { // then try a normal ping
         $client->query('weblogUpdates.ping', get_option('blogname'), $home);
     }
 }
@@ -2993,8 +3084,10 @@ function _prime_comment_caches($comment_ids, $update_meta_cache = true)
 
     $non_cached_ids = _get_non_cached_ids($comment_ids, 'comment');
     if (!empty($non_cached_ids)) {
-        $fresh_comments = $wpdb->get_results(sprintf("SELECT $wpdb->comments.* FROM $wpdb->comments WHERE comment_ID IN (%s)",
-            join(",", array_map('intval', $non_cached_ids))));
+        $fresh_comments = $wpdb->get_results(sprintf(
+            "SELECT $wpdb->comments.* FROM $wpdb->comments WHERE comment_ID IN (%s)",
+            join(",", array_map('intval', $non_cached_ids))
+        ));
 
         update_comment_cache($fresh_comments, $update_meta_cache);
     }
@@ -3113,7 +3206,6 @@ function _close_comments_for_old_post($open, $post_id)
  */
 function wp_handle_comment_submission($comment_data)
 {
-
     $comment_post_ID = $comment_parent = 0;
     $comment_author = $comment_author_email = $comment_author_url = $comment_content = null;
 
@@ -3150,7 +3242,6 @@ function wp_handle_comment_submission($comment_data)
         do_action('comment_id_not_found', $comment_post_ID);
 
         return new WP_Error('comment_id_not_found');
-
     }
 
     // get_post_status() will get the parent status for attachments.
@@ -3174,7 +3265,6 @@ function wp_handle_comment_submission($comment_data)
         do_action('comment_closed', $comment_post_ID);
 
         return new WP_Error('comment_closed', __('Sorry, comments are closed for this item.'), 403);
-
     } elseif ('trash' == $status) {
 
         /**
@@ -3187,7 +3277,6 @@ function wp_handle_comment_submission($comment_data)
         do_action('comment_on_trash', $comment_post_ID);
 
         return new WP_Error('comment_on_trash');
-
     } elseif (!$status_obj->public && !$status_obj->private) {
 
         /**
@@ -3204,7 +3293,6 @@ function wp_handle_comment_submission($comment_data)
         } else {
             return new WP_Error('comment_on_draft');
         }
-
     } elseif (post_password_required($comment_post_ID)) {
 
         /**
@@ -3217,7 +3305,6 @@ function wp_handle_comment_submission($comment_data)
         do_action('comment_on_password_protected', $comment_post_ID);
 
         return new WP_Error('comment_on_password_protected');
-
     } else {
 
         /**
@@ -3228,7 +3315,6 @@ function wp_handle_comment_submission($comment_data)
          * @param int $comment_post_ID Post ID.
          */
         do_action('pre_comment_on_post', $comment_post_ID);
-
     }
 
     // If the user is logged in
@@ -3243,8 +3329,10 @@ function wp_handle_comment_submission($comment_data)
         $user_ID = $user->ID;
         if (current_user_can('unfiltered_html')) {
             if (!isset($comment_data['_wp_unfiltered_html_comment'])
-                || !wp_verify_nonce($comment_data['_wp_unfiltered_html_comment'],
-                    'unfiltered-html-comment_' . $comment_post_ID)
+                || !wp_verify_nonce(
+                    $comment_data['_wp_unfiltered_html_comment'],
+                    'unfiltered-html-comment_' . $comment_post_ID
+                )
             ) {
                 kses_remove_filters(); // start with a clean slate
                 kses_init_filters(); // set up the filters
@@ -3260,11 +3348,17 @@ function wp_handle_comment_submission($comment_data)
 
     if (get_option('require_name_email') && !$user->exists()) {
         if ('' == $comment_author_email || '' == $comment_author) {
-            return new WP_Error('require_name_email',
-                __('<strong>ERROR</strong>: please fill the required fields (name, email).'), 200);
+            return new WP_Error(
+                'require_name_email',
+                __('<strong>ERROR</strong>: please fill the required fields (name, email).'),
+                200
+            );
         } elseif (!is_email($comment_author_email)) {
-            return new WP_Error('require_valid_email',
-                __('<strong>ERROR</strong>: please enter a valid email address.'), 200);
+            return new WP_Error(
+                'require_valid_email',
+                __('<strong>ERROR</strong>: please enter a valid email address.'),
+                200
+            );
         }
     }
 
@@ -3294,8 +3388,11 @@ function wp_handle_comment_submission($comment_data)
     }
 
     if (!$comment_id) {
-        return new WP_Error('comment_save_error',
-            __('<strong>ERROR</strong>: The comment could not be saved. Please try again later.'), 500);
+        return new WP_Error(
+            'comment_save_error',
+            __('<strong>ERROR</strong>: The comment could not be saved. Please try again later.'),
+            500
+        );
     }
 
     return get_comment($comment_id);

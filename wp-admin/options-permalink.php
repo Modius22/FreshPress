@@ -168,8 +168,10 @@ require(ABSPATH . 'wp-admin/admin-header.php');
         <p><?php _e('WordPress offers you the ability to create a custom URL structure for your permalinks and archives. Custom URL structures can improve the aesthetics, usability, and forward-compatibility of your links. A <a href="https://codex.wordpress.org/Using_Permalinks">number of tags are available</a>, and here are some examples to get you started.'); ?></p>
 
         <?php
-        if (is_multisite() && !is_subdomain_install() && is_main_site() && 0 === strpos($permalink_structure,
-                '/blog/')) {
+        if (is_multisite() && !is_subdomain_install() && is_main_site() && 0 === strpos(
+    $permalink_structure,
+                '/blog/'
+)) {
             $permalink_structure = preg_replace('|^/?blog|', '', $permalink_structure);
             $category_base = preg_replace('|^/?blog|', '', $category_base);
             $tag_base = preg_replace('|^/?blog|', '', $tag_base);
@@ -186,39 +188,57 @@ require(ABSPATH . 'wp-admin/admin-header.php');
         <h2 class="title"><?php _e('Common Settings'); ?></h2>
         <table class="form-table permalink-structure">
             <tr>
-                <th><label><input name="selection" type="radio" value="" <?php checked('',
-                            $permalink_structure); ?> /> <?php _e('Plain'); ?></label></th>
+                <th><label><input name="selection" type="radio" value="" <?php checked(
+            '',
+                            $permalink_structure
+        ); ?> /> <?php _e('Plain'); ?></label></th>
                 <td><code><?php echo get_option('home'); ?>/?p=123</code></td>
             </tr>
             <tr>
                 <th><label><input name="selection" type="radio"
-                                  value="<?php echo esc_attr($structures[1]); ?>" <?php checked($structures[1],
-                            $permalink_structure); ?> /> <?php _e('Day and name'); ?></label></th>
+                                  value="<?php echo esc_attr($structures[1]); ?>" <?php checked(
+                                $structures[1],
+                            $permalink_structure
+                            ); ?> /> <?php _e('Day and name'); ?></label></th>
                 <td>
-                    <code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . date('Y') . '/' . date('m') . '/' . date('d') . '/' . _x('sample-post',
-                                'sample permalink structure') . '/'; ?></code></td>
+                    <code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . date('Y') . '/' . date('m') . '/' . date('d') . '/' . _x(
+                                'sample-post',
+                                'sample permalink structure'
+                            ) . '/'; ?></code></td>
             </tr>
             <tr>
                 <th><label><input name="selection" type="radio"
-                                  value="<?php echo esc_attr($structures[2]); ?>" <?php checked($structures[2],
-                            $permalink_structure); ?> /> <?php _e('Month and name'); ?></label></th>
+                                  value="<?php echo esc_attr($structures[2]); ?>" <?php checked(
+                                    $structures[2],
+                            $permalink_structure
+                                ); ?> /> <?php _e('Month and name'); ?></label></th>
                 <td>
-                    <code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . date('Y') . '/' . date('m') . '/' . _x('sample-post',
-                                'sample permalink structure') . '/'; ?></code></td>
+                    <code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . date('Y') . '/' . date('m') . '/' . _x(
+                                'sample-post',
+                                'sample permalink structure'
+                            ) . '/'; ?></code></td>
             </tr>
             <tr>
                 <th><label><input name="selection" type="radio"
-                                  value="<?php echo esc_attr($structures[3]); ?>" <?php checked($structures[3],
-                            $permalink_structure); ?> /> <?php _e('Numeric'); ?></label></th>
-                <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . _x('archives',
-                                'sample permalink base') . '/123'; ?></code></td>
+                                  value="<?php echo esc_attr($structures[3]); ?>" <?php checked(
+                                    $structures[3],
+                            $permalink_structure
+                                ); ?> /> <?php _e('Numeric'); ?></label></th>
+                <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . _x(
+                                'archives',
+                                'sample permalink base'
+                            ) . '/123'; ?></code></td>
             </tr>
             <tr>
                 <th><label><input name="selection" type="radio"
-                                  value="<?php echo esc_attr($structures[4]); ?>" <?php checked($structures[4],
-                            $permalink_structure); ?> /> <?php _e('Post name'); ?></label></th>
-                <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . _x('sample-post',
-                                'sample permalink structure') . '/'; ?></code></td>
+                                  value="<?php echo esc_attr($structures[4]); ?>" <?php checked(
+                                    $structures[4],
+                            $permalink_structure
+                                ); ?> /> <?php _e('Post name'); ?></label></th>
+                <td><code><?php echo get_option('home') . $blog_prefix . $prefix . '/' . _x(
+                                'sample-post',
+                                'sample permalink structure'
+                            ) . '/'; ?></code></td>
             </tr>
             <tr>
                 <th>
@@ -238,8 +258,10 @@ require(ABSPATH . 'wp-admin/admin-header.php');
         <h2 class="title"><?php _e('Optional'); ?></h2>
         <p><?php
             /* translators: %s is a placeholder that must come at the start of the URL. */
-            printf(__('If you like, you may enter custom structures for your category and tag URLs here. For example, using <code>topics</code> as your category base would make your category links like <code>%s/topics/uncategorized/</code>. If you leave these blank the defaults will be used.'),
-                get_option('home') . $blog_prefix . $prefix); ?></p>
+            printf(
+                __('If you like, you may enter custom structures for your category and tag URLs here. For example, using <code>topics</code> as your category base would make your category links like <code>%s/topics/uncategorized/</code>. If you leave these blank the defaults will be used.'),
+                get_option('home') . $blog_prefix . $prefix
+            ); ?></p>
 
         <table class="form-table">
             <tr>
@@ -262,7 +284,8 @@ require(ABSPATH . 'wp-admin/admin-header.php');
 
         <?php submit_button(); ?>
     </form>
-    <?php if (!is_multisite()) { ?>
+    <?php if (!is_multisite()) {
+                            ?>
         <?php if ($iis7_permalinks) :
             if (isset($_POST['submit']) && $permalink_structure && !$using_index_permalinks && !$writable) :
                 if (file_exists($home_path . 'web.config')) : ?>
@@ -298,7 +321,8 @@ require(ABSPATH . 'wp-admin/admin-header.php');
                 </form>
             <?php endif; ?>
         <?php endif; ?>
-    <?php } // multisite ?>
+    <?php
+                        } // multisite?>
 
 </div>
 

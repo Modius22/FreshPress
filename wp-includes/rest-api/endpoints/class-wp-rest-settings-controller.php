@@ -39,7 +39,6 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
      */
     public function register_routes()
     {
-
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
                 'methods' => WP_REST_Server::READABLE,
@@ -55,7 +54,6 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
             ),
             'schema' => array($this, 'get_public_item_schema'),
         ));
-
     }
 
     /**
@@ -208,8 +206,11 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
                 if (!is_scalar(get_option($args['option_name'], false))) {
                     return new WP_Error(
                         'rest_invalid_stored_value',
-                        sprintf(__('The %s property has an invalid stored value, and cannot be updated to null.'),
-                            $name), array('status' => 500)
+                        sprintf(
+                            __('The %s property has an invalid stored value, and cannot be updated to null.'),
+                            $name
+                        ),
+                        array('status' => 500)
                     );
                 }
 

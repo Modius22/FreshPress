@@ -107,8 +107,7 @@ class WP_Links_List_Table extends WP_List_Table
 
         if ('top' != $which) {
             return;
-        }
-        ?>
+        } ?>
         <div class="alignleft actions">
             <?php
             $dropdown_options = array(
@@ -122,10 +121,9 @@ class WP_Links_List_Table extends WP_List_Table
                 'orderby' => 'name',
             );
 
-            echo '<label class="screen-reader-text" for="cat_id">' . __('Filter by category') . '</label>';
-            wp_dropdown_categories($dropdown_options);
-            submit_button(__('Filter'), '', 'filter_action', false, array('id' => 'post-query-submit'));
-            ?>
+        echo '<label class="screen-reader-text" for="cat_id">' . __('Filter by category') . '</label>';
+        wp_dropdown_categories($dropdown_options);
+        submit_button(__('Filter'), '', 'filter_action', false, array('id' => 'post-query-submit')); ?>
         </div>
         <?php
     }
@@ -186,8 +184,10 @@ class WP_Links_List_Table extends WP_List_Table
     {
         ?>
         <label class="screen-reader-text"
-               for="cb-select-<?php echo $link->link_id; ?>"><?php echo sprintf(__('Select %s'),
-                $link->link_name); ?></label>
+               for="cb-select-<?php echo $link->link_id; ?>"><?php echo sprintf(
+            __('Select %s'),
+                $link->link_name
+        ); ?></label>
         <input type="checkbox" name="linkcheck[]" id="cb-select-<?php echo $link->link_id; ?>"
                value="<?php echo esc_attr($link->link_id); ?>"/>
         <?php
@@ -204,7 +204,8 @@ class WP_Links_List_Table extends WP_List_Table
     public function column_name($link)
     {
         $edit_link = get_edit_bookmark_link($link);
-        printf('<strong><a class="row-title" href="%s" aria-label="%s">%s</a></strong>',
+        printf(
+            '<strong><a class="row-title" href="%s" aria-label="%s">%s</a></strong>',
             $edit_link,
             /* translators: %s: link name */
             esc_attr(sprintf(__('Edit &#8220;%s&#8221;'), $link->link_name)),
@@ -325,8 +326,7 @@ class WP_Links_List_Table extends WP_List_Table
         foreach ($this->items as $link) {
             $link = sanitize_bookmark($link);
             $link->link_name = esc_attr($link->link_name);
-            $link->link_category = wp_get_link_cats($link->link_id);
-            ?>
+            $link->link_category = wp_get_link_cats($link->link_id); ?>
             <tr id="link-<?php echo $link->link_id; ?>">
                 <?php $this->single_row_columns($link) ?>
             </tr>
@@ -355,9 +355,13 @@ class WP_Links_List_Table extends WP_List_Table
 
         $actions = array();
         $actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit') . '</a>';
-        $actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url("link.php?action=delete&amp;link_id=$link->link_id",
-                'delete-bookmark_' . $link->link_id) . "' onclick=\"if ( confirm( '" . esc_js(sprintf(__("You are about to delete this link '%s'\n  'Cancel' to stop, 'OK' to delete."),
-                $link->link_name)) . "' ) ) { return true;}return false;\">" . __('Delete') . "</a>";
+        $actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url(
+            "link.php?action=delete&amp;link_id=$link->link_id",
+                'delete-bookmark_' . $link->link_id
+        ) . "' onclick=\"if ( confirm( '" . esc_js(sprintf(
+                    __("You are about to delete this link '%s'\n  'Cancel' to stop, 'OK' to delete."),
+                $link->link_name
+                )) . "' ) ) { return true;}return false;\">" . __('Delete') . "</a>";
         return $this->row_actions($actions);
     }
 }

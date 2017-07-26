@@ -36,8 +36,7 @@ class WP_Customize_Themes_Section extends WP_Customize_Section
      */
     protected function render()
     {
-        $classes = 'accordion-section control-section control-section-' . $this->type;
-        ?>
+        $classes = 'accordion-section control-section control-section-' . $this->type; ?>
         <li id="accordion-section-<?php echo esc_attr($this->id); ?>" class="<?php echo esc_attr($classes); ?>">
             <h3 class="accordion-section-title">
                 <?php
@@ -45,12 +44,13 @@ class WP_Customize_Themes_Section extends WP_Customize_Section
                     echo '<span class="customize-action">' . __('Active theme') . '</span> ' . $this->title;
                 } else {
                     echo '<span class="customize-action">' . __('Previewing theme') . '</span> ' . $this->title;
-                }
-                ?>
+                } ?>
 
                 <?php if (count($this->controls) > 0) : ?>
-                    <button type="button" class="button change-theme" tabindex="0"><?php _ex('Change',
-                            'theme'); ?></button>
+                    <button type="button" class="button change-theme" tabindex="0"><?php _ex(
+                    'Change',
+                            'theme'
+                ); ?></button>
                 <?php endif; ?>
             </h3>
             <div class="customize-themes-panel control-panel-content themes-php">
@@ -66,8 +66,7 @@ class WP_Customize_Themes_Section extends WP_Customize_Section
                         echo '<span class="customize-action">' . __('Active theme') . '</span> ' . $this->title;
                     } else {
                         echo '<span class="customize-action">' . __('Previewing theme') . '</span> ' . $this->title;
-                    }
-                    ?>
+                    } ?>
                     <button type="button" class="button customize-theme"><?php _e('Customize'); ?></button>
                 </h3>
 
@@ -88,5 +87,6 @@ class WP_Customize_Themes_Section extends WP_Customize_Section
                 </div>
             </div>
         </li>
-    <?php }
+    <?php
+    }
 }

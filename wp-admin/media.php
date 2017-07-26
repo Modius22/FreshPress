@@ -15,7 +15,7 @@ $submenu_file = 'upload.php';
 wp_reset_vars(array('action'));
 
 switch ($action) {
-    case 'editattachment' :
+    case 'editattachment':
         $attachment_id = (int)$_POST['attachment_id'];
         check_admin_referer('media-form');
 
@@ -43,7 +43,8 @@ switch ($action) {
         }
 
     // No break.
-    case 'edit' :
+    // no break
+    case 'edit':
         $title = __('Edit Media');
 
         if (empty($errors)) {
@@ -101,7 +102,7 @@ switch ($action) {
         $class = '';
         if (isset($_GET['message'])) {
             switch ($_GET['message']) {
-                case 'updated' :
+                case 'updated':
                     $message = __('Media file updated.');
                     $class = 'updated';
                     break;
@@ -119,9 +120,11 @@ switch ($action) {
                 ?></h1>
 
             <?php
-            if (current_user_can('upload_files')) { ?>
+            if (current_user_can('upload_files')) {
+                ?>
                 <a href="media-new.php" class="page-title-action"><?php echo esc_html_x('Add New', 'file'); ?></a>
-            <?php } ?>
+            <?php
+            } ?>
 
             <hr class="wp-header-end">
 

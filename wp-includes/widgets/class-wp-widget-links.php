@@ -141,8 +141,7 @@ class WP_Widget_Links extends WP_Widget
         $link_cats = get_terms('link_category');
         if (!$limit = intval($instance['limit'])) {
             $limit = -1;
-        }
-        ?>
+        } ?>
         <p>
             <label for="<?php echo $this->get_field_id('category'); ?>"><?php _e('Select Link Category:'); ?></label>
             <select class="widefat" id="<?php echo $this->get_field_id('category'); ?>"
@@ -153,18 +152,21 @@ class WP_Widget_Links extends WP_Widget
                     echo '<option value="' . intval($link_cat->term_id) . '"'
                         . selected($instance['category'], $link_cat->term_id, false)
                         . '>' . $link_cat->name . "</option>\n";
-                }
-                ?>
+                } ?>
             </select>
             <label for="<?php echo $this->get_field_id('orderby'); ?>"><?php _e('Sort by:'); ?></label>
             <select name="<?php echo $this->get_field_name('orderby'); ?>"
                     id="<?php echo $this->get_field_id('orderby'); ?>" class="widefat">
                 <option value="name"<?php selected($instance['orderby'], 'name'); ?>><?php _e('Link title'); ?></option>
-                <option value="rating"<?php selected($instance['orderby'],
-                    'rating'); ?>><?php _e('Link rating'); ?></option>
+                <option value="rating"<?php selected(
+                    $instance['orderby'],
+                    'rating'
+                ); ?>><?php _e('Link rating'); ?></option>
                 <option value="id"<?php selected($instance['orderby'], 'id'); ?>><?php _e('Link ID'); ?></option>
-                <option value="rand"<?php selected($instance['orderby'], 'rand'); ?>><?php _ex('Random',
-                        'Links widget'); ?></option>
+                <option value="rand"<?php selected($instance['orderby'], 'rand'); ?>><?php _ex(
+                        'Random',
+                        'Links widget'
+                    ); ?></option>
             </select>
         </p>
         <p>

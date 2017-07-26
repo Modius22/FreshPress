@@ -153,8 +153,10 @@ class WP_Community_Events
              * but the description is already saved in the user location, so that
              * one can be used instead.
              */
-            if ($this->coordinates_match($request_args['body'],
-                    $response_body['location']) && empty($response_body['location']['description'])) {
+            if ($this->coordinates_match(
+                $request_args['body'],
+                    $response_body['location']
+            ) && empty($response_body['location']['description'])) {
                 $response_body['location']['description'] = $this->user_location['description'];
             }
 

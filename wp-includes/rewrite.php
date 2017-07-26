@@ -405,8 +405,11 @@ function wp_resolve_numeric_slug_conflicts($query_vars = array())
     }
 
     // If the date of the post doesn't match the date specified in the URL, resolve to the date archive.
-    if (preg_match('/^([0-9]{4})\-([0-9]{2})/', $post->post_date,
-            $matches) && isset($query_vars['year']) && ('monthnum' === $compare || 'day' === $compare)) {
+    if (preg_match(
+        '/^([0-9]{4})\-([0-9]{2})/',
+        $post->post_date,
+            $matches
+    ) && isset($query_vars['year']) && ('monthnum' === $compare || 'day' === $compare)) {
         // $matches[1] is the year the post was published.
         if (intval($query_vars['year']) !== intval($matches[1])) {
             return $query_vars;
@@ -570,9 +573,11 @@ function url_to_postid($url)
         }
 
         if (preg_match("#^$match#", $request_match, $matches)) {
-
-            if ($wp_rewrite->use_verbose_page_rules && preg_match('/pagename=\$matches\[([0-9]+)\]/', $query,
-                    $varmatch)) {
+            if ($wp_rewrite->use_verbose_page_rules && preg_match(
+                '/pagename=\$matches\[([0-9]+)\]/',
+                $query,
+                    $varmatch
+            )) {
                 // This is a verbose page match, let's check to be sure about it.
                 $page = get_page_by_path($matches[$varmatch[1]]);
                 if (!$page) {

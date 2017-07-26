@@ -465,8 +465,7 @@ function do_action($tag, $arg = '')
     }
 
     $args = array();
-    if (is_array($arg) && 1 == count($arg) && isset($arg[0]) && is_object($arg[0])) // array(&$this)
-    {
+    if (is_array($arg) && 1 == count($arg) && isset($arg[0]) && is_object($arg[0])) { // array(&$this)
         $args[] =& $arg[0];
     } else {
         $args[] = $arg;
@@ -691,8 +690,11 @@ function plugin_basename($file)
     $plugin_dir = wp_normalize_path(WP_PLUGIN_DIR);
     $mu_plugin_dir = wp_normalize_path(WPMU_PLUGIN_DIR);
 
-    $file = preg_replace('#^' . preg_quote($plugin_dir, '#') . '/|^' . preg_quote($mu_plugin_dir, '#') . '/#', '',
-        $file); // get relative path from plugins dir
+    $file = preg_replace(
+        '#^' . preg_quote($plugin_dir, '#') . '/|^' . preg_quote($mu_plugin_dir, '#') . '/#',
+        '',
+        $file
+    ); // get relative path from plugins dir
     $file = trim($file, '/');
     return $file;
 }
@@ -842,8 +844,11 @@ function register_deactivation_hook($file, $function)
 function register_uninstall_hook($file, $callback)
 {
     if (is_array($callback) && is_object($callback[0])) {
-        _doing_it_wrong(__FUNCTION__, __('Only a static class method or function can be used in an uninstall hook.'),
-            '3.1.0');
+        _doing_it_wrong(
+            __FUNCTION__,
+            __('Only a static class method or function can be used in an uninstall hook.'),
+            '3.1.0'
+        );
         return;
     }
 

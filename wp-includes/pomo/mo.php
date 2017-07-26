@@ -13,8 +13,7 @@ require_once dirname(__FILE__) . '/streams.php';
 if (!class_exists('MO', false)):
     class MO extends Gettext_Translations
     {
-
-        var $_nplurals = 2;
+        public $_nplurals = 2;
 
         /**
          * Loaded MO file.
@@ -38,7 +37,7 @@ if (!class_exists('MO', false)):
          *
          * @param string $filename MO file to load
          */
-        function import_from_file($filename)
+        public function import_from_file($filename)
         {
             $reader = new POMO_FileReader($filename);
 
@@ -55,7 +54,7 @@ if (!class_exists('MO', false)):
          * @param string $filename
          * @return bool
          */
-        function export_to_file($filename)
+        public function export_to_file($filename)
         {
             $fh = fopen($filename, 'wb');
             if (!$fh) {
@@ -69,7 +68,7 @@ if (!class_exists('MO', false)):
         /**
          * @return string|false
          */
-        function export()
+        public function export()
         {
             $tmp_fh = fopen("php://temp", 'r+');
             if (!$tmp_fh) {
@@ -84,7 +83,7 @@ if (!class_exists('MO', false)):
          * @param Translation_Entry $entry
          * @return bool
          */
-        function is_entry_good_for_export($entry)
+        public function is_entry_good_for_export($entry)
         {
             if (empty($entry->translations)) {
                 return false;
@@ -101,7 +100,7 @@ if (!class_exists('MO', false)):
          * @param resource $fh
          * @return true
          */
-        function export_to_file_handle($fh)
+        public function export_to_file_handle($fh)
         {
             $entries = array_filter($this->entries, array($this, 'is_entry_good_for_export'));
             ksort($entries);
@@ -113,8 +112,16 @@ if (!class_exists('MO', false)):
             $size_of_hash = 0;
             $hash_addr = $translations_lenghts_addr + 8 * $total;
             $current_addr = $hash_addr;
-            fwrite($fh, pack('V*', $magic, $revision, $total, $originals_lenghts_addr,
-                $translations_lenghts_addr, $size_of_hash, $hash_addr));
+            fwrite($fh, pack(
+                'V*',
+                $magic,
+                $revision,
+                $total,
+                $originals_lenghts_addr,
+                $translations_lenghts_addr,
+                $size_of_hash,
+                $hash_addr
+            ));
             fseek($fh, $originals_lenghts_addr);
 
             // headers' msgid is an empty string
@@ -152,7 +159,7 @@ if (!class_exists('MO', false)):
          * @param Translation_Entry $entry
          * @return string
          */
-        function export_original($entry)
+        public function export_original($entry)
         {
             //TODO: warnings for control characters
             $exported = $entry->singular;
@@ -169,7 +176,7 @@ if (!class_exists('MO', false)):
          * @param Translation_Entry $entry
          * @return string
          */
-        function export_translations($entry)
+        public function export_translations($entry)
         {
             //TODO: warnings for control characters
             return $entry->is_plural ? implode(chr(0), $entry->translations) : $entry->translations[0];
@@ -178,7 +185,7 @@ if (!class_exists('MO', false)):
         /**
          * @return string
          */
-        function export_headers()
+        public function export_headers()
         {
             $exported = '';
             foreach ($this->headers as $header => $value) {
@@ -191,7 +198,7 @@ if (!class_exists('MO', false)):
          * @param int $magic
          * @return string|false
          */
-        function get_byteorder($magic)
+        public function get_byteorder($magic)
         {
             // The magic is 0x950412de
 
@@ -214,7 +221,7 @@ if (!class_exists('MO', false)):
         /**
          * @param POMO_FileReader $reader
          */
-        function import_from_reader($reader)
+        public function import_from_reader($reader)
         {
             $endian_string = MO::get_byteorder($reader->readint32());
             if (false === $endian_string) {
@@ -230,8 +237,10 @@ if (!class_exists('MO', false)):
             }
 
             // parse header
-            $header = unpack("{$endian}revision/{$endian}total/{$endian}originals_lenghts_addr/{$endian}translations_lenghts_addr/{$endian}hash_length/{$endian}hash_addr",
-                $header);
+            $header = unpack(
+                "{$endian}revision/{$endian}total/{$endian}originals_lenghts_addr/{$endian}translations_lenghts_addr/{$endian}hash_length/{$endian}hash_addr",
+                $header
+            );
             if (!is_array($header)) {
                 return false;
             }
@@ -312,7 +321,7 @@ if (!class_exists('MO', false)):
          * @param string $translation translation string from MO file. Might contain
          *    0x00 as a plural translations separator
          */
-        function &make_entry($original, $translation)
+        public function &make_entry($original, $translation)
         {
             $entry = new Translation_Entry();
             // look for context
@@ -337,7 +346,7 @@ if (!class_exists('MO', false)):
          * @param int $count
          * @return string
          */
-        function select_plural_form($count)
+        public function select_plural_form($count)
         {
             return $this->gettext_select_plural_form($count);
         }
@@ -345,7 +354,7 @@ if (!class_exists('MO', false)):
         /**
          * @return int
          */
-        function get_plural_forms_count()
+        public function get_plural_forms_count()
         {
             return $this->_nplurals;
         }

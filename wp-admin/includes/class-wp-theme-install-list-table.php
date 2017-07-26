@@ -17,7 +17,6 @@
  */
 class WP_Theme_Install_List_Table extends WP_Themes_List_Table
 {
-
     public $features = array();
 
     /**
@@ -194,8 +193,7 @@ class WP_Theme_Install_List_Table extends WP_Themes_List_Table
      */
     public function display()
     {
-        wp_nonce_field("fetch-list-" . get_class($this), '_ajax_fetch_list_nonce');
-        ?>
+        wp_nonce_field("fetch-list-" . get_class($this), '_ajax_fetch_list_nonce'); ?>
         <div class="tablenav top themes">
             <div class="alignleft actions">
                 <?php
@@ -204,8 +202,7 @@ class WP_Theme_Install_List_Table extends WP_Themes_List_Table
                  *
                  * @since 2.8.0
                  */
-                do_action('install_themes_table_header');
-                ?>
+                do_action('install_themes_table_header'); ?>
             </div>
             <?php $this->pagination('top'); ?>
             <br class="clear"/>
@@ -228,9 +225,9 @@ class WP_Theme_Install_List_Table extends WP_Themes_List_Table
         foreach ($themes as $theme) {
             ?>
             <div class="available-theme installable-theme"><?php
-                $this->single_row($theme);
-                ?></div>
-        <?php } // end foreach $theme_names
+                $this->single_row($theme); ?></div>
+        <?php
+        } // end foreach $theme_names
 
         $this->theme_installer();
     }
@@ -292,25 +289,37 @@ class WP_Theme_Install_List_Table extends WP_Themes_List_Table
 
         switch ($status) {
             case 'update_available':
-                $actions[] = '<a class="install-now" href="' . esc_url(wp_nonce_url($update_url,
-                        'upgrade-theme_' . $theme->slug)) . '" title="' . esc_attr(sprintf(__('Update to version %s'),
-                        $theme->version)) . '">' . __('Update') . '</a>';
+                $actions[] = '<a class="install-now" href="' . esc_url(wp_nonce_url(
+                    $update_url,
+                        'upgrade-theme_' . $theme->slug
+                )) . '" title="' . esc_attr(sprintf(
+                            __('Update to version %s'),
+                        $theme->version
+                        )) . '">' . __('Update') . '</a>';
                 break;
             case 'newer_installed':
             case 'latest_installed':
-                $actions[] = '<span class="install-now" title="' . esc_attr__('This theme is already installed and is up to date') . '">' . _x('Installed',
-                        'theme') . '</span>';
+                $actions[] = '<span class="install-now" title="' . esc_attr__('This theme is already installed and is up to date') . '">' . _x(
+                    'Installed',
+                        'theme'
+                ) . '</span>';
                 break;
             case 'install':
             default:
-                $actions[] = '<a class="install-now" href="' . esc_url(wp_nonce_url($install_url,
-                        'install-theme_' . $theme->slug)) . '" title="' . esc_attr(sprintf(__('Install %s'),
-                        $name)) . '">' . __('Install Now') . '</a>';
+                $actions[] = '<a class="install-now" href="' . esc_url(wp_nonce_url(
+                    $install_url,
+                        'install-theme_' . $theme->slug
+                )) . '" title="' . esc_attr(sprintf(
+                            __('Install %s'),
+                        $name
+                        )) . '">' . __('Install Now') . '</a>';
                 break;
         }
 
-        $actions[] = '<a class="install-theme-preview" href="' . esc_url($preview_url) . '" title="' . esc_attr(sprintf(__('Preview %s'),
-                $name)) . '">' . __('Preview') . '</a>';
+        $actions[] = '<a class="install-theme-preview" href="' . esc_url($preview_url) . '" title="' . esc_attr(sprintf(
+            __('Preview %s'),
+                $name
+        )) . '">' . __('Preview') . '</a>';
 
         /**
          * Filters the install action links for a theme in the Install Themes list table.
@@ -321,9 +330,7 @@ class WP_Theme_Install_List_Table extends WP_Themes_List_Table
          *                          links to Install Now, Preview, and Details.
          * @param WP_Theme $theme Theme object.
          */
-        $actions = apply_filters('theme_install_actions', $actions, $theme);
-
-        ?>
+        $actions = apply_filters('theme_install_actions', $actions, $theme); ?>
         <a class="screenshot install-theme-preview" href="<?php echo esc_url($preview_url); ?>"
            title="<?php echo esc_attr($preview_title); ?>">
             <img src="<?php echo esc_url($theme->screenshot_url); ?>" width="150" alt=""/>
@@ -421,25 +428,31 @@ class WP_Theme_Install_List_Table extends WP_Themes_List_Table
             'theme' => $theme->slug,
         ), self_admin_url('update.php'));
 
-        $status = $this->_get_theme_status($theme);
-
-        ?>
+        $status = $this->_get_theme_status($theme); ?>
         <div class="install-theme-info"><?php
             switch ($status) {
                 case 'update_available':
-                    echo '<a class="theme-install button button-primary" href="' . esc_url(wp_nonce_url($update_url,
-                            'upgrade-theme_' . $theme->slug)) . '" title="' . esc_attr(sprintf(__('Update to version %s'),
-                            $theme->version)) . '">' . __('Update') . '</a>';
+                    echo '<a class="theme-install button button-primary" href="' . esc_url(wp_nonce_url(
+                        $update_url,
+                            'upgrade-theme_' . $theme->slug
+                    )) . '" title="' . esc_attr(sprintf(
+                                __('Update to version %s'),
+                            $theme->version
+                            )) . '">' . __('Update') . '</a>';
                     break;
                 case 'newer_installed':
                 case 'latest_installed':
-                    echo '<span class="theme-install" title="' . esc_attr__('This theme is already installed and is up to date') . '">' . _x('Installed',
-                            'theme') . '</span>';
+                    echo '<span class="theme-install" title="' . esc_attr__('This theme is already installed and is up to date') . '">' . _x(
+                        'Installed',
+                            'theme'
+                    ) . '</span>';
                     break;
                 case 'install':
                 default:
-                    echo '<a class="theme-install button button-primary" href="' . esc_url(wp_nonce_url($install_url,
-                            'install-theme_' . $theme->slug)) . '">' . __('Install') . '</a>';
+                    echo '<a class="theme-install button button-primary" href="' . esc_url(wp_nonce_url(
+                        $install_url,
+                            'install-theme_' . $theme->slug
+                    )) . '">' . __('Install') . '</a>';
                     break;
             } ?>
             <h3 class="theme-name"><?php echo $name; ?></h3>

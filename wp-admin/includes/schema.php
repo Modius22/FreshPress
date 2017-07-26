@@ -313,19 +313,19 @@ CREATE TABLE $wpdb->signups (
 ) $charset_collate;";
 
     switch ($scope) {
-        case 'blog' :
+        case 'blog':
             $queries = $blog_tables;
             break;
-        case 'global' :
+        case 'global':
             $queries = $global_tables;
             if ($is_multisite) {
                 $queries .= $ms_global_tables;
             }
             break;
-        case 'ms_global' :
+        case 'ms_global':
             $queries = $ms_global_tables;
             break;
-        case 'all' :
+        case 'all':
         default:
             $queries = $global_tables . $blog_tables;
             if ($is_multisite) {
@@ -671,8 +671,12 @@ function populate_options()
 		AND a.option_name NOT LIKE %s
 		AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
 		AND b.option_value < %d";
-    $wpdb->query($wpdb->prepare($sql, $wpdb->esc_like('_transient_') . '%',
-        $wpdb->esc_like('_transient_timeout_') . '%', $time));
+    $wpdb->query($wpdb->prepare(
+        $sql,
+        $wpdb->esc_like('_transient_') . '%',
+        $wpdb->esc_like('_transient_timeout_') . '%',
+        $time
+    ));
 
     if (is_main_site() && is_main_network()) {
         $sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
@@ -680,8 +684,12 @@ function populate_options()
 			AND a.option_name NOT LIKE %s
 			AND b.option_name = CONCAT( '_site_transient_timeout_', SUBSTRING( a.option_name, 17 ) )
 			AND b.option_value < %d";
-        $wpdb->query($wpdb->prepare($sql, $wpdb->esc_like('_site_transient_') . '%',
-            $wpdb->esc_like('_site_transient_timeout_') . '%', $time));
+        $wpdb->query($wpdb->prepare(
+            $sql,
+            $wpdb->esc_like('_site_transient_') . '%',
+            $wpdb->esc_like('_site_transient_timeout_') . '%',
+            $time
+        ));
     }
 }
 
@@ -1221,7 +1229,7 @@ We hope you enjoy your new site. Thanks!
                     __('The installer attempted to contact a random hostname (%s) on your domain.'),
                     '<code>' . $hostname . '</code>'
                 );
-            if (!empty ($errstr)) {
+            if (!empty($errstr)) {
                 /* translators: %s: error message */
                 $msg .= ' ' . sprintf(__('This resulted in an error message: %s'), '<code>' . $errstr . '</code>');
             }

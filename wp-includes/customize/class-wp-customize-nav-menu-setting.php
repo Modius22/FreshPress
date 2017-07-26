@@ -20,7 +20,6 @@
  */
 class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting
 {
-
     const ID_PATTERN = '/^nav_menu\[(?P<id>-?\d+)\]$/';
 
     const TAXONOMY = 'nav_menu';

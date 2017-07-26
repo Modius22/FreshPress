@@ -741,8 +741,11 @@ function wp_kses($string, $allowed_html, $allowed_protocols = array())
     }
     $string = wp_kses_no_null($string, array('slash_zero' => 'keep'));
     $string = wp_kses_normalize_entities($string);
-    $string = wp_kses_hook($string, $allowed_html,
-        $allowed_protocols); // WP changed the order of these funcs and added args to wp_kses_hook
+    $string = wp_kses_hook(
+        $string,
+        $allowed_html,
+        $allowed_protocols
+    ); // WP changed the order of these funcs and added args to wp_kses_hook
     return wp_kses_split($string, $allowed_html, $allowed_protocols);
 }
 
@@ -1082,8 +1085,14 @@ function wp_kses_attr($element, $attr, $allowed_html, $allowed_protocols)
     // in $attr2
     $attr2 = '';
     foreach ($attrarr as $arreach) {
-        if (wp_kses_attr_check($arreach['name'], $arreach['value'], $arreach['whole'], $arreach['vless'], $element,
-            $allowed_html)) {
+        if (wp_kses_attr_check(
+            $arreach['name'],
+            $arreach['value'],
+            $arreach['whole'],
+            $arreach['vless'],
+            $element,
+            $allowed_html
+        )) {
             $attr2 .= ' ' . $arreach['whole'];
         }
     }
@@ -1184,7 +1193,7 @@ function wp_kses_hair($attr, $allowed_protocols)
         $working = 0; // Was the last operation successful?
 
         switch ($mode) {
-            case 0 : // attribute name, href for instance
+            case 0: // attribute name, href for instance
 
                 if (preg_match('/^([-a-zA-Z:]+)/', $attr, $match)) {
                     $attrname = $match[1];
@@ -1194,18 +1203,16 @@ function wp_kses_hair($attr, $allowed_protocols)
 
                 break;
 
-            case 1 : // equals sign or valueless ("selected")
+            case 1: // equals sign or valueless ("selected")
 
-                if (preg_match('/^\s*=\s*/', $attr)) // equals sign
-                {
+                if (preg_match('/^\s*=\s*/', $attr)) { // equals sign
                     $working = 1;
                     $mode = 2;
                     $attr = preg_replace('/^\s*=\s*/', '', $attr);
                     break;
                 }
 
-                if (preg_match('/^\s+/', $attr)) // valueless
-                {
+                if (preg_match('/^\s+/', $attr)) { // valueless
                     $working = 1;
                     $mode = 0;
                     if (false === array_key_exists($attrname, $attrarr)) {
@@ -1221,10 +1228,9 @@ function wp_kses_hair($attr, $allowed_protocols)
 
                 break;
 
-            case 2 : // attribute value, a URL after href= for instance
+            case 2: // attribute value, a URL after href= for instance
 
-                if (preg_match('%^"([^"]*)"(\s+|/?$)%', $attr, $match)) // "value"
-                {
+                if (preg_match('%^"([^"]*)"(\s+|/?$)%', $attr, $match)) { // "value"
                     $thisval = $match[1];
                     if (in_array(strtolower($attrname), $uris)) {
                         $thisval = wp_kses_bad_protocol($thisval, $allowed_protocols);
@@ -1244,8 +1250,7 @@ function wp_kses_hair($attr, $allowed_protocols)
                     break;
                 }
 
-                if (preg_match("%^'([^']*)'(\s+|/?$)%", $attr, $match)) // 'value'
-                {
+                if (preg_match("%^'([^']*)'(\s+|/?$)%", $attr, $match)) { // 'value'
                     $thisval = $match[1];
                     if (in_array(strtolower($attrname), $uris)) {
                         $thisval = wp_kses_bad_protocol($thisval, $allowed_protocols);
@@ -1265,8 +1270,7 @@ function wp_kses_hair($attr, $allowed_protocols)
                     break;
                 }
 
-                if (preg_match("%^([^\s\"']+)(\s+|/?$)%", $attr, $match)) // value
-                {
+                if (preg_match("%^([^\s\"']+)(\s+|/?$)%", $attr, $match)) { // value
                     $thisval = $match[1];
                     if (in_array(strtolower($attrname), $uris)) {
                         $thisval = wp_kses_bad_protocol($thisval, $allowed_protocols);
@@ -1289,17 +1293,15 @@ function wp_kses_hair($attr, $allowed_protocols)
                 break;
         } // switch
 
-        if ($working == 0) // not well formed, remove and try again
-        {
+        if ($working == 0) { // not well formed, remove and try again
             $attr = wp_kses_html_error($attr);
             $mode = 0;
         }
     } // while
 
-    if ($mode == 1 && false === array_key_exists($attrname, $attrarr))
+    if ($mode == 1 && false === array_key_exists($attrname, $attrarr)) {
         // special case, for when the attribute list ends with a valueless
         // attribute like "selected"
-    {
         $attrarr[$attrname] = array('name' => $attrname, 'value' => '', 'whole' => $attrname, 'vless' => 'y');
     }
 
@@ -1430,7 +1432,7 @@ function wp_kses_check_attr_val($value, $vless, $checkname, $checkvalue)
     $ok = true;
 
     switch (strtolower($checkname)) {
-        case 'maxlen' :
+        case 'maxlen':
             // The maxlen check makes sure that the attribute value has a length not
             // greater than the given value. This can be used to avoid Buffer Overflows
             // in WWW clients and various Internet servers.
@@ -1440,7 +1442,7 @@ function wp_kses_check_attr_val($value, $vless, $checkname, $checkvalue)
             }
             break;
 
-        case 'minlen' :
+        case 'minlen':
             // The minlen check makes sure that the attribute value has a length not
             // smaller than the given value.
 
@@ -1449,7 +1451,7 @@ function wp_kses_check_attr_val($value, $vless, $checkname, $checkvalue)
             }
             break;
 
-        case 'maxval' :
+        case 'maxval':
             // The maxval check does two things: it checks that the attribute value is
             // an integer from 0 and up, without an excessive amount of zeroes or
             // whitespace (to avoid Buffer Overflows). It also checks that the attribute
@@ -1464,7 +1466,7 @@ function wp_kses_check_attr_val($value, $vless, $checkname, $checkvalue)
             }
             break;
 
-        case 'minval' :
+        case 'minval':
             // The minval check makes sure that the attribute value is a positive integer,
             // and that it is not smaller than the given value.
 
@@ -1476,7 +1478,7 @@ function wp_kses_check_attr_val($value, $vless, $checkname, $checkvalue)
             }
             break;
 
-        case 'valueless' :
+        case 'valueless':
             // The valueless check makes sure if the attribute has a value
             // (like <a href="blah">) or not (<option selected>). If the given value
             // is a "y" or a "Y", the attribute must not have a value.
@@ -2018,8 +2020,7 @@ function safecss_filter_attr($css, $deprecated = '')
     $css = wp_kses_no_null($css);
     $css = str_replace(array("\n", "\r", "\t"), '', $css);
 
-    if (preg_match('%[\\\\(&=}]|/\*%', $css)) // remove any inline css containing \ ( & } = or comments
-    {
+    if (preg_match('%[\\\\(&=}]|/\*%', $css)) { // remove any inline css containing \ ( & } = or comments
         return '';
     }
 

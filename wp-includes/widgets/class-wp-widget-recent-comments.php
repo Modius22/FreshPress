@@ -57,8 +57,7 @@ class WP_Widget_Recent_Comments extends WP_Widget
         if (!current_theme_supports('widgets') // Temp hack #14876
             || !apply_filters('show_recent_comments_widget_style', true, $this->id_base)) {
             return;
-        }
-        ?>
+        } ?>
         <style type="text/css">.recentcomments a {
                 display: inline !important;
                 padding: 0 !important;
@@ -124,7 +123,8 @@ class WP_Widget_Recent_Comments extends WP_Widget
             foreach ((array)$comments as $comment) {
                 $output .= '<li class="recentcomments">';
                 /* translators: comments widget: 1: comment author, 2: post link */
-                $output .= sprintf(_x('%1$s on %2$s', 'widgets'),
+                $output .= sprintf(
+                    _x('%1$s on %2$s', 'widgets'),
                     '<span class="comment-author-link">' . get_comment_author_link($comment) . '</span>',
                     '<a href="' . esc_url(get_comment_link($comment)) . '">' . get_the_title($comment->comment_post_ID) . '</a>'
                 );
@@ -167,8 +167,7 @@ class WP_Widget_Recent_Comments extends WP_Widget
     public function form($instance)
     {
         $title = isset($instance['title']) ? $instance['title'] : '';
-        $number = isset($instance['number']) ? absint($instance['number']) : 5;
-        ?>
+        $number = isset($instance['number']) ? absint($instance['number']) : 5; ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                    name="<?php echo $this->get_field_name('title'); ?>" type="text"

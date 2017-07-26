@@ -53,7 +53,6 @@ class WP_Image_Editor_GD extends WP_Image_Editor
         if (isset($args['methods']) &&
             in_array('rotate', $args['methods']) &&
             !function_exists('imagerotate')) {
-
             return false;
         }
 
@@ -180,7 +179,6 @@ class WP_Image_Editor_GD extends WP_Image_Editor
             imagedestroy($this->image);
             $this->image = $resized;
             return true;
-
         } elseif (is_wp_error($resized)) {
             return $resized;
         }
@@ -199,8 +197,11 @@ class WP_Image_Editor_GD extends WP_Image_Editor
     {
         $dims = image_resize_dimensions($this->size['width'], $this->size['height'], $max_w, $max_h, $crop);
         if (!$dims) {
-            return new WP_Error('error_getting_dimensions', __('Could not calculate resized image dimensions'),
-                $this->file);
+            return new WP_Error(
+                'error_getting_dimensions',
+                __('Could not calculate resized image dimensions'),
+                $this->file
+            );
         }
         list($dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h) = $dims;
 

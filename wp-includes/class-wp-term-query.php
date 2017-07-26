@@ -409,8 +409,10 @@ class WP_Term_Query
         $order = $this->parse_order($this->query_vars['order']);
 
         if ($taxonomies) {
-            $this->sql_clauses['where']['taxonomy'] = "tt.taxonomy IN ('" . implode("', '",
-                    array_map('esc_sql', $taxonomies)) . "')";
+            $this->sql_clauses['where']['taxonomy'] = "tt.taxonomy IN ('" . implode(
+                "', '",
+                    array_map('esc_sql', $taxonomies)
+            ) . "')";
         }
 
         $exclude = $args['exclude'];
@@ -511,19 +513,25 @@ class WP_Term_Query
                 $tt_ids = implode(',', array_map('intval', $args['term_taxonomy_id']));
                 $this->sql_clauses['where']['term_taxonomy_id'] = "tt.term_taxonomy_id IN ({$tt_ids})";
             } else {
-                $this->sql_clauses['where']['term_taxonomy_id'] = $wpdb->prepare("tt.term_taxonomy_id = %d",
-                    $args['term_taxonomy_id']);
+                $this->sql_clauses['where']['term_taxonomy_id'] = $wpdb->prepare(
+                    "tt.term_taxonomy_id = %d",
+                    $args['term_taxonomy_id']
+                );
             }
         }
 
         if (!empty($args['name__like'])) {
-            $this->sql_clauses['where']['name__like'] = $wpdb->prepare("t.name LIKE %s",
-                '%' . $wpdb->esc_like($args['name__like']) . '%');
+            $this->sql_clauses['where']['name__like'] = $wpdb->prepare(
+                "t.name LIKE %s",
+                '%' . $wpdb->esc_like($args['name__like']) . '%'
+            );
         }
 
         if (!empty($args['description__like'])) {
-            $this->sql_clauses['where']['description__like'] = $wpdb->prepare("tt.description LIKE %s",
-                '%' . $wpdb->esc_like($args['description__like']) . '%');
+            $this->sql_clauses['where']['description__like'] = $wpdb->prepare(
+                "tt.description LIKE %s",
+                '%' . $wpdb->esc_like($args['description__like']) . '%'
+            );
         }
 
         if (!empty($args['object_ids'])) {
@@ -589,15 +597,14 @@ class WP_Term_Query
             $join .= $mq_sql['join'];
             $this->sql_clauses['where']['meta_query'] = preg_replace('/^\s*AND\s*/', '', $mq_sql['where']);
             $distinct .= "DISTINCT";
-
         }
 
         $selects = array();
         switch ($args['fields']) {
             case 'all':
-            case 'all_with_object_id' :
-            case 'tt_ids' :
-            case 'slugs' :
+            case 'all_with_object_id':
+            case 'tt_ids':
+            case 'slugs':
                 $selects = array('t.*', 'tt.*');
                 if ('all_with_object_id' === $args['fields'] && !empty($args['object_ids'])) {
                     $selects[] = 'tr.object_id';
@@ -660,8 +667,12 @@ class WP_Term_Query
          * @param array $taxonomies An array of taxonomies.
          * @param array $args An array of terms query arguments.
          */
-        $clauses = apply_filters('terms_clauses',
-            compact('fields', 'join', 'where', 'distinct', 'orderby', 'order', 'limits'), $taxonomies, $args);
+        $clauses = apply_filters(
+            'terms_clauses',
+            compact('fields', 'join', 'where', 'distinct', 'orderby', 'order', 'limits'),
+            $taxonomies,
+            $args
+        );
 
         $fields = isset($clauses['fields']) ? $clauses['fields'] : '';
         $join = isset($clauses['join']) ? $clauses['join'] : '';
@@ -683,8 +694,10 @@ class WP_Term_Query
         $this->request = "{$this->sql_clauses['select']} {$this->sql_clauses['from']} {$where} {$this->sql_clauses['orderby']} {$this->sql_clauses['limits']}";
 
         // $args can be anything. Only use the args defined in defaults to compute the key.
-        $key = md5(serialize(wp_array_slice_assoc($args,
-                array_keys($this->query_var_defaults))) . serialize($taxonomies) . $this->request);
+        $key = md5(serialize(wp_array_slice_assoc(
+            $args,
+                array_keys($this->query_var_defaults)
+        )) . serialize($taxonomies) . $this->request);
         $last_changed = wp_cache_get_last_changed('terms');
         $cache_key = "get_terms:$key:$last_changed";
         $cache = wp_cache_get($cache_key, 'terms');

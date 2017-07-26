@@ -20,8 +20,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
 
         <h1><?php printf(__('Welcome to WordPress %s'), $display_version); ?></h1>
 
-        <p class="about-text"><?php printf(__('Thank you for updating to the latest version! WordPress %s adds more ways for you to express yourself and represent your brand.'),
-                $display_version); ?></p>
+        <p class="about-text"><?php printf(
+    __('Thank you for updating to the latest version! WordPress %s adds more ways for you to express yourself and represent your brand.'),
+                $display_version
+); ?></p>
 
         <div class="wp-badge"><?php printf(__('Version %s'), $display_version); ?></div>
 
@@ -38,7 +40,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
         if (!$credits) {
             echo '<p class="about-description">';
             /* translators: 1: https://wordpress.org/about/, 2: https://make.wordpress.org/ */
-            printf(__('WordPress is created by a <a href="%1$s">worldwide team</a> of passionate individuals. <a href="%2$s">Get involved in WordPress</a>.'),
+            printf(
+                __('WordPress is created by a <a href="%1$s">worldwide team</a> of passionate individuals. <a href="%2$s">Get involved in WordPress</a>.'),
                 'https://wordpress.org/about/',
                 __('https://make.wordpress.org/')
             );
@@ -54,8 +57,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
             if ($group_data['name']) {
                 if ('Translators' == $group_data['name']) {
                     // Considered a special slug in the API response. (Also, will never be returned for en_US.)
-                    $title = _x('Translators',
-                        'Translate this to be the equivalent of English Translators in your language for the credits page Translators section');
+                    $title = _x(
+                        'Translators',
+                        'Translate this to be the equivalent of English Translators in your language for the credits page Translators section'
+                    );
                 } elseif (isset($group_data['placeholders'])) {
                     $title = vsprintf(translate($group_data['name']), $group_data['placeholders']);
                 } else {
@@ -70,11 +75,11 @@ include(ABSPATH . 'wp-admin/admin-header.php');
             } // We were going to sort by ability to pronounce "hierarchical," but that wouldn't be fair to Matt.
 
             switch ($group_data['type']) {
-                case 'list' :
+                case 'list':
                     array_walk($group_data['data'], '_wp_credits_add_profile_link', $credits['data']['profiles']);
                     echo '<p class="wp-credits-list">' . wp_sprintf('%l.', $group_data['data']) . "</p>\n\n";
                     break;
-                case 'libraries' :
+                case 'libraries':
                     array_walk($group_data['data'], '_wp_credits_build_object_link');
                     echo '<p class="wp-credits-list">' . wp_sprintf('%l.', $group_data['data']) . "</p>\n\n";
                     break;
@@ -84,8 +89,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     echo '<ul class="' . $classes . '" id="wp-people-group-' . $group_slug . '">' . "\n";
                     foreach ($group_data['data'] as $person_data) {
                         echo '<li class="wp-person" id="wp-person-' . esc_attr($person_data[2]) . '">' . "\n\t";
-                        echo '<a href="' . esc_url(sprintf($credits['data']['profiles'],
-                                $person_data[2])) . '" class="web">';
+                        echo '<a href="' . esc_url(sprintf(
+                            $credits['data']['profiles'],
+                                $person_data[2]
+                        )) . '" class="web">';
                         $size = 'compact' == $group_data['type'] ? 30 : 60;
                         $data = get_avatar_data($person_data[1] . '@md5.gravatar.com', array('size' => $size));
                         $size *= 2;
@@ -105,7 +112,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
         ?>
         <p class="clear"><?php
             /* translators: %s: https://make.wordpress.org/ */
-            printf(__('Want to see your name in lights on this page? <a href="%s">Get involved in WordPress</a>.'),
+            printf(
+                __('Want to see your name in lights on this page? <a href="%s">Get involved in WordPress</a>.'),
                 __('https://make.wordpress.org/')
             );
             ?></p>

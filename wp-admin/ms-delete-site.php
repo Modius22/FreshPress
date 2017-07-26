@@ -20,8 +20,10 @@ if (!current_user_can('delete_site')) {
 if (isset($_GET['h']) && $_GET['h'] != '' && get_option('delete_blog_hash') != false) {
     if (hash_equals(get_option('delete_blog_hash'), $_GET['h'])) {
         wpmu_delete_blog($wpdb->blogid);
-        wp_die(sprintf(__('Thank you for using %s, your site has been deleted. Happy trails to you until we meet again.'),
-            get_network()->site_name));
+        wp_die(sprintf(
+            __('Thank you for using %s, your site has been deleted. Happy trails to you until we meet again.'),
+            get_network()->site_name
+        ));
     } else {
         wp_die(__("I'm sorry, the link you clicked is stale. Please select another option."));
     }
@@ -77,20 +79,25 @@ Webmaster
     $content = str_replace('###URL_DELETE###', $url_delete, $content);
     $content = str_replace('###SITE_NAME###', get_network()->site_name, $content);
 
-    wp_mail(get_option('admin_email'),
-        "[ " . wp_specialchars_decode(get_option('blogname')) . " ] " . __('Delete My Site'), $content);
+    wp_mail(
+        get_option('admin_email'),
+        "[ " . wp_specialchars_decode(get_option('blogname')) . " ] " . __('Delete My Site'),
+        $content
+    );
 
     if ($switched_locale) {
         restore_previous_locale();
-    }
-    ?>
+    } ?>
 
     <p><?php _e('Thank you. Please check your email for a link to confirm your action. Your site will not be deleted until this link is clicked.') ?></p>
 
-<?php } else {
-    ?>
-    <p><?php printf(__('If you do not want to use your %s site any more, you can delete it using the form below. When you click <strong>Delete My Site Permanently</strong> you will be sent an email with a link in it. Click on this link to delete your site.'),
-            get_network()->site_name); ?></p>
+<?php
+} else {
+        ?>
+    <p><?php printf(
+        __('If you do not want to use your %s site any more, you can delete it using the form below. When you click <strong>Delete My Site Permanently</strong> you will be sent an email with a link in it. Click on this link to delete your site.'),
+            get_network()->site_name
+    ); ?></p>
     <p><?php _e('Remember, once deleted your site cannot be restored.') ?></p>
 
     <form method="post" name="deletedirect">
@@ -102,12 +109,11 @@ Webmaster
                     /* translators: %s: site address */
                         __("I'm sure I want to permanently disable my site, and I am aware I can never get it back or use %s again."),
                         $blog->domain . $blog->path
-                    );
-                    ?></strong></label></p>
+                    ); ?></strong></label></p>
         <?php submit_button(__('Delete My Site Permanently')); ?>
     </form>
     <?php
-}
+    }
 echo '</div>';
 
 include(ABSPATH . 'wp-admin/admin-footer.php');

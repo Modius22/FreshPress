@@ -290,8 +290,10 @@ class WP_User_Query
             }
 
             $posts_table = $wpdb->get_blog_prefix($blog_id) . 'posts';
-            $this->query_where .= " AND $wpdb->users.ID IN ( SELECT DISTINCT $posts_table.post_author FROM $posts_table WHERE $posts_table.post_status = 'publish' AND $posts_table.post_type IN ( " . join(", ",
-                    $post_types) . " ) )";
+            $this->query_where .= " AND $wpdb->users.ID IN ( SELECT DISTINCT $posts_table.post_author FROM $posts_table WHERE $posts_table.post_status = 'publish' AND $posts_table.post_type IN ( " . join(
+                ", ",
+                    $post_types
+            ) . " ) )";
         }
 
         // nicename
@@ -532,8 +534,10 @@ class WP_User_Query
 
             $search_columns = array();
             if ($qv['search_columns']) {
-                $search_columns = array_intersect($qv['search_columns'],
-                    array('ID', 'user_login', 'user_email', 'user_url', 'user_nicename'));
+                $search_columns = array_intersect(
+                    $qv['search_columns'],
+                    array('ID', 'user_login', 'user_email', 'user_url', 'user_nicename')
+                );
             }
             if (!$search_columns) {
                 if (false !== strpos($search, '@')) {
@@ -760,8 +764,10 @@ class WP_User_Query
         $_orderby = '';
         if (in_array($orderby, array('login', 'nicename', 'email', 'url', 'registered'))) {
             $_orderby = 'user_' . $orderby;
-        } elseif (in_array($orderby,
-            array('user_login', 'user_nicename', 'user_email', 'user_url', 'user_registered'))) {
+        } elseif (in_array(
+            $orderby,
+            array('user_login', 'user_nicename', 'user_email', 'user_url', 'user_registered')
+        )) {
             $_orderby = $orderby;
         } elseif ('name' == $orderby || 'display_name' == $orderby) {
             $_orderby = 'display_name';
@@ -796,8 +802,11 @@ class WP_User_Query
             $_orderby = "FIELD( user_login, '$login__in' )";
         } elseif (isset($meta_query_clauses[$orderby])) {
             $meta_clause = $meta_query_clauses[$orderby];
-            $_orderby = sprintf("CAST(%s.meta_value AS %s)", esc_sql($meta_clause['alias']),
-                esc_sql($meta_clause['cast']));
+            $_orderby = sprintf(
+                "CAST(%s.meta_value AS %s)",
+                esc_sql($meta_clause['alias']),
+                esc_sql($meta_clause['cast'])
+            );
         }
 
         return $_orderby;

@@ -17,7 +17,6 @@
  */
 class WP_Terms_List_Table extends WP_List_Table
 {
-
     public $callback_args;
 
     private $level;
@@ -65,7 +64,6 @@ class WP_Terms_List_Table extends WP_List_Table
         if (empty($post_type) || !in_array($post_type, get_post_types(array('show_ui' => true)))) {
             $post_type = 'post';
         }
-
     }
 
     /**
@@ -285,11 +283,9 @@ class WP_Terms_List_Table extends WP_List_Table
      */
     private function _rows($taxonomy, $terms, &$children, $start, $per_page, &$count, $parent = 0, $level = 0)
     {
-
         $end = $start + $per_page;
 
         foreach ($terms as $key => $term) {
-
             if ($count >= $end) {
                 break;
             }
@@ -306,8 +302,7 @@ class WP_Terms_List_Table extends WP_List_Table
                     $my_parent = get_term($p, $taxonomy);
                     $my_parents[] = $my_parent;
                     $p = $my_parent->parent;
-                    if (in_array($p, $parent_ids)) // Prevent parent loops.
-                    {
+                    if (in_array($p, $parent_ids)) { // Prevent parent loops.
                         break;
                     }
                     $parent_ids[] = $p;
@@ -361,8 +356,10 @@ class WP_Terms_List_Table extends WP_List_Table
     public function column_cb($tag)
     {
         if (current_user_can('delete_term', $tag->term_id)) {
-            return '<label class="screen-reader-text" for="cb-select-' . $tag->term_id . '">' . sprintf(__('Select %s'),
-                    $tag->name) . '</label>'
+            return '<label class="screen-reader-text" for="cb-select-' . $tag->term_id . '">' . sprintf(
+                __('Select %s'),
+                    $tag->name
+            ) . '</label>'
                 . '<input type="checkbox" name="delete_tags[]" value="' . $tag->term_id . '" id="cb-select-' . $tag->term_id . '" />';
         }
 
@@ -481,8 +478,10 @@ class WP_Terms_List_Table extends WP_List_Table
         if (current_user_can('delete_term', $tag->term_id)) {
             $actions['delete'] = sprintf(
                 '<a href="%s" class="delete-tag aria-button-if-js" aria-label="%s">%s</a>',
-                wp_nonce_url("edit-tags.php?action=delete&amp;taxonomy=$taxonomy&amp;tag_ID=$tag->term_id",
-                    'delete-tag_' . $tag->term_id),
+                wp_nonce_url(
+                    "edit-tags.php?action=delete&amp;taxonomy=$taxonomy&amp;tag_ID=$tag->term_id",
+                    'delete-tag_' . $tag->term_id
+                ),
                 /* translators: %s: taxonomy term name */
                 esc_attr(sprintf(__('Delete &#8220;%s&#8221;'), $tag->name)),
                 __('Delete')
@@ -623,8 +622,7 @@ class WP_Terms_List_Table extends WP_List_Table
 
         if (!current_user_can($tax->cap->edit_terms)) {
             return;
-        }
-        ?>
+        } ?>
 
         <form method="get">
             <table style="display: none">
@@ -640,13 +638,15 @@ class WP_Terms_List_Table extends WP_List_Table
                                         <span class="input-text-wrap"><input type="text" name="name" class="ptitle"
                                                                              value=""/></span>
                                     </label>
-                                    <?php if (!global_terms_enabled()) { ?>
+                                    <?php if (!global_terms_enabled()) {
+            ?>
                                         <label>
                                             <span class="title"><?php _e('Slug'); ?></span>
                                             <span class="input-text-wrap"><input type="text" name="slug" class="ptitle"
                                                                                  value=""/></span>
                                         </label>
-                                    <?php } ?>
+                                    <?php
+        } ?>
                                 </div>
                             </fieldset>
                             <?php
@@ -659,18 +659,16 @@ class WP_Terms_List_Table extends WP_List_Table
                                 'posts' => true
                             );
 
-                            list($columns) = $this->get_column_info();
+        list($columns) = $this->get_column_info();
 
-                            foreach ($columns as $column_name => $column_display_name) {
-                                if (isset($core_columns[$column_name])) {
-                                    continue;
-                                }
+        foreach ($columns as $column_name => $column_display_name) {
+            if (isset($core_columns[$column_name])) {
+                continue;
+            }
 
-                                /** This action is documented in wp-admin/includes/class-wp-posts-list-table.php */
-                                do_action('quick_edit_custom_box', $column_name, 'edit-tags', $this->screen->taxonomy);
-                            }
-
-                            ?>
+            /** This action is documented in wp-admin/includes/class-wp-posts-list-table.php */
+            do_action('quick_edit_custom_box', $column_name, 'edit-tags', $this->screen->taxonomy);
+        } ?>
 
                             <p class="inline-edit-save submit">
                                 <button type="button" class="cancel button alignleft"><?php _e('Cancel'); ?></button>

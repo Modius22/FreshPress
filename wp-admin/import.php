@@ -61,8 +61,10 @@ $parent_file = 'tools.php';
             <div class="error">
                 <p><strong><?php _e('ERROR:'); ?></strong> <?php
                     /* translators: %s: importer slug */
-                    printf(__('The %s importer is invalid or is not installed.'),
-                        '<strong>' . esc_html($_GET['invalid']) . '</strong>');
+                    printf(
+                        __('The %s importer is invalid or is not installed.'),
+                        '<strong>' . esc_html($_GET['invalid']) . '</strong>'
+                    );
                     ?></p>
             </div>
         <?php endif; ?>
@@ -92,8 +94,7 @@ $parent_file = 'tools.php';
         if (empty($importers)) {
             echo '<p>' . __('No importers are available.') . '</p>'; // TODO: make more helpful
         } else {
-            uasort($importers, '_usort_by_first_member');
-            ?>
+            uasort($importers, '_usort_by_first_member'); ?>
             <table class="widefat importers striped">
 
                 <?php
@@ -194,15 +195,16 @@ $parent_file = 'tools.php';
 					<span class='importer-desc'>{$data[1]}</span>
 				</td>
 			</tr>";
-                }
-                ?>
+                } ?>
             </table>
             <?php
         }
 
         if (current_user_can('install_plugins')) {
-            echo '<p>' . sprintf(__('If the importer you need is not listed, <a href="%s">search the plugin directory</a> to see if an importer is available.'),
-                    esc_url(network_admin_url('plugin-install.php?tab=search&type=tag&s=importer'))) . '</p>';
+            echo '<p>' . sprintf(
+                __('If the importer you need is not listed, <a href="%s">search the plugin directory</a> to see if an importer is available.'),
+                    esc_url(network_admin_url('plugin-install.php?tab=search&type=tag&s=importer'))
+            ) . '</p>';
         }
         ?>
 

@@ -70,18 +70,23 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     <p class="description"
                        id="tagline-description"><?php _e('In a few words, explain what this site is about.') ?></p></td>
             </tr>
-            <?php if (!is_multisite()) { ?>
+            <?php if (!is_multisite()) {
+    ?>
                 <tr>
                     <th scope="row"><label for="siteurl"><?php _e('WordPress Address (URL)') ?></label></th>
                     <td><input name="siteurl" type="url" id="siteurl"
                                value="<?php form_option('siteurl'); ?>"<?php disabled(defined('WP_SITEURL')); ?>
-                               class="regular-text code<?php if (defined('WP_SITEURL')) echo ' disabled' ?>"/></td>
+                               class="regular-text code<?php if (defined('WP_SITEURL')) {
+        echo ' disabled';
+    } ?>"/></td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="home"><?php _e('Site Address (URL)') ?></label></th>
                     <td><input name="home" type="url" id="home" aria-describedby="home-description"
                                value="<?php form_option('home'); ?>"<?php disabled(defined('WP_HOME')); ?>
-                               class="regular-text code<?php if (defined('WP_HOME')) echo ' disabled' ?>"/>
+                               class="regular-text code<?php if (defined('WP_HOME')) {
+        echo ' disabled';
+    } ?>"/>
                         <?php if (!defined('WP_HOME')) : ?>
                         <p class="description"
                            id="home-description"><?php _e('Enter the address here if you <a href="https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">want your site home page to be different from your WordPress installation directory.</a>'); ?></p>
@@ -116,7 +121,9 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                 id="default_role"><?php wp_dropdown_roles(get_option('default_role')); ?></select>
                     </td>
                 </tr>
-            <?php } else { ?>
+            <?php
+} else {
+        ?>
                 <tr>
                     <th scope="row"><label for="new_admin_email"><?php _e('Email Address') ?> </label></th>
                     <td><input name="new_admin_email" type="email" id="new_admin_email"
@@ -126,7 +133,7 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                            id="new-admin-email-description"><?php _e('This address is used for admin purposes. If you change this we will send you an email at your new address to confirm it. <strong>The new address will not become active until confirmed.</strong>') ?></p>
                         <?php
                         $new_admin_email = get_option('new_admin_email');
-                        if ($new_admin_email && $new_admin_email != get_option('admin_email')) : ?>
+        if ($new_admin_email && $new_admin_email != get_option('admin_email')) : ?>
                             <div class="updated inline">
                                 <p><?php
                                     printf(
@@ -134,23 +141,27 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                         __('There is a pending change of the admin email to %s.'),
                                         '<code>' . esc_html($new_admin_email) . '</code>'
                                     );
-                                    printf(
+        printf(
                                         ' <a href="%1$s">%2$s</a>',
-                                        esc_url(wp_nonce_url(admin_url('options.php?dismiss=new_admin_email'),
-                                            'dismiss-' . get_current_blog_id() . '-new_admin_email')),
+                                        esc_url(wp_nonce_url(
+                                            admin_url('options.php?dismiss=new_admin_email'),
+                                            'dismiss-' . get_current_blog_id() . '-new_admin_email'
+                                        )),
                                         __('Cancel')
-                                    );
-                                    ?></p>
+                                    ); ?></p>
                             </div>
                         <?php endif; ?>
                     </td>
                 </tr>
-            <?php }
+            <?php
+    }
 
             $languages = get_available_languages();
             $translations = wp_get_available_translations();
-            if (!is_multisite() && defined('WPLANG') && '' !== WPLANG && 'en_US' !== WPLANG && !in_array(WPLANG,
-                    $languages)) {
+            if (!is_multisite() && defined('WPLANG') && '' !== WPLANG && 'en_US' !== WPLANG && !in_array(
+                WPLANG,
+                    $languages
+            )) {
                 $languages[] = WPLANG;
             }
             if (!empty($languages) || !empty($translations)) {
@@ -160,11 +171,11 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     <td>
                         <?php
                         $locale = get_locale();
-                        if (!in_array($locale, $languages)) {
-                            $locale = '';
-                        }
+                if (!in_array($locale, $languages)) {
+                    $locale = '';
+                }
 
-                        wp_dropdown_languages(array(
+                wp_dropdown_languages(array(
                             'name' => 'WPLANG',
                             'id' => 'WPLANG',
                             'selected' => $locale,
@@ -173,22 +184,30 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                             'show_available_translations' => (!is_multisite() || is_super_admin()) && wp_can_install_language_pack(),
                         ));
 
-                        // Add note about deprecated WPLANG constant.
-                        if (defined('WPLANG') && ('' !== WPLANG) && $locale !== WPLANG) {
-                            if (is_multisite() && current_user_can('manage_network_options')
+                // Add note about deprecated WPLANG constant.
+                if (defined('WPLANG') && ('' !== WPLANG) && $locale !== WPLANG) {
+                    if (is_multisite() && current_user_can('manage_network_options')
                                 || !is_multisite() && current_user_can('manage_options')) {
-                                ?>
+                        ?>
                                 <p class="description">
-                                    <strong><?php _e('Note:'); ?></strong> <?php printf(__('The %s constant in your %s file is no longer needed.'),
-                                        '<code>WPLANG</code>', '<code>wp-config.php</code>'); ?>
+                                    <strong><?php _e('Note:'); ?></strong> <?php printf(
+                                    __('The %s constant in your %s file is no longer needed.'),
+                                        '<code>WPLANG</code>',
+                                    '<code>wp-config.php</code>'
+                                ); ?>
                                 </p>
                                 <?php
-                            }
-                            _deprecated_argument('define()', '4.0.0',
-                                sprintf(__('The %s constant in your %s file is no longer needed.'), 'WPLANG',
-                                    'wp-config.php'));
-                        }
-                        ?>
+                    }
+                    _deprecated_argument(
+                                'define()',
+                                '4.0.0',
+                                sprintf(
+                                    __('The %s constant in your %s file is no longer needed.'),
+                                    'WPLANG',
+                                    'wp-config.php'
+                                )
+                            );
+                } ?>
                     </td>
                 </tr>
                 <?php
@@ -231,7 +250,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     <p class="timezone-info">
 	<span id="utc-time"><?php
         /* translators: 1: UTC abbreviation, 2: UTC time */
-        printf(__('Universal time (%1$s) is %2$s.'),
+        printf(
+            __('Universal time (%1$s) is %2$s.'),
             '<abbr>' . __('UTC') . '</abbr>',
             '<code>' . date_i18n($timezone_format, false, true) . '</code>'
         );
@@ -239,7 +259,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                         <?php if (get_option('timezone_string') || !empty($current_offset)) : ?>
                             <span id="local-time"><?php
                                 /* translators: %s: local time */
-                                printf(__('Local time is %s.'),
+                                printf(
+                                    __('Local time is %s.'),
                                     '<code>' . date_i18n($timezone_format) . '</code>'
                                 );
                                 ?></span>
@@ -283,7 +304,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                 /* translators: %s: date and time  */
                 __('Standard time begins on: %s.');
             // Add the difference between the current offset and the new offset to ts to get the correct transition time from date_i18n().
-            printf($message,
+            printf(
+                $message,
                 '<code>' . date_i18n(
                     __('F j, Y') . ' ' . __('g:i a'),
                     $tr['ts'] + ($tz_offset - $tr['offset'])
@@ -316,8 +338,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                          *
                          * @param array $default_date_formats Array of default date formats.
                          */
-                        $date_formats = array_unique(apply_filters('date_formats',
-                            array(__('F j, Y'), 'Y-m-d', 'm/d/Y', 'd/m/Y')));
+                        $date_formats = array_unique(apply_filters(
+                            'date_formats',
+                            array(__('F j, Y'), 'Y-m-d', 'm/d/Y', 'd/m/Y')
+                        ));
 
                         $custom = true;
 

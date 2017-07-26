@@ -29,7 +29,6 @@ header('Content-Type: text/html; charset=utf-8');
         <?php
 
         if (!defined('WP_ALLOW_REPAIR')) {
-
             echo '<h1 class="screen-reader-text">' . __('Allow automatic database repair') . '</h1>';
 
             echo '<p>';
@@ -72,16 +71,16 @@ header('Content-Type: text/html; charset=utf-8');
             $duplicated_keys = array_filter($duplicated_keys);
 
             if ($duplicated_keys || $missing_key) {
-
                 echo '<h2 class="screen-reader-text">' . __('Check secret keys') . '</h2>';
 
                 // Translators: 1: wp-config.php; 2: Secret key service URL.
-                echo '<p>' . sprintf(__('While you are editing your %1$s file, take a moment to make sure you have all 8 keys and that they are unique. You can generate these using the <a href="%2$s">WordPress.org secret key service</a>.'),
-                        '<code>wp-config.php</code>', 'https://api.wordpress.org/secret-key/1.1/salt/') . '</p>';
+                echo '<p>' . sprintf(
+                    __('While you are editing your %1$s file, take a moment to make sure you have all 8 keys and that they are unique. You can generate these using the <a href="%2$s">WordPress.org secret key service</a>.'),
+                        '<code>wp-config.php</code>',
+                    'https://api.wordpress.org/secret-key/1.1/salt/'
+                ) . '</p>';
             }
-
         } elseif (isset($_GET['repair'])) {
-
             echo '<h1 class="screen-reader-text">' . __('Database repair results') . '</h1>';
 
             $optimize = 2 == $_GET['repair'];
@@ -115,8 +114,11 @@ header('Content-Type: text/html; charset=utf-8');
                     printf(__('The %s table is okay.'), "<code>$table</code>");
                 } else {
                     /* translators: 1: table name, 2: error message, */
-                    printf(__('The %1$s table is not okay. It is reporting the following error: %2$s. WordPress will attempt to repair this table&hellip;'),
-                        "<code>$table</code>", "<code>$check->Msg_text</code>");
+                    printf(
+                        __('The %1$s table is not okay. It is reporting the following error: %2$s. WordPress will attempt to repair this table&hellip;'),
+                        "<code>$table</code>",
+                        "<code>$check->Msg_text</code>"
+                    );
 
                     $repair = $wpdb->get_row("REPAIR TABLE $table");
 
@@ -126,8 +128,11 @@ header('Content-Type: text/html; charset=utf-8');
                         printf(__('Successfully repaired the %s table.'), "<code>$table</code>");
                     } else {
                         /* translators: 1: table name, 2: error message, */
-                        echo sprintf(__('Failed to repair the %1$s table. Error: %2$s'), "<code>$table</code>",
-                                "<code>$check->Msg_text</code>") . '<br />';
+                        echo sprintf(
+                            __('Failed to repair the %1$s table. Error: %2$s'),
+                            "<code>$table</code>",
+                                "<code>$check->Msg_text</code>"
+                        ) . '<br />';
                         $problems[$table] = $check->Msg_text;
                         $okay = false;
                     }
@@ -149,8 +154,11 @@ header('Content-Type: text/html; charset=utf-8');
                             printf(__('Successfully optimized the %s table.'), "<code>$table</code>");
                         } else {
                             /* translators: 1: table name, 2: error message, */
-                            printf(__('Failed to optimize the %1$s table. Error: %2$s'), "<code>$table</code>",
-                                "<code>$check->Msg_text</code>");
+                            printf(
+                                __('Failed to optimize the %1$s table. Error: %2$s'),
+                                "<code>$table</code>",
+                                "<code>$check->Msg_text</code>"
+                            );
                         }
                     }
                 }
@@ -158,8 +166,10 @@ header('Content-Type: text/html; charset=utf-8');
             }
 
             if ($problems) {
-                printf('<p>' . __('Some database problems could not be repaired. Please copy-and-paste the following list of errors to the <a href="%s">WordPress support forums</a> to get additional assistance.') . '</p>',
-                    __('https://wordpress.org/support/forum/how-to-and-troubleshooting'));
+                printf(
+                    '<p>' . __('Some database problems could not be repaired. Please copy-and-paste the following list of errors to the <a href="%s">WordPress support forums</a> to get additional assistance.') . '</p>',
+                    __('https://wordpress.org/support/forum/how-to-and-troubleshooting')
+                );
                 $problem_output = '';
                 foreach ($problems as $table => $problem) {
                     $problem_output .= "$table: $problem\n";
@@ -169,15 +179,13 @@ header('Content-Type: text/html; charset=utf-8');
                 echo '<p>' . __('Repairs complete. Please remove the following line from wp-config.php to prevent this page from being used by unauthorized users.') . "</p><p><code>define('WP_ALLOW_REPAIR', true);</code></p>";
             }
         } else {
-
             echo '<h1 class="screen-reader-text">' . __('WordPress database repair') . '</h1>';
 
             if (isset($_GET['referrer']) && 'is_blog_installed' == $_GET['referrer']) {
                 echo '<p>' . __('One or more database tables are unavailable. To allow WordPress to attempt to repair these tables, press the &#8220;Repair Database&#8221; button. Repairing can take a while, so please be patient.') . '</p>';
             } else {
                 echo '<p>' . __('WordPress can automatically look for some common database problems and repair them. Repairing can take a while, so please be patient.') . '</p>';
-            }
-            ?>
+            } ?>
             <p class="step"><a class="button button-large"
                                href="repair.php?repair=1"><?php _e('Repair Database'); ?></a></p>
             <p><?php _e('WordPress can also attempt to optimize the database. This improves performance in some situations. Repairing and optimizing the database can take a long time and the database will be locked while optimizing.'); ?></p>

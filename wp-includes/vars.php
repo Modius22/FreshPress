@@ -77,18 +77,24 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
         }
     } elseif (stripos($_SERVER['HTTP_USER_AGENT'], 'safari') !== false) {
         $is_safari = true;
-    } elseif ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false || strpos($_SERVER['HTTP_USER_AGENT'],
-                'Trident') !== false) && strpos($_SERVER['HTTP_USER_AGENT'], 'Win') !== false) {
+    } elseif ((strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false || strpos(
+        $_SERVER['HTTP_USER_AGENT'],
+                'Trident'
+    ) !== false) && strpos($_SERVER['HTTP_USER_AGENT'], 'Win') !== false) {
         $is_winIE = true;
-    } elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false && strpos($_SERVER['HTTP_USER_AGENT'],
-            'Mac') !== false) {
+    } elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false && strpos(
+        $_SERVER['HTTP_USER_AGENT'],
+            'Mac'
+    ) !== false) {
         $is_macIE = true;
     } elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Gecko') !== false) {
         $is_gecko = true;
     } elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Opera') !== false) {
         $is_opera = true;
-    } elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Nav') !== false && strpos($_SERVER['HTTP_USER_AGENT'],
-            'Mozilla/4.') !== false) {
+    } elseif (strpos($_SERVER['HTTP_USER_AGENT'], 'Nav') !== false && strpos(
+        $_SERVER['HTTP_USER_AGENT'],
+            'Mozilla/4.'
+    ) !== false) {
         $is_NS4 = true;
     }
 }
@@ -105,8 +111,10 @@ $is_IE = ($is_macIE || $is_winIE);
  * Whether the server software is Apache or something else
  * @global bool $is_apache
  */
-$is_apache = (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],
-        'LiteSpeed') !== false);
+$is_apache = (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false || strpos(
+    $_SERVER['SERVER_SOFTWARE'],
+        'LiteSpeed'
+) !== false);
 
 /**
  * Whether the server software is Nginx or something else
@@ -118,15 +126,19 @@ $is_nginx = (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false);
  * Whether the server software is IIS or something else
  * @global bool $is_IIS
  */
-$is_IIS = !$is_apache && (strpos($_SERVER['SERVER_SOFTWARE'],
-            'Microsoft-IIS') !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'ExpressionDevServer') !== false);
+$is_IIS = !$is_apache && (strpos(
+    $_SERVER['SERVER_SOFTWARE'],
+            'Microsoft-IIS'
+) !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'ExpressionDevServer') !== false);
 
 /**
  * Whether the server software is IIS 7.X or greater
  * @global bool $is_iis7
  */
-$is_iis7 = $is_IIS && intval(substr($_SERVER['SERVER_SOFTWARE'],
-        strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS/') + 14)) >= 7;
+$is_iis7 = $is_IIS && intval(substr(
+    $_SERVER['SERVER_SOFTWARE'],
+        strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS/') + 14
+)) >= 7;
 
 /**
  * Test if the current browser runs on a mobile device (smart phone, tablet, etc.)

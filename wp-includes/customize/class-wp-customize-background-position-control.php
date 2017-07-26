@@ -60,8 +60,7 @@ class WP_Customize_Background_Position_Control extends WP_Customize_Control
                 'center bottom' => array('label' => __('Bottom'), 'icon' => 'dashicons dashicons-arrow-down-alt'),
                 'right bottom' => array('label' => __('Bottom Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'),
             ),
-        );
-        ?>
+        ); ?>
         <# if ( data.label ) { #>
         <span class="customize-control-title">{{{ data.label }}}</span>
         <# } #>

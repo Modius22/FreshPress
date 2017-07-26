@@ -44,7 +44,6 @@ ms_subdomain_constants();
 // This block will process a request if the current network or current site objects
 // have not been populated in the global scope through something like `sunrise.php`.
 if (!isset($current_site) || !isset($current_blog)) {
-
     $domain = strtolower(stripslashes($_SERVER['HTTP_HOST']));
     if (substr($domain, -3) == ':80') {
         $domain = substr($domain, 0, -3);

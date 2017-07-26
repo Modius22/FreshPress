@@ -62,7 +62,7 @@ if ($action) {
             WP_Theme::network_disable_theme((array)$themes);
             wp_safe_redirect(add_query_arg('disabled', count($themes), $referer));
             exit;
-        case 'update-selected' :
+        case 'update-selected':
             check_admin_referer('bulk-themes');
 
             if (isset($_GET['themes'])) {
@@ -81,8 +81,10 @@ if ($action) {
             echo '<div class="wrap">';
             echo '<h1>' . esc_html($title) . '</h1>';
 
-            $url = self_admin_url('update.php?action=update-selected-themes&amp;themes=' . urlencode(join(',',
-                    $themes)));
+            $url = self_admin_url('update.php?action=update-selected-themes&amp;themes=' . urlencode(join(
+                ',',
+                    $themes
+            )));
             $url = wp_nonce_url($url, 'bulk-update-themes');
 
             echo "<iframe src='$url' style='width: 100%; height:100%; min-height:850px;'></iframe>";
@@ -122,8 +124,7 @@ if ($action) {
             if (!isset($_REQUEST['verify-delete'])) {
                 wp_enqueue_script('jquery');
                 require_once(ABSPATH . 'wp-admin/admin-header.php');
-                $themes_to_delete = count($themes);
-                ?>
+                $themes_to_delete = count($themes); ?>
                 <div class="wrap">
                     <?php if (1 == $themes_to_delete) : ?>
                         <h1><?php _e('Delete Theme'); ?></h1>
@@ -147,8 +148,7 @@ if ($action) {
                                     '<strong>' . $theme->display('Name') . '</strong>',
                                     '<em>' . $theme->display('Author') . '</em>'
                                 ) . '</li>';
-                        }
-                        ?>
+                        } ?>
                     </ul>
                     <?php if (1 == $themes_to_delete) : ?>
                         <p><?php _e('Are you sure you wish to delete this theme?'); ?></p>
@@ -164,18 +164,16 @@ if ($action) {
                             echo '<input type="hidden" name="checked[]" value="' . esc_attr($theme) . '" />';
                         }
 
-                        wp_nonce_field('bulk-themes');
+                wp_nonce_field('bulk-themes');
 
-                        if (1 == $themes_to_delete) {
-                            submit_button(__('Yes, delete this theme'), '', 'submit', false);
-                        } else {
-                            submit_button(__('Yes, delete these themes'), '', 'submit', false);
-                        }
-                        ?>
+                if (1 == $themes_to_delete) {
+                    submit_button(__('Yes, delete this theme'), '', 'submit', false);
+                } else {
+                    submit_button(__('Yes, delete these themes'), '', 'submit', false);
+                } ?>
                     </form>
                     <?php
-                    $referer = wp_get_referer();
-                    ?>
+                    $referer = wp_get_referer(); ?>
                     <form method="post" action="<?php echo $referer ? esc_url($referer) : ''; ?>"
                           style="display:inline;">
                         <?php submit_button(__('No, return me to the theme list'), '', 'submit', false); ?>
@@ -211,13 +209,16 @@ if ($action) {
             check_admin_referer('bulk-themes');
 
             /** This action is documented in wp-admin/network/site-themes.php */
-            $referer = apply_filters('handle_network_bulk_actions-' . get_current_screen()->id, $referer, $action,
-                $themes);
+            $referer = apply_filters(
+                'handle_network_bulk_actions-' . get_current_screen()->id,
+                $referer,
+                $action,
+                $themes
+            );
 
             wp_safe_redirect($referer);
             exit;
     }
-
 }
 
 $wp_list_table->prepare_items();
@@ -281,8 +282,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
             } else {
                 $message = _n('%s theme enabled.', '%s themes enabled.', $enabled);
             }
-            echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf($message,
-                    number_format_i18n($enabled)) . '</p></div>';
+            echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+                $message,
+                    number_format_i18n($enabled)
+            ) . '</p></div>';
         } elseif (isset($_GET['disabled'])) {
             $disabled = absint($_GET['disabled']);
             if (1 == $disabled) {
@@ -290,8 +293,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
             } else {
                 $message = _n('%s theme disabled.', '%s themes disabled.', $disabled);
             }
-            echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf($message,
-                    number_format_i18n($disabled)) . '</p></div>';
+            echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+                $message,
+                    number_format_i18n($disabled)
+            ) . '</p></div>';
         } elseif (isset($_GET['deleted'])) {
             $deleted = absint($_GET['deleted']);
             if (1 == $deleted) {
@@ -299,8 +304,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
             } else {
                 $message = _n('%s theme deleted.', '%s themes deleted.', $deleted);
             }
-            echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf($message,
-                    number_format_i18n($deleted)) . '</p></div>';
+            echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+                $message,
+                    number_format_i18n($deleted)
+            ) . '</p></div>';
         } elseif (isset($_GET['error']) && 'none' == $_GET['error']) {
             echo '<div id="message" class="error notice is-dismissible"><p>' . __('No theme selected.') . '</p></div>';
         } elseif (isset($_GET['error']) && 'main' == $_GET['error']) {

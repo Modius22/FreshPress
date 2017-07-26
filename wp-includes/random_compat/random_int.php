@@ -114,7 +114,6 @@ function random_int($min, $max)
          */
         $bytes = PHP_INT_SIZE;
         $mask = ~0;
-
     } else {
 
         /**

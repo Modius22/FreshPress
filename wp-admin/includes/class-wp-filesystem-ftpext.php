@@ -85,9 +85,11 @@ class WP_Filesystem_FTPext extends WP_Filesystem_Base
         }
 
         if (!$this->link) {
-            $this->errors->add('connect',
+            $this->errors->add(
+                'connect',
                 /* translators: %s: hostname:port */
-                sprintf(__('Failed to connect to FTP Server %s'),
+                sprintf(
+                    __('Failed to connect to FTP Server %s'),
                     $this->options['hostname'] . ':' . $this->options['port']
                 )
             );
@@ -95,9 +97,11 @@ class WP_Filesystem_FTPext extends WP_Filesystem_Base
         }
 
         if (!@ftp_login($this->link, $this->options['username'], $this->options['password'])) {
-            $this->errors->add('auth',
+            $this->errors->add(
+                'auth',
                 /* translators: %s: username */
-                sprintf(__('Username/Password incorrect for %s'),
+                sprintf(
+                    __('Username/Password incorrect for %s'),
                     $this->options['username']
                 )
             );
@@ -524,8 +528,11 @@ class WP_Filesystem_FTPext extends WP_Filesystem_Base
             $is_windows = stripos(ftp_systype($this->link), 'win') !== false;
         }
 
-        if ($is_windows && preg_match('/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/',
-                $line, $lucifer)) {
+        if ($is_windows && preg_match(
+            '/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/',
+                $line,
+            $lucifer
+        )) {
             $b = array();
             if ($lucifer[3] < 70) {
                 $lucifer[3] += 2000;
@@ -544,8 +551,14 @@ class WP_Filesystem_FTPext extends WP_Filesystem_Base
             $b['year'] = $lucifer[3];
             $b['hour'] = $lucifer[4];
             $b['minute'] = $lucifer[5];
-            $b['time'] = @mktime($lucifer[4] + (strcasecmp($lucifer[6], "PM") == 0 ? 12 : 0), $lucifer[5], 0,
-                $lucifer[1], $lucifer[2], $lucifer[3]);
+            $b['time'] = @mktime(
+                $lucifer[4] + (strcasecmp($lucifer[6], "PM") == 0 ? 12 : 0),
+                $lucifer[5],
+                0,
+                $lucifer[1],
+                $lucifer[2],
+                $lucifer[3]
+            );
             $b['am/pm'] = $lucifer[6];
             $b['name'] = $lucifer[8];
         } elseif (!$is_windows && $lucifer = preg_split('/[ ]/', $line, 9, PREG_SPLIT_NO_EMPTY)) {
@@ -587,8 +600,14 @@ class WP_Filesystem_FTPext extends WP_Filesystem_Base
                     $b['hour'] = 0;
                     $b['minute'] = 0;
                 }
-                $b['time'] = strtotime(sprintf('%d %s %d %02d:%02d', $b['day'], $b['month'], $b['year'], $b['hour'],
-                    $b['minute']));
+                $b['time'] = strtotime(sprintf(
+                    '%d %s %d %02d:%02d',
+                    $b['day'],
+                    $b['month'],
+                    $b['year'],
+                    $b['hour'],
+                    $b['minute']
+                ));
                 $b['name'] = $lucifer[8];
             }
         }
@@ -619,15 +638,13 @@ class WP_Filesystem_FTPext extends WP_Filesystem_Base
         }
 
         $pwd = @ftp_pwd($this->link);
-        if (!@ftp_chdir($this->link, $path)) // Cant change to folder = folder doesn't exist
-        {
+        if (!@ftp_chdir($this->link, $path)) { // Cant change to folder = folder doesn't exist
             return false;
         }
         $list = @ftp_rawlist($this->link, '-a', false);
         @ftp_chdir($this->link, $pwd);
 
-        if (empty($list)) // Empty array = non-existent folder (real folder will show . at least)
-        {
+        if (empty($list)) { // Empty array = non-existent folder (real folder will show . at least)
             return false;
         }
 

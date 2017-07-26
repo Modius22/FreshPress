@@ -39,7 +39,6 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      */
     public function register_routes()
     {
-
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
                 'methods' => WP_REST_Server::READABLE,
@@ -86,8 +85,11 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
                 }
             }
 
-            return new WP_Error('rest_cannot_view', __('Sorry, you are not allowed to edit posts in this post type.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_view',
+                __('Sorry, you are not allowed to edit posts in this post type.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -136,14 +138,19 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
         }
 
         if (empty($obj->show_in_rest)) {
-            return new WP_Error('rest_cannot_read_type', __('Cannot view post type.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_read_type',
+                __('Cannot view post type.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if ('edit' === $request['context'] && !current_user_can($obj->cap->edit_posts)) {
-            return new WP_Error('rest_forbidden_context',
+            return new WP_Error(
+                'rest_forbidden_context',
                 __('Sorry, you are not allowed to edit posts in this post type.'),
-                array('status' => rest_authorization_required_code()));
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         $data = $this->prepare_item_for_response($obj, $request);
@@ -300,5 +307,4 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
             'context' => $this->get_context_param(array('default' => 'view')),
         );
     }
-
 }

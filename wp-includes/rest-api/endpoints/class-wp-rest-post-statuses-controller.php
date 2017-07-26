@@ -39,7 +39,6 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller
      */
     public function register_routes()
     {
-
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
                 'methods' => WP_REST_Server::READABLE,
@@ -88,8 +87,11 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller
                     return true;
                 }
             }
-            return new WP_Error('rest_cannot_view', __('Sorry, you are not allowed to edit posts in this post type.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_view',
+                __('Sorry, you are not allowed to edit posts in this post type.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -144,8 +146,11 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller
         $check = $this->check_read_permission($status);
 
         if (!$check) {
-            return new WP_Error('rest_cannot_read_status', __('Cannot view status.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_read_status',
+                __('Cannot view status.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -213,7 +218,6 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller
      */
     public function prepare_item_for_response($status, $request)
     {
-
         $data = array(
             'name' => $status->label,
             'private' => (bool)$status->private,
@@ -327,5 +331,4 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller
             'context' => $this->get_context_param(array('default' => 'view')),
         );
     }
-
 }

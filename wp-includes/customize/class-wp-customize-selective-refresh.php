@@ -285,8 +285,12 @@ final class WP_Customize_Selective_Refresh
              * @param string $partial_id ID for dynamic partial.
              * @param array $partial_args The arguments to the WP_Customize_Partial constructor.
              */
-            $partial_class = apply_filters('customize_dynamic_partial_class', $partial_class, $partial_id,
-                $partial_args);
+            $partial_class = apply_filters(
+                'customize_dynamic_partial_class',
+                $partial_class,
+                $partial_id,
+                $partial_args
+            );
 
             $partial = new $partial_class($this, $partial_id, $partial_args);
 
@@ -445,8 +449,10 @@ final class WP_Customize_Selective_Refresh
         }
 
         $setting_validities = $this->manager->validate_setting_values($this->manager->unsanitized_post_values());
-        $exported_setting_validities = array_map(array($this->manager, 'prepare_setting_validity_for_js'),
-            $setting_validities);
+        $exported_setting_validities = array_map(
+            array($this->manager, 'prepare_setting_validity_for_js'),
+            $setting_validities
+        );
         $response['setting_validities'] = $exported_setting_validities;
 
         /**

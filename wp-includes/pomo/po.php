@@ -21,15 +21,14 @@ ini_set('auto_detect_line_endings', 1);
 if (!class_exists('PO', false)):
     class PO extends Gettext_Translations
     {
-
-        var $comments_before_headers = '';
+        public $comments_before_headers = '';
 
         /**
          * Exports headers to a PO entry
          *
          * @return string msgid/msgstr PO entry for this PO file headers, doesn't contain newline at the end
          */
-        function export_headers()
+        public function export_headers()
         {
             $header_string = '';
             foreach ($this->headers as $header => $value) {
@@ -49,7 +48,7 @@ if (!class_exists('PO', false)):
          *
          * @return string sequence of mgsgid/msgstr PO strings, doesn't containt newline at the end
          */
-        function export_entries()
+        public function export_entries()
         {
             //TODO sorting
             return implode("\n\n", array_map(array('PO', 'export_entry'), $this->entries));
@@ -61,7 +60,7 @@ if (!class_exists('PO', false)):
          * @param bool $include_headers whether to include the headers in the export
          * @return string ready for inclusion in PO file string for headers and all the enrtries
          */
-        function export($include_headers = true)
+        public function export($include_headers = true)
         {
             $res = '';
             if ($include_headers) {
@@ -79,7 +78,7 @@ if (!class_exists('PO', false)):
          * @param bool $include_headers whether to include tje headers in the export
          * @return bool true on success, false on error
          */
-        function export_to_file($filename, $include_headers = true)
+        public function export_to_file($filename, $include_headers = true)
         {
             $fh = fopen($filename, 'w');
             if (false === $fh) {
@@ -98,7 +97,7 @@ if (!class_exists('PO', false)):
          *
          * Doesn't need to include # in the beginning of lines, these are added automatically
          */
-        function set_comment_before_headers($text)
+        public function set_comment_before_headers($text)
         {
             $this->comments_before_headers = $text;
         }
@@ -292,7 +291,7 @@ if (!class_exists('PO', false)):
          * @param string $filename
          * @return boolean
          */
-        function import_from_file($filename)
+        public function import_from_file($filename)
         {
             $f = fopen($filename, 'r');
             if (!$f) {
@@ -335,7 +334,7 @@ if (!class_exists('PO', false)):
          * @param int $lineno
          * @return null|false|array
          */
-        function read_entry($f, $lineno = 0)
+        public function read_entry($f, $lineno = 0)
         {
             $entry = new Translation_Entry();
             // where were we in the last step
@@ -349,8 +348,7 @@ if (!class_exists('PO', false)):
                     if (feof($f)) {
                         if (self::is_final($context)) {
                             break;
-                        } elseif (!$context) // we haven't read a line and eof came
-                        {
+                        } elseif (!$context) { // we haven't read a line and eof came
                             return null;
                         } else {
                             return false;
@@ -466,7 +464,7 @@ if (!class_exists('PO', false)):
          * @param     string $action
          * @return boolean
          */
-        function read_line($f, $action = 'read')
+        public function read_line($f, $action = 'read')
         {
             static $last_line = '';
             static $use_last_line = false;
@@ -489,7 +487,7 @@ if (!class_exists('PO', false)):
          * @param Translation_Entry $entry
          * @param string $po_comment_line
          */
-        function add_comment_to_entry(&$entry, $po_comment_line)
+        public function add_comment_to_entry(&$entry, $po_comment_line)
         {
             $first_two = substr($po_comment_line, 0, 2);
             $comment = trim(substr($po_comment_line, 2));

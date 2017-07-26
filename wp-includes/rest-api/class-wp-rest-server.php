@@ -274,7 +274,11 @@ class WP_REST_Server
          *
          * @param bool $rest_enabled Whether the REST API is enabled. Default true.
          */
-        apply_filters_deprecated('rest_enabled', array(true), '4.7.0', 'rest_authentication_errors',
+        apply_filters_deprecated(
+            'rest_enabled',
+            array(true),
+            '4.7.0',
+            'rest_authentication_errors',
             __('The REST API can no longer be completely disabled, the rest_authentication_errors filter can be used to restrict access to the API, instead.')
         );
 
@@ -737,7 +741,6 @@ class WP_REST_Server
         );
 
         foreach ($endpoints as $route => &$handlers) {
-
             if (isset($handlers['callback'])) {
                 // Single endpoint, add one deeper.
                 $handlers = array($handlers);
@@ -748,7 +751,6 @@ class WP_REST_Server
             }
 
             foreach ($handlers as $key => &$handler) {
-
                 if (!is_numeric($key)) {
                     // Route option, move it to the options.
                     $this->route_options[$route][$key] = $handler;
@@ -864,8 +866,11 @@ class WP_REST_Server
                 }
 
                 if (!is_callable($callback)) {
-                    $response = new WP_Error('rest_invalid_handler', __('The handler for the route is invalid'),
-                        array('status' => 500));
+                    $response = new WP_Error(
+                        'rest_invalid_handler',
+                        __('The handler for the route is invalid'),
+                        array('status' => 500)
+                    );
                 }
 
                 if (!is_wp_error($response)) {
@@ -922,8 +927,11 @@ class WP_REST_Server
                         if (is_wp_error($permission)) {
                             $response = $permission;
                         } elseif (false === $permission || null === $permission) {
-                            $response = new WP_Error('rest_forbidden', __('Sorry, you are not allowed to do that.'),
-                                array('status' => 403));
+                            $response = new WP_Error(
+                                'rest_forbidden',
+                                __('Sorry, you are not allowed to do that.'),
+                                array('status' => 403)
+                            );
                         }
                     }
                 }
@@ -987,8 +995,11 @@ class WP_REST_Server
             }
         }
 
-        return $this->error_to_response(new WP_Error('rest_no_route',
-            __('No route was found matching the URL and request method'), array('status' => 404)));
+        return $this->error_to_response(new WP_Error(
+            'rest_no_route',
+            __('No route was found matching the URL and request method'),
+            array('status' => 404)
+        ));
     }
 
     /**
@@ -1081,8 +1092,11 @@ class WP_REST_Server
         $namespace = $request['namespace'];
 
         if (!isset($this->namespaces[$namespace])) {
-            return new WP_Error('rest_invalid_namespace', __('The specified namespace could not be found.'),
-                array('status' => 404));
+            return new WP_Error(
+                'rest_invalid_namespace',
+                __('The specified namespace could not be found.'),
+                array('status' => 404)
+            );
         }
 
         $routes = $this->namespaces[$namespace];

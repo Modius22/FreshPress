@@ -240,8 +240,10 @@ class WP_Customize_Section
      */
     public function json()
     {
-        $array = wp_array_slice_assoc((array)$this,
-            array('id', 'description', 'priority', 'panel', 'type', 'description_hidden'));
+        $array = wp_array_slice_assoc(
+            (array)$this,
+            array('id', 'description', 'priority', 'panel', 'type', 'description_hidden')
+        );
         $array['title'] = html_entity_decode($this->title, ENT_QUOTES, get_bloginfo('charset'));
         $array['content'] = $this->get_content();
         $array['active'] = $this->active();
@@ -249,8 +251,10 @@ class WP_Customize_Section
 
         if ($this->panel) {
             /* translators: &#9656; is the unicode right-pointing triangle, and %s is the section title in the Customizer */
-            $array['customizeAction'] = sprintf(__('Customizing &#9656; %s'),
-                esc_html($this->manager->get_panel($this->panel)->title));
+            $array['customizeAction'] = sprintf(
+                __('Customizing &#9656; %s'),
+                esc_html($this->manager->get_panel($this->panel)->title)
+            );
         } else {
             $array['customizeAction'] = __('Customizing');
         }

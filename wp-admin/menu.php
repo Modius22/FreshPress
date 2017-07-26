@@ -49,8 +49,10 @@ if (!is_multisite()) {
         $cap = 'update_themes';
     }
     $submenu['index.php'][10] = array(
-        sprintf(__('Updates %s'),
-            "<span class='update-plugins count-{$update_data['counts']['total']}'><span class='update-count'>" . number_format_i18n($update_data['counts']['total']) . "</span></span>"),
+        sprintf(
+            __('Updates %s'),
+            "<span class='update-plugins count-{$update_data['counts']['total']}'><span class='update-count'>" . number_format_i18n($update_data['counts']['total']) . "</span></span>"
+        ),
         $cap,
         'update-core.php'
     );
@@ -112,8 +114,10 @@ if (current_user_can('edit_posts')) {
     $awaiting_mod = wp_count_comments();
     $awaiting_mod = $awaiting_mod->moderated;
     $menu[25] = array(
-        sprintf(__('Comments %s'),
-            '<span class="awaiting-mod count-' . absint($awaiting_mod) . '"><span class="pending-count">' . number_format_i18n($awaiting_mod) . '</span></span>'),
+        sprintf(
+            __('Comments %s'),
+            '<span class="awaiting-mod count-' . absint($awaiting_mod) . '"><span class="pending-count">' . number_format_i18n($awaiting_mod) . '</span></span>'
+        ),
         'edit_posts',
         'edit-comments.php',
         '',
@@ -142,8 +146,10 @@ foreach (array_merge($builtin, $types) as $ptype) {
     $menu_icon = 'dashicons-admin-post';
     if (is_string($ptype_obj->menu_icon)) {
         // Special handling for data:image/svg+xml and Dashicons.
-        if (0 === strpos($ptype_obj->menu_icon, 'data:image/svg+xml;base64,') || 0 === strpos($ptype_obj->menu_icon,
-                'dashicons-')) {
+        if (0 === strpos($ptype_obj->menu_icon, 'data:image/svg+xml;base64,') || 0 === strpos(
+            $ptype_obj->menu_icon,
+                'dashicons-'
+        )) {
             $menu_icon = $ptype_obj->menu_icon;
         } else {
             $menu_icon = esc_url($ptype_obj->menu_icon);
@@ -221,8 +227,11 @@ $menu[60] = array(
 );
 $submenu['themes.php'][5] = array(__('Themes'), $appearance_cap, 'themes.php');
 
-$customize_url = add_query_arg('return',
-    urlencode(remove_query_arg(wp_removable_query_args(), wp_unslash($_SERVER['REQUEST_URI']))), 'customize.php');
+$customize_url = add_query_arg(
+    'return',
+    urlencode(remove_query_arg(wp_removable_query_args(), wp_unslash($_SERVER['REQUEST_URI']))),
+    'customize.php'
+);
 $submenu['themes.php'][6] = array(__('Customize'), 'customize', esc_url($customize_url), '', 'hide-if-no-customize');
 
 if (current_theme_supports('menus') || current_theme_supports('widgets')) {
@@ -241,8 +250,10 @@ if (current_theme_supports('custom-header') && current_user_can('customize')) {
 }
 
 if (current_theme_supports('custom-background') && current_user_can('customize')) {
-    $customize_background_url = add_query_arg(array('autofocus' => array('control' => 'background_image')),
-        $customize_url);
+    $customize_background_url = add_query_arg(
+        array('autofocus' => array('control' => 'background_image')),
+        $customize_url
+    );
     $submenu['themes.php'][20] = array(
         __('Background'),
         $appearance_cap,
@@ -269,8 +280,13 @@ if (!is_multisite()) {
 function _add_themes_utility_last()
 {
     // Must use API on the admin_menu hook, direct modification is only possible on/before the _admin_menu hook
-    add_submenu_page('themes.php', _x('Editor', 'theme editor'), _x('Editor', 'theme editor'), 'edit_themes',
-        'theme-editor.php');
+    add_submenu_page(
+        'themes.php',
+        _x('Editor', 'theme editor'),
+        _x('Editor', 'theme editor'),
+        'edit_themes',
+        'theme-editor.php'
+    );
 }
 
 $count = '';

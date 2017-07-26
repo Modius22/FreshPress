@@ -275,8 +275,10 @@ function get_post_permalink($id = 0, $leavename = false, $sample = false)
 
     $slug = $post->post_name;
 
-    $draft_or_pending = get_post_status($id) && in_array(get_post_status($id),
-            array('draft', 'pending', 'auto-draft', 'future'));
+    $draft_or_pending = get_post_status($id) && in_array(
+        get_post_status($id),
+            array('draft', 'pending', 'auto-draft', 'future')
+    );
 
     $post_type = get_post_type_object($post->post_type);
 
@@ -1469,8 +1471,12 @@ function get_delete_post_link($id = 0, $deprecated = '', $force_delete = false)
      * @param int $post_id Post ID.
      * @param bool $force_delete Whether to bypass the trash and force deletion. Default false.
      */
-    return apply_filters('get_delete_post_link', wp_nonce_url($delete_link, "$action-post_{$post->ID}"), $post->ID,
-        $force_delete);
+    return apply_filters(
+        'get_delete_post_link',
+        wp_nonce_url($delete_link, "$action-post_{$post->ID}"),
+        $post->ID,
+        $force_delete
+    );
 }
 
 /**
@@ -1709,8 +1715,11 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
         if (!empty($excluded_terms) && !is_array($excluded_terms)) {
             // back-compat, $excluded_terms used to be $excluded_terms with IDs separated by " and "
             if (false !== strpos($excluded_terms, ' and ')) {
-                _deprecated_argument(__FUNCTION__, '3.3.0',
-                    sprintf(__('Use commas instead of %s to separate excluded terms.'), "'and'"));
+                _deprecated_argument(
+                    __FUNCTION__,
+                    '3.3.0',
+                    sprintf(__('Use commas instead of %s to separate excluded terms.'), "'and'")
+                );
                 $excluded_terms = explode(' and ', $excluded_terms);
             } else {
                 $excluded_terms = explode(',', $excluded_terms);
@@ -1752,8 +1761,10 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
         $excluded_terms = apply_filters("get_{$adjacent}_post_excluded_terms", $excluded_terms);
 
         if (!empty($excluded_terms)) {
-            $where .= " AND p.ID NOT IN ( SELECT tr.object_id FROM $wpdb->term_relationships tr LEFT JOIN $wpdb->term_taxonomy tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id) WHERE tt.term_id IN (" . implode(',',
-                    array_map('intval', $excluded_terms)) . ') )';
+            $where .= " AND p.ID NOT IN ( SELECT tr.object_id FROM $wpdb->term_relationships tr LEFT JOIN $wpdb->term_taxonomy tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id) WHERE tt.term_id IN (" . implode(
+                ',',
+                    array_map('intval', $excluded_terms)
+            ) . ') )';
         }
     }
 
@@ -1770,9 +1781,9 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
         }
 
         /*
-		 * Results should include private posts belonging to the current user, or private posts where the
-		 * current user has the 'read_private_posts' cap.
-		 */
+         * Results should include private posts belonging to the current user, or private posts where the
+         * current user has the 'read_private_posts' cap.
+         */
         $private_states = get_post_stati(array('private' => true));
         $where .= " AND ( p.post_status = 'publish'";
         foreach ((array)$private_states as $state) {
@@ -1822,9 +1833,14 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
      * @param string $taxonomy Taxonomy. Used to identify the term used when `$in_same_term` is true.
      * @param WP_Post $post WP_Post object.
      */
-    $where = apply_filters("get_{$adjacent}_post_where",
+    $where = apply_filters(
+        "get_{$adjacent}_post_where",
         $wpdb->prepare("WHERE p.post_date $op %s AND p.post_type = %s $where", $current_post_date, $post->post_type),
-        $in_same_term, $excluded_terms, $taxonomy, $post);
+        $in_same_term,
+        $excluded_terms,
+        $taxonomy,
+        $post
+    );
 
     /**
      * Filters the ORDER BY clause in the SQL for an adjacent post query.
@@ -2303,8 +2319,10 @@ function get_pagenum_link($pagenum = 1, $escape = true)
         }
 
         if ($pagenum > 1) {
-            $request = ((!empty($request)) ? trailingslashit($request) : $request) . user_trailingslashit($wp_rewrite->pagination_base . "/" . $pagenum,
-                    'paged');
+            $request = ((!empty($request)) ? trailingslashit($request) : $request) . user_trailingslashit(
+                $wp_rewrite->pagination_base . "/" . $pagenum,
+                    'paged'
+            );
         }
 
         $result = $base . $request . $query_string;
@@ -2413,8 +2431,11 @@ function get_next_posts_link($label = null, $max_page = 0)
          */
         $attr = apply_filters('next_posts_link_attributes', '');
 
-        return '<a href="' . next_posts($max_page, false) . "\" $attr>" . preg_replace('/&([^#])(?![a-z]{1,8};)/i',
-                '&#038;$1', $label) . '</a>';
+        return '<a href="' . next_posts($max_page, false) . "\" $attr>" . preg_replace(
+            '/&([^#])(?![a-z]{1,8};)/i',
+                '&#038;$1',
+            $label
+        ) . '</a>';
     }
 }
 
@@ -2503,8 +2524,11 @@ function get_previous_posts_link($label = null)
          * @param string $attributes Attributes for the anchor tag.
          */
         $attr = apply_filters('previous_posts_link_attributes', '');
-        return '<a href="' . previous_posts(false) . "\" $attr>" . preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1',
-                $label) . '</a>';
+        return '<a href="' . previous_posts(false) . "\" $attr>" . preg_replace(
+            '/&([^#])(?![a-z]{1,8};)/i',
+            '&#038;$1',
+                $label
+        ) . '</a>';
     }
 }
 
@@ -2567,7 +2591,6 @@ function get_posts_nav_link($args = array())
         }
     }
     return $return;
-
 }
 
 /**
@@ -2837,16 +2860,20 @@ function get_comments_pagenum_link($pagenum = 1, $max_page = 0)
     if ('newest' == get_option('default_comments_page')) {
         if ($pagenum != $max_page) {
             if ($wp_rewrite->using_permalinks()) {
-                $result = user_trailingslashit(trailingslashit($result) . $wp_rewrite->comments_pagination_base . '-' . $pagenum,
-                    'commentpaged');
+                $result = user_trailingslashit(
+                    trailingslashit($result) . $wp_rewrite->comments_pagination_base . '-' . $pagenum,
+                    'commentpaged'
+                );
             } else {
                 $result = add_query_arg('cpage', $pagenum, $result);
             }
         }
     } elseif ($pagenum > 1) {
         if ($wp_rewrite->using_permalinks()) {
-            $result = user_trailingslashit(trailingslashit($result) . $wp_rewrite->comments_pagination_base . '-' . $pagenum,
-                'commentpaged');
+            $result = user_trailingslashit(
+                trailingslashit($result) . $wp_rewrite->comments_pagination_base . '-' . $pagenum,
+                'commentpaged'
+            );
         } else {
             $result = add_query_arg('cpage', $pagenum, $result);
         }
@@ -2914,9 +2941,13 @@ function get_next_comments_link($label = '', $max_page = 0)
      *
      * @param string $attributes Attributes for the anchor tag.
      */
-    return '<a href="' . esc_url(get_comments_pagenum_link($nextpage,
-            $max_page)) . '" ' . apply_filters('next_comments_link_attributes',
-            '') . '>' . preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $label) . '</a>';
+    return '<a href="' . esc_url(get_comments_pagenum_link(
+        $nextpage,
+            $max_page
+    )) . '" ' . apply_filters(
+                'next_comments_link_attributes',
+            ''
+            ) . '>' . preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $label) . '</a>';
 }
 
 /**
@@ -2965,8 +2996,10 @@ function get_previous_comments_link($label = '')
      *
      * @param string $attributes Attributes for the anchor tag.
      */
-    return '<a href="' . esc_url(get_comments_pagenum_link($prevpage)) . '" ' . apply_filters('previous_comments_link_attributes',
-            '') . '>' . preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $label) . '</a>';
+    return '<a href="' . esc_url(get_comments_pagenum_link($prevpage)) . '" ' . apply_filters(
+        'previous_comments_link_attributes',
+            ''
+    ) . '>' . preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $label) . '</a>';
 }
 
 /**
@@ -3014,8 +3047,10 @@ function paginate_comments_links($args = array())
         'add_fragment' => '#comments'
     );
     if ($wp_rewrite->using_permalinks()) {
-        $defaults['base'] = user_trailingslashit(trailingslashit(get_permalink()) . $wp_rewrite->comments_pagination_base . '-%#%',
-            'commentpaged');
+        $defaults['base'] = user_trailingslashit(
+            trailingslashit(get_permalink()) . $wp_rewrite->comments_pagination_base . '-%#%',
+            'commentpaged'
+        );
     }
 
     $args = wp_parse_args($args, $defaults);
@@ -3148,12 +3183,12 @@ function get_shortcut_link()
 
     if ($is_IE) {
         /*
-		 * Return the old/shorter bookmarklet code for MSIE 8 and lower,
-		 * since they only support a max length of ~2000 characters for
-		 * bookmark[let] URLs, which is way to small for our smarter one.
-		 * Do update the version number so users do not get the "upgrade your
-		 * bookmarklet" notice when using PT in those browsers.
-		 */
+         * Return the old/shorter bookmarklet code for MSIE 8 and lower,
+         * since they only support a max length of ~2000 characters for
+         * bookmark[let] URLs, which is way to small for our smarter one.
+         * Do update the version number so users do not get the "upgrade your
+         * bookmarklet" notice when using PT in those browsers.
+         */
         $ua = $_SERVER['HTTP_USER_AGENT'];
 
         if (!empty($ua) && preg_match('/\bMSIE (\d)/', $ua, $matches) && (int)$matches[1] <= 8) {
@@ -3453,7 +3488,6 @@ function content_url($path = '')
  */
 function plugins_url($path = '', $plugin = '')
 {
-
     $path = wp_normalize_path($path);
     $plugin = wp_normalize_path($plugin);
     $mu_plugin_dir = wp_normalize_path(WPMU_PLUGIN_DIR);
@@ -4173,12 +4207,12 @@ function get_avatar_data($id_or_email, $args = null)
     }
 
     switch ($args['default']) {
-        case 'mm' :
-        case 'mystery' :
-        case 'mysteryman' :
+        case 'mm':
+        case 'mystery':
+        case 'mysteryman':
             $args['default'] = 'mm';
             break;
-        case 'gravatar_default' :
+        case 'gravatar_default':
             $args['default'] = false;
             break;
     }
@@ -4242,8 +4276,10 @@ function get_avatar_data($id_or_email, $args = null)
          * @param array $types An array of content types. Default only contains 'comment'.
          */
         $allowed_comment_types = apply_filters('get_avatar_comment_types', array('comment'));
-        if (!empty($id_or_email->comment_type) && !in_array($id_or_email->comment_type,
-                (array)$allowed_comment_types)) {
+        if (!empty($id_or_email->comment_type) && !in_array(
+            $id_or_email->comment_type,
+                (array)$allowed_comment_types
+        )) {
             $args['url'] = false;
             /** This filter is documented in wp-includes/link-template.php */
             return apply_filters('get_avatar_data', $args, $id_or_email);

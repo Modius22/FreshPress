@@ -27,8 +27,10 @@ if (!current_user_can('customize')) {
 global $wp_scripts, $wp_customize;
 
 if ($wp_customize->changeset_post_id()) {
-    if (!current_user_can(get_post_type_object('customize_changeset')->cap->edit_post,
-        $wp_customize->changeset_post_id())) {
+    if (!current_user_can(
+        get_post_type_object('customize_changeset')->cap->edit_post,
+        $wp_customize->changeset_post_id()
+    )) {
         wp_die(
             '<h1>' . __('Cheatin&#8217; uh?') . '</h1>' .
             '<p>' . __('Sorry, you are not allowed to edit this changeset.') . '</p>',
@@ -159,8 +161,10 @@ do_action('customize_controls_print_scripts');
                     <div id="customize-info" class="accordion-section customize-info">
                         <div class="accordion-section-title">
 					<span class="preview-notice"><?php
-                        echo sprintf(__('You are customizing %s'),
-                            '<strong class="panel-title site-title">' . get_bloginfo('name', 'display') . '</strong>');
+                        echo sprintf(
+                    __('You are customizing %s'),
+                            '<strong class="panel-title site-title">' . get_bloginfo('name', 'display') . '</strong>'
+                );
                         ?></span>
                             <button type="button" class="customize-help-toggle dashicons dashicons-editor-help"
                                     aria-expanded="false"><span class="screen-reader-text"><?php _e('Help'); ?></span>
@@ -172,18 +176,22 @@ do_action('customize_controls_print_scripts');
                     </div>
 
                     <div id="customize-theme-controls">
-                        <ul class="customize-pane-parent"><?php // Panels and sections are managed here via JavaScript ?></ul>
+                        <ul class="customize-pane-parent"><?php // Panels and sections are managed here via JavaScript?></ul>
                     </div>
                 </div>
             </div>
 
             <div id="customize-footer-actions" class="wp-full-overlay-footer">
                 <button type="button" class="collapse-sidebar button" aria-expanded="true"
-                        aria-label="<?php echo esc_attr(_x('Hide Controls',
-                            'label for hide controls button without length constraints')); ?>">
+                        aria-label="<?php echo esc_attr(_x(
+                                'Hide Controls',
+                            'label for hide controls button without length constraints'
+                            )); ?>">
                     <span class="collapse-sidebar-arrow"></span>
-                    <span class="collapse-sidebar-label"><?php _ex('Hide Controls',
-                            'short (~12 characters) label for hide controls button'); ?></span>
+                    <span class="collapse-sidebar-label"><?php _ex(
+                                'Hide Controls',
+                            'short (~12 characters) label for hide controls button'
+                            ); ?></span>
                 </button>
                 <?php $previewable_devices = $wp_customize->get_previewable_devices(); ?>
                 <?php if (!empty($previewable_devices)) : ?>

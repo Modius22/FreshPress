@@ -199,8 +199,11 @@ class WP_Upgrader
     {
         global $wp_filesystem;
 
-        if (false === ($credentials = $this->skin->request_filesystem_credentials(false, $directories[0],
-                $allow_relaxed_file_ownership))) {
+        if (false === ($credentials = $this->skin->request_filesystem_credentials(
+            false,
+            $directories[0],
+                $allow_relaxed_file_ownership
+        ))) {
             return false;
         }
 
@@ -246,8 +249,10 @@ class WP_Upgrader
                     break;
                 default:
                     if (!$wp_filesystem->find_folder($dir)) {
-                        return new WP_Error('fs_no_folder',
-                            sprintf($this->strings['fs_no_folder'], esc_html(basename($dir))));
+                        return new WP_Error(
+                            'fs_no_folder',
+                            sprintf($this->strings['fs_no_folder'], esc_html(basename($dir)))
+                        );
                     }
                     break;
             }
@@ -284,8 +289,7 @@ class WP_Upgrader
             return $reply;
         }
 
-        if (!preg_match('!^(http|https|ftp)://!i', $package) && file_exists($package)) //Local file or remote?
-        {
+        if (!preg_match('!^(http|https|ftp)://!i', $package) && file_exists($package)) { //Local file or remote?
             return $package;
         } //must be a local file..
 
@@ -298,8 +302,11 @@ class WP_Upgrader
         $download_file = download_url($package);
 
         if (is_wp_error($download_file)) {
-            return new WP_Error('download_failed', $this->strings['download_failed'],
-                $download_file->get_error_message());
+            return new WP_Error(
+                'download_failed',
+                $this->strings['download_failed'],
+                $download_file->get_error_message()
+            );
         }
 
         return $download_file;
@@ -353,8 +360,11 @@ class WP_Upgrader
         if (is_wp_error($result)) {
             $wp_filesystem->delete($working_dir, true);
             if ('incompatible_archive' == $result->get_error_code()) {
-                return new WP_Error('incompatible_archive', $this->strings['incompatible_archive'],
-                    $result->get_error_data());
+                return new WP_Error(
+                    'incompatible_archive',
+                    $this->strings['incompatible_archive'],
+                    $result->get_error_data()
+                );
             }
             return $result;
         }
@@ -405,8 +415,10 @@ class WP_Upgrader
             if (!$wp_filesystem->is_writable($remote_destination . $filename)) {
 
                 // Attempt to alter permissions to allow writes and try again.
-                $wp_filesystem->chmod($remote_destination . $filename,
-                    ('d' == $file_details['type'] ? FS_CHMOD_DIR : FS_CHMOD_FILE));
+                $wp_filesystem->chmod(
+                    $remote_destination . $filename,
+                    ('d' == $file_details['type'] ? FS_CHMOD_DIR : FS_CHMOD_FILE)
+                );
                 if (!$wp_filesystem->is_writable($remote_destination . $filename)) {
                     $unwritable_files[] = $filename;
                 }
@@ -414,8 +426,11 @@ class WP_Upgrader
         }
 
         if (!empty($unwritable_files)) {
-            return new WP_Error('files_not_writable', $this->strings['files_not_writable'],
-                implode(', ', $unwritable_files));
+            return new WP_Error(
+                'files_not_writable',
+                $this->strings['files_not_writable'],
+                implode(', ', $unwritable_files)
+            );
         }
 
         if (!$wp_filesystem->delete($remote_destination, true)) {
@@ -512,8 +527,11 @@ class WP_Upgrader
         if (1 == count($source_files) && $wp_filesystem->is_dir(trailingslashit($args['source']) . $source_files[0] . '/')) { //Only one folder? Then we want its contents.
             $source = trailingslashit($args['source']) . trailingslashit($source_files[0]);
         } elseif (count($source_files) == 0) {
-            return new WP_Error('incompatible_archive_empty', $this->strings['incompatible_archive'],
-                $this->strings['no_files']); // There are no files?
+            return new WP_Error(
+                'incompatible_archive_empty',
+                $this->strings['incompatible_archive'],
+                $this->strings['no_files']
+            ); // There are no files?
         } else { // It's only a single file, the upgrader will use the folder name of this file as the destination folder. Folder name is based on zip filename.
             $source = trailingslashit($args['source']);
         }
@@ -574,8 +592,13 @@ class WP_Upgrader
              * @param string $remote_destination The remote package destination.
              * @param array $hook_extra Extra arguments passed to hooked filters.
              */
-            $removed = apply_filters('upgrader_clear_destination', $removed, $local_destination, $remote_destination,
-                $args['hook_extra']);
+            $removed = apply_filters(
+                'upgrader_clear_destination',
+                $removed,
+                $local_destination,
+                $remote_destination,
+                $args['hook_extra']
+            );
 
             if (is_wp_error($removed)) {
                 return $removed;
@@ -615,8 +638,15 @@ class WP_Upgrader
             $destination_name = '';
         }
 
-        $this->result = compact('source', 'source_files', 'destination', 'destination_name', 'local_destination',
-            'remote_destination', 'clear_destination');
+        $this->result = compact(
+            'source',
+            'source_files',
+            'destination',
+            'destination_name',
+            'local_destination',
+            'remote_destination',
+            'clear_destination'
+        );
 
         /**
          * Filters the install response after the installation has finished.
@@ -674,7 +704,6 @@ class WP_Upgrader
      */
     public function run($options)
     {
-
         $defaults = array(
             'package' => '',
             // Please always pass this.
@@ -885,8 +914,11 @@ class WP_Upgrader
         $lock_option = $lock_name . '.lock';
 
         // Try to lock.
-        $lock_result = $wpdb->query($wpdb->prepare("INSERT IGNORE INTO `$wpdb->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */",
-            $lock_option, time()));
+        $lock_result = $wpdb->query($wpdb->prepare(
+            "INSERT IGNORE INTO `$wpdb->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */",
+            $lock_option,
+            time()
+        ));
 
         if (!$lock_result) {
             $lock_result = get_option($lock_option);
@@ -929,7 +961,6 @@ class WP_Upgrader
     {
         return delete_option($lock_name . '.lock');
     }
-
 }
 
 /** Plugin_Upgrader class */

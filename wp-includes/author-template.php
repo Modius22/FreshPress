@@ -64,9 +64,12 @@ function the_author($deprecated = '', $deprecated_echo = true)
     }
 
     if (true !== $deprecated_echo) {
-        _deprecated_argument(__FUNCTION__, '1.5.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '1.5.0',
             /* translators: %s: get_the_author() */
-            sprintf(__('Use %s instead if you do not want the value echoed.'),
+            sprintf(
+                __('Use %s instead if you do not want the value echoed.'),
                 '<code>get_the_author()</code>'
             )
         );
@@ -137,8 +140,10 @@ function get_the_author_meta($field = '', $user_id = false)
         $authordata = get_userdata($user_id);
     }
 
-    if (in_array($field,
-        array('login', 'pass', 'nicename', 'email', 'url', 'registered', 'activation_key', 'status'))) {
+    if (in_array(
+        $field,
+        array('login', 'pass', 'nicename', 'email', 'url', 'registered', 'activation_key', 'status')
+    )) {
         $field = 'user_' . $field;
     }
 
@@ -200,7 +205,8 @@ function the_author_meta($field = '', $user_id = false)
 function get_the_author_link()
 {
     if (get_the_author_meta('url')) {
-        return sprintf('<a href="%1$s" title="%2$s" rel="author external">%3$s</a>',
+        return sprintf(
+            '<a href="%1$s" title="%2$s" rel="author external">%3$s</a>',
             esc_url(get_the_author_meta('url')),
             /* translators: %s: author's display name */
             esc_attr(sprintf(__('Visit %s&#8217;s website'), get_the_author())),
@@ -271,7 +277,8 @@ function get_the_author_posts_link()
         return;
     }
 
-    $link = sprintf('<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
+    $link = sprintf(
+        '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
         esc_url(get_author_posts_url($authordata->ID, $authordata->user_nicename)),
         /* translators: %s: author's display name */
         esc_attr(sprintf(__('Posts by %s'), get_the_author())),
@@ -447,7 +454,8 @@ function wp_list_authors($args = '')
             $return .= '<li>';
         }
 
-        $link = sprintf('<a href="%1$s" title="%2$s">%3$s</a>',
+        $link = sprintf(
+            '<a href="%1$s" title="%2$s">%3$s</a>',
             get_author_posts_url($author->ID, $author->user_nicename),
             /* translators: %s: author's display name */
             esc_attr(sprintf(__('Posts by %s'), $author->display_name)),

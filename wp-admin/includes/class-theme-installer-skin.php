@@ -41,8 +41,11 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin
     public function before()
     {
         if (!empty($this->api)) {
-            $this->upgrader->strings['process_success'] = sprintf($this->upgrader->strings['process_success_specific'],
-                $this->api->name, $this->api->version);
+            $this->upgrader->strings['process_success'] = sprintf(
+                $this->upgrader->strings['process_success_specific'],
+                $this->api->name,
+                $this->api->version
+            );
         }
     }
 
@@ -74,15 +77,21 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin
         $install_actions = array();
 
         if (current_user_can('edit_theme_options') && current_user_can('customize')) {
-            $install_actions['preview'] = '<a href="' . wp_customize_url($stylesheet) . '" class="hide-if-no-customize load-customize"><span aria-hidden="true">' . __('Live Preview') . '</span><span class="screen-reader-text">' . sprintf(__('Live Preview &#8220;%s&#8221;'),
-                    $name) . '</span></a>';
+            $install_actions['preview'] = '<a href="' . wp_customize_url($stylesheet) . '" class="hide-if-no-customize load-customize"><span aria-hidden="true">' . __('Live Preview') . '</span><span class="screen-reader-text">' . sprintf(
+                __('Live Preview &#8220;%s&#8221;'),
+                    $name
+            ) . '</span></a>';
         }
-        $install_actions['activate'] = '<a href="' . esc_url($activate_link) . '" class="activatelink"><span aria-hidden="true">' . __('Activate') . '</span><span class="screen-reader-text">' . sprintf(__('Activate &#8220;%s&#8221;'),
-                $name) . '</span></a>';
+        $install_actions['activate'] = '<a href="' . esc_url($activate_link) . '" class="activatelink"><span aria-hidden="true">' . __('Activate') . '</span><span class="screen-reader-text">' . sprintf(
+            __('Activate &#8220;%s&#8221;'),
+                $name
+        ) . '</span></a>';
 
         if (is_network_admin() && current_user_can('manage_network_themes')) {
-            $install_actions['network_enable'] = '<a href="' . esc_url(wp_nonce_url('themes.php?action=enable&amp;theme=' . urlencode($stylesheet),
-                    'enable-theme_' . $stylesheet)) . '" target="_parent">' . __('Network Enable') . '</a>';
+            $install_actions['network_enable'] = '<a href="' . esc_url(wp_nonce_url(
+                'themes.php?action=enable&amp;theme=' . urlencode($stylesheet),
+                    'enable-theme_' . $stylesheet
+            )) . '" target="_parent">' . __('Network Enable') . '</a>';
         }
 
         if ($this->type == 'web') {
@@ -105,8 +114,13 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin
          * @param string $stylesheet Theme directory name.
          * @param WP_Theme $theme_info Theme object.
          */
-        $install_actions = apply_filters('install_theme_complete_actions', $install_actions, $this->api, $stylesheet,
-            $theme_info);
+        $install_actions = apply_filters(
+            'install_theme_complete_actions',
+            $install_actions,
+            $this->api,
+            $stylesheet,
+            $theme_info
+        );
         if (!empty($install_actions)) {
             $this->feedback(implode(' | ', (array)$install_actions));
         }

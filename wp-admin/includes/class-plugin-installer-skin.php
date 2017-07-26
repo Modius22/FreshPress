@@ -41,8 +41,11 @@ class Plugin_Installer_Skin extends WP_Upgrader_Skin
     public function before()
     {
         if (!empty($this->api)) {
-            $this->upgrader->strings['process_success'] = sprintf(__('Successfully installed the plugin <strong>%s %s</strong>.'),
-                $this->api->name, $this->api->version);
+            $this->upgrader->strings['process_success'] = sprintf(
+                __('Successfully installed the plugin <strong>%s %s</strong>.'),
+                $this->api->name,
+                $this->api->version
+            );
         }
     }
 
@@ -58,16 +61,22 @@ class Plugin_Installer_Skin extends WP_Upgrader_Skin
         $from = isset($_GET['from']) ? wp_unslash($_GET['from']) : 'plugins';
 
         if ('import' == $from) {
-            $install_actions['activate_plugin'] = '<a class="button button-primary" href="' . wp_nonce_url('plugins.php?action=activate&amp;from=import&amp;plugin=' . urlencode($plugin_file),
-                    'activate-plugin_' . $plugin_file) . '" target="_parent">' . __('Activate Plugin &amp; Run Importer') . '</a>';
+            $install_actions['activate_plugin'] = '<a class="button button-primary" href="' . wp_nonce_url(
+                'plugins.php?action=activate&amp;from=import&amp;plugin=' . urlencode($plugin_file),
+                    'activate-plugin_' . $plugin_file
+            ) . '" target="_parent">' . __('Activate Plugin &amp; Run Importer') . '</a>';
         } else {
-            $install_actions['activate_plugin'] = '<a class="button button-primary" href="' . wp_nonce_url('plugins.php?action=activate&amp;plugin=' . urlencode($plugin_file),
-                    'activate-plugin_' . $plugin_file) . '" target="_parent">' . __('Activate Plugin') . '</a>';
+            $install_actions['activate_plugin'] = '<a class="button button-primary" href="' . wp_nonce_url(
+                'plugins.php?action=activate&amp;plugin=' . urlencode($plugin_file),
+                    'activate-plugin_' . $plugin_file
+            ) . '" target="_parent">' . __('Activate Plugin') . '</a>';
         }
 
         if (is_multisite() && current_user_can('manage_network_plugins')) {
-            $install_actions['network_activate'] = '<a class="button button-primary" href="' . wp_nonce_url('plugins.php?action=activate&amp;networkwide=1&amp;plugin=' . urlencode($plugin_file),
-                    'activate-plugin_' . $plugin_file) . '" target="_parent">' . __('Network Activate') . '</a>';
+            $install_actions['network_activate'] = '<a class="button button-primary" href="' . wp_nonce_url(
+                'plugins.php?action=activate&amp;networkwide=1&amp;plugin=' . urlencode($plugin_file),
+                    'activate-plugin_' . $plugin_file
+            ) . '" target="_parent">' . __('Network Activate') . '</a>';
             unset($install_actions['activate_plugin']);
         }
 

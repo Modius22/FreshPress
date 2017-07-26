@@ -52,8 +52,10 @@ function map_meta_cap($cap, $user_id)
             }
 
             // In multisite the user must have manage_network_users caps. If editing a super admin, the user must be a super admin.
-            if (is_multisite() && ((!is_super_admin($user_id) && 'edit_user' === $cap && is_super_admin($args[0])) || !user_can($user_id,
-                        'manage_network_users'))) {
+            if (is_multisite() && ((!is_super_admin($user_id) && 'edit_user' === $cap && is_super_admin($args[0])) || !user_can(
+                $user_id,
+                        'manage_network_users'
+            ))) {
                 $caps[] = 'do_not_allow';
             } else {
                 $caps[] = 'edit_users'; // edit_user maps to edit_users.
@@ -83,9 +85,15 @@ function map_meta_cap($cap, $user_id)
             $post_type = get_post_type_object($post->post_type);
             if (!$post_type) {
                 /* translators: 1: post type, 2: capability name */
-                _doing_it_wrong(__FUNCTION__,
-                    sprintf(__('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
-                        $post->post_type, $cap), '4.4.0');
+                _doing_it_wrong(
+                    __FUNCTION__,
+                    sprintf(
+                        __('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
+                        $post->post_type,
+                        $cap
+                    ),
+                    '4.4.0'
+                );
                 $caps[] = 'edit_others_posts';
                 break;
             }
@@ -147,9 +155,15 @@ function map_meta_cap($cap, $user_id)
             $post_type = get_post_type_object($post->post_type);
             if (!$post_type) {
                 /* translators: 1: post type, 2: capability name */
-                _doing_it_wrong(__FUNCTION__,
-                    sprintf(__('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
-                        $post->post_type, $cap), '4.4.0');
+                _doing_it_wrong(
+                    __FUNCTION__,
+                    sprintf(
+                        __('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
+                        $post->post_type,
+                        $cap
+                    ),
+                    '4.4.0'
+                );
                 $caps[] = 'edit_others_posts';
                 break;
             }
@@ -209,9 +223,15 @@ function map_meta_cap($cap, $user_id)
             $post_type = get_post_type_object($post->post_type);
             if (!$post_type) {
                 /* translators: 1: post type, 2: capability name */
-                _doing_it_wrong(__FUNCTION__,
-                    sprintf(__('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
-                        $post->post_type, $cap), '4.4.0');
+                _doing_it_wrong(
+                    __FUNCTION__,
+                    sprintf(
+                        __('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
+                        $post->post_type,
+                        $cap
+                    ),
+                    '4.4.0'
+                );
                 $caps[] = 'edit_others_posts';
                 break;
             }
@@ -249,9 +269,15 @@ function map_meta_cap($cap, $user_id)
             $post_type = get_post_type_object($post->post_type);
             if (!$post_type) {
                 /* translators: 1: post type, 2: capability name */
-                _doing_it_wrong(__FUNCTION__,
-                    sprintf(__('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
-                        $post->post_type, $cap), '4.4.0');
+                _doing_it_wrong(
+                    __FUNCTION__,
+                    sprintf(
+                        __('The post type %1$s is not registered, so it may not be reliable to check the capability "%2$s" against a post of that type.'),
+                        $post->post_type,
+                        $cap
+                    ),
+                    '4.4.0'
+                );
                 $caps[] = 'edit_others_posts';
                 break;
             }
@@ -323,12 +349,26 @@ function map_meta_cap($cap, $user_id)
             $has_filter = has_filter("auth_{$object_type}_meta_{$meta_key}") || has_filter("auth_{$object_type}_{$sub_type}_meta_{$meta_key}");
             if ($meta_key && $has_filter) {
                 /** This filter is documented in wp-includes/meta.php */
-                $allowed = apply_filters("auth_{$object_type}_meta_{$meta_key}", false, $meta_key, $object_id, $user_id,
-                    $cap, $caps);
+                $allowed = apply_filters(
+                    "auth_{$object_type}_meta_{$meta_key}",
+                    false,
+                    $meta_key,
+                    $object_id,
+                    $user_id,
+                    $cap,
+                    $caps
+                );
 
                 /** This filter is documented in wp-includes/meta.php */
-                $allowed = apply_filters("auth_{$object_type}_{$sub_type}_meta_{$meta_key}", $allowed, $meta_key,
-                    $object_id, $user_id, $cap, $caps);
+                $allowed = apply_filters(
+                    "auth_{$object_type}_{$sub_type}_meta_{$meta_key}",
+                    $allowed,
+                    $meta_key,
+                    $object_id,
+                    $user_id,
+                    $cap,
+                    $caps
+                );
 
                 if (!$allowed) {
                     $caps[] = $cap;
@@ -363,8 +403,8 @@ function map_meta_cap($cap, $user_id)
                 $caps[] = 'do_not_allow';
             }
             break;
-        case 'edit_css' :
-        case 'unfiltered_html' :
+        case 'edit_css':
+        case 'unfiltered_html':
             // Disallow unfiltered_html for all users, even admins and super admins.
             if (defined('DISALLOW_UNFILTERED_HTML') && DISALLOW_UNFILTERED_HTML) {
                 $caps[] = 'do_not_allow';
@@ -439,14 +479,14 @@ function map_meta_cap($cap, $user_id)
                 $caps[] = 'do_not_allow';
             }
             break;
-        case 'manage_links' :
+        case 'manage_links':
             if (get_option('link_manager_enabled')) {
                 $caps[] = $cap;
             } else {
                 $caps[] = 'do_not_allow';
             }
             break;
-        case 'customize' :
+        case 'customize':
             $caps[] = 'edit_theme_options';
             break;
         case 'delete_site':

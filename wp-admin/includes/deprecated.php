@@ -250,8 +250,10 @@ function get_author_user_ids()
         $level_key = $wpdb->get_blog_prefix() . 'capabilities';
     } // wpmu site admins don't have user_levels
 
-    return $wpdb->get_col($wpdb->prepare("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value != '0'",
-        $level_key));
+    return $wpdb->get_col($wpdb->prepare(
+        "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value != '0'",
+        $level_key
+    ));
 }
 
 /**
@@ -339,8 +341,10 @@ function get_nonauthor_user_ids()
         $level_key = $wpdb->get_blog_prefix() . 'capabilities';
     } // wpmu site admins don't have user_levels
 
-    return $wpdb->get_col($wpdb->prepare("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value = '0'",
-        $level_key));
+    return $wpdb->get_col($wpdb->prepare(
+        "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value = '0'",
+        $level_key
+    ));
 }
 
 if (!class_exists('WP_User_Search', false)) :
@@ -360,7 +364,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var mixed
          */
-        var $results;
+        public $results;
 
         /**
          * {@internal Missing Description}}
@@ -369,7 +373,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $search_term;
+        public $search_term;
 
         /**
          * Page number.
@@ -378,7 +382,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var int
          */
-        var $page;
+        public $page;
 
         /**
          * Role name that users have.
@@ -387,7 +391,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $role;
+        public $role;
 
         /**
          * Raw page number.
@@ -396,7 +400,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var int|bool
          */
-        var $raw_page;
+        public $raw_page;
 
         /**
          * Amount of users to display per page.
@@ -405,7 +409,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access public
          * @var int
          */
-        var $users_per_page = 50;
+        public $users_per_page = 50;
 
         /**
          * {@internal Missing Description}}
@@ -414,7 +418,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var int
          */
-        var $first_user;
+        public $first_user;
 
         /**
          * {@internal Missing Description}}
@@ -423,7 +427,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var int
          */
-        var $last_user;
+        public $last_user;
 
         /**
          * {@internal Missing Description}}
@@ -432,7 +436,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $query_limit;
+        public $query_limit;
 
         /**
          * {@internal Missing Description}}
@@ -441,7 +445,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $query_orderby;
+        public $query_orderby;
 
         /**
          * {@internal Missing Description}}
@@ -450,7 +454,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $query_from;
+        public $query_from;
 
         /**
          * {@internal Missing Description}}
@@ -459,7 +463,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $query_where;
+        public $query_where;
 
         /**
          * {@internal Missing Description}}
@@ -468,7 +472,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var int
          */
-        var $total_users_for_query = 0;
+        public $total_users_for_query = 0;
 
         /**
          * {@internal Missing Description}}
@@ -477,7 +481,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var bool
          */
-        var $too_many_total_users = false;
+        public $too_many_total_users = false;
 
         /**
          * {@internal Missing Description}}
@@ -486,7 +490,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var WP_Error
          */
-        var $search_errors;
+        public $search_errors;
 
         /**
          * {@internal Missing Description}}
@@ -495,7 +499,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @access private
          * @var string
          */
-        var $paging_text;
+        public $paging_text;
 
         /**
          * PHP5 Constructor - Sets up the object properties.
@@ -507,7 +511,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @param string $role Role name.
          * @return WP_User_Search
          */
-        function __construct($search_term = '', $page = '', $role = '')
+        public function __construct($search_term = '', $page = '', $role = '')
         {
             _deprecated_function(__FUNCTION__, '3.1.0', 'WP_User_Query');
 
@@ -566,8 +570,10 @@ if (!class_exists('WP_User_Search', false)) :
 
             if ($this->role) {
                 $this->query_from .= " INNER JOIN $wpdb->usermeta ON $wpdb->users.ID = $wpdb->usermeta.user_id";
-                $this->query_where .= $wpdb->prepare(" AND $wpdb->usermeta.meta_key = '{$wpdb->prefix}capabilities' AND $wpdb->usermeta.meta_value LIKE %s",
-                    '%' . $this->role . '%');
+                $this->query_where .= $wpdb->prepare(
+                    " AND $wpdb->usermeta.meta_key = '{$wpdb->prefix}capabilities' AND $wpdb->usermeta.meta_value LIKE %s",
+                    '%' . $this->role . '%'
+                );
             } elseif (is_multisite()) {
                 $level_key = $wpdb->prefix . 'capabilities'; // wpmu site admins don't have user_levels
                 $this->query_from .= ", $wpdb->usermeta";
@@ -603,7 +609,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @since 2.1.0
          * @access public
          */
-        function prepare_vars_for_template_usage()
+        public function prepare_vars_for_template_usage()
         {
         }
 
@@ -632,7 +638,8 @@ if (!class_exists('WP_User_Search', false)) :
                     'add_args' => $args
                 ));
                 if ($this->paging_text) {
-                    $this->paging_text = sprintf('<span class="displaying-num">' . __('Displaying %s&#8211;%s of %s') . '</span>%s',
+                    $this->paging_text = sprintf(
+                        '<span class="displaying-num">' . __('Displaying %s&#8211;%s of %s') . '</span>%s',
                         number_format_i18n(($this->page - 1) * $this->users_per_page + 1),
                         number_format_i18n(min($this->page * $this->users_per_page, $this->total_users_for_query)),
                         number_format_i18n($this->total_users_for_query),
@@ -663,7 +670,7 @@ if (!class_exists('WP_User_Search', false)) :
          * @since 2.1.0
          * @access public
          */
-        function page_links()
+        public function page_links()
         {
             echo $this->paging_text;
         }
@@ -678,7 +685,7 @@ if (!class_exists('WP_User_Search', false)) :
          *
          * @return bool
          */
-        function results_are_paged()
+        public function results_are_paged()
         {
             if ($this->paging_text) {
                 return true;
@@ -694,7 +701,7 @@ if (!class_exists('WP_User_Search', false)) :
          *
          * @return bool
          */
-        function is_search()
+        public function is_search()
         {
             if ($this->search_term) {
                 return true;
@@ -736,8 +743,10 @@ function get_others_unpublished_posts($user_id, $type = 'any')
         $other_unpubs = '';
     } else {
         $editable = join(',', $editable);
-        $other_unpubs = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_author FROM $wpdb->posts WHERE post_type = 'post' AND $type_sql AND post_author IN ($editable) AND post_author != %d ORDER BY post_modified $dir",
-            $user_id));
+        $other_unpubs = $wpdb->get_results($wpdb->prepare(
+            "SELECT ID, post_title, post_author FROM $wpdb->posts WHERE post_type = 'post' AND $type_sql AND post_author IN ($editable) AND post_author != %d ORDER BY post_modified $dir",
+            $user_id
+        ));
     }
 
     return apply_filters('get_others_drafts', $other_unpubs);
@@ -1232,7 +1241,6 @@ function wp_update_core($current, $feedback = '')
     include(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
     $upgrader = new Core_Upgrader();
     return $upgrader->upgrade($current);
-
 }
 
 /**
@@ -1468,8 +1476,10 @@ function wp_dashboard_plugins_output($rss, $args = array())
         }
 
         // Eliminate some common badly formed plugin descriptions
-        while ((null !== $item_key = array_rand($items)) && false !== strpos($items[$item_key]->get_description(),
-                'Plugin Name:')) {
+        while ((null !== $item_key = array_rand($items)) && false !== strpos(
+            $items[$item_key]->get_description(),
+                'Plugin Name:'
+        )) {
             unset($items[$item_key]);
         }
 
@@ -1479,8 +1489,10 @@ function wp_dashboard_plugins_output($rss, $args = array())
 
         $raw_title = $item->get_title();
 
-        $ilink = wp_nonce_url('plugin-install.php?tab=plugin-information&plugin=' . $slug,
-                'install-plugin_' . $slug) . '&amp;TB_iframe=true&amp;width=600&amp;height=800';
+        $ilink = wp_nonce_url(
+            'plugin-install.php?tab=plugin-information&plugin=' . $slug,
+                'install-plugin_' . $slug
+        ) . '&amp;TB_iframe=true&amp;width=600&amp;height=800';
         echo '<li class="dashboard-news-plugin"><span>' . __('Popular Plugin') . ':</span> ' . esc_html($raw_title) .
             '&nbsp;<a href="' . $ilink . '" class="thickbox open-plugin-details-modal" aria-label="' .
             /* translators: %s: plugin name */
@@ -1539,8 +1551,15 @@ function add_object_page($page_title, $menu_title, $capability, $menu_slug, $fun
 
     $_wp_last_object_menu++;
 
-    return add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url,
-        $_wp_last_object_menu);
+    return add_menu_page(
+        $page_title,
+        $menu_title,
+        $capability,
+        $menu_slug,
+        $function,
+        $icon_url,
+        $_wp_last_object_menu
+    );
 }
 
 /**
@@ -1574,8 +1593,15 @@ function add_utility_page($page_title, $menu_title, $capability, $menu_slug, $fu
 
     $_wp_last_utility_menu++;
 
-    return add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url,
-        $_wp_last_utility_menu);
+    return add_menu_page(
+        $page_title,
+        $menu_title,
+        $capability,
+        $menu_slug,
+        $function,
+        $icon_url,
+        $_wp_last_utility_menu
+    );
 }
 
 /**

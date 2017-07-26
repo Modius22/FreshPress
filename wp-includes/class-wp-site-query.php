@@ -407,14 +407,18 @@ class WP_Site_Query
 
         // Parse site IDs for an IN clause.
         if (!empty($this->query_vars['site__in'])) {
-            $this->sql_clauses['where']['site__in'] = "blog_id IN ( " . implode(',',
-                    wp_parse_id_list($this->query_vars['site__in'])) . ' )';
+            $this->sql_clauses['where']['site__in'] = "blog_id IN ( " . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['site__in'])
+            ) . ' )';
         }
 
         // Parse site IDs for a NOT IN clause.
         if (!empty($this->query_vars['site__not_in'])) {
-            $this->sql_clauses['where']['site__not_in'] = "blog_id NOT IN ( " . implode(',',
-                    wp_parse_id_list($this->query_vars['site__not_in'])) . ' )';
+            $this->sql_clauses['where']['site__not_in'] = "blog_id NOT IN ( " . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['site__not_in'])
+            ) . ' )';
         }
 
         $network_id = absint($this->query_vars['network_id']);
@@ -425,14 +429,18 @@ class WP_Site_Query
 
         // Parse site network IDs for an IN clause.
         if (!empty($this->query_vars['network__in'])) {
-            $this->sql_clauses['where']['network__in'] = 'site_id IN ( ' . implode(',',
-                    wp_parse_id_list($this->query_vars['network__in'])) . ' )';
+            $this->sql_clauses['where']['network__in'] = 'site_id IN ( ' . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['network__in'])
+            ) . ' )';
         }
 
         // Parse site network IDs for a NOT IN clause.
         if (!empty($this->query_vars['network__not_in'])) {
-            $this->sql_clauses['where']['network__not_in'] = 'site_id NOT IN ( ' . implode(',',
-                    wp_parse_id_list($this->query_vars['network__not_in'])) . ' )';
+            $this->sql_clauses['where']['network__not_in'] = 'site_id NOT IN ( ' . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['network__not_in'])
+            ) . ' )';
         }
 
         if (!empty($this->query_vars['domain'])) {
@@ -441,14 +449,18 @@ class WP_Site_Query
 
         // Parse site domain for an IN clause.
         if (is_array($this->query_vars['domain__in'])) {
-            $this->sql_clauses['where']['domain__in'] = "domain IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['domain__in'])) . "' )";
+            $this->sql_clauses['where']['domain__in'] = "domain IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['domain__in'])
+            ) . "' )";
         }
 
         // Parse site domain for a NOT IN clause.
         if (is_array($this->query_vars['domain__not_in'])) {
-            $this->sql_clauses['where']['domain__not_in'] = "domain NOT IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['domain__not_in'])) . "' )";
+            $this->sql_clauses['where']['domain__not_in'] = "domain NOT IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['domain__not_in'])
+            ) . "' )";
         }
 
         if (!empty($this->query_vars['path'])) {
@@ -457,14 +469,18 @@ class WP_Site_Query
 
         // Parse site path for an IN clause.
         if (is_array($this->query_vars['path__in'])) {
-            $this->sql_clauses['where']['path__in'] = "path IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['path__in'])) . "' )";
+            $this->sql_clauses['where']['path__in'] = "path IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['path__in'])
+            ) . "' )";
         }
 
         // Parse site path for a NOT IN clause.
         if (is_array($this->query_vars['path__not_in'])) {
-            $this->sql_clauses['where']['path__not_in'] = "path NOT IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['path__not_in'])) . "' )";
+            $this->sql_clauses['where']['path__not_in'] = "path NOT IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['path__not_in'])
+            ) . "' )";
         }
 
         if (is_numeric($this->query_vars['archived'])) {
@@ -499,14 +515,18 @@ class WP_Site_Query
 
         // Parse site language IDs for an IN clause.
         if (!empty($this->query_vars['lang__in'])) {
-            $this->sql_clauses['where']['lang__in'] = 'lang_id IN ( ' . implode(',',
-                    wp_parse_id_list($this->query_vars['lang__in'])) . ' )';
+            $this->sql_clauses['where']['lang__in'] = 'lang_id IN ( ' . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['lang__in'])
+            ) . ' )';
         }
 
         // Parse site language IDs for a NOT IN clause.
         if (!empty($this->query_vars['lang__not_in'])) {
-            $this->sql_clauses['where']['lang__not_in'] = 'lang_id NOT IN ( ' . implode(',',
-                    wp_parse_id_list($this->query_vars['lang__not_in'])) . ' )';
+            $this->sql_clauses['where']['lang__not_in'] = 'lang_id NOT IN ( ' . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['lang__not_in'])
+            ) . ' )';
         }
 
         // Falsey search strings are ignored.

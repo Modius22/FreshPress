@@ -60,10 +60,14 @@ abstract class WP_Widget_Media extends WP_Widget
         $l10n_defaults = array(
             'no_media_selected' => __('No media selected'),
             'add_media' => _x('Add Media', 'label for button in the media widget'),
-            'replace_media' => _x('Replace Media',
-                'label for button in the media widget; should preferably not be longer than ~13 characters long'),
-            'edit_media' => _x('Edit Media',
-                'label for button in the media widget; should preferably not be longer than ~13 characters long'),
+            'replace_media' => _x(
+                'Replace Media',
+                'label for button in the media widget; should preferably not be longer than ~13 characters long'
+            ),
+            'edit_media' => _x(
+                'Edit Media',
+                'label for button in the media widget; should preferably not be longer than ~13 characters long'
+            ),
             'add_to_widget' => __('Add to Widget'),
             'missing_attachment' => sprintf(
             /* translators: placeholder is URL to media library */
@@ -253,7 +257,6 @@ abstract class WP_Widget_Media extends WP_Widget
      */
     public function update($new_instance, $instance)
     {
-
         $schema = $this->get_instance_schema();
         foreach ($schema as $field => $field_schema) {
             if (!array_key_exists($field, $new_instance)) {
@@ -321,7 +324,7 @@ abstract class WP_Widget_Media extends WP_Widget
                     data-property="<?php echo esc_attr($name); ?>"
                     class="media-widget-instance-property"
                     name="<?php echo esc_attr($this->get_field_name($name)); ?>"
-                    id="<?php echo esc_attr($this->get_field_id($name)); // Needed specifically by wpWidgets.appendTitle(). ?>"
+                    id="<?php echo esc_attr($this->get_field_id($name)); // Needed specifically by wpWidgets.appendTitle().?>"
                     value="<?php echo esc_attr(strval($value)); ?>"
             />
             <?php
@@ -355,8 +358,10 @@ abstract class WP_Widget_Media extends WP_Widget
         if (1 === $use_count) {
             $states[] = $this->l10n['media_library_state_single'];
         } elseif ($use_count > 0) {
-            $states[] = sprintf(translate_nooped_plural($this->l10n['media_library_state_multi'], $use_count),
-                number_format_i18n($use_count));
+            $states[] = sprintf(
+                translate_nooped_plural($this->l10n['media_library_state_multi'], $use_count),
+                number_format_i18n($use_count)
+            );
         }
 
         return $states;

@@ -114,7 +114,6 @@ class WP_Press_This
 
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'update-post_' . $post_id) ||
             !current_user_can('edit_post', $post_id)) {
-
             wp_send_json_error(array('errorMessage' => __('Invalid post.')));
         }
 
@@ -455,8 +454,10 @@ class WP_Press_This
                     // Loaders, spinners, spacers
                     return '';
                 } else {
-                    if (preg_match('!/([^./]+[-_])?(spinner|loading|spacer|blank)s?([-_][^./]+)?\.[a-z0-9]{3,4}!i',
-                        $src)) {
+                    if (preg_match(
+                        '!/([^./]+[-_])?(spinner|loading|spacer|blank)s?([-_][^./]+)?\.[a-z0-9]{3,4}!i',
+                        $src
+                    )) {
                         // Fancy loaders, spinners, spacers
                         return '';
                     } else {
@@ -528,8 +529,11 @@ class WP_Press_This
                         // Embedded Vine videos
                         $src = 'https://vine.co/v/' . $src_matches[1];
                     } else {
-                        if (preg_match('!//(www\.)?dailymotion\.com/embed/video/([^/?]+)([/?].+)?!i', $src,
-                            $src_matches)) {
+                        if (preg_match(
+                            '!//(www\.)?dailymotion\.com/embed/video/([^/?]+)([/?].+)?!i',
+                            $src,
+                            $src_matches
+                        )) {
                             // Embedded Daily Motion videos
                             $src = 'https://www.dailymotion.com/video/' . $src_matches[2];
                         } else {
@@ -657,7 +661,6 @@ class WP_Press_This
             foreach ($items as $value) {
                 if ((preg_match('/width=(\'|")(\d+)\\1/i', $value, $new_matches) && $new_matches[2] < 256) ||
                     (preg_match('/height=(\'|")(\d+)\\1/i', $value, $new_matches) && $new_matches[2] < 128)) {
-
                     continue;
                 }
 
@@ -698,8 +701,11 @@ class WP_Press_This
             $items = $this->_limit_array($matches[0]);
 
             foreach ($items as $value) {
-                if (preg_match('/rel=["\'](canonical|shortlink|icon)["\']/i', $value,
-                        $matches_rel) && preg_match('/href=[\'"]([^\'" ]+)[\'"]/i', $value, $matches_url)) {
+                if (preg_match(
+                    '/rel=["\'](canonical|shortlink|icon)["\']/i',
+                    $value,
+                        $matches_rel
+                ) && preg_match('/href=[\'"]([^\'" ]+)[\'"]/i', $value, $matches_url)) {
                     $rel = $matches_rel[1];
                     $url = $this->_limit_url($matches_url[1]);
 
@@ -888,9 +894,7 @@ class WP_Press_This
                 // Add in the current one if it isn't there yet, in case the current theme doesn't support it.
                 if ($post_format && !in_array($post_format, $post_formats[0])) {
                     $post_formats[0][] = $post_format;
-                }
-
-                ?>
+                } ?>
                 <div id="post-formats-select">
                     <fieldset>
                         <legend class="screen-reader-text"><?php _e('Post Formats'); ?></legend>
@@ -901,8 +905,7 @@ class WP_Press_This
                         <?php
 
                         foreach ($post_formats[0] as $format) {
-                            $attr_format = esc_attr($format);
-                            ?>
+                            $attr_format = esc_attr($format); ?>
                             <br/>
                             <input type="radio" name="post_format" class="post-format"
                                    id="post-format-<?php echo $attr_format; ?>"
@@ -910,9 +913,7 @@ class WP_Press_This
                             <label for="post-format-<?php echo $attr_format ?>"
                                    class="post-format-icon post-format-<?php echo $attr_format; ?>"><?php echo esc_html(get_post_format_string($format)); ?></label>
                             <?php
-                        }
-
-                        ?>
+                        } ?>
                     </fieldset>
                 </div>
                 <?php
@@ -961,15 +962,12 @@ class WP_Press_This
                         'orderby' => 'name',
                         'hierarchical' => 1,
                         'show_option_none' => '&mdash; ' . $taxonomy->labels->parent_item . ' &mdash;'
-                    ));
-                    ?>
+                    )); ?>
                 </div>
                 <button type="button" class="add-cat-submit"><?php _e('Add'); ?></button>
             </div>
             <?php
-
-        }
-        ?>
+        } ?>
         <div class="categories-search-wrapper">
             <input id="categories-search" type="search" class="categories-search"
                    placeholder="<?php esc_attr_e('Search categories by name') ?>">
@@ -1002,13 +1000,11 @@ class WP_Press_This
 
         if (!$esc_tags || is_wp_error($esc_tags)) {
             $esc_tags = '';
-        }
-
-        ?>
+        } ?>
         <div class="tagsdiv" id="post_tag">
             <div class="jaxtag">
                 <input type="hidden" name="tax_input[post_tag]" class="the-tags"
-                       value="<?php echo $esc_tags; // escaped in get_terms_to_edit() ?>">
+                       value="<?php echo $esc_tags; // escaped in get_terms_to_edit()?>">
                 <?php
 
                 if ($user_can_assign_terms) {
@@ -1026,9 +1022,7 @@ class WP_Press_This
                         <?php echo $taxonomy->labels->separate_items_with_commas; ?>
                     </p>
                     <?php
-                }
-
-                ?>
+                } ?>
             </div>
             <div class="tagchecklist"></div>
         </div>
@@ -1056,7 +1050,7 @@ class WP_Press_This
         $selected_embeds = array();
 
         // Make sure to add the Pressed page if it's a valid oembed itself
-        if (!empty ($data['u']) && $this->_limit_embed($data['u'])) {
+        if (!empty($data['u']) && $this->_limit_embed($data['u'])) {
             $data['_embeds'][] = $data['u'];
         }
 
@@ -1252,8 +1246,10 @@ class WP_Press_This
             }
         } else {
             $default_html['quote'] = '<blockquote>%1$s</blockquote>';
-            $default_html['link'] = '<p>' . _x('Source:',
-                    'Used in Press This to indicate where the content comes from.') .
+            $default_html['link'] = '<p>' . _x(
+                'Source:',
+                    'Used in Press This to indicate where the content comes from.'
+            ) .
                 ' <em><a href="%1$s">%2$s</a></em></p>';
         }
 
@@ -1350,9 +1346,7 @@ class WP_Press_This
             @header('X-UA-Compatible: IE=edge');
         }
 
-        @header('Content-Type: ' . get_option('html_type') . '; charset=' . get_option('blog_charset'));
-
-        ?>
+        @header('Content-Type: ' . get_option('html_type') . '; charset=' . get_option('blog_charset')); ?>
         <!DOCTYPE html>
         <!--[if IE 7]>
         <html class="lt-ie9 lt-ie8" <?php language_attributes(); ?>> <![endif]-->
@@ -1387,66 +1381,63 @@ class WP_Press_This
                  * Maybe find a way without it.
                  */
                 $post = get_default_post_to_edit('post', true);
-                $post_ID = (int)$post->ID;
+        $post_ID = (int)$post->ID;
 
-                wp_enqueue_media(array('post' => $post_ID));
-                wp_enqueue_style('press-this');
-                wp_enqueue_script('press-this');
-                wp_enqueue_script('json2');
-                wp_enqueue_script('editor');
+        wp_enqueue_media(array('post' => $post_ID));
+        wp_enqueue_style('press-this');
+        wp_enqueue_script('press-this');
+        wp_enqueue_script('json2');
+        wp_enqueue_script('editor');
 
-                $categories_tax = get_taxonomy('category');
-                $show_categories = current_user_can($categories_tax->cap->assign_terms) || current_user_can($categories_tax->cap->edit_terms);
+        $categories_tax = get_taxonomy('category');
+        $show_categories = current_user_can($categories_tax->cap->assign_terms) || current_user_can($categories_tax->cap->edit_terms);
 
-                $tag_tax = get_taxonomy('post_tag');
-                $show_tags = current_user_can($tag_tax->cap->assign_terms);
+        $tag_tax = get_taxonomy('post_tag');
+        $show_tags = current_user_can($tag_tax->cap->assign_terms);
 
-                $supports_formats = false;
+        $supports_formats = false;
+        $post_format = 0;
+
+        if (current_theme_supports('post-formats') && post_type_supports($post->post_type, 'post-formats')) {
+            $supports_formats = true;
+
+            if (!($post_format = get_post_format($post_ID))) {
                 $post_format = 0;
+            }
+        }
 
-                if (current_theme_supports('post-formats') && post_type_supports($post->post_type, 'post-formats')) {
-                    $supports_formats = true;
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_enqueue_scripts', 'press-this.php');
 
-                    if (!($post_format = get_post_format($post_ID))) {
-                        $post_format = 0;
-                    }
-                }
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_print_styles-press-this.php');
 
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_enqueue_scripts', 'press-this.php');
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_print_styles');
 
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_print_styles-press-this.php');
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_print_scripts-press-this.php');
 
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_print_styles');
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_print_scripts');
 
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_print_scripts-press-this.php');
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_head-press-this.php');
 
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_print_scripts');
-
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_head-press-this.php');
-
-                /** This action is documented in wp-admin/admin-header.php */
-                do_action('admin_head');
-                ?>
+        /** This action is documented in wp-admin/admin-header.php */
+        do_action('admin_head'); ?>
             </head>
             <?php
 
             $admin_body_class = 'press-this';
-            $admin_body_class .= (is_rtl()) ? ' rtl' : '';
-            $admin_body_class .= ' branch-' . str_replace(array('.', ','), '-', floatval($wp_version));
-            $admin_body_class .= ' version-' . str_replace('.', '-', preg_replace('/^([.0-9]+).*/', '$1', $wp_version));
-            $admin_body_class .= ' admin-color-' . sanitize_html_class(get_user_option('admin_color'), 'fresh');
-            $admin_body_class .= ' locale-' . sanitize_html_class(strtolower(str_replace('_', '-', get_user_locale())));
+        $admin_body_class .= (is_rtl()) ? ' rtl' : '';
+        $admin_body_class .= ' branch-' . str_replace(array('.', ','), '-', floatval($wp_version));
+        $admin_body_class .= ' version-' . str_replace('.', '-', preg_replace('/^([.0-9]+).*/', '$1', $wp_version));
+        $admin_body_class .= ' admin-color-' . sanitize_html_class(get_user_option('admin_color'), 'fresh');
+        $admin_body_class .= ' locale-' . sanitize_html_class(strtolower(str_replace('_', '-', get_user_locale())));
 
-            /** This filter is documented in wp-admin/admin-header.php */
-            $admin_body_classes = apply_filters('admin_body_class', '');
-
-            ?>
+        /** This filter is documented in wp-admin/admin-header.php */
+        $admin_body_classes = apply_filters('admin_body_class', ''); ?>
             <body class="wp-admin wp-core-ui <?php echo $admin_body_classes . ' ' . $admin_body_class; ?>">
                 <div id="adminbar" class="adminbar">
                     <h1 id="current-site" class="current-site">
@@ -1486,9 +1477,7 @@ class WP_Press_This
                     <?php
 
                     wp_nonce_field('update-post_' . $post_ID, '_wpnonce', false);
-                    wp_nonce_field('add-category', '_ajax_nonce-add-category', false);
-
-                    ?>
+        wp_nonce_field('add-category', '_ajax_nonce-add-category', false); ?>
 
                     <div class="wrapper">
                         <div class="editor-wrapper">
@@ -1499,13 +1488,13 @@ class WP_Press_This
                                 if (isset($data['v']) && $this->version > $data['v']) {
                                     ?>
                                     <p class="alert is-notice">
-                                        <?php printf(__('You should upgrade <a href="%s" target="_blank">your bookmarklet</a> to the latest version!'),
-                                            admin_url('tools.php')); ?>
+                                        <?php printf(
+                                        __('You should upgrade <a href="%s" target="_blank">your bookmarklet</a> to the latest version!'),
+                                            admin_url('tools.php')
+                                    ); ?>
                                     </p>
                                     <?php
-                                }
-
-                                ?>
+                                } ?>
                             </div>
 
                             <div id="app-container" class="editor">
@@ -1543,9 +1532,7 @@ class WP_Press_This
                                     'quicktags' => array(
                                         'buttons' => 'strong,em,link,block,del,ins,img,ul,ol,li,code,more',
                                     ),
-                                ));
-
-                                ?>
+                                )); ?>
                             </div>
                         </div>
 
@@ -1584,8 +1571,10 @@ class WP_Press_This
                                 <div class="setting-modal is-off-screen is-hidden">
                                     <button type="button" class="modal-close">
                                         <span class="dashicons post-option-back"></span>
-                                        <span class="setting-title" aria-hidden="true"><?php _ex('Format',
-                                                'post format'); ?></span>
+                                        <span class="setting-title" aria-hidden="true"><?php _ex(
+                                    'Format',
+                                                'post format'
+                                ); ?></span>
                                         <span class="screen-reader-text"><?php _e('Back to post options') ?></span>
                                     </button>
                                     <?php $this->post_formats_html($post); ?>
@@ -1661,15 +1650,14 @@ class WP_Press_This
                 /** This action is documented in wp-admin/admin-footer.php */
                 do_action('admin_footer');
 
-                /** This action is documented in wp-admin/admin-footer.php */
-                do_action('admin_print_footer_scripts-press-this.php');
+        /** This action is documented in wp-admin/admin-footer.php */
+        do_action('admin_print_footer_scripts-press-this.php');
 
-                /** This action is documented in wp-admin/admin-footer.php */
-                do_action('admin_print_footer_scripts');
+        /** This action is documented in wp-admin/admin-footer.php */
+        do_action('admin_print_footer_scripts');
 
-                /** This action is documented in wp-admin/admin-footer.php */
-                do_action('admin_footer-press-this.php');
-                ?>
+        /** This action is documented in wp-admin/admin-footer.php */
+        do_action('admin_footer-press-this.php'); ?>
             </body>
         </html>
         <?php

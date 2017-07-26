@@ -27,17 +27,16 @@
  */
 class ftp_pure extends ftp_base
 {
-
-    function __construct($verb = false, $le = false)
+    public function __construct($verb = false, $le = false)
     {
         parent::__construct(false, $verb, $le);
     }
 
-// <!-- --------------------------------------------------------------------------------------- -->
-// <!--       Private functions                                                                 -->
-// <!-- --------------------------------------------------------------------------------------- -->
+    // <!-- --------------------------------------------------------------------------------------- -->
+    // <!--       Private functions                                                                 -->
+    // <!-- --------------------------------------------------------------------------------------- -->
 
-    function _settimeout($sock)
+    public function _settimeout($sock)
     {
         if (!@stream_set_timeout($sock, $this->_timeout)) {
             $this->PushError('_settimeout', 'socket set send timeout');
@@ -47,7 +46,7 @@ class ftp_pure extends ftp_base
         return true;
     }
 
-    function _connect($host, $port)
+    public function _connect($host, $port)
     {
         $this->SendMSG("Creating socket");
         $sock = @fsockopen($host, $port, $errno, $errstr, $this->_timeout);
@@ -59,7 +58,7 @@ class ftp_pure extends ftp_base
         return $sock;
     }
 
-    function _readmsg($fnction = "_readmsg")
+    public function _readmsg($fnction = "_readmsg")
     {
         if (!$this->_connected) {
             $this->PushError($fnction, 'Connect first');
@@ -76,8 +75,11 @@ class ftp_pure extends ftp_base
                 $this->PushError($fnction, 'Read failed');
             } else {
                 $this->_message .= $tmp;
-                if (preg_match("/^([0-9]{3})(-(.*[" . CRLF . "]{1,2})+\\1)? [^" . CRLF . "]+[" . CRLF . "]{1,2}$/",
-                    $this->_message, $regs)) {
+                if (preg_match(
+                    "/^([0-9]{3})(-(.*[" . CRLF . "]{1,2})+\\1)? [^" . CRLF . "]+[" . CRLF . "]{1,2}$/",
+                    $this->_message,
+                    $regs
+                )) {
                     $go = false;
                 }
             }
@@ -89,7 +91,7 @@ class ftp_pure extends ftp_base
         return $result;
     }
 
-    function _exec($cmd, $fnction = "_exec")
+    public function _exec($cmd, $fnction = "_exec")
     {
         if (!$this->_ready) {
             $this->PushError($fnction, 'Connect first');
@@ -110,7 +112,7 @@ class ftp_pure extends ftp_base
         return true;
     }
 
-    function _data_prepare($mode = FTP_ASCII)
+    public function _data_prepare($mode = FTP_ASCII)
     {
         if (!$this->_settype($mode)) {
             return false;
@@ -124,9 +126,14 @@ class ftp_pure extends ftp_base
                 $this->_data_close();
                 return false;
             }
-            $ip_port = explode(",",
-                preg_replace("/^.+ \\(?([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},[0-9]{1,3},[0-9]+,[0-9]+)\\)?.*$/s", "\\1",
-                    $this->_message));
+            $ip_port = explode(
+                ",",
+                preg_replace(
+                    "/^.+ \\(?([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},[0-9]{1,3},[0-9]+,[0-9]+)\\)?.*$/s",
+                    "\\1",
+                    $this->_message
+                )
+            );
             $this->_datahost = $ip_port[0] . "." . $ip_port[1] . "." . $ip_port[2] . "." . $ip_port[3];
             $this->_dataport = (((int)$ip_port[4]) << 8) + ((int)$ip_port[5]);
             $this->SendMSG("Connecting to " . $this->_datahost . ":" . $this->_dataport);
@@ -145,7 +152,7 @@ class ftp_pure extends ftp_base
         return true;
     }
 
-    function _data_read($mode = FTP_ASCII, $fp = null)
+    public function _data_read($mode = FTP_ASCII, $fp = null)
     {
         if (is_resource($fp)) {
             $out = 0;
@@ -170,7 +177,7 @@ class ftp_pure extends ftp_base
         return $out;
     }
 
-    function _data_write($mode = FTP_ASCII, $fp = null)
+    public function _data_write($mode = FTP_ASCII, $fp = null)
     {
         if (is_resource($fp)) {
             $out = 0;
@@ -194,7 +201,7 @@ class ftp_pure extends ftp_base
         return true;
     }
 
-    function _data_write_block($mode, $block)
+    public function _data_write_block($mode, $block)
     {
         if ($mode != FTP_BINARY) {
             $block = preg_replace("/\r\n|\r|\n/", $this->_eol_code[$this->OS_remote], $block);
@@ -209,14 +216,14 @@ class ftp_pure extends ftp_base
         return true;
     }
 
-    function _data_close()
+    public function _data_close()
     {
         @fclose($this->_ftp_data_sock);
         $this->SendMSG("Disconnected data from remote host");
         return true;
     }
 
-    function _quit($force = false)
+    public function _quit($force = false)
     {
         if ($this->_connected or $force) {
             @fclose($this->_ftp_control_sock);
@@ -225,5 +232,3 @@ class ftp_pure extends ftp_base
         }
     }
 }
-
-?>

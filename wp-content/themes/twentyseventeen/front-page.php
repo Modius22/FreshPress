@@ -46,7 +46,7 @@ get_header(); ?>
                     twentyseventeen_front_page_section(null, $i);
                 }
 
-            endif; // The if ( 0 !== twentyseventeen_panel_count() ) ends here. ?>
+            endif; // The if ( 0 !== twentyseventeen_panel_count() ) ends here.?>
 
         </main><!-- #main -->
     </div><!-- #primary -->

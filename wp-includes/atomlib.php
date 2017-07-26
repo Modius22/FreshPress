@@ -22,20 +22,20 @@ class AtomFeed
      * @var array
      * @access public
      */
-    var $links = array();
+    public $links = array();
     /**
      * Stores Categories
      * @var array
      * @access public
      */
-    var $categories = array();
+    public $categories = array();
     /**
      * Stores Entries
      *
      * @var array
      * @access public
      */
-    var $entries = array();
+    public $entries = array();
 }
 
 /**
@@ -50,13 +50,13 @@ class AtomEntry
      * @var array
      * @access public
      */
-    var $links = array();
+    public $links = array();
     /**
      * Stores Categories
      * @var array
      * @access public
      */
-    var $categories = array();
+    public $categories = array();
 }
 
 /**
@@ -66,36 +66,34 @@ class AtomEntry
  */
 class AtomParser
 {
+    public $NS = 'http://www.w3.org/2005/Atom';
+    public $ATOM_CONTENT_ELEMENTS = array('content', 'summary', 'title', 'subtitle', 'rights');
+    public $ATOM_SIMPLE_ELEMENTS = array('id', 'updated', 'published', 'draft');
 
-    var $NS = 'http://www.w3.org/2005/Atom';
-    var $ATOM_CONTENT_ELEMENTS = array('content', 'summary', 'title', 'subtitle', 'rights');
-    var $ATOM_SIMPLE_ELEMENTS = array('id', 'updated', 'published', 'draft');
+    public $debug = false;
 
-    var $debug = false;
+    public $depth = 0;
+    public $indent = 2;
+    public $in_content;
+    public $ns_contexts = array();
+    public $ns_decls = array();
+    public $content_ns_decls = array();
+    public $content_ns_contexts = array();
+    public $is_xhtml = false;
+    public $is_html = false;
+    public $is_text = true;
+    public $skipped_div = false;
 
-    var $depth = 0;
-    var $indent = 2;
-    var $in_content;
-    var $ns_contexts = array();
-    var $ns_decls = array();
-    var $content_ns_decls = array();
-    var $content_ns_contexts = array();
-    var $is_xhtml = false;
-    var $is_html = false;
-    var $is_text = true;
-    var $skipped_div = false;
+    public $FILE = "php://input";
 
-    var $FILE = "php://input";
-
-    var $feed;
-    var $current;
+    public $feed;
+    public $current;
 
     /**
      * PHP5 constructor.
      */
-    function __construct()
+    public function __construct()
     {
-
         $this->feed = new AtomFeed();
         $this->current = null;
         $this->map_attrs_func = array(__CLASS__, 'map_attrs');
@@ -138,21 +136,20 @@ class AtomParser
         return "{$xd}=\"{$n[1]}\"";
     }
 
-    function _p($msg)
+    public function _p($msg)
     {
         if ($this->debug) {
             print str_repeat(" ", $this->depth * $this->indent) . $msg . "\n";
         }
     }
 
-    function error_handler($log_level, $log_text, $error_file, $error_line)
+    public function error_handler($log_level, $log_text, $error_file, $error_line)
     {
         $this->error = $log_text;
     }
 
-    function parse()
+    public function parse()
     {
-
         set_error_handler(array(&$this, 'error_handler'));
 
         array_unshift($this->ns_contexts, array());
@@ -184,9 +181,11 @@ class AtomParser
 
             if (!xml_parse($parser, $data, feof($fp))) {
                 /* translators: 1: error message, 2: line number */
-                trigger_error(sprintf(__('XML Error: %1$s at line %2$s') . "\n",
+                trigger_error(sprintf(
+                    __('XML Error: %1$s at line %2$s') . "\n",
                     xml_error_string(xml_get_error_code($parser)),
-                    xml_get_current_line_number($parser)));
+                    xml_get_current_line_number($parser)
+                ));
                 $ret = false;
                 break;
             }
@@ -200,9 +199,8 @@ class AtomParser
         return $ret;
     }
 
-    function start_element($parser, $name, $attrs)
+    public function start_element($parser, $name, $attrs)
     {
-
         $tag = array_pop(explode(":", $name));
 
         switch ($name) {
@@ -223,7 +221,6 @@ class AtomParser
         $this->depth++;
 
         if (!empty($this->in_content)) {
-
             $this->content_ns_decls = array();
 
             if ($this->is_html || $this->is_text) {
@@ -238,8 +235,10 @@ class AtomParser
                 $attrs_prefix[$with_prefix[1]] = $this->xml_escape($value);
             }
 
-            $attrs_str = join(' ',
-                array_map($this->map_attrs_func, array_keys($attrs_prefix), array_values($attrs_prefix)));
+            $attrs_str = join(
+                ' ',
+                array_map($this->map_attrs_func, array_keys($attrs_prefix), array_values($attrs_prefix))
+            );
             if (strlen($attrs_str) > 0) {
                 $attrs_str = " " . $attrs_str;
             }
@@ -253,16 +252,20 @@ class AtomParser
             $xmlns_str = '';
             if (count($this->content_ns_decls) > 0) {
                 array_unshift($this->content_ns_contexts, $this->content_ns_decls);
-                $xmlns_str .= join(' ', array_map($this->map_xmlns_func, array_keys($this->content_ns_contexts[0]),
-                    array_values($this->content_ns_contexts[0])));
+                $xmlns_str .= join(' ', array_map(
+                    $this->map_xmlns_func,
+                    array_keys($this->content_ns_contexts[0]),
+                    array_values($this->content_ns_contexts[0])
+                ));
                 if (strlen($xmlns_str) > 0) {
                     $xmlns_str = " " . $xmlns_str;
                 }
             }
 
-            array_push($this->in_content,
-                array($tag, $this->depth, "<" . $with_prefix[1] . "{$xmlns_str}{$attrs_str}" . ">"));
-
+            array_push(
+                $this->in_content,
+                array($tag, $this->depth, "<" . $with_prefix[1] . "{$xmlns_str}{$attrs_str}" . ">")
+            );
         } else {
             if (in_array($tag, $this->ATOM_CONTENT_ELEMENTS) || in_array($tag, $this->ATOM_SIMPLE_ELEMENTS)) {
                 $this->in_content = array();
@@ -290,9 +293,8 @@ class AtomParser
         $this->ns_decls = array();
     }
 
-    function end_element($parser, $name)
+    public function end_element($parser, $name)
     {
-
         $tag = array_pop(explode(":", $name));
 
         $ccount = count($this->in_content);
@@ -347,18 +349,18 @@ class AtomParser
         $this->_p("end_element('$name')");
     }
 
-    function start_ns($parser, $prefix, $uri)
+    public function start_ns($parser, $prefix, $uri)
     {
         $this->_p("starting: " . $prefix . ":" . $uri);
         array_push($this->ns_decls, array($prefix, $uri));
     }
 
-    function end_ns($parser, $prefix)
+    public function end_ns($parser, $prefix)
     {
         $this->_p("ending: #" . $prefix . "#");
     }
 
-    function cdata($parser, $data)
+    public function cdata($parser, $data)
     {
         $this->_p("data: #" . str_replace(array("\n"), array("\\n"), trim($data)) . "#");
         if (!empty($this->in_content)) {
@@ -366,13 +368,13 @@ class AtomParser
         }
     }
 
-    function _default($parser, $data)
+    public function _default($parser, $data)
     {
         # when does this gets called?
     }
 
 
-    function ns_to_prefix($qname, $attr = false)
+    public function ns_to_prefix($qname, $attr = false)
     {
         # split 'http://www.w3.org/1999/xhtml:div' into ('http','//www.w3.org/1999/xhtml','div')
         $components = explode(":", $qname);
@@ -405,7 +407,7 @@ class AtomParser
         }
     }
 
-    function is_declared_content_ns($new_mapping)
+    public function is_declared_content_ns($new_mapping)
     {
         foreach ($this->content_ns_contexts as $context) {
             foreach ($context as $mapping) {
@@ -417,10 +419,12 @@ class AtomParser
         return false;
     }
 
-    function xml_escape($string)
+    public function xml_escape($string)
     {
-        return str_replace(array('&', '"', "'", '<', '>'),
+        return str_replace(
+            array('&', '"', "'", '<', '>'),
             array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'),
-            $string);
+            $string
+        );
     }
 }

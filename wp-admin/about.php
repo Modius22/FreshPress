@@ -34,8 +34,10 @@ include(ABSPATH . 'wp-admin/admin-header.php');
     <div class="wrap about-wrap">
         <h1><?php printf(__('Welcome to WordPress&nbsp;%s'), $display_version); ?></h1>
 
-        <p class="about-text"><?php printf(__('Thank you for updating to the latest version! WordPress %s adds more ways for you to express yourself and represent your brand.'),
-                $display_version); ?></p>
+        <p class="about-text"><?php printf(
+    __('Thank you for updating to the latest version! WordPress %s adds more ways for you to express yourself and represent your brand.'),
+                $display_version
+); ?></p>
         <div class="wp-badge"><?php printf(__('Version %s'), $display_version); ?></div>
 
         <h2 class="nav-tab-wrapper wp-clearfix">
@@ -257,16 +259,22 @@ __('<strong>Version %s</strong> addressed one security issue.');
 __('<strong>Version %s</strong> addressed some security issues.');
 
 /* translators: 1: WordPress version number, 2: plural number of bugs. */
-_n_noop('<strong>Version %1$s</strong> addressed %2$s bug.',
-    '<strong>Version %1$s</strong> addressed %2$s bugs.');
+_n_noop(
+    '<strong>Version %1$s</strong> addressed %2$s bug.',
+    '<strong>Version %1$s</strong> addressed %2$s bugs.'
+);
 
 /* translators: 1: WordPress version number, 2: plural number of bugs. Singular security issue. */
-_n_noop('<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bug.',
-    '<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bugs.');
+_n_noop(
+    '<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bug.',
+    '<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bugs.'
+);
 
 /* translators: 1: WordPress version number, 2: plural number of bugs. More than one security issue. */
-_n_noop('<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bug.',
-    '<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bugs.');
+_n_noop(
+    '<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bug.',
+    '<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bugs.'
+);
 
 /* translators: %s: Codex URL */
 __('For more information, see <a href="%s">the release notes</a>.');

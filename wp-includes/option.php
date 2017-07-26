@@ -92,8 +92,10 @@ function get_option($option, $default = false)
             $value = wp_cache_get($option, 'options');
 
             if (false === $value) {
-                $row = $wpdb->get_row($wpdb->prepare("SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
-                    $option));
+                $row = $wpdb->get_row($wpdb->prepare(
+                    "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
+                    $option
+                ));
 
                 // Has to be get_row instead of get_var because of funkiness with 0, false, null values
                 if (is_object($row)) {
@@ -113,8 +115,10 @@ function get_option($option, $default = false)
         }
     } else {
         $suppress = $wpdb->suppress_errors();
-        $row = $wpdb->get_row($wpdb->prepare("SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
-            $option));
+        $row = $wpdb->get_row($wpdb->prepare(
+            "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
+            $option
+        ));
         $wpdb->suppress_errors($suppress);
         if (is_object($row)) {
             $value = $row->option_value;
@@ -249,8 +253,10 @@ function wp_load_core_site_options($site_id = null)
     );
 
     $core_options_in = "'" . implode("', '", $core_options) . "'";
-    $options = $wpdb->get_results($wpdb->prepare("SELECT meta_key, meta_value FROM $wpdb->sitemeta WHERE meta_key IN ($core_options_in) AND site_id = %d",
-        $site_id));
+    $options = $wpdb->get_results($wpdb->prepare(
+        "SELECT meta_key, meta_value FROM $wpdb->sitemeta WHERE meta_key IN ($core_options_in) AND site_id = %d",
+        $site_id
+    ));
 
     foreach ($options as $option) {
         $key = $option->meta_key;
@@ -484,8 +490,12 @@ function add_option($option, $value = '', $deprecated = '', $autoload = 'yes')
      */
     do_action('add_option', $option, $value);
 
-    $result = $wpdb->query($wpdb->prepare("INSERT INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE `option_name` = VALUES(`option_name`), `option_value` = VALUES(`option_value`), `autoload` = VALUES(`autoload`)",
-        $option, $serialized_value, $autoload));
+    $result = $wpdb->query($wpdb->prepare(
+        "INSERT INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE `option_name` = VALUES(`option_name`), `option_value` = VALUES(`option_value`), `autoload` = VALUES(`autoload`)",
+        $option,
+        $serialized_value,
+        $autoload
+    ));
     if (!$result) {
         return false;
     }
@@ -743,7 +753,6 @@ function get_transient($transient)
  */
 function set_transient($transient, $value, $expiration = 0)
 {
-
     $expiration = (int)$expiration;
 
     /**
@@ -849,7 +858,6 @@ function set_transient($transient, $value, $expiration = 0)
  */
 function wp_user_settings()
 {
-
     if (!is_admin() || wp_doing_ajax()) {
         return;
     }
@@ -873,8 +881,11 @@ function wp_user_settings()
         }
 
         $last_saved = (int)get_user_option('user-settings-time', $user_id);
-        $current = isset($_COOKIE['wp-settings-time-' . $user_id]) ? preg_replace('/[^0-9]/', '',
-            $_COOKIE['wp-settings-time-' . $user_id]) : 0;
+        $current = isset($_COOKIE['wp-settings-time-' . $user_id]) ? preg_replace(
+            '/[^0-9]/',
+            '',
+            $_COOKIE['wp-settings-time-' . $user_id]
+        ) : 0;
 
         // The cookie is newer than the saved value. Update the user_option and leave the cookie as-is
         if ($current > $last_saved) {
@@ -1222,8 +1233,11 @@ function get_network_option($network_id, $option, $default = false)
         $value = wp_cache_get($cache_key, 'site-options');
 
         if (!isset($value) || false === $value) {
-            $row = $wpdb->get_row($wpdb->prepare("SELECT meta_value FROM $wpdb->sitemeta WHERE meta_key = %s AND site_id = %d",
-                $option, $network_id));
+            $row = $wpdb->get_row($wpdb->prepare(
+                "SELECT meta_value FROM $wpdb->sitemeta WHERE meta_key = %s AND site_id = %d",
+                $option,
+                $network_id
+            ));
 
             // Has to be get_row instead of get_var because of funkiness with 0, false, null values
             if (is_object($row)) {
@@ -1327,8 +1341,10 @@ function add_network_option($network_id, $option, $value)
         $value = sanitize_option($option, $value);
 
         $serialized_value = maybe_serialize($value);
-        $result = $wpdb->insert($wpdb->sitemeta,
-            array('site_id' => $network_id, 'meta_key' => $option, 'meta_value' => $serialized_value));
+        $result = $wpdb->insert(
+            $wpdb->sitemeta,
+            array('site_id' => $network_id, 'meta_key' => $option, 'meta_value' => $serialized_value)
+        );
 
         if (!$result) {
             return false;
@@ -1424,8 +1440,11 @@ function delete_network_option($network_id, $option)
     if (!is_multisite()) {
         $result = delete_option($option);
     } else {
-        $row = $wpdb->get_row($wpdb->prepare("SELECT meta_id FROM {$wpdb->sitemeta} WHERE meta_key = %s AND site_id = %d",
-            $option, $network_id));
+        $row = $wpdb->get_row($wpdb->prepare(
+            "SELECT meta_id FROM {$wpdb->sitemeta} WHERE meta_key = %s AND site_id = %d",
+            $option,
+            $network_id
+        ));
         if (is_null($row) || !$row->meta_id) {
             return false;
         }
@@ -1539,8 +1558,11 @@ function update_network_option($network_id, $option, $value)
         $value = sanitize_option($option, $value);
 
         $serialized_value = maybe_serialize($value);
-        $result = $wpdb->update($wpdb->sitemeta, array('meta_value' => $serialized_value),
-            array('site_id' => $network_id, 'meta_key' => $option));
+        $result = $wpdb->update(
+            $wpdb->sitemeta,
+            array('meta_value' => $serialized_value),
+            array('site_id' => $network_id, 'meta_key' => $option)
+        );
 
         if ($result) {
             $cache_key = "$network_id:$option";
@@ -1931,7 +1953,6 @@ function register_initial_settings()
         'type' => 'string',
         'description' => __('Allow people to post comments on new articles.'),
     ));
-
 }
 
 /**
@@ -1994,9 +2015,12 @@ function register_setting($option_group, $option_name, $args = array())
     }
 
     if ('misc' == $option_group) {
-        _deprecated_argument(__FUNCTION__, '3.0.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '3.0.0',
             /* translators: %s: misc */
-            sprintf(__('The "%s" options group has been removed. Use another settings group.'),
+            sprintf(
+                __('The "%s" options group has been removed. Use another settings group.'),
                 'misc'
             )
         );
@@ -2004,9 +2028,12 @@ function register_setting($option_group, $option_name, $args = array())
     }
 
     if ('privacy' == $option_group) {
-        _deprecated_argument(__FUNCTION__, '3.5.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '3.5.0',
             /* translators: %s: privacy */
-            sprintf(__('The "%s" options group has been removed. Use another settings group.'),
+            sprintf(
+                __('The "%s" options group has been removed. Use another settings group.'),
                 'privacy'
             )
         );
@@ -2041,9 +2068,12 @@ function unregister_setting($option_group, $option_name, $deprecated = '')
     global $new_whitelist_options, $wp_registered_settings;
 
     if ('misc' == $option_group) {
-        _deprecated_argument(__FUNCTION__, '3.0.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '3.0.0',
             /* translators: %s: misc */
-            sprintf(__('The "%s" options group has been removed. Use another settings group.'),
+            sprintf(
+                __('The "%s" options group has been removed. Use another settings group.'),
                 'misc'
             )
         );
@@ -2051,9 +2081,12 @@ function unregister_setting($option_group, $option_name, $deprecated = '')
     }
 
     if ('privacy' == $option_group) {
-        _deprecated_argument(__FUNCTION__, '3.5.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '3.5.0',
             /* translators: %s: privacy */
-            sprintf(__('The "%s" options group has been removed. Use another settings group.'),
+            sprintf(
+                __('The "%s" options group has been removed. Use another settings group.'),
                 'privacy'
             )
         );
@@ -2065,9 +2098,12 @@ function unregister_setting($option_group, $option_name, $deprecated = '')
         unset($new_whitelist_options[$option_group][$pos]);
     }
     if ('' !== $deprecated) {
-        _deprecated_argument(__FUNCTION__, '4.7.0',
+        _deprecated_argument(
+            __FUNCTION__,
+            '4.7.0',
             /* translators: 1: $sanitize_callback, 2: register_setting() */
-            sprintf(__('%1$s is deprecated. The callback from %2$s is used instead.'),
+            sprintf(
+                __('%1$s is deprecated. The callback from %2$s is used instead.'),
                 '<code>$sanitize_callback</code>',
                 '<code>register_setting()</code>'
             )

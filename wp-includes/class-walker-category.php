@@ -124,8 +124,11 @@ class Walker_Category extends Walker
              * @param string $description Category description.
              * @param object $category Category object.
              */
-            $link .= 'title="' . esc_attr(strip_tags(apply_filters('category_description', $category->description,
-                    $category))) . '"';
+            $link .= 'title="' . esc_attr(strip_tags(apply_filters(
+                'category_description',
+                $category->description,
+                    $category
+            ))) . '"';
         }
 
         $link .= '>';
@@ -138,8 +141,11 @@ class Walker_Category extends Walker
                 $link .= '(';
             }
 
-            $link .= '<a href="' . esc_url(get_term_feed_link($category->term_id, $category->taxonomy,
-                    $args['feed_type'])) . '"';
+            $link .= '<a href="' . esc_url(get_term_feed_link(
+                $category->term_id,
+                $category->taxonomy,
+                    $args['feed_type']
+            )) . '"';
 
             if (empty($args['feed'])) {
                 $alt = ' alt="' . sprintf(__('Feed for all posts filed under %s'), $cat_name) . '"';
@@ -241,5 +247,4 @@ class Walker_Category extends Walker
 
         $output .= "</li>\n";
     }
-
 }

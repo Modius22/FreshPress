@@ -41,8 +41,11 @@ abstract class WP_REST_Controller
      */
     public function register_routes()
     {
-        _doing_it_wrong('WP_REST_Controller::register_routes', __('The register_routes() method must be overridden'),
-            '4.7');
+        _doing_it_wrong(
+            'WP_REST_Controller::register_routes',
+            __('The register_routes() method must be overridden'),
+            '4.7'
+        );
     }
 
     /**
@@ -56,9 +59,11 @@ abstract class WP_REST_Controller
      */
     public function get_items_permissions_check($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -72,9 +77,11 @@ abstract class WP_REST_Controller
      */
     public function get_items($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -88,9 +95,11 @@ abstract class WP_REST_Controller
      */
     public function get_item_permissions_check($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -104,9 +113,11 @@ abstract class WP_REST_Controller
      */
     public function get_item($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -120,9 +131,11 @@ abstract class WP_REST_Controller
      */
     public function create_item_permissions_check($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -136,9 +149,11 @@ abstract class WP_REST_Controller
      */
     public function create_item($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -152,9 +167,11 @@ abstract class WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -168,9 +185,11 @@ abstract class WP_REST_Controller
      */
     public function update_item($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -184,9 +203,11 @@ abstract class WP_REST_Controller
      */
     public function delete_item_permissions_check($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -200,9 +221,11 @@ abstract class WP_REST_Controller
      */
     public function delete_item($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -216,9 +239,11 @@ abstract class WP_REST_Controller
      */
     protected function prepare_item_for_database($request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -233,9 +258,11 @@ abstract class WP_REST_Controller
      */
     public function prepare_item_for_response($item, $request)
     {
-        return new WP_Error('invalid-method',
+        return new WP_Error(
+            'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405));
+            array('status' => 405)
+        );
     }
 
     /**
@@ -281,7 +308,6 @@ abstract class WP_REST_Controller
      */
     public function filter_response_by_context($data, $context)
     {
-
         $schema = $this->get_item_schema();
 
         foreach ($data as $key => $value) {
@@ -335,7 +361,6 @@ abstract class WP_REST_Controller
      */
     public function get_public_item_schema()
     {
-
         $schema = $this->get_item_schema();
 
         foreach ($schema['properties'] as &$property) {
@@ -437,17 +462,20 @@ abstract class WP_REST_Controller
      */
     protected function add_additional_fields_to_object($object, $request)
     {
-
         $additional_fields = $this->get_additional_fields();
 
         foreach ($additional_fields as $field_name => $field_options) {
-
             if (!$field_options['get_callback']) {
                 continue;
             }
 
-            $object[$field_name] = call_user_func($field_options['get_callback'], $object, $field_name, $request,
-                $this->get_object_type());
+            $object[$field_name] = call_user_func(
+                $field_options['get_callback'],
+                $object,
+                $field_name,
+                $request,
+                $this->get_object_type()
+            );
         }
 
         return $object;
@@ -477,8 +505,14 @@ abstract class WP_REST_Controller
                 continue;
             }
 
-            $result = call_user_func($field_options['update_callback'], $request[$field_name], $object, $field_name,
-                $request, $this->get_object_type());
+            $result = call_user_func(
+                $field_options['update_callback'],
+                $request[$field_name],
+                $object,
+                $field_name,
+                $request,
+                $this->get_object_type()
+            );
 
             if (is_wp_error($result)) {
                 return $result;
@@ -533,7 +567,6 @@ abstract class WP_REST_Controller
      */
     protected function get_additional_fields($object_type = null)
     {
-
         if (!$object_type) {
             $object_type = $this->get_object_type();
         }
@@ -583,7 +616,6 @@ abstract class WP_REST_Controller
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE)
     {
-
         $schema = $this->get_item_schema();
         $schema_properties = !empty($schema['properties']) ? $schema['properties'] : array();
         $endpoint_args = array();
@@ -623,8 +655,10 @@ abstract class WP_REST_Controller
 
                 // Only use required / default from arg_options on CREATABLE endpoints.
                 if (WP_REST_Server::CREATABLE !== $method) {
-                    $params['arg_options'] = array_diff_key($params['arg_options'],
-                        array('required' => '', 'default' => ''));
+                    $params['arg_options'] = array_diff_key(
+                        $params['arg_options'],
+                        array('required' => '', 'default' => '')
+                    );
                 }
 
                 $endpoint_args[$field_id] = array_merge($endpoint_args[$field_id], $params['arg_options']);

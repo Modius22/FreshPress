@@ -145,32 +145,57 @@ class WP_Http_Streams
             }
 
             if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) {
-                $handle = @stream_socket_client('tcp://' . $proxy->host() . ':' . $proxy->port(), $connection_error,
-                    $connection_error_str, $connect_timeout, STREAM_CLIENT_CONNECT, $context);
+                $handle = @stream_socket_client(
+                    'tcp://' . $proxy->host() . ':' . $proxy->port(),
+                    $connection_error,
+                    $connection_error_str,
+                    $connect_timeout,
+                    STREAM_CLIENT_CONNECT,
+                    $context
+                );
             } else {
-                $handle = @stream_socket_client($connect_host . ':' . $arrURL['port'], $connection_error,
-                    $connection_error_str, $connect_timeout, STREAM_CLIENT_CONNECT, $context);
+                $handle = @stream_socket_client(
+                    $connect_host . ':' . $arrURL['port'],
+                    $connection_error,
+                    $connection_error_str,
+                    $connect_timeout,
+                    STREAM_CLIENT_CONNECT,
+                    $context
+                );
             }
 
             if ($secure_transport) {
                 error_reporting($error_reporting);
             }
-
         } else {
             if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) {
-                $handle = stream_socket_client('tcp://' . $proxy->host() . ':' . $proxy->port(), $connection_error,
-                    $connection_error_str, $connect_timeout, STREAM_CLIENT_CONNECT, $context);
+                $handle = stream_socket_client(
+                    'tcp://' . $proxy->host() . ':' . $proxy->port(),
+                    $connection_error,
+                    $connection_error_str,
+                    $connect_timeout,
+                    STREAM_CLIENT_CONNECT,
+                    $context
+                );
             } else {
-                $handle = stream_socket_client($connect_host . ':' . $arrURL['port'], $connection_error,
-                    $connection_error_str, $connect_timeout, STREAM_CLIENT_CONNECT, $context);
+                $handle = stream_socket_client(
+                    $connect_host . ':' . $arrURL['port'],
+                    $connection_error,
+                    $connection_error_str,
+                    $connect_timeout,
+                    STREAM_CLIENT_CONNECT,
+                    $context
+                );
             }
         }
 
         if (false === $handle) {
             // SSL connection failed due to expired/invalid cert, or, OpenSSL configuration is broken.
             if ($secure_transport && 0 === $connection_error && '' === $connection_error_str) {
-                return new WP_Error('http_request_failed',
-                    __('The SSL certificate for the host could not be verified.'));
+                return new WP_Error(
+                    'http_request_failed',
+                    __('The SSL certificate for the host could not be verified.')
+                );
             }
 
             return new WP_Error('http_request_failed', $connection_error . ': ' . $connection_error_str);
@@ -179,15 +204,16 @@ class WP_Http_Streams
         // Verify that the SSL certificate is valid for this request.
         if ($secure_transport && $ssl_verify && !$proxy->is_enabled()) {
             if (!self::verify_ssl_certificate($handle, $arrURL['host'])) {
-                return new WP_Error('http_request_failed',
-                    __('The SSL certificate for the host could not be verified.'));
+                return new WP_Error(
+                    'http_request_failed',
+                    __('The SSL certificate for the host could not be verified.')
+                );
             }
         }
 
         stream_set_timeout($handle, $timeout, $utimeout);
 
-        if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) //Some proxies require full URL in this field.
-        {
+        if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) { //Some proxies require full URL in this field.
             $requestPath = $url;
         } else {
             $requestPath = $arrURL['path'] . (isset($arrURL['query']) ? '?' . $arrURL['query'] : '');
@@ -258,8 +284,10 @@ class WP_Http_Streams
                 $stream_handle = fopen($r['filename'], 'w+');
             }
             if (!$stream_handle) {
-                return new WP_Error('http_request_failed',
-                    sprintf(__('Could not open handle for fopen() to %s'), $r['filename']));
+                return new WP_Error(
+                    'http_request_failed',
+                    sprintf(__('Could not open handle for fopen() to %s'), $r['filename'])
+                );
             }
 
             $bytes_written = 0;
@@ -297,7 +325,6 @@ class WP_Http_Streams
             }
 
             fclose($stream_handle);
-
         } else {
             $header_length = 0;
             while (!feof($handle) && $keep_reading) {
@@ -312,7 +339,6 @@ class WP_Http_Streams
 
             $process = WP_Http::processResponse($strResponse);
             unset($strResponse);
-
         }
 
         fclose($handle);
@@ -392,8 +418,7 @@ class WP_Http_Streams
             $match_against = preg_split('/,\s*/', $cert['extensions']['subjectAltName']);
             foreach ($match_against as $match) {
                 list($match_type, $match_host) = explode(':', $match);
-                if ($host_type == strtolower(trim($match_type))) // IP: or DNS:
-                {
+                if ($host_type == strtolower(trim($match_type))) { // IP: or DNS:
                     $certificate_hostnames[] = strtolower(trim($match_host));
                 }
             }

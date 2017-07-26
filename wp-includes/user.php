@@ -150,7 +150,8 @@ function wp_authenticate_username_password($user, $username, $password)
     $user = get_user_by('login', $username);
 
     if (!$user) {
-        return new WP_Error('invalid_username',
+        return new WP_Error(
+            'invalid_username',
             __('<strong>ERROR</strong>: Invalid username.') .
             ' <a href="' . wp_lostpassword_url() . '">' .
             __('Lost your password?') .
@@ -173,7 +174,8 @@ function wp_authenticate_username_password($user, $username, $password)
     }
 
     if (!wp_check_password($password, $user->user_pass, $user->ID)) {
-        return new WP_Error('incorrect_password',
+        return new WP_Error(
+            'incorrect_password',
             sprintf(
             /* translators: %s: user name */
                 __('<strong>ERROR</strong>: The password you entered for the username %s is incorrect.'),
@@ -213,8 +215,10 @@ function wp_authenticate_email_password($user, $email, $password)
         $error = new WP_Error();
 
         if (empty($email)) {
-            $error->add('empty_username',
-                __('<strong>ERROR</strong>: The email field is empty.')); // Uses 'empty_username' for back-compat with wp_signon()
+            $error->add(
+                'empty_username',
+                __('<strong>ERROR</strong>: The email field is empty.')
+            ); // Uses 'empty_username' for back-compat with wp_signon()
         }
 
         if (empty($password)) {
@@ -231,7 +235,8 @@ function wp_authenticate_email_password($user, $email, $password)
     $user = get_user_by('email', $email);
 
     if (!$user) {
-        return new WP_Error('invalid_email',
+        return new WP_Error(
+            'invalid_email',
             __('<strong>ERROR</strong>: Invalid email address.') .
             ' <a href="' . wp_lostpassword_url() . '">' .
             __('Lost your password?') .
@@ -247,7 +252,8 @@ function wp_authenticate_email_password($user, $email, $password)
     }
 
     if (!wp_check_password($password, $user->user_pass, $user->ID)) {
-        return new WP_Error('incorrect_password',
+        return new WP_Error(
+            'incorrect_password',
             sprintf(
             /* translators: %s: email address */
                 __('<strong>ERROR</strong>: The password you entered for the email address %s is incorrect.'),
@@ -327,8 +333,10 @@ function wp_authenticate_spam_check($user)
         $spammed = apply_filters('check_is_user_spammed', is_user_spammy($user), $user);
 
         if ($spammed) {
-            return new WP_Error('spammer_account',
-                __('<strong>ERROR</strong>: Your account has been marked as a spammer.'));
+            return new WP_Error(
+                'spammer_account',
+                __('<strong>ERROR</strong>: Your account has been marked as a spammer.')
+            );
         }
     }
     return $user;
@@ -424,8 +432,10 @@ function count_many_users_posts($users, $post_type = 'post', $public_only = fals
     $userlist = implode(',', array_map('absint', $users));
     $where = get_posts_by_author_sql($post_type, true, null, $public_only);
 
-    $result = $wpdb->get_results("SELECT post_author, COUNT(*) FROM $wpdb->posts $where AND post_author IN ($userlist) GROUP BY post_author",
-        ARRAY_N);
+    $result = $wpdb->get_results(
+        "SELECT post_author, COUNT(*) FROM $wpdb->posts $where AND post_author IN ($userlist) GROUP BY post_author",
+        ARRAY_N
+    );
     foreach ($result as $row) {
         $count[$row[0]] = $row[1];
     }
@@ -495,11 +505,9 @@ function get_user_option($option, $user = 0, $deprecated = '')
     }
 
     $prefix = $wpdb->get_blog_prefix();
-    if ($user->has_prop($prefix . $option)) // Blog specific
-    {
+    if ($user->has_prop($prefix . $option)) { // Blog specific
         $result = $user->get($prefix . $option);
-    } elseif ($user->has_prop($option)) // User specific and cross-blog
-    {
+    } elseif ($user->has_prop($option)) { // User specific and cross-blog
         $result = $user->get($option);
     } else {
         $result = false;
@@ -591,7 +599,6 @@ function delete_user_option($user_id, $option_name, $global = false)
  */
 function get_users($args = array())
 {
-
     $args = wp_parse_args($args);
     $args['count_total'] = false;
 
@@ -905,8 +912,10 @@ function count_users($strategy = 'time')
         // Build a CPU-intensive query that will return concise information.
         $select_count = array();
         foreach ($avail_roles as $this_role => $name) {
-            $select_count[] = $wpdb->prepare("COUNT(NULLIF(`meta_value` LIKE %s, false))",
-                '%' . $wpdb->esc_like('"' . $this_role . '"') . '%');
+            $select_count[] = $wpdb->prepare(
+                "COUNT(NULLIF(`meta_value` LIKE %s, false))",
+                '%' . $wpdb->esc_like('"' . $this_role . '"') . '%'
+            );
         }
         $select_count[] = "COUNT(NULLIF(`meta_value` = 'a:0:{}', false))";
         $select_count = implode(', ', $select_count);
@@ -1116,8 +1125,10 @@ function wp_dropdown_users($args = '')
 
     $r = wp_parse_args($args, $defaults);
 
-    $query_args = wp_array_slice_assoc($r,
-        array('blog_id', 'include', 'exclude', 'orderby', 'order', 'who', 'role', 'role__in', 'role__not_in'));
+    $query_args = wp_array_slice_assoc(
+        $r,
+        array('blog_id', 'include', 'exclude', 'orderby', 'order', 'who', 'role', 'role__in', 'role__not_in')
+    );
 
     $fields = array('ID', 'user_login');
 
@@ -1562,9 +1573,9 @@ function wp_insert_user($userdata)
     }
 
     /*
-	 * If a nicename is provided, remove unsafe user characters before using it.
-	 * Otherwise build a nicename from the user_login.
-	 */
+     * If a nicename is provided, remove unsafe user characters before using it.
+     * Otherwise build a nicename from the user_login.
+     */
     if (!empty($userdata['user_nicename'])) {
         $user_nicename = sanitize_user($userdata['user_nicename'], true);
         if (mb_strlen($user_nicename) > 50) {
@@ -1611,10 +1622,10 @@ function wp_insert_user($userdata)
     $user_email = apply_filters('pre_user_email', $raw_user_email);
 
     /*
-	 * If there is no update, just check for `email_exists`. If there is an update,
-	 * check if current email and new email are the same, or not, and check `email_exists`
-	 * accordingly.
-	 */
+     * If there is no update, just check for `email_exists`. If there is an update,
+     * check if current email and new email are the same, or not, and check `email_exists`
+     * accordingly.
+     */
     if ((!$update || (!empty($old_user_data) && 0 !== strcasecmp($user_email, $old_user_data->user_email)))
         && !defined('WP_IMPORTING')
         && email_exists($user_email)
@@ -1659,8 +1670,11 @@ function wp_insert_user($userdata)
             $display_name = $user_login;
         } elseif ($meta['first_name'] && $meta['last_name']) {
             /* translators: 1: first name, 2: last name */
-            $display_name = sprintf(_x('%1$s %2$s', 'Display name based on first name and last name'),
-                $meta['first_name'], $meta['last_name']);
+            $display_name = sprintf(
+                _x('%1$s %2$s', 'Display name based on first name and last name'),
+                $meta['first_name'],
+                $meta['last_name']
+            );
         } elseif ($meta['first_name']) {
             $display_name = $meta['first_name'];
         } elseif ($meta['last_name']) {
@@ -1707,8 +1721,11 @@ function wp_insert_user($userdata)
 
     $meta['locale'] = isset($userdata['locale']) ? $userdata['locale'] : '';
 
-    $user_nicename_check = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1",
-        $user_nicename, $user_login));
+    $user_nicename_check = $wpdb->get_var($wpdb->prepare(
+        "SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1",
+        $user_nicename,
+        $user_login
+    ));
 
     if ($user_nicename_check) {
         $suffix = 2;
@@ -1716,8 +1733,11 @@ function wp_insert_user($userdata)
             // user_nicename allows 50 chars. Subtract one for a hyphen, plus the length of the suffix.
             $base_length = 49 - mb_strlen($suffix);
             $alt_user_nicename = mb_substr($user_nicename, 0, $base_length) . "-$suffix";
-            $user_nicename_check = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1",
-                $alt_user_nicename, $user_login));
+            $user_nicename_check = $wpdb->get_var($wpdb->prepare(
+                "SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1",
+                $alt_user_nicename,
+                $user_login
+            ));
             $suffix++;
         }
         $user_nicename = $alt_user_nicename;
@@ -1898,7 +1918,6 @@ function wp_update_user($userdata)
     $user_id = wp_insert_user($userdata);
 
     if (!is_wp_error($user_id)) {
-
         $blog_name = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
         $switched_locale = false;
@@ -1953,17 +1972,30 @@ All at ###SITENAME###
              */
             $pass_change_email = apply_filters('password_change_email', $pass_change_email, $user, $userdata);
 
-            $pass_change_email['message'] = str_replace('###USERNAME###', $user['user_login'],
-                $pass_change_email['message']);
-            $pass_change_email['message'] = str_replace('###ADMIN_EMAIL###', get_option('admin_email'),
-                $pass_change_email['message']);
-            $pass_change_email['message'] = str_replace('###EMAIL###', $user['user_email'],
-                $pass_change_email['message']);
+            $pass_change_email['message'] = str_replace(
+                '###USERNAME###',
+                $user['user_login'],
+                $pass_change_email['message']
+            );
+            $pass_change_email['message'] = str_replace(
+                '###ADMIN_EMAIL###',
+                get_option('admin_email'),
+                $pass_change_email['message']
+            );
+            $pass_change_email['message'] = str_replace(
+                '###EMAIL###',
+                $user['user_email'],
+                $pass_change_email['message']
+            );
             $pass_change_email['message'] = str_replace('###SITENAME###', $blog_name, $pass_change_email['message']);
             $pass_change_email['message'] = str_replace('###SITEURL###', home_url(), $pass_change_email['message']);
 
-            wp_mail($pass_change_email['to'], sprintf($pass_change_email['subject'], $blog_name),
-                $pass_change_email['message'], $pass_change_email['headers']);
+            wp_mail(
+                $pass_change_email['to'],
+                sprintf($pass_change_email['subject'], $blog_name),
+                $pass_change_email['message'],
+                $pass_change_email['headers']
+            );
         }
 
         if (!empty($send_email_change_email)) {
@@ -2012,17 +2044,30 @@ All at ###SITENAME###
              */
             $email_change_email = apply_filters('email_change_email', $email_change_email, $user, $userdata);
 
-            $email_change_email['message'] = str_replace('###USERNAME###', $user['user_login'],
-                $email_change_email['message']);
-            $email_change_email['message'] = str_replace('###ADMIN_EMAIL###', get_option('admin_email'),
-                $email_change_email['message']);
-            $email_change_email['message'] = str_replace('###EMAIL###', $user['user_email'],
-                $email_change_email['message']);
+            $email_change_email['message'] = str_replace(
+                '###USERNAME###',
+                $user['user_login'],
+                $email_change_email['message']
+            );
+            $email_change_email['message'] = str_replace(
+                '###ADMIN_EMAIL###',
+                get_option('admin_email'),
+                $email_change_email['message']
+            );
+            $email_change_email['message'] = str_replace(
+                '###EMAIL###',
+                $user['user_email'],
+                $email_change_email['message']
+            );
             $email_change_email['message'] = str_replace('###SITENAME###', $blog_name, $email_change_email['message']);
             $email_change_email['message'] = str_replace('###SITEURL###', home_url(), $email_change_email['message']);
 
-            wp_mail($email_change_email['to'], sprintf($email_change_email['subject'], $blog_name),
-                $email_change_email['message'], $email_change_email['headers']);
+            wp_mail(
+                $email_change_email['to'],
+                sprintf($email_change_email['subject'], $blog_name),
+                $email_change_email['message'],
+                $email_change_email['headers']
+            );
         }
 
         if ($switched_locale) {
@@ -2249,8 +2294,11 @@ function get_password_reset_key($user)
         $wp_hasher = new PasswordHash(8, true);
     }
     $hashed = time() . ':' . $wp_hasher->HashPassword($key);
-    $key_saved = $wpdb->update($wpdb->users, array('user_activation_key' => $hashed),
-        array('user_login' => $user->user_login));
+    $key_saved = $wpdb->update(
+        $wpdb->users,
+        array('user_activation_key' => $hashed),
+        array('user_login' => $user->user_login)
+    );
     if (false === $key_saved) {
         return new WP_Error('no_password_key_update', __('Could not save password reset key to database.'));
     }
@@ -2289,8 +2337,10 @@ function check_password_reset_key($key, $login)
         return new WP_Error('invalid_key', __('Invalid key'));
     }
 
-    $row = $wpdb->get_row($wpdb->prepare("SELECT ID, user_activation_key FROM $wpdb->users WHERE user_login = %s",
-        $login));
+    $row = $wpdb->get_row($wpdb->prepare(
+        "SELECT ID, user_activation_key FROM $wpdb->users WHERE user_login = %s",
+        $login
+    ));
     if (!$row) {
         return new WP_Error('invalid_key', __('Invalid key'));
     }
@@ -2411,13 +2461,16 @@ function register_new_user($user_login, $user_email)
     if ($sanitized_user_login == '') {
         $errors->add('empty_username', __('<strong>ERROR</strong>: Please enter a username.'));
     } elseif (!validate_username($user_login)) {
-        $errors->add('invalid_username',
-            __('<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.'));
+        $errors->add(
+            'invalid_username',
+            __('<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.')
+        );
         $sanitized_user_login = '';
     } elseif (username_exists($sanitized_user_login)) {
-        $errors->add('username_exists',
-            __('<strong>ERROR</strong>: This username is already registered. Please choose another one.'));
-
+        $errors->add(
+            'username_exists',
+            __('<strong>ERROR</strong>: This username is already registered. Please choose another one.')
+        );
     } else {
         /** This filter is documented in wp-includes/user.php */
         $illegal_user_logins = array_map('strtolower', (array)apply_filters('illegal_user_logins', array()));
@@ -2433,8 +2486,10 @@ function register_new_user($user_login, $user_email)
         $errors->add('invalid_email', __('<strong>ERROR</strong>: The email address isn&#8217;t correct.'));
         $user_email = '';
     } elseif (email_exists($user_email)) {
-        $errors->add('email_exists',
-            __('<strong>ERROR</strong>: This email is already registered, please choose another one.'));
+        $errors->add(
+            'email_exists',
+            __('<strong>ERROR</strong>: This email is already registered, please choose another one.')
+        );
     }
 
     /**
@@ -2475,9 +2530,13 @@ function register_new_user($user_login, $user_email)
     $user_pass = wp_generate_password(12, false);
     $user_id = wp_create_user($sanitized_user_login, $user_pass, $user_email);
     if (!$user_id || is_wp_error($user_id)) {
-        $errors->add('registerfail',
-            sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you&hellip; please contact the <a href="mailto:%s">webmaster</a> !'),
-                get_option('admin_email')));
+        $errors->add(
+            'registerfail',
+            sprintf(
+                __('<strong>ERROR</strong>: Couldn&#8217;t register you&hellip; please contact the <a href="mailto:%s">webmaster</a> !'),
+                get_option('admin_email')
+            )
+        );
         return $errors;
     }
 

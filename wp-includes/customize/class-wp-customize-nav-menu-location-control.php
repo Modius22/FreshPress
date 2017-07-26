@@ -61,8 +61,7 @@ class WP_Customize_Nav_Menu_Location_Control extends WP_Customize_Control
     {
         if (empty($this->choices)) {
             return;
-        }
-        ?>
+        } ?>
         <label>
             <?php if (!empty($this->label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
@@ -75,10 +74,12 @@ class WP_Customize_Nav_Menu_Location_Control extends WP_Customize_Control
             <select <?php $this->link(); ?>>
                 <?php
                 foreach ($this->choices as $value => $label) :
-                    echo '<option value="' . esc_attr($value) . '"' . selected($this->value(), $value,
-                            false) . '>' . $label . '</option>';
-                endforeach;
-                ?>
+                    echo '<option value="' . esc_attr($value) . '"' . selected(
+                        $this->value(),
+                        $value,
+                            false
+                    ) . '>' . $label . '</option>';
+        endforeach; ?>
             </select>
         </label>
         <button type="button" class="button-link edit-menu<?php if (!$this->value()) {

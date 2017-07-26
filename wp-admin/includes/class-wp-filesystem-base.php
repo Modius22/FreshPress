@@ -218,8 +218,11 @@ class WP_Filesystem_Base
                     continue;
                 }
                 if (0 === stripos($folder, $dir)) { // $folder starts with $dir
-                    $potential_folder = preg_replace('#^' . preg_quote($dir, '#') . '/#i',
-                        trailingslashit(constant($constant)), $folder);
+                    $potential_folder = preg_replace(
+                        '#^' . preg_quote($dir, '#') . '/#i',
+                        trailingslashit(constant($constant)),
+                        $folder
+                    );
                     $potential_folder = trailingslashit($potential_folder);
 
                     if ($this->is_dir($potential_folder)) {
@@ -332,7 +335,6 @@ class WP_Filesystem_Base
         // As an extra last resort, Change back to / if the folder wasn't found.
         // This comes into effect when the CWD is /home/user/ but WP is at /var/www/....
         return $this->search_for_folder($folder, '/', true);
-
     }
 
     /**
@@ -351,29 +353,21 @@ class WP_Filesystem_Base
     public function gethchmod($file)
     {
         $perms = intval($this->getchmod($file), 8);
-        if (($perms & 0xC000) == 0xC000) // Socket
-        {
+        if (($perms & 0xC000) == 0xC000) { // Socket
             $info = 's';
-        } elseif (($perms & 0xA000) == 0xA000) // Symbolic Link
-        {
+        } elseif (($perms & 0xA000) == 0xA000) { // Symbolic Link
             $info = 'l';
-        } elseif (($perms & 0x8000) == 0x8000) // Regular
-        {
+        } elseif (($perms & 0x8000) == 0x8000) { // Regular
             $info = '-';
-        } elseif (($perms & 0x6000) == 0x6000) // Block special
-        {
+        } elseif (($perms & 0x6000) == 0x6000) { // Block special
             $info = 'b';
-        } elseif (($perms & 0x4000) == 0x4000) // Directory
-        {
+        } elseif (($perms & 0x4000) == 0x4000) { // Directory
             $info = 'd';
-        } elseif (($perms & 0x2000) == 0x2000) // Character special
-        {
+        } elseif (($perms & 0x2000) == 0x2000) { // Character special
             $info = 'c';
-        } elseif (($perms & 0x1000) == 0x1000) // FIFO pipe
-        {
+        } elseif (($perms & 0x1000) == 0x1000) { // FIFO pipe
             $info = 'p';
-        } else // Unknown
-        {
+        } else { // Unknown
             $info = 'u';
         }
 
@@ -903,5 +897,4 @@ class WP_Filesystem_Base
     {
         return false;
     }
-
 } // WP_Filesystem_Base

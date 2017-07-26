@@ -31,7 +31,7 @@ if (!$revision_id) {
 $redirect = 'edit.php';
 
 switch ($action) {
-    case 'restore' :
+    case 'restore':
         if (!$revision = wp_get_post_revision($revision_id)) {
             break;
         }
@@ -58,12 +58,14 @@ switch ($action) {
         check_admin_referer("restore-post_{$revision->ID}");
 
         wp_restore_post_revision($revision->ID);
-        $redirect = add_query_arg(array('message' => 5, 'revision' => $revision->ID),
-            get_edit_post_link($post->ID, 'url'));
+        $redirect = add_query_arg(
+            array('message' => 5, 'revision' => $revision->ID),
+            get_edit_post_link($post->ID, 'url')
+        );
         break;
-    case 'view' :
-    case 'edit' :
-    default :
+    case 'view':
+    case 'edit':
+    default:
         if (!$revision = wp_get_post_revision($revision_id)) {
             break;
         }

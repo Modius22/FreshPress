@@ -176,8 +176,10 @@ class WP_Http
              *
              * @param string $user_agent WordPress user agent string.
              */
-            'user-agent' => apply_filters('http_headers_useragent',
-                'WordPress/' . get_bloginfo('version') . '; ' . get_bloginfo('url')),
+            'user-agent' => apply_filters(
+                'http_headers_useragent',
+                'WordPress/' . get_bloginfo('version') . '; ' . get_bloginfo('url')
+            ),
             /**
              * Filters whether to pass URLs through wp_http_validate_url() in an HTTP request.
              *
@@ -277,8 +279,10 @@ class WP_Http
             // Force some settings if we are streaming to a file and check for existence and perms of destination directory
             $r['blocking'] = true;
             if (!wp_is_writable(dirname($r['filename']))) {
-                return new WP_Error('http_request_failed',
-                    __('Destination directory for file streaming does not exist or is not writable.'));
+                return new WP_Error(
+                    'http_request_failed',
+                    __('Destination directory for file streaming does not exist or is not writable.')
+                );
             }
         }
 
@@ -555,8 +559,10 @@ class WP_Http
 
         $class = $this->_get_first_available_transport($args, $url);
         if (!$class) {
-            return new WP_Error('http_failure',
-                __('There are no HTTP transports available which can complete the requested request.'));
+            return new WP_Error(
+                'http_failure',
+                __('There are no HTTP transports available which can complete the requested request.')
+            );
         }
 
         // Transport claims to support request, instantiate it and give it a whirl.
@@ -893,7 +899,6 @@ class WP_Http
         } else {
             return !in_array($check['host'], $accessible_hosts);
         } //Inverse logic, If it's in the array, then we can't access it.
-
     }
 
     /**
@@ -1072,13 +1077,16 @@ class WP_Http
             return 4;
         }
 
-        if (false !== strpos($maybe_ip,
-                ':') && preg_match('/^(((?=.*(::))(?!.*\3.+\3))\3?|([\dA-F]{1,4}(\3|:\b|$)|\2))(?4){5}((?4){2}|(((2[0-4]|1\d|[1-9])?\d|25[0-5])\.?\b){4})$/i',
-                trim($maybe_ip, ' []'))) {
+        if (false !== strpos(
+            $maybe_ip,
+                ':'
+        ) && preg_match(
+                    '/^(((?=.*(::))(?!.*\3.+\3))\3?|([\dA-F]{1,4}(\3|:\b|$)|\2))(?4){5}((?4){2}|(((2[0-4]|1\d|[1-9])?\d|25[0-5])\.?\b){4})$/i',
+                trim($maybe_ip, ' []')
+                )) {
             return 6;
         }
 
         return false;
     }
-
 }

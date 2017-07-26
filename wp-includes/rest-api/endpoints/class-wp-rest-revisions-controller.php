@@ -72,8 +72,9 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      */
     public function register_routes()
     {
-
-        register_rest_route($this->namespace, '/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base,
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base,
             array(
                 'args' => array(
                     'parent' => array(
@@ -88,10 +89,13 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
                     'args' => $this->get_collection_params(),
                 ),
                 'schema' => array($this, 'get_public_item_schema'),
-            ));
+            )
+        );
 
-        register_rest_route($this->namespace,
-            '/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)', array(
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)',
+            array(
                 'args' => array(
                     'parent' => array(
                         'description' => __('The ID for the parent of the object.'),
@@ -123,8 +127,8 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
                     ),
                 ),
                 'schema' => array($this, 'get_public_item_schema'),
-            ));
-
+            )
+        );
     }
 
     /**
@@ -168,8 +172,11 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
 
         $parent_post_type_obj = get_post_type_object($parent->post_type);
         if (!current_user_can($parent_post_type_obj->cap->edit_post, $parent->ID)) {
-            return new WP_Error('rest_cannot_read', __('Sorry, you are not allowed to view revisions of this post.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_read',
+                __('Sorry, you are not allowed to view revisions of this post.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -313,8 +320,11 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
 
         // We don't support trashing for revisions.
         if (!$force) {
-            return new WP_Error('rest_trash_not_supported',
-                __('Revisions do not support trashing. Set force=true to delete.'), array('status' => 501));
+            return new WP_Error(
+                'rest_trash_not_supported',
+                __('Revisions do not support trashing. Set force=true to delete.'),
+                array('status' => 501)
+            );
         }
 
         $previous = $this->prepare_item_for_response($revision, $request);
@@ -410,7 +420,6 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
         }
 
         if (!empty($schema['properties']['content'])) {
-
             $data['content'] = array(
                 'raw' => $post->post_content,
                 /** This filter is documented in wp-includes/post-template.php */
@@ -431,8 +440,10 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
         $response = rest_ensure_response($data);
 
         if (!empty($data['parent'])) {
-            $response->add_link('parent',
-                rest_url(sprintf('%s/%s/%d', $this->namespace, $this->parent_base, $data['parent'])));
+            $response->add_link(
+                'parent',
+                rest_url(sprintf('%s/%s/%d', $this->namespace, $this->parent_base, $data['parent']))
+            );
         }
 
         /**

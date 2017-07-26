@@ -72,8 +72,11 @@ if (isset($_GET['update'])) {
         if (isset($_GET['user_id'])) {
             $user_id_new = absint($_GET['user_id']);
             if ($user_id_new) {
-                $edit_link = esc_url(add_query_arg('wp_http_referer', urlencode(wp_unslash($_SERVER['REQUEST_URI'])),
-                    get_edit_user_link($user_id_new)));
+                $edit_link = esc_url(add_query_arg(
+                    'wp_http_referer',
+                    urlencode(wp_unslash($_SERVER['REQUEST_URI'])),
+                    get_edit_user_link($user_id_new)
+                ));
             }
         }
 
@@ -100,15 +103,16 @@ require(ABSPATH . 'wp-admin/admin-header.php'); ?>
             }
         }
 
-        if (isset($add_user_errors) && is_wp_error($add_user_errors)) { ?>
+        if (isset($add_user_errors) && is_wp_error($add_user_errors)) {
+            ?>
             <div class="error">
                 <?php
                 foreach ($add_user_errors->get_error_messages() as $message) {
                     echo "<p>$message</p>";
-                }
-                ?>
+                } ?>
             </div>
-        <?php } ?>
+        <?php
+        } ?>
         <form action="<?php echo network_admin_url('user-new.php?action=add-user'); ?>" id="adduser" method="post"
               novalidate="novalidate">
             <table class="form-table">

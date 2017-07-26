@@ -158,9 +158,7 @@ class Walker
 
         // descend only when the depth is right and there are childrens for this element
         if (($max_depth == 0 || $max_depth > $depth + 1) && isset($children_elements[$id])) {
-
             foreach ($children_elements[$id] as $child) {
-
                 if (!isset($newlevel)) {
                     $newlevel = true;
                     //start the child delimiter
@@ -240,7 +238,6 @@ class Walker
          * Assume the first one must be root of the sub elements.
          */
         if (empty($top_level_elements)) {
-
             $first = array_slice($elements, 0, 1);
             $root = $first[0];
 
@@ -460,5 +457,4 @@ class Walker
 
         unset($children_elements[$id]);
     }
-
 } // Walker

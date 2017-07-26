@@ -51,7 +51,8 @@ if (file_exists(ABSPATH . 'wp-config-sample.php')) {
 
 // Check if wp-config.php has been created
 if (file_exists(ABSPATH . 'wp-config.php')) {
-    wp_die('<p>' . sprintf(
+    wp_die(
+        '<p>' . sprintf(
         /* translators: %s: install.php */
             __("The file 'wp-config.php' already exists. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='%s'>installing now</a>."),
             'install.php'
@@ -61,7 +62,8 @@ if (file_exists(ABSPATH . 'wp-config.php')) {
 
 // Check if wp-config.php exists above the root directory but is not part of another install
 if (@file_exists(ABSPATH . '../wp-config.php') && !@file_exists(ABSPATH . '../wp-settings.php')) {
-    wp_die('<p>' . sprintf(
+    wp_die(
+        '<p>' . sprintf(
         /* translators: %s: install.php */
             __("The file 'wp-config.php' already exists one level above your WordPress installation. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='%s'>installing now</a>."),
             'install.php'
@@ -82,19 +84,19 @@ $step = isset($_GET['step']) ? (int)$_GET['step'] : -1;
  *
  * @param string|array $body_classes
  */
-function setup_config_display_header($body_classes = array()) {
-$body_classes = (array)$body_classes;
-$body_classes[] = 'wp-core-ui';
-if (is_rtl()) {
-    $body_classes[] = 'rtl';
-}
+function setup_config_display_header($body_classes = array())
+{
+    $body_classes = (array)$body_classes;
+    $body_classes[] = 'wp-core-ui';
+    if (is_rtl()) {
+        $body_classes[] = 'rtl';
+    }
 
-header('Content-Type: text/html; charset=utf-8');
-?>
+    header('Content-Type: text/html; charset=utf-8'); ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"<?php if (is_rtl()) {
-    echo ' dir="rtl"';
-} ?>>
+        echo ' dir="rtl"';
+    } ?>>
     <head>
         <meta name="viewport" content="width=device-width"/>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -106,7 +108,7 @@ header('Content-Type: text/html; charset=utf-8');
         <p id="logo"><a href="<?php echo esc_url(__('https://wordpress.org/')); ?>"
                         tabindex="-1"><?php _e('WordPress'); ?></a></p>
         <?php
-        } // end function setup_config_display_header();
+} // end function setup_config_display_header();
 
         $language = '';
         if (!empty($_REQUEST['language'])) {
@@ -128,6 +130,7 @@ header('Content-Type: text/html; charset=utf-8');
 
             // Deliberately fall through if we can't reach the translations API.
 
+            // no break
         case 0:
             if (!empty($language)) {
                 $loaded_language = wp_download_language_pack($language);
@@ -157,20 +160,23 @@ header('Content-Type: text/html; charset=utf-8');
             </ol>
             <p><?php
                 /* translators: %s: wp-config.php */
-                printf(__('We&#8217;re going to use this information to create a %s file.'),
+                printf(
+                    __('We&#8217;re going to use this information to create a %s file.'),
                     '<code>wp-config.php</code>'
                 );
                 ?>
                 <strong><?php
                     /* translators: 1: wp-config-sample.php, 2: wp-config.php */
-                    printf(__('If for any reason this automatic file creation doesn&#8217;t work, don&#8217;t worry. All this does is fill in the database information to a configuration file. You may also simply open %1$s in a text editor, fill in your information, and save it as %2$s.'),
+                    printf(
+                        __('If for any reason this automatic file creation doesn&#8217;t work, don&#8217;t worry. All this does is fill in the database information to a configuration file. You may also simply open %1$s in a text editor, fill in your information, and save it as %2$s.'),
                         '<code>wp-config-sample.php</code>',
                         '<code>wp-config.php</code>'
                     );
                     ?></strong>
                 <?php
                 /* translators: %s: Codex URL */
-                printf(__('Need more help? <a href="%s">We got it</a>.'),
+                printf(
+                    __('Need more help? <a href="%s">We got it</a>.'),
                     __('https://codex.wordpress.org/Editing_wp-config.php')
                 );
                 ?></p>
@@ -199,15 +205,19 @@ header('Content-Type: text/html; charset=utf-8');
                     <tr>
                         <th scope="row"><label for="uname"><?php _e('Username'); ?></label></th>
                         <td><input name="uname" id="uname" type="text" size="25"
-                                   value="<?php echo htmlspecialchars(_x('username', 'example username'),
-                                       ENT_QUOTES); ?>"/></td>
+                                   value="<?php echo htmlspecialchars(
+            _x('username', 'example username'),
+                                       ENT_QUOTES
+        ); ?>"/></td>
                         <td><?php _e('Your database username.'); ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="pwd"><?php _e('Password'); ?></label></th>
                         <td><input name="pwd" id="pwd" type="text" size="25"
-                                   value="<?php echo htmlspecialchars(_x('password', 'example password'),
-                                       ENT_QUOTES); ?>" autocomplete="off"/></td>
+                                   value="<?php echo htmlspecialchars(
+                                           _x('password', 'example password'),
+                                       ENT_QUOTES
+                                       ); ?>" autocomplete="off"/></td>
                         <td><?php _e('Your database password.'); ?></td>
                     </tr>
                     <tr>
@@ -215,8 +225,10 @@ header('Content-Type: text/html; charset=utf-8');
                         <td><input name="dbhost" id="dbhost" type="text" size="25" value="localhost"/></td>
                         <td><?php
                             /* translators: %s: localhost */
-                            printf(__('You should be able to get this info from your web host, if %s doesn&#8217;t work.'),
-                                '<code>localhost</code>');
+                            printf(
+                                __('You should be able to get this info from your web host, if %s doesn&#8217;t work.'),
+                                '<code>localhost</code>'
+                            );
                             ?></td>
                     </tr>
                     <tr>
@@ -225,7 +237,9 @@ header('Content-Type: text/html; charset=utf-8');
                         <td><?php _e('If you want to run multiple WordPress installations in a single database, change this.'); ?></td>
                     </tr>
                 </table>
-                <?php if (isset($_GET['noapi'])) { ?><input name="noapi" type="hidden" value="1"/><?php } ?>
+                <?php if (isset($_GET['noapi'])) {
+                                ?><input name="noapi" type="hidden" value="1"/><?php
+                            } ?>
                 <input type="hidden" name="language" value="<?php echo esc_attr($language); ?>"/>
                 <p class="step"><input name="submit" type="submit"
                                        value="<?php echo htmlspecialchars(__('Submit'), ENT_QUOTES); ?>"
@@ -344,26 +358,28 @@ header('Content-Type: text/html; charset=utf-8');
             $padding = $match[2];
 
             switch ($constant) {
-                case 'DB_NAME'     :
-                case 'DB_USER'     :
-                case 'DB_PASSWORD' :
-                case 'DB_HOST'     :
-                    $config_file[$line_num] = "define('" . $constant . "'," . $padding . "'" . addcslashes(constant($constant),
-                            "\\'") . "');\r\n";
+                case 'DB_NAME':
+                case 'DB_USER':
+                case 'DB_PASSWORD':
+                case 'DB_HOST':
+                    $config_file[$line_num] = "define('" . $constant . "'," . $padding . "'" . addcslashes(
+                        constant($constant),
+                            "\\'"
+                    ) . "');\r\n";
                     break;
-                case 'DB_CHARSET'  :
+                case 'DB_CHARSET':
                     if ('utf8mb4' === $wpdb->charset || (!$wpdb->charset && $wpdb->has_cap('utf8mb4'))) {
                         $config_file[$line_num] = "define('" . $constant . "'," . $padding . "'utf8mb4');\r\n";
                     }
                     break;
-                case 'AUTH_KEY'         :
-                case 'SECURE_AUTH_KEY'  :
-                case 'LOGGED_IN_KEY'    :
-                case 'NONCE_KEY'        :
-                case 'AUTH_SALT'        :
-                case 'SECURE_AUTH_SALT' :
-                case 'LOGGED_IN_SALT'   :
-                case 'NONCE_SALT'       :
+                case 'AUTH_KEY':
+                case 'SECURE_AUTH_KEY':
+                case 'LOGGED_IN_KEY':
+                case 'NONCE_KEY':
+                case 'AUTH_SALT':
+                case 'SECURE_AUTH_SALT':
+                case 'LOGGED_IN_SALT':
+                case 'NONCE_SALT':
                     $config_file[$line_num] = "define('" . $constant . "'," . $padding . "'" . $secret_keys[$key++] . "');\r\n";
                     break;
             }
@@ -379,8 +395,10 @@ header('Content-Type: text/html; charset=utf-8');
                 ?></p>
             <p><?php
                 /* translators: %s: wp-config.php */
-                printf(__('You can create the %s manually and paste the following text into it.'),
-                    '<code>wp-config.php</code>');
+                printf(
+                    __('You can create the %s manually and paste the following text into it.'),
+                    '<code>wp-config.php</code>'
+                );
                 ?></p>
             <textarea id="wp-config" cols="98" rows="15" class="code" readonly="readonly"><?php
                 foreach ($config_file as $line) {

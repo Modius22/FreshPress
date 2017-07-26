@@ -160,25 +160,34 @@ if (isset($_GET['updated'])) {
                     <fieldset>
                         <legend class="screen-reader-text"><?php _e('New registrations settings') ?></legend>
                         <label><input name="registration" type="radio" id="registration1"
-                                      value="none"<?php checked($reg,
-                                'none') ?> /> <?php _e('Registration is disabled.'); ?></label><br/>
+                                      value="none"<?php checked(
+                    $reg,
+                                'none'
+                ) ?> /> <?php _e('Registration is disabled.'); ?></label><br/>
                         <label><input name="registration" type="radio" id="registration2"
-                                      value="user"<?php checked($reg,
-                                'user') ?> /> <?php _e('User accounts may be registered.'); ?></label><br/>
+                                      value="user"<?php checked(
+                                    $reg,
+                                'user'
+                                ) ?> /> <?php _e('User accounts may be registered.'); ?></label><br/>
                         <label><input name="registration" type="radio" id="registration3"
-                                      value="blog"<?php checked($reg,
-                                'blog') ?> /> <?php _e('Logged in users may register new sites.'); ?></label><br/>
-                        <label><input name="registration" type="radio" id="registration4" value="all"<?php checked($reg,
-                                'all') ?> /> <?php _e('Both sites and user accounts can be registered.'); ?></label>
+                                      value="blog"<?php checked(
+                                    $reg,
+                                'blog'
+                                ) ?> /> <?php _e('Logged in users may register new sites.'); ?></label><br/>
+                        <label><input name="registration" type="radio" id="registration4" value="all"<?php checked(
+                                    $reg,
+                                'all'
+                                ) ?> /> <?php _e('Both sites and user accounts can be registered.'); ?></label>
                         <?php if (is_subdomain_install()) {
-                            echo '<p class="description">';
-                            /* translators: 1: NOBLOGREDIRECT 2: wp-config.php */
-                            printf(__('If registration is disabled, please set %1$s in %2$s to a URL you will redirect visitors to if they visit a non-existent site.'),
+                                    echo '<p class="description">';
+                                    /* translators: 1: NOBLOGREDIRECT 2: wp-config.php */
+                                    printf(
+                                __('If registration is disabled, please set %1$s in %2$s to a URL you will redirect visitors to if they visit a non-existent site.'),
                                 '<code>NOBLOGREDIRECT</code>',
                                 '<code>wp-config.php</code>'
                             );
-                            echo '</p>';
-                        } ?>
+                                    echo '</p>';
+                                } ?>
                     </fieldset>
                 </td>
             </tr>
@@ -192,8 +201,10 @@ if (isset($_GET['updated'])) {
                 ?>
                 <td>
                     <label><input name="registrationnotification" type="checkbox" id="registrationnotification"
-                                  value="yes"<?php checked(get_site_option('registrationnotification'),
-                            'yes') ?> /> <?php _e('Send the network admin an email notification every time someone registers a site or user account.') ?>
+                                  value="yes"<?php checked(
+                    get_site_option('registrationnotification'),
+                            'yes'
+                ) ?> /> <?php _e('Send the network admin an email notification every time someone registers a site or user account.') ?>
                     </label>
                 </td>
             </tr>
@@ -240,8 +251,10 @@ if (isset($_GET['updated'])) {
                 <td>
 					<textarea name="banned_email_domains" id="banned_email_domains"
                               aria-describedby="banned-email-domains-desc" cols="45" rows="5">
-<?php echo esc_textarea(get_site_option('banned_email_domains') == '' ? '' : implode("\n",
-    (array)get_site_option('banned_email_domains'))); ?></textarea>
+<?php echo esc_textarea(get_site_option('banned_email_domains') == '' ? '' : implode(
+                        "\n",
+    (array)get_site_option('banned_email_domains')
+                    )); ?></textarea>
                     <p class="description" id="banned-email-domains-desc">
                         <?php _e('If you want to ban domains from site registrations. One domain per line.') ?>
                     </p>
@@ -347,10 +360,16 @@ if (isset($_GET['updated'])) {
                 <th scope="row"><?php _e('Site upload space') ?></th>
                 <td>
                     <label><input type="checkbox" id="upload_space_check_disabled" name="upload_space_check_disabled"
-                                  value="0"<?php checked((bool)get_site_option('upload_space_check_disabled'),
-                            false) ?>/> <?php printf(__('Limit total size of files uploaded to %s MB'),
-                            '</label><label><input name="blog_upload_space" type="number" min="0" style="width: 100px" id="blog_upload_space" aria-describedby="blog-upload-space-desc" value="' . esc_attr(get_site_option('blog_upload_space',
-                                100)) . '" />'); ?></label><br/>
+                                  value="0"<?php checked(
+        (bool)get_site_option('upload_space_check_disabled'),
+                            false
+    ) ?>/> <?php printf(
+                                __('Limit total size of files uploaded to %s MB'),
+                            '</label><label><input name="blog_upload_space" type="number" min="0" style="width: 100px" id="blog_upload_space" aria-describedby="blog-upload-space-desc" value="' . esc_attr(get_site_option(
+                                'blog_upload_space',
+                                100
+                            )) . '" />'
+                            ); ?></label><br/>
                     <p class="screen-reader-text" id="blog-upload-space-desc">
                         <?php _e('Size in megabytes') ?>
                     </p>
@@ -377,8 +396,10 @@ if (isset($_GET['updated'])) {
                     printf(
                     /* translators: %s: File size in kilobytes */
                         __('%s KB'),
-                        '<input name="fileupload_maxk" type="number" min="0" style="width: 100px" id="fileupload_maxk" aria-describedby="fileupload-maxk-desc" value="' . esc_attr(get_site_option('fileupload_maxk',
-                            300)) . '" />'
+                        '<input name="fileupload_maxk" type="number" min="0" style="width: 100px" id="fileupload_maxk" aria-describedby="fileupload-maxk-desc" value="' . esc_attr(get_site_option(
+                            'fileupload_maxk',
+                            300
+                        )) . '" />'
                     );
                     ?>
                     <p class="screen-reader-text" id="fileupload-maxk-desc">
@@ -400,19 +421,18 @@ if (isset($_GET['updated'])) {
                     <td>
                         <?php
                         $lang = get_site_option('WPLANG');
-                        if (!in_array($lang, $languages)) {
-                            $lang = '';
-                        }
+            if (!in_array($lang, $languages)) {
+                $lang = '';
+            }
 
-                        wp_dropdown_languages(array(
+            wp_dropdown_languages(array(
                             'name' => 'WPLANG',
                             'id' => 'WPLANG',
                             'selected' => $lang,
                             'languages' => $languages,
                             'translations' => $translations,
                             'show_available_translations' => wp_can_install_language_pack(),
-                        ));
-                        ?>
+                        )); ?>
                     </td>
                 </tr>
             </table>
@@ -449,8 +469,11 @@ if (isset($_GET['updated'])) {
                         $fieldset_end = '</fieldset>';
                     }
                     foreach ((array)$menu_items as $key => $val) {
-                        echo "<label><input type='checkbox' name='menu_items[" . $key . "]' value='1'" . (isset($menu_perms[$key]) ? checked($menu_perms[$key],
-                                '1', false) : '') . " /> " . esc_html($val) . "</label><br/>";
+                        echo "<label><input type='checkbox' name='menu_items[" . $key . "]' value='1'" . (isset($menu_perms[$key]) ? checked(
+                            $menu_perms[$key],
+                                '1',
+                            false
+                        ) : '') . " /> " . esc_html($val) . "</label><br/>";
                     }
                     echo $fieldset_end;
                     ?>

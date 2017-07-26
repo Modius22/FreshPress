@@ -354,31 +354,41 @@ class WP_Network_Query
 
         // Parse network IDs for an IN clause.
         if (!empty($this->query_vars['network__in'])) {
-            $this->sql_clauses['where']['network__in'] = "$wpdb->site.id IN ( " . implode(',',
-                    wp_parse_id_list($this->query_vars['network__in'])) . ' )';
+            $this->sql_clauses['where']['network__in'] = "$wpdb->site.id IN ( " . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['network__in'])
+            ) . ' )';
         }
 
         // Parse network IDs for a NOT IN clause.
         if (!empty($this->query_vars['network__not_in'])) {
-            $this->sql_clauses['where']['network__not_in'] = "$wpdb->site.id NOT IN ( " . implode(',',
-                    wp_parse_id_list($this->query_vars['network__not_in'])) . ' )';
+            $this->sql_clauses['where']['network__not_in'] = "$wpdb->site.id NOT IN ( " . implode(
+                ',',
+                    wp_parse_id_list($this->query_vars['network__not_in'])
+            ) . ' )';
         }
 
         if (!empty($this->query_vars['domain'])) {
-            $this->sql_clauses['where']['domain'] = $wpdb->prepare("$wpdb->site.domain = %s",
-                $this->query_vars['domain']);
+            $this->sql_clauses['where']['domain'] = $wpdb->prepare(
+                "$wpdb->site.domain = %s",
+                $this->query_vars['domain']
+            );
         }
 
         // Parse network domain for an IN clause.
         if (is_array($this->query_vars['domain__in'])) {
-            $this->sql_clauses['where']['domain__in'] = "$wpdb->site.domain IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['domain__in'])) . "' )";
+            $this->sql_clauses['where']['domain__in'] = "$wpdb->site.domain IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['domain__in'])
+            ) . "' )";
         }
 
         // Parse network domain for a NOT IN clause.
         if (is_array($this->query_vars['domain__not_in'])) {
-            $this->sql_clauses['where']['domain__not_in'] = "$wpdb->site.domain NOT IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['domain__not_in'])) . "' )";
+            $this->sql_clauses['where']['domain__not_in'] = "$wpdb->site.domain NOT IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['domain__not_in'])
+            ) . "' )";
         }
 
         if (!empty($this->query_vars['path'])) {
@@ -387,14 +397,18 @@ class WP_Network_Query
 
         // Parse network path for an IN clause.
         if (is_array($this->query_vars['path__in'])) {
-            $this->sql_clauses['where']['path__in'] = "$wpdb->site.path IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['path__in'])) . "' )";
+            $this->sql_clauses['where']['path__in'] = "$wpdb->site.path IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['path__in'])
+            ) . "' )";
         }
 
         // Parse network path for a NOT IN clause.
         if (is_array($this->query_vars['path__not_in'])) {
-            $this->sql_clauses['where']['path__not_in'] = "$wpdb->site.path NOT IN ( '" . implode("', '",
-                    $wpdb->_escape($this->query_vars['path__not_in'])) . "' )";
+            $this->sql_clauses['where']['path__not_in'] = "$wpdb->site.path NOT IN ( '" . implode(
+                "', '",
+                    $wpdb->_escape($this->query_vars['path__not_in'])
+            ) . "' )";
         }
 
         // Falsey search strings are ignored.

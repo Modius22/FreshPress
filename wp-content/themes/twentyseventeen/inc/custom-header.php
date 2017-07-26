@@ -75,7 +75,7 @@ if (!function_exists('twentyseventeen_header_style')) :
         <style id="twentyseventeen-custom-header-styles" type="text/css">
             <?php
                 // Has the text been hidden?
-                if ( 'blank' === $header_text_color ) :
+                if ('blank' === $header_text_color) :
             ?>
             .site-title,
             .site-description {
@@ -105,7 +105,7 @@ if (!function_exists('twentyseventeen_header_style')) :
             body.has-header-video.colors-dark .site-description,
             body.has-header-image.colors-custom .site-description,
             body.has-header-video.colors-custom .site-description {
-                color: #<?php echo esc_attr( $header_text_color ); ?>;
+                color: #<?php echo esc_attr($header_text_color); ?>;
             }
 
             <?php endif; ?>
@@ -121,10 +121,14 @@ endif; // End of twentyseventeen_header_style.
  */
 function twentyseventeen_video_controls($settings)
 {
-    $settings['l10n']['play'] = '<span class="screen-reader-text">' . __('Play background video',
-            'twentyseventeen') . '</span>' . twentyseventeen_get_svg(array('icon' => 'play'));
-    $settings['l10n']['pause'] = '<span class="screen-reader-text">' . __('Pause background video',
-            'twentyseventeen') . '</span>' . twentyseventeen_get_svg(array('icon' => 'pause'));
+    $settings['l10n']['play'] = '<span class="screen-reader-text">' . __(
+        'Play background video',
+            'twentyseventeen'
+    ) . '</span>' . twentyseventeen_get_svg(array('icon' => 'play'));
+    $settings['l10n']['pause'] = '<span class="screen-reader-text">' . __(
+        'Pause background video',
+            'twentyseventeen'
+    ) . '</span>' . twentyseventeen_get_svg(array('icon' => 'pause'));
     return $settings;
 }
 

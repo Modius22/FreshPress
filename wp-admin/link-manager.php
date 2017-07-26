@@ -33,8 +33,12 @@ if ($doaction && isset($_REQUEST['linkcheck'])) {
         $redirect_to = add_query_arg('deleted', count($bulklinks), $redirect_to);
     } else {
         /** This action is documented in wp-admin/edit-comments.php */
-        $redirect_to = apply_filters('handle_bulk_actions-' . get_current_screen()->id, $redirect_to, $doaction,
-            $bulklinks);
+        $redirect_to = apply_filters(
+            'handle_bulk_actions-' . get_current_screen()->id,
+            $redirect_to,
+            $doaction,
+            $bulklinks
+        );
     }
     wp_redirect($redirect_to);
     exit;
@@ -52,8 +56,10 @@ get_current_screen()->add_help_tab(array(
     'id' => 'overview',
     'title' => __('Overview'),
     'content' =>
-        '<p>' . sprintf(__('You can add links here to be displayed on your site, usually using <a href="%s">Widgets</a>. By default, links to several sites in the WordPress community are included as examples.'),
-            'widgets.php') . '</p>' .
+        '<p>' . sprintf(
+            __('You can add links here to be displayed on your site, usually using <a href="%s">Widgets</a>. By default, links to several sites in the WordPress community are included as examples.'),
+            'widgets.php'
+        ) . '</p>' .
         '<p>' . __('Links may be separated into Link Categories; these are different than the categories used on your posts.') . '</p>' .
         '<p>' . __('You can customize the display of this screen using the Screen Options tab and/or the dropdown filters above the links table.') . '</p>'
 ));
@@ -92,8 +98,10 @@ if (!current_user_can('manage_links')) {
         <?php
         if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
             /* translators: %s: search keywords */
-            printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
-                esc_html(wp_unslash($_REQUEST['s'])));
+            printf(
+                '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
+                esc_html(wp_unslash($_REQUEST['s']))
+            );
         }
         ?>
 

@@ -33,10 +33,14 @@ class WP_Widget_Media_Image extends WP_Widget_Media
         $this->l10n = array_merge($this->l10n, array(
             'no_media_selected' => __('No image selected'),
             'add_media' => _x('Add Image', 'label for button in the image widget'),
-            'replace_media' => _x('Replace Image',
-                'label for button in the image widget; should preferably not be longer than ~13 characters long'),
-            'edit_media' => _x('Edit Image',
-                'label for button in the image widget; should preferably not be longer than ~13 characters long'),
+            'replace_media' => _x(
+                'Replace Image',
+                'label for button in the image widget; should preferably not be longer than ~13 characters long'
+            ),
+            'edit_media' => _x(
+                'Edit Image',
+                'label for button in the image widget; should preferably not be longer than ~13 characters long'
+            ),
             'missing_attachment' => sprintf(
             /* translators: placeholder is URL to media library */
                 __('We can&#8217;t find that image. Check your <a href="%s">media library</a> and make sure it wasn&#8217;t deleted.'),
@@ -204,19 +208,25 @@ class WP_Widget_Media_Image extends WP_Widget_Media
             }
 
             $size = $instance['size'];
-            if ('custom' === $size || !in_array($size, array_merge(get_intermediate_image_sizes(), array('full')),
-                    true)) {
+            if ('custom' === $size || !in_array(
+                $size,
+                array_merge(get_intermediate_image_sizes(), array('full')),
+                    true
+            )) {
                 $size = array($instance['width'], $instance['height']);
             }
-            $image_attributes['class'] .= sprintf(' attachment-%1$s size-%1$s',
-                is_array($size) ? join('x', $size) : $size);
+            $image_attributes['class'] .= sprintf(
+                ' attachment-%1$s size-%1$s',
+                is_array($size) ? join('x', $size) : $size
+            );
 
             $image = wp_get_attachment_image($attachment->ID, $size, false, $image_attributes);
 
-            $caption_size = _wp_get_image_size_from_meta($instance['size'],
-                wp_get_attachment_metadata($attachment->ID));
+            $caption_size = _wp_get_image_size_from_meta(
+                $instance['size'],
+                wp_get_attachment_metadata($attachment->ID)
+            );
             $width = empty($caption_size[0]) ? 0 : $caption_size[0];
-
         } else {
             if (empty($instance['url'])) {
                 return;
@@ -233,7 +243,8 @@ class WP_Widget_Media_Image extends WP_Widget_Media
                 $instance['height'] = '';
             }
 
-            $image = sprintf('<img class="%1$s" src="%2$s" alt="%3$s" width="%4$s" height="%5$s" />',
+            $image = sprintf(
+                '<img class="%1$s" src="%2$s" alt="%3$s" width="%4$s" height="%5$s" />',
                 esc_attr($classes),
                 esc_url($instance['url']),
                 esc_attr($instance['alt']),
@@ -287,8 +298,10 @@ class WP_Widget_Media_Image extends WP_Widget_Media
 
         $exported_schema = array();
         foreach ($this->get_instance_schema() as $field => $field_schema) {
-            $exported_schema[$field] = wp_array_slice_assoc($field_schema,
-                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update'));
+            $exported_schema[$field] = wp_array_slice_assoc(
+                $field_schema,
+                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update')
+            );
         }
         wp_add_inline_script(
             $handle,
@@ -321,9 +334,7 @@ class WP_Widget_Media_Image extends WP_Widget_Media
      */
     public function render_control_template_scripts()
     {
-        parent::render_control_template_scripts();
-
-        ?>
+        parent::render_control_template_scripts(); ?>
         <script type="text/html" id="tmpl-wp-media-widget-image-preview">
             <#
                     var describedById = 'describedBy-' + String( Math.random() );
@@ -343,8 +354,7 @@ class WP_Widget_Media_Image extends WP_Widget_Media
                                     <# if ( ! data.alt && data.currentFilename ) { #>
                                         <p class="hidden" id="{{ describedById }}"><?php
                                             /* translators: placeholder is image filename */
-                                            echo sprintf(__('Current image: %s'), '{{ data.currentFilename }}');
-                                            ?></p>
+                                            echo sprintf(__('Current image: %s'), '{{ data.currentFilename }}'); ?></p>
                                         <# } #>
                                             <# } #>
         </script>

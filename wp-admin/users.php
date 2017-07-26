@@ -79,8 +79,10 @@ get_current_screen()->set_screen_reader_content(array(
 if (empty($_REQUEST)) {
     $referer = '<input type="hidden" name="wp_http_referer" value="' . esc_attr(wp_unslash($_SERVER['REQUEST_URI'])) . '" />';
 } elseif (isset($_REQUEST['wp_http_referer'])) {
-    $redirect = remove_query_arg(array('wp_http_referer', 'updated', 'delete_count'),
-        wp_unslash($_REQUEST['wp_http_referer']));
+    $redirect = remove_query_arg(
+        array('wp_http_referer', 'updated', 'delete_count'),
+        wp_unslash($_REQUEST['wp_http_referer'])
+    );
     $referer = '<input type="hidden" name="wp_http_referer" value="' . esc_attr($redirect) . '" />';
 } else {
     $redirect = 'users.php';
@@ -222,11 +224,15 @@ switch ($wp_list_table->current_action()) {
         }
 
         $users_have_content = false;
-        if ($wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_author IN( " . implode(',',
-                $userids) . " ) LIMIT 1")) {
+        if ($wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_author IN( " . implode(
+            ',',
+                $userids
+        ) . " ) LIMIT 1")) {
             $users_have_content = true;
-        } elseif ($wpdb->get_var("SELECT link_id FROM {$wpdb->links} WHERE link_owner IN( " . implode(',',
-                $userids) . " ) LIMIT 1")) {
+        } elseif ($wpdb->get_var("SELECT link_id FROM {$wpdb->links} WHERE link_owner IN( " . implode(
+            ',',
+                $userids
+        ) . " ) LIMIT 1")) {
             $users_have_content = true;
         }
 
@@ -261,12 +267,18 @@ switch ($wp_list_table->current_action()) {
                         $user = get_userdata($id);
                         if ($id == $current_user->ID) {
                             /* translators: 1: user id, 2: user login */
-                            echo "<li>" . sprintf(__('ID #%1$s: %2$s <strong>The current user will not be deleted.</strong>'),
-                                    $id, $user->user_login) . "</li>\n";
+                            echo "<li>" . sprintf(
+                                __('ID #%1$s: %2$s <strong>The current user will not be deleted.</strong>'),
+                                    $id,
+                                $user->user_login
+                            ) . "</li>\n";
                         } else {
                             /* translators: 1: user id, 2: user login */
-                            echo "<li><input type=\"hidden\" name=\"users[]\" value=\"" . esc_attr($id) . "\" />" . sprintf(__('ID #%1$s: %2$s'),
-                                    $id, $user->user_login) . "</li>\n";
+                            echo "<li><input type=\"hidden\" name=\"users[]\" value=\"" . esc_attr($id) . "\" />" . sprintf(
+                                __('ID #%1$s: %2$s'),
+                                    $id,
+                                $user->user_login
+                            ) . "</li>\n";
                             $go_delete++;
                         }
                     }
@@ -401,12 +413,18 @@ switch ($wp_list_table->current_action()) {
                         $user = get_userdata($id);
                         if (!current_user_can('remove_user', $id)) {
                             /* translators: 1: user id, 2: user login */
-                            echo "<li>" . sprintf(__('ID #%1$s: %2$s <strong>Sorry, you are not allowed to remove this user.</strong>'),
-                                    $id, $user->user_login) . "</li>\n";
+                            echo "<li>" . sprintf(
+                                __('ID #%1$s: %2$s <strong>Sorry, you are not allowed to remove this user.</strong>'),
+                                    $id,
+                                $user->user_login
+                            ) . "</li>\n";
                         } else {
                             /* translators: 1: user id, 2: user login */
-                            echo "<li><input type=\"hidden\" name=\"users[]\" value=\"{$id}\" />" . sprintf(__('ID #%1$s: %2$s'),
-                                    $id, $user->user_login) . "</li>\n";
+                            echo "<li><input type=\"hidden\" name=\"users[]\" value=\"{$id}\" />" . sprintf(
+                                __('ID #%1$s: %2$s'),
+                                    $id,
+                                $user->user_login
+                            ) . "</li>\n";
                             $go_remove = true;
                         }
                     }
@@ -436,8 +454,12 @@ switch ($wp_list_table->current_action()) {
             $sendback = wp_get_referer();
 
             /** This action is documented in wp-admin/edit-comments.php */
-            $sendback = apply_filters('handle_bulk_actions-' . get_current_screen()->id, $sendback,
-                $wp_list_table->current_action(), $userids);
+            $sendback = apply_filters(
+                'handle_bulk_actions-' . get_current_screen()->id,
+                $sendback,
+                $wp_list_table->current_action(),
+                $userids
+            );
 
             wp_safe_redirect($sendback);
             exit;
@@ -463,15 +485,22 @@ switch ($wp_list_table->current_action()) {
                     } else {
                         $message = _n('%s user deleted.', '%s users deleted.', $delete_count);
                     }
-                    $messages[] = '<div id="message" class="updated notice is-dismissible"><p>' . sprintf($message,
-                            number_format_i18n($delete_count)) . '</p></div>';
+                    $messages[] = '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+                        $message,
+                            number_format_i18n($delete_count)
+                    ) . '</p></div>';
                     break;
                 case 'add':
                     if (isset($_GET['id']) && ($user_id = $_GET['id']) && current_user_can('edit_user', $user_id)) {
                         /* translators: %s: edit page url */
-                        $messages[] = '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(__('New user created. <a href="%s">Edit user</a>'),
-                                esc_url(add_query_arg('wp_http_referer', urlencode(wp_unslash($_SERVER['REQUEST_URI'])),
-                                    self_admin_url('user-edit.php?user_id=' . $user_id)))) . '</p></div>';
+                        $messages[] = '<div id="message" class="updated notice is-dismissible"><p>' . sprintf(
+                            __('New user created. <a href="%s">Edit user</a>'),
+                                esc_url(add_query_arg(
+                                    'wp_http_referer',
+                                    urlencode(wp_unslash($_SERVER['REQUEST_URI'])),
+                                    self_admin_url('user-edit.php?user_id=' . $user_id)
+                                ))
+                        ) . '</p></div>';
                     } else {
                         $messages[] = '<div id="message" class="updated notice is-dismissible"><p>' . __('New user created.') . '</p></div>';
                     }
@@ -521,18 +550,24 @@ switch ($wp_list_table->current_action()) {
                 ?></h1>
 
             <?php
-            if (current_user_can('create_users')) { ?>
+            if (current_user_can('create_users')) {
+                ?>
                 <a href="<?php echo admin_url('user-new.php'); ?>"
                    class="page-title-action"><?php echo esc_html_x('Add New', 'user'); ?></a>
-            <?php } elseif (is_multisite() && current_user_can('promote_users')) { ?>
+            <?php
+            } elseif (is_multisite() && current_user_can('promote_users')) {
+                ?>
                 <a href="<?php echo admin_url('user-new.php'); ?>"
                    class="page-title-action"><?php echo esc_html_x('Add Existing', 'user'); ?></a>
-            <?php }
+            <?php
+            }
 
             if (strlen($usersearch)) {
                 /* translators: %s: search keywords */
-                printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
-                    esc_html($usersearch));
+                printf(
+                    '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
+                    esc_html($usersearch)
+                );
             }
             ?>
 
@@ -544,9 +579,11 @@ switch ($wp_list_table->current_action()) {
 
                 <?php $wp_list_table->search_box(__('Search Users'), 'user'); ?>
 
-                <?php if (!empty($_REQUEST['role'])) { ?>
+                <?php if (!empty($_REQUEST['role'])) {
+                ?>
                     <input type="hidden" name="role" value="<?php echo esc_attr($_REQUEST['role']); ?>"/>
-                <?php } ?>
+                <?php
+            } ?>
 
                 <?php $wp_list_table->display(); ?>
             </form>

@@ -273,8 +273,10 @@ function export_date_options($post_type = 'post')
                 </li>
             </ul>
 
-            <?php foreach (get_post_types(array('_builtin' => false, 'can_export' => true),
-                'objects') as $post_type) : ?>
+            <?php foreach (get_post_types(
+                            array('_builtin' => false, 'can_export' => true),
+                'objects'
+                        ) as $post_type) : ?>
                 <p><label><input type="radio" name="content"
                                  value="<?php echo esc_attr($post_type->name); ?>"/> <?php echo esc_html($post_type->label); ?>
                     </label></p>

@@ -32,56 +32,56 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
      *
      * @var integer
      */
-    var $_leading_context_lines = 10000;
+    public $_leading_context_lines = 10000;
 
     /**
      * Number of trailing context "lines" to preserve.
      *
      * @var integer
      */
-    var $_trailing_context_lines = 10000;
+    public $_trailing_context_lines = 10000;
 
     /**
      * Prefix for inserted text.
      *
      * @var string
      */
-    var $_ins_prefix = '<ins>';
+    public $_ins_prefix = '<ins>';
 
     /**
      * Suffix for inserted text.
      *
      * @var string
      */
-    var $_ins_suffix = '</ins>';
+    public $_ins_suffix = '</ins>';
 
     /**
      * Prefix for deleted text.
      *
      * @var string
      */
-    var $_del_prefix = '<del>';
+    public $_del_prefix = '<del>';
 
     /**
      * Suffix for deleted text.
      *
      * @var string
      */
-    var $_del_suffix = '</del>';
+    public $_del_suffix = '</del>';
 
     /**
      * Header for each change block.
      *
      * @var string
      */
-    var $_block_header = '';
+    public $_block_header = '';
 
     /**
      * Whether to split down to character-level.
      *
      * @var boolean
      */
-    var $_split_characters = false;
+    public $_split_characters = false;
 
     /**
      * What are we currently splitting on? Used to recurse to show word-level
@@ -89,19 +89,19 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
      *
      * @var string
      */
-    var $_split_level = 'lines';
+    public $_split_level = 'lines';
 
-    function _blockHeader($xbeg, $xlen, $ybeg, $ylen)
+    public function _blockHeader($xbeg, $xlen, $ybeg, $ylen)
     {
         return $this->_block_header;
     }
 
-    function _startBlock($header)
+    public function _startBlock($header)
     {
         return $header;
     }
 
-    function _lines($lines, $prefix = ' ', $encode = true)
+    public function _lines($lines, $prefix = ' ', $encode = true)
     {
         if ($encode) {
             array_walk($lines, array(&$this, '_encode'));
@@ -114,7 +114,7 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         }
     }
 
-    function _added($lines)
+    public function _added($lines)
     {
         array_walk($lines, array(&$this, '_encode'));
         $lines[0] = $this->_ins_prefix . $lines[0];
@@ -122,7 +122,7 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         return $this->_lines($lines, ' ', false);
     }
 
-    function _deleted($lines, $words = false)
+    public function _deleted($lines, $words = false)
     {
         array_walk($lines, array(&$this, '_encode'));
         $lines[0] = $this->_del_prefix . $lines[0];
@@ -130,7 +130,7 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         return $this->_lines($lines, ' ', false);
     }
 
-    function _changed($orig, $final)
+    public function _changed($orig, $final)
     {
         /* If we've already split on characters, just display. */
         if ($this->_split_level == 'characters') {
@@ -158,32 +158,37 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         $nl = "\0";
 
         if ($this->_split_characters) {
-            $diff = new Text_Diff('native',
+            $diff = new Text_Diff(
+                'native',
                 array(
                     preg_split('//', $text1),
                     preg_split('//', $text2)
-                ));
+                )
+            );
         } else {
             /* We want to split on word boundaries, but we need to preserve
              * whitespace as well. Therefore we split on words, but include
              * all blocks of whitespace in the wordlist. */
-            $diff = new Text_Diff('native',
+            $diff = new Text_Diff(
+                'native',
                 array(
                     $this->_splitOnWords($text1, $nl),
                     $this->_splitOnWords($text2, $nl)
-                ));
+                )
+            );
         }
 
         /* Get the diff in inline format. */
-        $renderer = new Text_Diff_Renderer_inline
-        (array_merge($this->getParams(),
-            array('split_level' => $this->_split_characters ? 'characters' : 'words')));
+        $renderer = new Text_Diff_Renderer_inline(array_merge(
+            $this->getParams(),
+            array('split_level' => $this->_split_characters ? 'characters' : 'words')
+        ));
 
         /* Run the diff and get the output. */
         return str_replace($nl, "\n", $renderer->render($diff)) . "\n";
     }
 
-    function _splitOnWords($string, $newlineEscape = "\n")
+    public function _splitOnWords($string, $newlineEscape = "\n")
     {
         // Ignore \0; otherwise the while loop will never finish.
         $string = str_replace("\0", '', $string);
@@ -203,9 +208,8 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         return $words;
     }
 
-    function _encode(&$string)
+    public function _encode(&$string)
     {
         $string = htmlspecialchars($string);
     }
-
 }

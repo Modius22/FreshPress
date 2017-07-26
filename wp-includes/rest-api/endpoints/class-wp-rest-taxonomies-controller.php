@@ -39,7 +39,6 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
      */
     public function register_routes()
     {
-
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
                 'methods' => WP_REST_Server::READABLE,
@@ -91,8 +90,11 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
                     return true;
                 }
             }
-            return new WP_Error('rest_cannot_view', __('Sorry, you are not allowed to manage terms in this taxonomy.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_view',
+                __('Sorry, you are not allowed to manage terms in this taxonomy.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
         return true;
     }
@@ -146,7 +148,6 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
      */
     public function get_item_permissions_check($request)
     {
-
         $tax_obj = get_taxonomy($request['taxonomy']);
 
         if ($tax_obj) {
@@ -154,9 +155,11 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
                 return false;
             }
             if ('edit' === $request['context'] && !current_user_can($tax_obj->cap->manage_terms)) {
-                return new WP_Error('rest_forbidden_context',
+                return new WP_Error(
+                    'rest_forbidden_context',
                     __('Sorry, you are not allowed to manage terms in this taxonomy.'),
-                    array('status' => rest_authorization_required_code()));
+                    array('status' => rest_authorization_required_code())
+                );
             }
         }
 
@@ -332,5 +335,4 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
         );
         return $new_params;
     }
-
 }

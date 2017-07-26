@@ -406,8 +406,11 @@ final class WP_Taxonomy
                 $tag = '([^/]+)';
             }
 
-            add_rewrite_tag("%$this->name%", $tag,
-                $this->query_var ? "{$this->query_var}=" : "taxonomy=$this->name&term=");
+            add_rewrite_tag(
+                "%$this->name%",
+                $tag,
+                $this->query_var ? "{$this->query_var}=" : "taxonomy=$this->name&term="
+            );
             add_permastruct($this->name, "{$this->rewrite['slug']}/%$this->name%", $this->rewrite);
         }
     }

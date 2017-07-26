@@ -104,8 +104,11 @@ function get_wp_title_rss($deprecated = '&#8211;')
 {
     if ('&#8211;' !== $deprecated) {
         /* translators: %s: 'document_title_separator' filter name */
-        _deprecated_argument(__FUNCTION__, '4.4.0',
-            sprintf(__('Use the %s filter instead.'), '<code>document_title_separator</code>'));
+        _deprecated_argument(
+            __FUNCTION__,
+            '4.4.0',
+            sprintf(__('Use the %s filter instead.'), '<code>document_title_separator</code>')
+        );
     }
 
     /**
@@ -132,8 +135,11 @@ function wp_title_rss($deprecated = '&#8211;')
 {
     if ('&#8211;' !== $deprecated) {
         /* translators: %s: 'document_title_separator' filter name */
-        _deprecated_argument(__FUNCTION__, '4.4.0',
-            sprintf(__('Use the %s filter instead.'), '<code>document_title_separator</code>'));
+        _deprecated_argument(
+            __FUNCTION__,
+            '4.4.0',
+            sprintf(__('Use the %s filter instead.'), '<code>document_title_separator</code>')
+        );
     }
 
     /**
@@ -426,11 +432,17 @@ function get_the_category_rss($type = null)
         if ('rdf' == $type) {
             $the_list .= "\t\t<dc:subject><![CDATA[$cat_name]]></dc:subject>\n";
         } elseif ('atom' == $type) {
-            $the_list .= sprintf('<category scheme="%1$s" term="%2$s" />', esc_attr(get_bloginfo_rss('url')),
-                esc_attr($cat_name));
+            $the_list .= sprintf(
+                '<category scheme="%1$s" term="%2$s" />',
+                esc_attr(get_bloginfo_rss('url')),
+                esc_attr($cat_name)
+            );
         } else {
-            $the_list .= "\t\t<category><![CDATA[" . @html_entity_decode($cat_name, ENT_COMPAT,
-                    get_option('blog_charset')) . "]]></category>\n";
+            $the_list .= "\t\t<category><![CDATA[" . @html_entity_decode(
+                $cat_name,
+                ENT_COMPAT,
+                    get_option('blog_charset')
+            ) . "]]></category>\n";
         }
     }
 
@@ -513,8 +525,10 @@ function rss_enclosure()
                  *
                  * @param string $html_link_tag The HTML link tag with a URI and other attributes.
                  */
-                echo apply_filters('rss_enclosure',
-                    '<enclosure url="' . trim(htmlspecialchars($enclosure[0])) . '" length="' . trim($enclosure[1]) . '" type="' . $type . '" />' . "\n");
+                echo apply_filters(
+                    'rss_enclosure',
+                    '<enclosure url="' . trim(htmlspecialchars($enclosure[0])) . '" length="' . trim($enclosure[1]) . '" type="' . $type . '" />' . "\n"
+                );
             }
         }
     }
@@ -550,8 +564,10 @@ function atom_enclosure()
                  *
                  * @param string $html_link_tag The HTML link tag with a URI and other attributes.
                  */
-                echo apply_filters('atom_enclosure',
-                    '<link href="' . trim(htmlspecialchars($enclosure[0])) . '" rel="enclosure" length="' . trim($enclosure[1]) . '" type="' . trim($enclosure[2]) . '" />' . "\n");
+                echo apply_filters(
+                    'atom_enclosure',
+                    '<link href="' . trim(htmlspecialchars($enclosure[0])) . '" rel="enclosure" length="' . trim($enclosure[1]) . '" type="' . trim($enclosure[2]) . '" />' . "\n"
+                );
             }
         }
     }
@@ -667,8 +683,10 @@ function self_link()
      *
      * @param string $feed_link The link for the feed with set URL scheme.
      */
-    echo esc_url(apply_filters('self_link',
-        set_url_scheme('http://' . $host['host'] . wp_unslash($_SERVER['REQUEST_URI']))));
+    echo esc_url(apply_filters(
+        'self_link',
+        set_url_scheme('http://' . $host['host'] . wp_unslash($_SERVER['REQUEST_URI']))
+    ));
 }
 
 /**

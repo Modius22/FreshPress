@@ -33,10 +33,14 @@ class WP_Widget_Media_Audio extends WP_Widget_Media
         $this->l10n = array_merge($this->l10n, array(
             'no_media_selected' => __('No audio selected'),
             'add_media' => _x('Add Audio', 'label for button in the audio widget'),
-            'replace_media' => _x('Replace Audio',
-                'label for button in the audio widget; should preferably not be longer than ~13 characters long'),
-            'edit_media' => _x('Edit Audio',
-                'label for button in the audio widget; should preferably not be longer than ~13 characters long'),
+            'replace_media' => _x(
+                'Replace Audio',
+                'label for button in the audio widget; should preferably not be longer than ~13 characters long'
+            ),
+            'edit_media' => _x(
+                'Edit Audio',
+                'label for button in the audio widget; should preferably not be longer than ~13 characters long'
+            ),
             'missing_attachment' => sprintf(
             /* translators: placeholder is URL to media library */
                 __('We can&#8217;t find that audio file. Check your <a href="%s">media library</a> and make sure it wasn&#8217;t deleted.'),
@@ -162,8 +166,10 @@ class WP_Widget_Media_Audio extends WP_Widget_Media
 
         $exported_schema = array();
         foreach ($this->get_instance_schema() as $field => $field_schema) {
-            $exported_schema[$field] = wp_array_slice_assoc($field_schema,
-                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update'));
+            $exported_schema[$field] = wp_array_slice_assoc(
+                $field_schema,
+                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update')
+            );
         }
         wp_add_inline_script(
             $handle,

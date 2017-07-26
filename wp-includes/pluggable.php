@@ -288,8 +288,11 @@ if (!function_exists('wp_mail')) :
                                 if (false !== stripos($charset_content, 'charset=')) {
                                     $charset = trim(str_replace(array('charset=', '"'), '', $charset_content));
                                 } elseif (false !== stripos($charset_content, 'boundary=')) {
-                                    $boundary = trim(str_replace(array('BOUNDARY=', 'boundary=', '"'), '',
-                                        $charset_content));
+                                    $boundary = trim(str_replace(
+                                        array('BOUNDARY=', 'boundary=', '"'),
+                                        '',
+                                        $charset_content
+                                    ));
                                     $charset = '';
                                 }
 
@@ -329,11 +332,11 @@ if (!function_exists('wp_mail')) :
         }
 
         /* If we don't have an email from the input headers default to wordpress@$sitename
-	 * Some hosts will block outgoing mail from this address if it doesn't exist but
-	 * there's no easy alternative. Defaulting to admin_email might appear to be another
-	 * option but some hosts may refuse to relay mail from an unknown domain. See
-	 * https://core.trac.wordpress.org/ticket/5007.
-	 */
+     * Some hosts will block outgoing mail from this address if it doesn't exist but
+     * there's no easy alternative. Defaulting to admin_email might appear to be another
+     * option but some hosts may refuse to relay mail from an unknown domain. See
+     * https://core.trac.wordpress.org/ticket/5007.
+     */
 
         if (!isset($from_email)) {
             // Get the site domain and get rid of www.
@@ -494,7 +497,6 @@ if (!function_exists('wp_mail')) :
         try {
             return $phpmailer->send();
         } catch (phpmailerException $e) {
-
             $mail_error_data = compact('to', 'subject', 'message', 'headers', 'attachments');
             $mail_error_data['phpmailer_exception_code'] = $e->getCode();
 
@@ -549,8 +551,10 @@ if (!function_exists('wp_authenticate')) :
         if ($user == null) {
             // TODO what should the error message be? (Or would these even happen?)
             // Only needed if all authentication handlers fail to return anything.
-            $user = new WP_Error('authentication_failed',
-                __('<strong>ERROR</strong>: Invalid username, email address or incorrect password.'));
+            $user = new WP_Error(
+                'authentication_failed',
+                __('<strong>ERROR</strong>: Invalid username, email address or incorrect password.')
+            );
         }
 
         $ignore_codes = array('empty_username', 'empty_password');
@@ -838,9 +842,9 @@ if (!function_exists('wp_set_auth_cookie')) :
             $expiration = time() + apply_filters('auth_cookie_expiration', 14 * DAY_IN_SECONDS, $user_id, $remember);
 
             /*
-		 * Ensure the browser will continue to send the cookie after the expiration time is reached.
-		 * Needed for the login grace period in wp_validate_auth_cookie().
-		 */
+         * Ensure the browser will continue to send the cookie after the expiration time is reached.
+         * Needed for the login grace period in wp_validate_auth_cookie().
+         */
             $expire = $expiration + (12 * HOUR_IN_SECONDS);
         } else {
             /** This filter is documented in wp-includes/pluggable.php */
@@ -874,8 +878,12 @@ if (!function_exists('wp_set_auth_cookie')) :
          * @param int $user_id User ID.
          * @param bool $secure Whether the connection is secure.
          */
-        $secure_logged_in_cookie = apply_filters('secure_logged_in_cookie', $secure_logged_in_cookie, $user_id,
-            $secure);
+        $secure_logged_in_cookie = apply_filters(
+            'secure_logged_in_cookie',
+            $secure_logged_in_cookie,
+            $user_id,
+            $secure
+        );
 
         if ($secure) {
             $auth_cookie_name = SECURE_AUTH_COOKIE;
@@ -936,11 +944,25 @@ if (!function_exists('wp_set_auth_cookie')) :
 
         setcookie($auth_cookie_name, $auth_cookie, $expire, PLUGINS_COOKIE_PATH, COOKIE_DOMAIN, $secure, true);
         setcookie($auth_cookie_name, $auth_cookie, $expire, ADMIN_COOKIE_PATH, COOKIE_DOMAIN, $secure, true);
-        setcookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie,
-            true);
+        setcookie(
+            LOGGED_IN_COOKIE,
+            $logged_in_cookie,
+            $expire,
+            COOKIEPATH,
+            COOKIE_DOMAIN,
+            $secure_logged_in_cookie,
+            true
+        );
         if (COOKIEPATH != SITECOOKIEPATH) {
-            setcookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, SITECOOKIEPATH, COOKIE_DOMAIN,
-                $secure_logged_in_cookie, true);
+            setcookie(
+                LOGGED_IN_COOKIE,
+                $logged_in_cookie,
+                $expire,
+                SITECOOKIEPATH,
+                COOKIE_DOMAIN,
+                $secure_logged_in_cookie,
+                true
+            );
         }
     }
 endif;
@@ -1059,8 +1081,10 @@ if (!function_exists('auth_redirect')) :
             do_action('auth_redirect', $user_id);
 
             // If the user wants ssl but the session is not ssl, redirect.
-            if (!$secure && get_user_option('use_ssl', $user_id) && false !== strpos($_SERVER['REQUEST_URI'],
-                    'wp-admin')) {
+            if (!$secure && get_user_option('use_ssl', $user_id) && false !== strpos(
+                $_SERVER['REQUEST_URI'],
+                    'wp-admin'
+            )) {
                 if (0 === strpos($_SERVER['REQUEST_URI'], 'http')) {
                     wp_redirect(set_url_scheme($_SERVER['REQUEST_URI'], 'https'));
                     exit();
@@ -1076,8 +1100,10 @@ if (!function_exists('auth_redirect')) :
         // The cookie is no good so force login
         nocache_headers();
 
-        $redirect = (strpos($_SERVER['REQUEST_URI'],
-                '/options.php') && wp_get_referer()) ? wp_get_referer() : set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $redirect = (strpos(
+            $_SERVER['REQUEST_URI'],
+                '/options.php'
+        ) && wp_get_referer()) ? wp_get_referer() : set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         $login_url = wp_login_url($redirect, true);
 
@@ -1103,8 +1129,11 @@ if (!function_exists('check_admin_referer')) :
     function check_admin_referer($action = -1, $query_arg = '_wpnonce')
     {
         if (-1 == $action) {
-            _doing_it_wrong(__FUNCTION__,
-                __('You should specify a nonce action to be verified by using the first parameter.'), '3.2.0');
+            _doing_it_wrong(
+                __FUNCTION__,
+                __('You should specify a nonce action to be verified by using the first parameter.'),
+                '3.2.0'
+            );
         }
 
         $adminurl = strtolower(admin_url());
@@ -1149,8 +1178,11 @@ if (!function_exists('check_ajax_referer')) :
     function check_ajax_referer($action = -1, $query_arg = false, $die = true)
     {
         if (-1 == $action) {
-            _doing_it_wrong(__FUNCTION__,
-                __('You should specify a nonce action to be verified by using the first parameter.'), '4.7');
+            _doing_it_wrong(
+                __FUNCTION__,
+                __('You should specify a nonce action to be verified by using the first parameter.'),
+                '4.7'
+            );
         }
 
         $nonce = '';
@@ -1402,8 +1434,11 @@ if (!function_exists('wp_validate_redirect')) :
          * @param array $hosts An array of allowed hosts.
          * @param bool|string $host The parsed host; empty if not isset.
          */
-        $allowed_hosts = (array)apply_filters('allowed_redirect_hosts', array($wpp['host']),
-            isset($lp['host']) ? $lp['host'] : '');
+        $allowed_hosts = (array)apply_filters(
+            'allowed_redirect_hosts',
+            array($wpp['host']),
+            isset($lp['host']) ? $lp['host'] : ''
+        );
 
         if (isset($lp['host']) && (!in_array($lp['host'], $allowed_hosts) && $lp['host'] != strtolower($wpp['host']))) {
             $location = $default;
@@ -1515,8 +1550,12 @@ if (!function_exists('wp_notify_postauthor')) :
                 /* translators: 1: Post title */
                 $notify_message = sprintf(__('New trackback on your post "%s"'), $post->post_title) . "\r\n";
                 /* translators: 1: Trackback/pingback website name, 2: website IP, 3: website hostname */
-                $notify_message .= sprintf(__('Website: %1$s (IP: %2$s, %3$s)'), $comment->comment_author,
-                        $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Website: %1$s (IP: %2$s, %3$s)'),
+                    $comment->comment_author,
+                        $comment->comment_author_IP,
+                    $comment_author_domain
+                ) . "\r\n";
                 $notify_message .= sprintf(__('URL: %s'), $comment->comment_author_url) . "\r\n";
                 $notify_message .= sprintf(__('Comment: %s'), "\r\n" . $comment_content) . "\r\n\r\n";
                 $notify_message .= __('You can see all trackbacks on this post here:') . "\r\n";
@@ -1527,8 +1566,12 @@ if (!function_exists('wp_notify_postauthor')) :
                 /* translators: 1: Post title */
                 $notify_message = sprintf(__('New pingback on your post "%s"'), $post->post_title) . "\r\n";
                 /* translators: 1: Trackback/pingback website name, 2: website IP, 3: website hostname */
-                $notify_message .= sprintf(__('Website: %1$s (IP: %2$s, %3$s)'), $comment->comment_author,
-                        $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Website: %1$s (IP: %2$s, %3$s)'),
+                    $comment->comment_author,
+                        $comment->comment_author_IP,
+                    $comment_author_domain
+                ) . "\r\n";
                 $notify_message .= sprintf(__('URL: %s'), $comment->comment_author_url) . "\r\n";
                 $notify_message .= sprintf(__('Comment: %s'), "\r\n" . $comment_content) . "\r\n\r\n";
                 $notify_message .= __('You can see all pingbacks on this post here:') . "\r\n";
@@ -1538,8 +1581,12 @@ if (!function_exists('wp_notify_postauthor')) :
             default: // Comments
                 $notify_message = sprintf(__('New comment on your post "%s"'), $post->post_title) . "\r\n";
                 /* translators: 1: comment author, 2: author IP, 3: author domain */
-                $notify_message .= sprintf(__('Author: %1$s (IP: %2$s, %3$s)'), $comment->comment_author,
-                        $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Author: %1$s (IP: %2$s, %3$s)'),
+                    $comment->comment_author,
+                        $comment->comment_author_IP,
+                    $comment_author_domain
+                ) . "\r\n";
                 $notify_message .= sprintf(__('Email: %s'), $comment->comment_author_email) . "\r\n";
                 $notify_message .= sprintf(__('URL: %s'), $comment->comment_author_url) . "\r\n";
                 $notify_message .= sprintf(__('Comment: %s'), "\r\n" . $comment_content) . "\r\n\r\n";
@@ -1553,14 +1600,20 @@ if (!function_exists('wp_notify_postauthor')) :
 
         if (user_can($post->post_author, 'edit_comment', $comment->comment_ID)) {
             if (EMPTY_TRASH_DAYS) {
-                $notify_message .= sprintf(__('Trash it: %s'),
-                        admin_url("comment.php?action=trash&c={$comment->comment_ID}#wpbody-content")) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Trash it: %s'),
+                        admin_url("comment.php?action=trash&c={$comment->comment_ID}#wpbody-content")
+                ) . "\r\n";
             } else {
-                $notify_message .= sprintf(__('Delete it: %s'),
-                        admin_url("comment.php?action=delete&c={$comment->comment_ID}#wpbody-content")) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Delete it: %s'),
+                        admin_url("comment.php?action=delete&c={$comment->comment_ID}#wpbody-content")
+                ) . "\r\n";
             }
-            $notify_message .= sprintf(__('Spam it: %s'),
-                    admin_url("comment.php?action=spam&c={$comment->comment_ID}#wpbody-content")) . "\r\n";
+            $notify_message .= sprintf(
+                __('Spam it: %s'),
+                    admin_url("comment.php?action=spam&c={$comment->comment_ID}#wpbody-content")
+            ) . "\r\n";
         }
 
         $wp_email = 'wordpress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
@@ -1684,36 +1737,54 @@ if (!function_exists('wp_notify_moderator')) :
         switch ($comment->comment_type) {
             case 'trackback':
                 /* translators: 1: Post title */
-                $notify_message = sprintf(__('A new trackback on the post "%s" is waiting for your approval'),
-                        $post->post_title) . "\r\n";
+                $notify_message = sprintf(
+                    __('A new trackback on the post "%s" is waiting for your approval'),
+                        $post->post_title
+                ) . "\r\n";
                 $notify_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
                 /* translators: 1: Trackback/pingback website name, 2: website IP, 3: website hostname */
-                $notify_message .= sprintf(__('Website: %1$s (IP: %2$s, %3$s)'), $comment->comment_author,
-                        $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Website: %1$s (IP: %2$s, %3$s)'),
+                    $comment->comment_author,
+                        $comment->comment_author_IP,
+                    $comment_author_domain
+                ) . "\r\n";
                 /* translators: 1: Trackback/pingback/comment author URL */
                 $notify_message .= sprintf(__('URL: %s'), $comment->comment_author_url) . "\r\n";
                 $notify_message .= __('Trackback excerpt: ') . "\r\n" . $comment_content . "\r\n\r\n";
                 break;
             case 'pingback':
                 /* translators: 1: Post title */
-                $notify_message = sprintf(__('A new pingback on the post "%s" is waiting for your approval'),
-                        $post->post_title) . "\r\n";
+                $notify_message = sprintf(
+                    __('A new pingback on the post "%s" is waiting for your approval'),
+                        $post->post_title
+                ) . "\r\n";
                 $notify_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
                 /* translators: 1: Trackback/pingback website name, 2: website IP, 3: website hostname */
-                $notify_message .= sprintf(__('Website: %1$s (IP: %2$s, %3$s)'), $comment->comment_author,
-                        $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Website: %1$s (IP: %2$s, %3$s)'),
+                    $comment->comment_author,
+                        $comment->comment_author_IP,
+                    $comment_author_domain
+                ) . "\r\n";
                 /* translators: 1: Trackback/pingback/comment author URL */
                 $notify_message .= sprintf(__('URL: %s'), $comment->comment_author_url) . "\r\n";
                 $notify_message .= __('Pingback excerpt: ') . "\r\n" . $comment_content . "\r\n\r\n";
                 break;
             default: // Comments
                 /* translators: 1: Post title */
-                $notify_message = sprintf(__('A new comment on the post "%s" is waiting for your approval'),
-                        $post->post_title) . "\r\n";
+                $notify_message = sprintf(
+                    __('A new comment on the post "%s" is waiting for your approval'),
+                        $post->post_title
+                ) . "\r\n";
                 $notify_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
                 /* translators: 1: Comment author name, 2: comment author's IP, 3: comment author IP's hostname */
-                $notify_message .= sprintf(__('Author: %1$s (IP: %2$s, %3$s)'), $comment->comment_author,
-                        $comment->comment_author_IP, $comment_author_domain) . "\r\n";
+                $notify_message .= sprintf(
+                    __('Author: %1$s (IP: %2$s, %3$s)'),
+                    $comment->comment_author,
+                        $comment->comment_author_IP,
+                    $comment_author_domain
+                ) . "\r\n";
                 /* translators: 1: Comment author URL */
                 $notify_message .= sprintf(__('Email: %s'), $comment->comment_author_email) . "\r\n";
                 /* translators: 1: Trackback/pingback/comment author URL */
@@ -1724,27 +1795,37 @@ if (!function_exists('wp_notify_moderator')) :
         }
 
         /* translators: Comment moderation. 1: Comment action URL */
-        $notify_message .= sprintf(__('Approve it: %s'),
-                admin_url("comment.php?action=approve&c={$comment_id}#wpbody-content")) . "\r\n";
+        $notify_message .= sprintf(
+            __('Approve it: %s'),
+                admin_url("comment.php?action=approve&c={$comment_id}#wpbody-content")
+        ) . "\r\n";
 
         if (EMPTY_TRASH_DAYS) {
             /* translators: Comment moderation. 1: Comment action URL */
-            $notify_message .= sprintf(__('Trash it: %s'),
-                    admin_url("comment.php?action=trash&c={$comment_id}#wpbody-content")) . "\r\n";
+            $notify_message .= sprintf(
+                __('Trash it: %s'),
+                    admin_url("comment.php?action=trash&c={$comment_id}#wpbody-content")
+            ) . "\r\n";
         } else {
             /* translators: Comment moderation. 1: Comment action URL */
-            $notify_message .= sprintf(__('Delete it: %s'),
-                    admin_url("comment.php?action=delete&c={$comment_id}#wpbody-content")) . "\r\n";
+            $notify_message .= sprintf(
+                __('Delete it: %s'),
+                    admin_url("comment.php?action=delete&c={$comment_id}#wpbody-content")
+            ) . "\r\n";
         }
 
         /* translators: Comment moderation. 1: Comment action URL */
-        $notify_message .= sprintf(__('Spam it: %s'),
-                admin_url("comment.php?action=spam&c={$comment_id}#wpbody-content")) . "\r\n";
+        $notify_message .= sprintf(
+            __('Spam it: %s'),
+                admin_url("comment.php?action=spam&c={$comment_id}#wpbody-content")
+        ) . "\r\n";
 
         /* translators: Comment moderation. 1: Number of comments awaiting approval */
-        $notify_message .= sprintf(_n('Currently %s comment is waiting for approval. Please visit the moderation panel:',
+        $notify_message .= sprintf(_n(
+            'Currently %s comment is waiting for approval. Please visit the moderation panel:',
                 'Currently %s comments are waiting for approval. Please visit the moderation panel:',
-                $comments_waiting), number_format_i18n($comments_waiting)) . "\r\n";
+                $comments_waiting
+        ), number_format_i18n($comments_waiting)) . "\r\n";
         $notify_message .= admin_url("edit-comments.php?comment_status=moderated#wpbody-content") . "\r\n";
 
         /* translators: Comment moderation notification email subject. 1: Site name, 2: Post title */
@@ -1894,8 +1975,10 @@ if (!function_exists('wp_new_user_notification')) :
 
         $message = sprintf(__('Username: %s'), $user->user_login) . "\r\n\r\n";
         $message .= __('To set your password, visit the following address:') . "\r\n\r\n";
-        $message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login),
-                'login') . ">\r\n\r\n";
+        $message .= '<' . network_site_url(
+            "wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login),
+                'login'
+        ) . ">\r\n\r\n";
 
         $message .= wp_login_url() . "\r\n";
 
@@ -2482,8 +2565,15 @@ if (!function_exists('get_avatar')) :
 
         if (!is_null($avatar)) {
             /** This filter is documented in wp-includes/pluggable.php */
-            return apply_filters('get_avatar', $avatar, $id_or_email, $args['size'], $args['default'], $args['alt'],
-                $args);
+            return apply_filters(
+                'get_avatar',
+                $avatar,
+                $id_or_email,
+                $args['size'],
+                $args['default'],
+                $args['alt'],
+                $args
+            );
         }
 
         if (!$args['force_display'] && !get_option('show_avatars')) {
@@ -2625,4 +2715,3 @@ if (!function_exists('wp_text_diff')) :
         return $r;
     }
 endif;
-

@@ -63,7 +63,6 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      */
     public function register_routes()
     {
-
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
                 'methods' => WP_REST_Server::READABLE,
@@ -136,13 +135,14 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      */
     public function get_items_permissions_check($request)
     {
-
         $post_type = get_post_type_object($this->post_type);
 
         if ('edit' === $request['context'] && !current_user_can($post_type->cap->edit_posts)) {
-            return new WP_Error('rest_forbidden_context',
+            return new WP_Error(
+                'rest_forbidden_context',
                 __('Sorry, you are not allowed to edit posts in this post type.'),
-                array('status' => rest_authorization_required_code()));
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -162,14 +162,20 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
 
         // Ensure a search string is set in case the orderby is set to 'relevance'.
         if (!empty($request['orderby']) && 'relevance' === $request['orderby'] && empty($request['search'])) {
-            return new WP_Error('rest_no_search_term_defined',
-                __('You need to define a search term to order by relevance.'), array('status' => 400));
+            return new WP_Error(
+                'rest_no_search_term_defined',
+                __('You need to define a search term to order by relevance.'),
+                array('status' => 400)
+            );
         }
 
         // Ensure an include parameter is set in case the orderby is set to 'include'.
         if (!empty($request['orderby']) && 'include' === $request['orderby'] && empty($request['include'])) {
-            return new WP_Error('rest_orderby_include_missing_include',
-                __('You need to define an include parameter to order by include.'), array('status' => 400));
+            return new WP_Error(
+                'rest_orderby_include_missing_include',
+                __('You need to define an include parameter to order by include.'),
+                array('status' => 400)
+            );
         }
 
         // Retrieve the list of registered collection query parameters.
@@ -177,11 +183,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         $args = array();
 
         /*
-		 * This array defines mappings between public API query parameters whose
-		 * values are accepted as-passed, and their internal WP_Query parameter
-		 * name equivalents (some are the same). Only values which are also
-		 * present in $registered will be set.
-		 */
+         * This array defines mappings between public API query parameters whose
+         * values are accepted as-passed, and their internal WP_Query parameter
+         * name equivalents (some are the same). Only values which are also
+         * present in $registered will be set.
+         */
         $parameter_mappings = array(
             'author' => 'author__in',
             'author_exclude' => 'author__not_in',
@@ -200,9 +206,9 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         );
 
         /*
-		 * For each known parameter which is both registered and present in the request,
-		 * set the parameter's value on the query $args.
-		 */
+         * For each known parameter which is both registered and present in the request,
+         * set the parameter's value on the query $args.
+         */
         foreach ($parameter_mappings as $api_param => $wp_param) {
             if (isset($registered[$api_param], $request[$api_param])) {
                 $args[$wp_param] = $request[$api_param];
@@ -234,27 +240,29 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
             }
             if ($request['sticky']) {
                 /*
-				 * As post__in will be used to only get sticky posts,
-				 * we have to support the case where post__in was already
-				 * specified.
-				 */
-                $args['post__in'] = $args['post__in'] ? array_intersect($sticky_posts,
-                    $args['post__in']) : $sticky_posts;
+                 * As post__in will be used to only get sticky posts,
+                 * we have to support the case where post__in was already
+                 * specified.
+                 */
+                $args['post__in'] = $args['post__in'] ? array_intersect(
+                    $sticky_posts,
+                    $args['post__in']
+                ) : $sticky_posts;
 
                 /*
-				 * If we intersected, but there are no post ids in common,
-				 * WP_Query won't return "no posts" for post__in = array()
-				 * so we have to fake it a bit.
-				 */
+                 * If we intersected, but there are no post ids in common,
+                 * WP_Query won't return "no posts" for post__in = array()
+                 * so we have to fake it a bit.
+                 */
                 if (!$args['post__in']) {
                     $args['post__in'] = array(0);
                 }
             } elseif ($sticky_posts) {
                 /*
-				 * As post___not_in will be used to only get posts that
-				 * are not sticky, we have to support the case where post__not_in
-				 * was already specified.
-				 */
+                 * As post___not_in will be used to only get posts that
+                 * are not sticky, we have to support the case where post__not_in
+                 * was already specified.
+                 */
                 $args['post__not_in'] = array_merge($args['post__not_in'], $sticky_posts);
             }
         }
@@ -342,8 +350,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         $max_pages = ceil($total_posts / (int)$posts_query->query_vars['posts_per_page']);
 
         if ($page > $max_pages && $total_posts > 0) {
-            return new WP_Error('rest_post_invalid_page_number',
-                __('The page number requested is larger than the number of pages available.'), array('status' => 400));
+            return new WP_Error(
+                'rest_post_invalid_page_number',
+                __('The page number requested is larger than the number of pages available.'),
+                array('status' => 400)
+            );
         }
 
         $response = rest_ensure_response($posts);
@@ -414,15 +425,21 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         }
 
         if ('edit' === $request['context'] && $post && !$this->check_update_permission($post)) {
-            return new WP_Error('rest_forbidden_context', __('Sorry, you are not allowed to edit this post.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_forbidden_context',
+                __('Sorry, you are not allowed to edit this post.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if ($post && !empty($request['password'])) {
             // Check post password, and return error if invalid.
             if (!hash_equals($post->post_password, $request['password'])) {
-                return new WP_Error('rest_post_incorrect_password', __('Incorrect post password.'),
-                    array('status' => 403));
+                return new WP_Error(
+                    'rest_post_incorrect_password',
+                    __('Incorrect post password.'),
+                    array('status' => 403)
+                );
             }
         }
 
@@ -516,25 +533,35 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         $post_type = get_post_type_object($this->post_type);
 
         if (!empty($request['author']) && get_current_user_id() !== $request['author'] && !current_user_can($post_type->cap->edit_others_posts)) {
-            return new WP_Error('rest_cannot_edit_others',
+            return new WP_Error(
+                'rest_cannot_edit_others',
                 __('Sorry, you are not allowed to create posts as this user.'),
-                array('status' => rest_authorization_required_code()));
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if (!empty($request['sticky']) && !current_user_can($post_type->cap->edit_others_posts)) {
-            return new WP_Error('rest_cannot_assign_sticky', __('Sorry, you are not allowed to make posts sticky.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_assign_sticky',
+                __('Sorry, you are not allowed to make posts sticky.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if (!current_user_can($post_type->cap->create_posts)) {
-            return new WP_Error('rest_cannot_create', __('Sorry, you are not allowed to create posts as this user.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_create',
+                __('Sorry, you are not allowed to create posts as this user.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if (!$this->check_assign_terms_permission($request)) {
-            return new WP_Error('rest_cannot_assign_term',
+            return new WP_Error(
+                'rest_cannot_assign_term',
                 __('Sorry, you are not allowed to assign the provided terms.'),
-                array('status' => rest_authorization_required_code()));
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -566,7 +593,6 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         $post_id = wp_insert_post(wp_slash((array)$prepared_post), true);
 
         if (is_wp_error($post_id)) {
-
             if ('db_insert_error' === $post_id->get_error_code()) {
                 $post_id->add_data(array('status' => 500));
             } else {
@@ -664,25 +690,35 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         $post_type = get_post_type_object($this->post_type);
 
         if ($post && !$this->check_update_permission($post)) {
-            return new WP_Error('rest_cannot_edit', __('Sorry, you are not allowed to edit this post.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_edit',
+                __('Sorry, you are not allowed to edit this post.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if (!empty($request['author']) && get_current_user_id() !== $request['author'] && !current_user_can($post_type->cap->edit_others_posts)) {
-            return new WP_Error('rest_cannot_edit_others',
+            return new WP_Error(
+                'rest_cannot_edit_others',
                 __('Sorry, you are not allowed to update posts as this user.'),
-                array('status' => rest_authorization_required_code()));
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if (!empty($request['sticky']) && !current_user_can($post_type->cap->edit_others_posts)) {
-            return new WP_Error('rest_cannot_assign_sticky', __('Sorry, you are not allowed to make posts sticky.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_assign_sticky',
+                __('Sorry, you are not allowed to make posts sticky.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         if (!$this->check_assign_terms_permission($request)) {
-            return new WP_Error('rest_cannot_assign_term',
+            return new WP_Error(
+                'rest_cannot_assign_term',
                 __('Sorry, you are not allowed to assign the provided terms.'),
-                array('status' => rest_authorization_required_code()));
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -794,8 +830,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         }
 
         if ($post && !$this->check_delete_permission($post)) {
-            return new WP_Error('rest_cannot_delete', __('Sorry, you are not allowed to delete this post.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_cannot_delete',
+                __('Sorry, you are not allowed to delete this post.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         return true;
@@ -841,8 +880,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         $supports_trash = apply_filters("rest_{$this->post_type}_trashable", $supports_trash, $post);
 
         if (!$this->check_delete_permission($post)) {
-            return new WP_Error('rest_user_cannot_delete_post', __('Sorry, you are not allowed to delete this post.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_user_cannot_delete_post',
+                __('Sorry, you are not allowed to delete this post.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
 
         $request->set_param('context', 'edit');
@@ -857,14 +899,20 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         } else {
             // If we don't support trashing for this type, error out.
             if (!$supports_trash) {
-                return new WP_Error('rest_trash_not_supported',
-                    __('The post does not support trashing. Set force=true to delete.'), array('status' => 501));
+                return new WP_Error(
+                    'rest_trash_not_supported',
+                    __('The post does not support trashing. Set force=true to delete.'),
+                    array('status' => 501)
+                );
             }
 
             // Otherwise, only trash if we haven't already.
             if ('trash' === $post->post_status) {
-                return new WP_Error('rest_already_trashed', __('The post has already been deleted.'),
-                    array('status' => 410));
+                return new WP_Error(
+                    'rest_already_trashed',
+                    __('The post has already been deleted.'),
+                    array('status' => 410)
+                );
             }
 
             // (Note that internally this falls through to `wp_delete_post` if
@@ -1086,21 +1134,30 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
 
             if ('' !== $request['password']) {
                 if (!empty($schema['properties']['sticky']) && !empty($request['sticky'])) {
-                    return new WP_Error('rest_invalid_field', __('A post can not be sticky and have a password.'),
-                        array('status' => 400));
+                    return new WP_Error(
+                        'rest_invalid_field',
+                        __('A post can not be sticky and have a password.'),
+                        array('status' => 400)
+                    );
                 }
 
                 if (!empty($prepared_post->ID) && is_sticky($prepared_post->ID)) {
-                    return new WP_Error('rest_invalid_field', __('A sticky post can not be password protected.'),
-                        array('status' => 400));
+                    return new WP_Error(
+                        'rest_invalid_field',
+                        __('A sticky post can not be password protected.'),
+                        array('status' => 400)
+                    );
                 }
             }
         }
 
         if (!empty($schema['properties']['sticky']) && !empty($request['sticky'])) {
             if (!empty($prepared_post->ID) && post_password_required($prepared_post->ID)) {
-                return new WP_Error('rest_invalid_field', __('A password protected post can not be set to sticky.'),
-                    array('status' => 400));
+                return new WP_Error(
+                    'rest_invalid_field',
+                    __('A password protected post can not be set to sticky.'),
+                    array('status' => 400)
+                );
             }
         }
 
@@ -1144,7 +1201,6 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
          * @param WP_REST_Request $request Request object.
          */
         return apply_filters("rest_pre_insert_{$this->post_type}", $prepared_post, $request);
-
     }
 
     /**
@@ -1159,24 +1215,27 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      */
     protected function handle_status_param($post_status, $post_type)
     {
-
         switch ($post_status) {
             case 'draft':
             case 'pending':
                 break;
             case 'private':
                 if (!current_user_can($post_type->cap->publish_posts)) {
-                    return new WP_Error('rest_cannot_publish',
+                    return new WP_Error(
+                        'rest_cannot_publish',
                         __('Sorry, you are not allowed to create private posts in this post type.'),
-                        array('status' => rest_authorization_required_code()));
+                        array('status' => rest_authorization_required_code())
+                    );
                 }
                 break;
             case 'publish':
             case 'future':
                 if (!current_user_can($post_type->cap->publish_posts)) {
-                    return new WP_Error('rest_cannot_publish',
+                    return new WP_Error(
+                        'rest_cannot_publish',
                         __('Sorry, you are not allowed to publish posts in this post type.'),
-                        array('status' => rest_authorization_required_code()));
+                        array('status' => rest_authorization_required_code())
+                    );
                 }
                 break;
             default:
@@ -1201,20 +1260,21 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      */
     protected function handle_featured_media($featured_media, $post_id)
     {
-
         $featured_media = (int)$featured_media;
         if ($featured_media) {
             $result = set_post_thumbnail($post_id, $featured_media);
             if ($result) {
                 return true;
             } else {
-                return new WP_Error('rest_invalid_featured_media', __('Invalid featured media ID.'),
-                    array('status' => 400));
+                return new WP_Error(
+                    'rest_invalid_featured_media',
+                    __('Invalid featured media ID.'),
+                    array('status' => 400)
+                );
             }
         } else {
             return delete_post_thumbnail($post_id);
         }
-
     }
 
     /**
@@ -1357,9 +1417,9 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
         }
 
         /*
-		 * If there isn't a parent, but the status is set to inherit, assume
-		 * it's published (as per get_post_status()).
-		 */
+         * If there isn't a parent, but the status is set to inherit, assume
+         * it's published (as per get_post_status()).
+         */
         if ('inherit' === $post->post_status) {
             return true;
         }
@@ -1487,8 +1547,10 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
             // based on the `post_modified` field with the site's timezone
             // offset applied.
             if ('0000-00-00 00:00:00' === $post->post_modified_gmt) {
-                $post_modified_gmt = date('Y-m-d H:i:s',
-                    strtotime($post->post_modified) - (get_option('gmt_offset') * 3600));
+                $post_modified_gmt = date(
+                    'Y-m-d H:i:s',
+                    strtotime($post->post_modified) - (get_option('gmt_offset') * 3600)
+                );
             } else {
                 $post_modified_gmt = $post->post_modified_gmt;
             }
@@ -1693,8 +1755,10 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
             );
         }
 
-        if (in_array($post->post_type, array('post', 'page'), true) || post_type_supports($post->post_type,
-                'comments')) {
+        if (in_array($post->post_type, array('post', 'page'), true) || post_type_supports(
+            $post->post_type,
+                'comments'
+        )) {
             $replies_url = rest_url('wp/v2/comments');
             $replies_url = add_query_arg('post', $post->ID, $replies_url);
 
@@ -1704,8 +1768,10 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
             );
         }
 
-        if (in_array($post->post_type, array('post', 'page'), true) || post_type_supports($post->post_type,
-                'revisions')) {
+        if (in_array($post->post_type, array('post', 'page'), true) || post_type_supports(
+            $post->post_type,
+                'revisions'
+        )) {
             $links['version-history'] = array(
                 'href' => rest_url(trailingslashit($base) . $post->ID . '/revisions'),
             );
@@ -1781,7 +1847,6 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      */
     public function get_item_schema()
     {
-
         $schema = array(
             '$schema' => 'http://json-schema.org/schema#',
             'title' => $this->post_type,
@@ -1929,8 +1994,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
             ),
         );
         foreach ($post_type_attributes as $attribute) {
-            if (isset($fixed_schemas[$this->post_type]) && !in_array($attribute, $fixed_schemas[$this->post_type],
-                    true)) {
+            if (isset($fixed_schemas[$this->post_type]) && !in_array(
+                $attribute,
+                $fixed_schemas[$this->post_type],
+                    true
+            )) {
                 continue;
             } elseif (!isset($fixed_schemas[$this->post_type]) && !post_type_supports($this->post_type, $attribute)) {
                 continue;
@@ -2266,8 +2334,10 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
 
             $query_params[$base] = array(
                 /* translators: %s: taxonomy name */
-                'description' => sprintf(__('Limit result set to all items that have the specified term assigned in the %s taxonomy.'),
-                    $base),
+                'description' => sprintf(
+                    __('Limit result set to all items that have the specified term assigned in the %s taxonomy.'),
+                    $base
+                ),
                 'type' => 'array',
                 'items' => array(
                     'type' => 'integer',
@@ -2277,8 +2347,10 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
 
             $query_params[$base . '_exclude'] = array(
                 /* translators: %s: taxonomy name */
-                'description' => sprintf(__('Limit result set to all items except those that have the specified term assigned in the %s taxonomy.'),
-                    $base),
+                'description' => sprintf(
+                    __('Limit result set to all items except those that have the specified term assigned in the %s taxonomy.'),
+                    $base
+                ),
                 'type' => 'array',
                 'items' => array(
                     'type' => 'integer',
@@ -2345,8 +2417,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
                     return $result;
                 }
             } else {
-                return new WP_Error('rest_forbidden_status', __('Status is forbidden.'),
-                    array('status' => rest_authorization_required_code()));
+                return new WP_Error(
+                    'rest_forbidden_status',
+                    __('Status is forbidden.'),
+                    array('status' => rest_authorization_required_code())
+                );
             }
         }
 

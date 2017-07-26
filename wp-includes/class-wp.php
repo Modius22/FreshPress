@@ -308,16 +308,20 @@ class WP
             } else {
                 foreach ((array)$rewrite as $match => $query) {
                     // If the requested file is the anchor of the match, prepend it to the path info.
-                    if (!empty($requested_file) && strpos($match,
-                            $requested_file) === 0 && $requested_file != $requested_path) {
+                    if (!empty($requested_file) && strpos(
+                        $match,
+                            $requested_file
+                    ) === 0 && $requested_file != $requested_path) {
                         $request_match = $requested_file . '/' . $requested_path;
                     }
 
                     if (preg_match("#^$match#", $request_match, $matches) ||
                         preg_match("#^$match#", urldecode($request_match), $matches)) {
-
-                        if ($wp_rewrite->use_verbose_page_rules && preg_match('/pagename=\$matches\[([0-9]+)\]/',
-                                $query, $varmatch)) {
+                        if ($wp_rewrite->use_verbose_page_rules && preg_match(
+                            '/pagename=\$matches\[([0-9]+)\]/',
+                                $query,
+                            $varmatch
+                        )) {
                             // This is a verbose page match, let's check to be sure about it.
                             $page = get_page_by_path($matches[$varmatch[1]]);
                             if (!$page) {
@@ -357,8 +361,10 @@ class WP
             }
 
             // If req_uri is empty or if it is a request for ourself, unset error.
-            if (empty($requested_path) || $requested_file == $self || strpos($_SERVER['PHP_SELF'],
-                    'wp-admin/') !== false) {
+            if (empty($requested_path) || $requested_file == $self || strpos(
+                $_SERVER['PHP_SELF'],
+                    'wp-admin/'
+            ) !== false) {
                 unset($error, $_GET['error']);
 
                 if (isset($perma_query_vars) && strpos($_SERVER['PHP_SELF'], 'wp-admin/') !== false) {
@@ -523,8 +529,10 @@ class WP
             // We're showing a feed, so WP is indeed the only thing that last changed.
             if (!empty($this->query_vars['withcomments'])
                 || false !== strpos($this->query_vars['feed'], 'comments-')
-                || (empty($this->query_vars['withoutcomments'])
-                    && (!empty($this->query_vars['p'])
+                || (
+                    empty($this->query_vars['withoutcomments'])
+                    && (
+                        !empty($this->query_vars['p'])
                         || !empty($this->query_vars['name'])
                         || !empty($this->query_vars['page_id'])
                         || !empty($this->query_vars['pagename'])
@@ -636,8 +644,7 @@ class WP
         foreach ((array)array_keys($this->query_vars) as $wpvar) {
             if ('' != $this->query_vars[$wpvar]) {
                 $this->query_string .= (strlen($this->query_string) < 1) ? '' : '&';
-                if (!is_scalar($this->query_vars[$wpvar])) // Discard non-scalars.
-                {
+                if (!is_scalar($this->query_vars[$wpvar])) { // Discard non-scalars.
                     continue;
                 }
                 $this->query_string .= $wpvar . '=' . rawurlencode($this->query_vars[$wpvar]);
@@ -771,7 +778,6 @@ class WP
 
         // Never 404 for the admin, robots, or if we found posts.
         if (is_admin() || is_robots() || $wp_query->posts) {
-
             $success = true;
             if (is_singular()) {
                 $p = false;

@@ -261,9 +261,16 @@ function register_sidebar($args = array())
 
     if ($id_is_empty) {
         /* translators: 1: the id argument, 2: sidebar name, 3: recommended id value */
-        _doing_it_wrong(__FUNCTION__,
-            sprintf(__('No %1$s was set in the arguments array for the "%2$s" sidebar. Defaulting to "%3$s". Manually set the %1$s to "%3$s" to silence this notice and keep existing sidebar content.'),
-                '<code>id</code>', $sidebar['name'], $sidebar['id']), '4.2.0');
+        _doing_it_wrong(
+            __FUNCTION__,
+            sprintf(
+                __('No %1$s was set in the arguments array for the "%2$s" sidebar. Defaulting to "%3$s". Manually set the %1$s to "%3$s" to silence this notice and keep existing sidebar content.'),
+                '<code>id</code>',
+                $sidebar['name'],
+                $sidebar['id']
+            ),
+            '4.2.0'
+        );
     }
 
     $wp_registered_sidebars[$sidebar['id']] = $sidebar;
@@ -680,7 +687,6 @@ function dynamic_sidebar($index = 1)
 
     $did_one = false;
     foreach ((array)$sidebars_widgets[$index] as $id) {
-
         if (!isset($wp_registered_widgets[$id])) {
             continue;
         }
@@ -833,8 +839,11 @@ function is_active_widget($callback = false, $widget_id = false, $id_base = fals
 
     if (is_array($sidebars_widgets)) {
         foreach ($sidebars_widgets as $sidebar => $widgets) {
-            if ($skip_inactive && ('wp_inactive_widgets' === $sidebar || 'orphaned_widgets' === substr($sidebar, 0,
-                        16))) {
+            if ($skip_inactive && ('wp_inactive_widgets' === $sidebar || 'orphaned_widgets' === substr(
+                $sidebar,
+                0,
+                        16
+            ))) {
                 continue;
             }
 
@@ -1270,8 +1279,10 @@ function retrieve_widgets($theme_changed = false)
         $lost_widgets[] = $key;
     }
 
-    $sidebars_widgets['wp_inactive_widgets'] = array_merge($lost_widgets,
-        (array)$sidebars_widgets['wp_inactive_widgets']);
+    $sidebars_widgets['wp_inactive_widgets'] = array_merge(
+        $lost_widgets,
+        (array)$sidebars_widgets['wp_inactive_widgets']
+    );
     if ('customize' !== $theme_changed) {
         wp_set_sidebars_widgets($sidebars_widgets);
     }
@@ -1443,8 +1454,7 @@ function wp_widget_rss_form($args, $inputs = null)
                 <?php
                 for ($i = 1; $i <= 20; ++$i) {
                     echo "<option value='$i' " . selected($args['items'], $i, false) . ">$i</option>";
-                }
-                ?>
+                } ?>
             </select></p>
     <?php endif;
     if ($inputs['show_summary']) : ?>
@@ -1468,8 +1478,7 @@ function wp_widget_rss_form($args, $inputs = null)
     endif;
     foreach (array_keys($default_inputs) as $input) :
         if ('hidden' === $inputs[$input]) :
-            $id = str_replace('_', '-', $input);
-            ?>
+            $id = str_replace('_', '-', $input); ?>
             <input type="hidden" id="rss-<?php echo esc_attr($id); ?>-<?php echo $esc_number; ?>"
                    name="widget-rss[<?php echo $esc_number; ?>][<?php echo esc_attr($input); ?>]"
                    value="<?php echo esc_attr($args[$input]); ?>"/>

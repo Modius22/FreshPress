@@ -452,9 +452,7 @@ class WP_Customize_Control
     protected function render()
     {
         $id = 'customize-control-' . str_replace(array('[', ']'), array('-', ''), $this->id);
-        $class = 'customize-control customize-control-' . $this->type;
-
-        ?>
+        $class = 'customize-control customize-control-' . $this->type; ?>
         <li id="<?php echo esc_attr($id); ?>" class="<?php echo esc_attr($class); ?>">
         <?php $this->render_content(); ?>
         </li><?php
@@ -571,8 +569,11 @@ class WP_Customize_Control
                     <select <?php $this->link(); ?>>
                         <?php
                         foreach ($this->choices as $value => $label) {
-                            echo '<option value="' . esc_attr($value) . '"' . selected($this->value(), $value,
-                                    false) . '>' . $label . '</option>';
+                            echo '<option value="' . esc_attr($value) . '"' . selected(
+                                $this->value(),
+                                $value,
+                                    false
+                            ) . '>' . $label . '</option>';
                         }
                         ?>
                     </select>
@@ -618,8 +619,11 @@ class WP_Customize_Control
                     );
                     if (empty($dropdown)) {
                         $dropdown = sprintf('<select id="%1$s" name="%1$s">', esc_attr($dropdown_name));
-                        $dropdown .= sprintf('<option value="%1$s">%2$s</option>', esc_attr($option_none_value),
-                            esc_html($show_option_none));
+                        $dropdown .= sprintf(
+                            '<option value="%1$s">%2$s</option>',
+                            esc_attr($option_none_value),
+                            esc_html($show_option_none)
+                        );
                         $dropdown .= '</select>';
                     }
 
@@ -634,8 +638,11 @@ class WP_Customize_Control
                         foreach ($nav_menus_created_posts_setting->value() as $auto_draft_page_id) {
                             $post = get_post($auto_draft_page_id);
                             if ($post && 'page' === $post->post_type) {
-                                $auto_draft_page_options .= sprintf('<option value="%1$s">%2$s</option>',
-                                    esc_attr($post->ID), esc_html($post->post_title));
+                                $auto_draft_page_options .= sprintf(
+                                    '<option value="%1$s">%2$s</option>',
+                                    esc_attr($post->ID),
+                                    esc_html($post->post_title)
+                                );
                             }
                         }
                         if ($auto_draft_page_options) {
@@ -646,7 +653,7 @@ class WP_Customize_Control
                     echo $dropdown;
                     ?>
                 </label>
-                <?php if ($this->allow_addition && current_user_can('publish_pages') && current_user_can('edit_theme_options')) : // Currently tied to menus functionality. ?>
+                <?php if ($this->allow_addition && current_user_can('publish_pages') && current_user_can('edit_theme_options')) : // Currently tied to menus functionality.?>
                 <button type="button" class="button-link add-new-toggle"><?php
                     /* translators: %s: add new page label */
                     printf(__('+ %s'), get_post_type_object('page')->labels->add_new_item);
@@ -710,7 +717,6 @@ class WP_Customize_Control
     protected function content_template()
     {
     }
-
 }
 
 /**

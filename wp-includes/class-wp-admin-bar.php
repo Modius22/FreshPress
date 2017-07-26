@@ -25,12 +25,15 @@ class WP_Admin_Bar
     public function __get($name)
     {
         switch ($name) {
-            case 'proto' :
+            case 'proto':
                 return is_ssl() ? 'https://' : 'http://';
 
-            case 'menu' :
-                _deprecated_argument('WP_Admin_Bar', '3.3.0',
-                    'Modify admin bar nodes with WP_Admin_Bar::get_node(), WP_Admin_Bar::add_node(), and WP_Admin_Bar::remove_node(), not the <code>menu</code> property.');
+            case 'menu':
+                _deprecated_argument(
+                    'WP_Admin_Bar',
+                    '3.3.0',
+                    'Modify admin bar nodes with WP_Admin_Bar::get_node(), WP_Admin_Bar::add_node(), and WP_Admin_Bar::remove_node(), not the <code>menu</code> property.'
+                );
                 return array(); // Sorry, folks.
         }
     }
@@ -171,9 +174,16 @@ class WP_Admin_Bar
 
         if (isset($back_compat_parents[$args['parent']])) {
             list($new_parent, $version) = $back_compat_parents[$args['parent']];
-            _deprecated_argument(__METHOD__, $version,
-                sprintf('Use <code>%s</code> as the parent for the <code>%s</code> admin bar node instead of <code>%s</code>.',
-                    $new_parent, $args['id'], $args['parent']));
+            _deprecated_argument(
+                __METHOD__,
+                $version,
+                sprintf(
+                    'Use <code>%s</code> as the parent for the <code>%s</code> admin bar node instead of <code>%s</code>.',
+                    $new_parent,
+                    $args['id'],
+                    $args['parent']
+                )
+            );
             $args['parent'] = $new_parent;
         }
 
@@ -449,18 +459,18 @@ class WP_Admin_Bar
             }
         } elseif (wp_is_mobile()) {
             $class .= ' mobile';
-        }
-
-        ?>
+        } ?>
         <div id="wpadminbar" class="<?php echo $class; ?>">
-            <?php if (!is_admin()) { ?>
+            <?php if (!is_admin()) {
+            ?>
                 <a class="screen-reader-shortcut" href="#wp-toolbar" tabindex="1"><?php _e('Skip to toolbar'); ?></a>
-            <?php } ?>
+            <?php
+        } ?>
             <div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="<?php esc_attr_e('Toolbar'); ?>"
                  tabindex="0">
                 <?php foreach ($root->children as $group) {
-                    $this->_render_group($group);
-                } ?>
+            $this->_render_group($group);
+        } ?>
             </div>
             <?php if (is_user_logged_in()) : ?>
                 <a class="screen-reader-shortcut"
@@ -478,14 +488,11 @@ class WP_Admin_Bar
     {
         if ($node->type != 'container' || empty($node->children)) {
             return;
-        }
-
-        ?>
+        } ?>
         <div id="<?php echo esc_attr('wp-admin-bar-' . $node->id); ?>" class="ab-group-container"><?php
         foreach ($node->children as $group) {
             $this->_render_group($group);
-        }
-        ?></div><?php
+        } ?></div><?php
     }
 
     /**
@@ -505,14 +512,11 @@ class WP_Admin_Bar
             $class = ' class="' . esc_attr(trim($node->meta['class'])) . '"';
         } else {
             $class = '';
-        }
-
-        ?>
+        } ?>
         <ul id="<?php echo esc_attr('wp-admin-bar-' . $node->id); ?>"<?php echo $class; ?>><?php
         foreach ($node->children as $item) {
             $this->_render_item($item);
-        }
-        ?></ul><?php
+        } ?></ul><?php
     }
 
     /**
@@ -544,9 +548,7 @@ class WP_Admin_Bar
 
         if ($menuclass) {
             $menuclass = ' class="' . esc_attr(trim($menuclass)) . '"';
-        }
-
-        ?>
+        } ?>
 
         <li id="<?php echo esc_attr('wp-admin-bar-' . $node->id); ?>"<?php echo $menuclass; ?>><?php
     if ($has_link):
@@ -568,8 +570,7 @@ class WP_Admin_Bar
         endif;
         if (!empty($node->meta['dir'])) :
             ?> dir="<?php echo esc_attr($node->meta['dir']); ?>"<?php
-        endif;
-        ?>><?php
+        endif; ?>><?php
     else:
         ?>
         <div class="ab-item ab-empty-item"<?php echo $aria_attributes;
@@ -581,13 +582,12 @@ class WP_Admin_Bar
         endif;
         if (!empty($node->meta['dir'])) :
             ?> dir="<?php echo esc_attr($node->meta['dir']); ?>"<?php
-        endif;
-        ?>><?php
+        endif; ?>><?php
     endif;
 
         echo $node->title;
 
-    if ($has_link) :
+        if ($has_link) :
         ?></a><?php
     else:
         ?></div><?php
@@ -598,15 +598,12 @@ class WP_Admin_Bar
             <div class="ab-sub-wrapper"><?php
             foreach ($node->children as $group) {
                 $this->_render_group($group);
-            }
-            ?></div><?php
+            } ?></div><?php
         endif;
 
         if (!empty($node->meta['html'])) {
             echo $node->meta['html'];
-        }
-
-        ?>
+        } ?>
         </li><?php
     }
 

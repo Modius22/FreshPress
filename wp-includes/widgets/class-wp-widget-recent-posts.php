@@ -81,8 +81,8 @@ class WP_Widget_Recent_Posts extends WP_Widget
             ?>
             <?php echo $args['before_widget']; ?>
             <?php if ($title) {
-            echo $args['before_title'] . $title . $args['after_title'];
-        } ?>
+                echo $args['before_title'] . $title . $args['after_title'];
+            } ?>
             <ul>
                 <?php while ($r->have_posts()) : $r->the_post(); ?>
                     <li>
@@ -133,8 +133,7 @@ class WP_Widget_Recent_Posts extends WP_Widget
     {
         $title = isset($instance['title']) ? esc_attr($instance['title']) : '';
         $number = isset($instance['number']) ? absint($instance['number']) : 5;
-        $show_date = isset($instance['show_date']) ? (bool)$instance['show_date'] : false;
-        ?>
+        $show_date = isset($instance['show_date']) ? (bool)$instance['show_date'] : false; ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                    name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>"/></p>

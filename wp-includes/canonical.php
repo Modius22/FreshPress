@@ -95,16 +95,20 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
 
     if (is_feed() && ($id = get_query_var('p'))) {
         if ($redirect_url = get_post_comments_feed_link($id, get_query_var('feed'))) {
-            $redirect['query'] = _remove_qs_args_if_not_in_url($redirect['query'],
-                array('p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type', 'feed'), $redirect_url);
+            $redirect['query'] = _remove_qs_args_if_not_in_url(
+                $redirect['query'],
+                array('p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type', 'feed'),
+                $redirect_url
+            );
             $redirect['path'] = parse_url($redirect_url, PHP_URL_PATH);
         }
     }
 
     if (is_singular() && 1 > $wp_query->post_count && ($id = get_query_var('p'))) {
-
-        $vars = $wpdb->get_results($wpdb->prepare("SELECT post_type, post_parent FROM $wpdb->posts WHERE ID = %d",
-            $id));
+        $vars = $wpdb->get_results($wpdb->prepare(
+            "SELECT post_type, post_parent FROM $wpdb->posts WHERE ID = %d",
+            $id
+        ));
 
         if (isset($vars[0]) && $vars = $vars[0]) {
             if ('revision' == $vars->post_type && $vars->post_parent > 0) {
@@ -112,8 +116,11 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             }
 
             if ($redirect_url = get_permalink($id)) {
-                $redirect['query'] = _remove_qs_args_if_not_in_url($redirect['query'],
-                    array('p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type'), $redirect_url);
+                $redirect['query'] = _remove_qs_args_if_not_in_url(
+                    $redirect['query'],
+                    array('p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type'),
+                    $redirect_url
+                );
             }
         }
     }
@@ -127,8 +134,11 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             $post_type_obj = get_post_type_object($redirect_post->post_type);
             if ($post_type_obj->public && 'auto-draft' != $redirect_post->post_status) {
                 $redirect_url = get_permalink($redirect_post);
-                $redirect['query'] = _remove_qs_args_if_not_in_url($redirect['query'],
-                    array('p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type'), $redirect_url);
+                $redirect['query'] = _remove_qs_args_if_not_in_url(
+                    $redirect['query'],
+                    array('p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type'),
+                    $redirect_url
+                );
             }
         }
 
@@ -139,20 +149,28 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
             if (!wp_checkdate($month, $day, $year, $date)) {
                 $redirect_url = get_month_link($year, $month);
-                $redirect['query'] = _remove_qs_args_if_not_in_url($redirect['query'], array('year', 'monthnum', 'day'),
-                    $redirect_url);
+                $redirect['query'] = _remove_qs_args_if_not_in_url(
+                    $redirect['query'],
+                    array('year', 'monthnum', 'day'),
+                    $redirect_url
+                );
             }
         } elseif (get_query_var('monthnum') && get_query_var('year') && 12 < get_query_var('monthnum')) {
             $redirect_url = get_year_link(get_query_var('year'));
-            $redirect['query'] = _remove_qs_args_if_not_in_url($redirect['query'], array('year', 'monthnum'),
-                $redirect_url);
+            $redirect['query'] = _remove_qs_args_if_not_in_url(
+                $redirect['query'],
+                array('year', 'monthnum'),
+                $redirect_url
+            );
         }
 
         if (!$redirect_url) {
             if ($redirect_url = redirect_guess_404_permalink()) {
-                $redirect['query'] = _remove_qs_args_if_not_in_url($redirect['query'],
+                $redirect['query'] = _remove_qs_args_if_not_in_url(
+                    $redirect['query'],
                     array('page', 'feed', 'p', 'page_id', 'attachment_id', 'pagename', 'name', 'post_type'),
-                    $redirect_url);
+                    $redirect_url
+                );
             }
         }
 
@@ -162,7 +180,6 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             $redirect['query'] = remove_query_arg('page', $redirect['query']);
             $redirect_url = get_permalink($wp_query->post->ID);
         }
-
     } elseif (is_object($wp_rewrite) && $wp_rewrite->using_permalinks()) {
         // rewriting of old ?p=X, ?m=2004, ?m=200401, ?m=20040101
         if (is_attachment() &&
@@ -225,8 +242,10 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             }
         } elseif (is_author() && !empty($_GET['author']) && preg_match('|^[0-9]+$|', $_GET['author'])) {
             $author = get_userdata(get_query_var('author'));
-            if ((false !== $author) && $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_author = %d AND $wpdb->posts.post_status = 'publish' LIMIT 1",
-                    $author->ID))) {
+            if ((false !== $author) && $wpdb->get_var($wpdb->prepare(
+                "SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_author = %d AND $wpdb->posts.post_status = 'publish' LIMIT 1",
+                    $author->ID
+            ))) {
                 if ($redirect_url = get_author_posts_url($author->ID, $author->user_nicename)) {
                     $redirect['query'] = remove_query_arg('author', $redirect['query']);
                 }
@@ -239,8 +258,10 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             }
 
             $obj = $wp_query->get_queried_object();
-            if ($term_count <= 1 && !empty($obj->term_id) && ($tax_url = get_term_link((int)$obj->term_id,
-                    $obj->taxonomy)) && !is_wp_error($tax_url)) {
+            if ($term_count <= 1 && !empty($obj->term_id) && ($tax_url = get_term_link(
+                (int)$obj->term_id,
+                    $obj->taxonomy
+            )) && !is_wp_error($tax_url)) {
                 if (!empty($redirect['query'])) {
                     // Strip taxonomy query vars off the url.
                     $qv_remove = array('term', 'taxonomy');
@@ -259,10 +280,14 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
 
                     $rewrite_vars = array_diff(array_keys($wp_query->query), array_keys($_GET));
 
-                    if (!array_diff($rewrite_vars,
-                        array_keys($_GET))) { // Check to see if all the Query vars are coming from the rewrite, none are set via $_GET
-                        $redirect['query'] = remove_query_arg($qv_remove,
-                            $redirect['query']); //Remove all of the per-tax qv's
+                    if (!array_diff(
+                        $rewrite_vars,
+                        array_keys($_GET)
+                    )) { // Check to see if all the Query vars are coming from the rewrite, none are set via $_GET
+                        $redirect['query'] = remove_query_arg(
+                            $qv_remove,
+                            $redirect['query']
+                        ); //Remove all of the per-tax qv's
 
                         // Create the destination url for this taxonomy
                         $tax_url = parse_url($tax_url);
@@ -272,7 +297,6 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
                         } else { // Taxonomy is accessible via a "pretty-URL"
                             $redirect['path'] = $tax_url['path'];
                         }
-
                     } else { // Some query vars are set via $_GET. Unset those from $_GET that exist via the rewrite
                         foreach ($qv_remove as $_qv) {
                             if (isset($rewrite_vars[$_qv])) {
@@ -281,13 +305,17 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
                         }
                     }
                 }
-
             }
-        } elseif (is_single() && strpos($wp_rewrite->permalink_structure,
-                '%category%') !== false && $cat = get_query_var('category_name')) {
+        } elseif (is_single() && strpos(
+            $wp_rewrite->permalink_structure,
+                '%category%'
+        ) !== false && $cat = get_query_var('category_name')) {
             $category = get_category_by_path($cat);
-            if ((!$category || is_wp_error($category)) || !has_term($category->term_id, 'category',
-                    $wp_query->get_queried_object_id())) {
+            if ((!$category || is_wp_error($category)) || !has_term(
+                $category->term_id,
+                'category',
+                    $wp_query->get_queried_object_id()
+            )) {
                 $redirect_url = get_permalink($wp_query->get_queried_object_id());
             }
         }
@@ -301,8 +329,10 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
             $page = get_query_var('page');
             if ($page > 1) {
                 if (is_front_page()) {
-                    $redirect_url = trailingslashit($redirect_url) . user_trailingslashit("$wp_rewrite->pagination_base/$page",
-                            'paged');
+                    $redirect_url = trailingslashit($redirect_url) . user_trailingslashit(
+                        "$wp_rewrite->pagination_base/$page",
+                            'paged'
+                    );
                 } else {
                     $redirect_url = trailingslashit($redirect_url) . user_trailingslashit($page, 'single_paged');
                 }
@@ -312,17 +342,32 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
 
         // paging and feeds
         if (get_query_var('paged') || is_feed() || get_query_var('cpage')) {
-            while (preg_match("#/$wp_rewrite->pagination_base/?[0-9]+?(/+)?$#",
-                    $redirect['path']) || preg_match('#/(comments/?)?(feed|rss|rdf|atom|rss2)(/+)?$#',
-                    $redirect['path']) || preg_match("#/{$wp_rewrite->comments_pagination_base}-[0-9]+(/+)?$#",
-                    $redirect['path'])) {
+            while (preg_match(
+                "#/$wp_rewrite->pagination_base/?[0-9]+?(/+)?$#",
+                    $redirect['path']
+            ) || preg_match(
+                        '#/(comments/?)?(feed|rss|rdf|atom|rss2)(/+)?$#',
+                    $redirect['path']
+                    ) || preg_match(
+                        "#/{$wp_rewrite->comments_pagination_base}-[0-9]+(/+)?$#",
+                    $redirect['path']
+                    )) {
                 // Strip off paging and feed
-                $redirect['path'] = preg_replace("#/$wp_rewrite->pagination_base/?[0-9]+?(/+)?$#", '/',
-                    $redirect['path']); // strip off any existing paging
-                $redirect['path'] = preg_replace('#/(comments/?)?(feed|rss2?|rdf|atom)(/+|$)#', '/',
-                    $redirect['path']); // strip off feed endings
-                $redirect['path'] = preg_replace("#/{$wp_rewrite->comments_pagination_base}-[0-9]+?(/+)?$#", '/',
-                    $redirect['path']); // strip off any existing comment paging
+                $redirect['path'] = preg_replace(
+                    "#/$wp_rewrite->pagination_base/?[0-9]+?(/+)?$#",
+                    '/',
+                    $redirect['path']
+                ); // strip off any existing paging
+                $redirect['path'] = preg_replace(
+                    '#/(comments/?)?(feed|rss2?|rdf|atom)(/+|$)#',
+                    '/',
+                    $redirect['path']
+                ); // strip off feed endings
+                $redirect['path'] = preg_replace(
+                    "#/{$wp_rewrite->comments_pagination_base}-[0-9]+?(/+)?$#",
+                    '/',
+                    $redirect['path']
+                ); // strip off any existing comment paging
             }
 
             $addl_path = '';
@@ -332,11 +377,15 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
                     $addl_path .= 'comments/';
                 }
                 if (('rss' == get_default_feed() && 'feed' == get_query_var('feed')) || 'rss' == get_query_var('feed')) {
-                    $addl_path .= user_trailingslashit('feed/' . ((get_default_feed() == 'rss2') ? '' : 'rss2'),
-                        'feed');
+                    $addl_path .= user_trailingslashit(
+                        'feed/' . ((get_default_feed() == 'rss2') ? '' : 'rss2'),
+                        'feed'
+                    );
                 } else {
-                    $addl_path .= user_trailingslashit('feed/' . ((get_default_feed() == get_query_var('feed') || 'feed' == get_query_var('feed')) ? '' : get_query_var('feed')),
-                        'feed');
+                    $addl_path .= user_trailingslashit(
+                        'feed/' . ((get_default_feed() == get_query_var('feed') || 'feed' == get_query_var('feed')) ? '' : get_query_var('feed')),
+                        'feed'
+                    );
                 }
                 $redirect['query'] = remove_query_arg('feed', $redirect['query']);
             } elseif (is_feed() && 'old' == get_query_var('feed')) {
@@ -360,8 +409,10 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
                 $redirect['query'] = remove_query_arg('paged', $redirect['query']);
                 if (!is_feed()) {
                     if ($paged > 1 && !is_single()) {
-                        $addl_path = (!empty($addl_path) ? trailingslashit($addl_path) : '') . user_trailingslashit("$wp_rewrite->pagination_base/$paged",
-                                'paged');
+                        $addl_path = (!empty($addl_path) ? trailingslashit($addl_path) : '') . user_trailingslashit(
+                            "$wp_rewrite->pagination_base/$paged",
+                                'paged'
+                        );
                     } elseif (!is_single()) {
                         $addl_path = !empty($addl_path) ? trailingslashit($addl_path) : '';
                     }
@@ -374,15 +425,22 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
                     ('newest' == get_option('default_comments_page') && get_query_var('cpage') > 0) ||
                     ('newest' != get_option('default_comments_page') && get_query_var('cpage') > 1)
                 )) {
-                $addl_path = (!empty($addl_path) ? trailingslashit($addl_path) : '') . user_trailingslashit($wp_rewrite->comments_pagination_base . '-' . get_query_var('cpage'),
-                        'commentpaged');
+                $addl_path = (!empty($addl_path) ? trailingslashit($addl_path) : '') . user_trailingslashit(
+                    $wp_rewrite->comments_pagination_base . '-' . get_query_var('cpage'),
+                        'commentpaged'
+                );
                 $redirect['query'] = remove_query_arg('cpage', $redirect['query']);
             }
 
-            $redirect['path'] = user_trailingslashit(preg_replace('|/' . preg_quote($wp_rewrite->index, '|') . '/?$|',
-                '/', $redirect['path'])); // strip off trailing /index.php/
-            if (!empty($addl_path) && $wp_rewrite->using_index_permalinks() && strpos($redirect['path'],
-                    '/' . $wp_rewrite->index . '/') === false) {
+            $redirect['path'] = user_trailingslashit(preg_replace(
+                '|/' . preg_quote($wp_rewrite->index, '|') . '/?$|',
+                '/',
+                $redirect['path']
+            )); // strip off trailing /index.php/
+            if (!empty($addl_path) && $wp_rewrite->using_index_permalinks() && strpos(
+                $redirect['path'],
+                    '/' . $wp_rewrite->index . '/'
+            ) === false) {
                 $redirect['path'] = trailingslashit($redirect['path']) . $wp_rewrite->index . '/';
             }
             if (!empty($addl_path)) {
@@ -602,7 +660,7 @@ function redirect_canonical($requested_url = null, $do_redirect = true)
  * @param string $url
  * @return string The altered query string
  */
-function _remove_qs_args_if_not_in_url($query_string, Array $args_to_check, $url)
+function _remove_qs_args_if_not_in_url($query_string, array $args_to_check, $url)
 {
     $parsed_url = @parse_url($url);
     if (!empty($parsed_url['query'])) {
@@ -684,8 +742,10 @@ function redirect_guess_404_permalink()
         if (get_query_var('feed')) {
             return get_post_comments_feed_link($post_id, get_query_var('feed'));
         } elseif (get_query_var('page') && 1 < get_query_var('page')) {
-            return trailingslashit(get_permalink($post_id)) . user_trailingslashit(get_query_var('page'),
-                    'single_paged');
+            return trailingslashit(get_permalink($post_id)) . user_trailingslashit(
+                get_query_var('page'),
+                    'single_paged'
+            );
         } else {
             return get_permalink($post_id);
         }

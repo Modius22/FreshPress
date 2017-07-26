@@ -95,7 +95,8 @@ if (!function_exists('graceful_fail')) :
     {
         _deprecated_function(__FUNCTION__, '3.0.0', 'wp_die()');
         $message = apply_filters('graceful_fail', $message);
-        $message_template = apply_filters('graceful_fail_template',
+        $message_template = apply_filters(
+            'graceful_fail_template',
             '<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -118,7 +119,8 @@ text-align: center;
 <body>
 <p class="message">%s</p>
 </body>
-</html>');
+</html>'
+        );
         die(sprintf($message_template, $message));
     }
 endif;
@@ -198,8 +200,10 @@ function get_blog_list($start = 0, $num = 10, $deprecated = '')
     _deprecated_function(__FUNCTION__, '3.0.0', 'wp_get_sites()');
 
     global $wpdb;
-    $blogs = $wpdb->get_results($wpdb->prepare("SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC",
-        $wpdb->siteid), ARRAY_A);
+    $blogs = $wpdb->get_results($wpdb->prepare(
+        "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC",
+        $wpdb->siteid
+    ), ARRAY_A);
 
     $blog_list = array();
     foreach ((array)$blogs as $details) {
@@ -461,13 +465,18 @@ function get_admin_users_for_domain($sitedomain = '', $path = '')
     if (!$sitedomain) {
         $site_id = $wpdb->siteid;
     } else {
-        $site_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM $wpdb->site WHERE domain = %s AND path = %s",
-            $sitedomain, $path));
+        $site_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT id FROM $wpdb->site WHERE domain = %s AND path = %s",
+            $sitedomain,
+            $path
+        ));
     }
 
     if ($site_id) {
-        return $wpdb->get_results($wpdb->prepare("SELECT u.ID, u.user_login, u.user_pass FROM $wpdb->users AS u, $wpdb->sitemeta AS sm WHERE sm.meta_key = 'admin_user_id' AND u.ID = sm.meta_value AND sm.site_id = %d",
-            $site_id), ARRAY_A);
+        return $wpdb->get_results($wpdb->prepare(
+            "SELECT u.ID, u.user_login, u.user_pass FROM $wpdb->users AS u, $wpdb->sitemeta AS sm WHERE sm.meta_key = 'admin_user_id' AND u.ID = sm.meta_value AND sm.site_id = %d",
+            $site_id
+        ), ARRAY_A);
     }
 
     return false;

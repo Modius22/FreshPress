@@ -295,8 +295,7 @@ function get_the_content($more_link_text = null, $strip_teaser = false)
         return get_the_password_form($post);
     }
 
-    if ($page > count($pages)) // if the requested page doesn't exist
-    {
+    if ($page > count($pages)) { // if the requested page doesn't exist
         $page = count($pages);
     } // give them the highest numbered page that DOES exist
 
@@ -336,16 +335,17 @@ function get_the_content($more_link_text = null, $strip_teaser = false)
              * @param string $more_link_element Read More link element.
              * @param string $more_link_text Read More text.
              */ {
-                $output .= apply_filters('the_content_more_link',
+                $output .= apply_filters(
+                    'the_content_more_link',
                     ' <a href="' . get_permalink() . "#more-{$post->ID}\" class=\"more-link\">$more_link_text</a>",
-                    $more_link_text);
+                    $more_link_text
+                );
             }
             $output = force_balance_tags($output);
         }
     }
 
-    if ($preview) // Preview fix for JavaScript bug with foreign languages.
-    {
+    if ($preview) { // Preview fix for JavaScript bug with foreign languages.
         $output = preg_replace_callback('/\%u([0-9A-F]{4})/', '_convert_urlencoded_to_entities', $output);
     }
 
@@ -646,8 +646,11 @@ function get_body_class($class = '')
             $template_parts = explode('/', $template_slug);
 
             foreach ($template_parts as $part) {
-                $classes[] = "{$post_type}-template-" . sanitize_html_class(str_replace(array('.', '/'), '-',
-                        basename($part, '.php')));
+                $classes[] = "{$post_type}-template-" . sanitize_html_class(str_replace(
+                    array('.', '/'),
+                    '-',
+                        basename($part, '.php')
+                ));
             }
             $classes[] = "{$post_type}-template-" . sanitize_html_class(str_replace('.', '-', $template_slug));
         } else {
@@ -1015,15 +1018,16 @@ function _wp_link_page($i)
         if ('' == get_option('permalink_structure') || in_array($post->post_status, array('draft', 'pending'))) {
             $url = add_query_arg('page', $i, get_permalink());
         } elseif ('page' == get_option('show_on_front') && get_option('page_on_front') == $post->ID) {
-            $url = trailingslashit(get_permalink()) . user_trailingslashit("$wp_rewrite->pagination_base/" . $i,
-                    'single_paged');
+            $url = trailingslashit(get_permalink()) . user_trailingslashit(
+                "$wp_rewrite->pagination_base/" . $i,
+                    'single_paged'
+            );
         } else {
             $url = trailingslashit(get_permalink()) . user_trailingslashit($i, 'single_paged');
         }
     }
 
     if (is_preview()) {
-
         if (('draft' !== $post->post_status) && isset($_GET['preview_id'], $_GET['preview_nonce'])) {
             $query_args['preview_id'] = wp_unslash($_GET['preview_id']);
             $query_args['preview_nonce'] = wp_unslash($_GET['preview_nonce']);
@@ -1089,8 +1093,12 @@ function the_meta()
              * @param string $key Meta key.
              * @param string $value Meta value.
              */
-            echo apply_filters('the_meta_key', "<li><span class='post-meta-key'>$key:</span> $value</li>\n", $key,
-                $value);
+            echo apply_filters(
+                'the_meta_key',
+                "<li><span class='post-meta-key'>$key:</span> $value</li>\n",
+                $key,
+                $value
+            );
         }
         echo "</ul>\n";
     }
@@ -1515,8 +1523,7 @@ function walk_page_tree($pages, $depth, $current_page, $r)
 function walk_page_dropdown_tree()
 {
     $args = func_get_args();
-    if (empty($args[2]['walker'])) // the user's options are the third parameter
-    {
+    if (empty($args[2]['walker'])) { // the user's options are the third parameter
         $walker = new Walker_PageDropdown;
     } else {
         $walker = $args[2]['walker'];
@@ -1615,8 +1622,15 @@ function wp_get_attachment_link(
      * @param bool $icon Whether to include an icon. Default false.
      * @param string|bool $text If string, will be link text. Default false.
      */
-    return apply_filters('wp_get_attachment_link', "<a href='" . esc_url($url) . "'>$link_text</a>", $id, $size,
-        $permalink, $icon, $text);
+    return apply_filters(
+        'wp_get_attachment_link',
+        "<a href='" . esc_url($url) . "'>$link_text</a>",
+        $id,
+        $size,
+        $permalink,
+        $icon,
+        $text
+    );
 }
 
 /**
@@ -1687,8 +1701,10 @@ function get_the_password_form($post = 0)
     $label = 'pwbox-' . (empty($post->ID) ? rand() : $post->ID);
     $output = '<form action="' . esc_url(site_url('wp-login.php?action=postpass', 'login_post')) . '" class="post-password-form" method="post">
 	<p>' . __('This content is password protected. To view it please enter your password below:') . '</p>
-	<p><label for="' . $label . '">' . __('Password:') . ' <input name="post_password" id="' . $label . '" type="password" size="20" /></label> <input type="submit" name="Submit" value="' . esc_attr_x('Enter',
-            'post password form') . '" /></p></form>
+	<p><label for="' . $label . '">' . __('Password:') . ' <input name="post_password" id="' . $label . '" type="password" size="20" /></label> <input type="submit" name="Submit" value="' . esc_attr_x(
+        'Enter',
+            'post password form'
+    ) . '" /></p></form>
 	';
 
     /**

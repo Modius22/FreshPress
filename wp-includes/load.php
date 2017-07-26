@@ -40,8 +40,15 @@ function wp_unregister_GLOBALS()
     // Variables that shouldn't be unset
     $no_unset = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES', 'table_prefix');
 
-    $input = array_merge($_GET, $_POST, $_COOKIE, $_SERVER, $_ENV, $_FILES,
-        isset($_SESSION) && is_array($_SESSION) ? $_SESSION : array());
+    $input = array_merge(
+        $_GET,
+        $_POST,
+        $_COOKIE,
+        $_SERVER,
+        $_ENV,
+        $_FILES,
+        isset($_SESSION) && is_array($_SESSION) ? $_SESSION : array()
+    );
     foreach ($input as $k => $v) {
         if (!in_array($k, $no_unset) && isset($GLOBALS[$k])) {
             unset($GLOBALS[$k]);
@@ -70,8 +77,10 @@ function wp_fix_server_vars()
     $_SERVER = array_merge($default_server_values, $_SERVER);
 
     // Fix for IIS when running with PHP ISAPI
-    if (empty($_SERVER['REQUEST_URI']) || (PHP_SAPI != 'cgi-fcgi' && preg_match('/^Microsoft-IIS\//',
-                $_SERVER['SERVER_SOFTWARE']))) {
+    if (empty($_SERVER['REQUEST_URI']) || (PHP_SAPI != 'cgi-fcgi' && preg_match(
+        '/^Microsoft-IIS\//',
+                $_SERVER['SERVER_SOFTWARE']
+    ))) {
 
         // IIS Mod-Rewrite
         if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) {
@@ -102,8 +111,10 @@ function wp_fix_server_vars()
     }
 
     // Fix for PHP as CGI hosts that set SCRIPT_FILENAME to something ending in php.cgi for all requests
-    if (isset($_SERVER['SCRIPT_FILENAME']) && (strpos($_SERVER['SCRIPT_FILENAME'],
-                'php.cgi') == strlen($_SERVER['SCRIPT_FILENAME']) - 7)) {
+    if (isset($_SERVER['SCRIPT_FILENAME']) && (strpos(
+        $_SERVER['SCRIPT_FILENAME'],
+                'php.cgi'
+    ) == strlen($_SERVER['SCRIPT_FILENAME']) - 7)) {
         $_SERVER['SCRIPT_FILENAME'] = $_SERVER['PATH_TRANSLATED'];
     }
 
@@ -143,8 +154,12 @@ function wp_check_php_mysql_versions()
         header(sprintf('%s 500 Internal Server Error', $protocol), true, 500);
         header('Content-Type: text/html; charset=utf-8');
         /* translators: 1: Current PHP version number, 2: WordPress version number, 3: Minimum required PHP version number */
-        die(sprintf(__('Your server is running PHP version %1$s but WordPress %2$s requires at least %3$s.'),
-            $php_version, $wp_version, $required_php_version));
+        die(sprintf(
+            __('Your server is running PHP version %1$s but WordPress %2$s requires at least %3$s.'),
+            $php_version,
+            $wp_version,
+            $required_php_version
+        ));
     }
 
     if (!extension_loaded('mysql') && !extension_loaded('mysqli') && !extension_loaded('mysqlnd') && !file_exists(WP_CONTENT_DIR . '/db.php')) {
@@ -229,8 +244,7 @@ function wp_maintenance()
     $protocol = wp_get_server_protocol();
     header("$protocol 503 Service Unavailable", true, 503);
     header('Content-Type: text/html; charset=utf-8');
-    header('Retry-After: 600');
-    ?>
+    header('Retry-After: 600'); ?>
     <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml"<?php if (is_rtl()) {
         echo ' dir="rtl"';
@@ -286,8 +300,10 @@ function timer_stop($display = 0, $precision = 3)
     global $timestart, $timeend;
     $timeend = microtime(true);
     $timetotal = $timeend - $timestart;
-    $r = (function_exists('number_format_i18n')) ? number_format_i18n($timetotal,
-        $precision) : number_format($timetotal, $precision);
+    $r = (function_exists('number_format_i18n')) ? number_format_i18n(
+        $timetotal,
+        $precision
+    ) : number_format($timetotal, $precision);
     if ($display) {
         echo $r;
     }
@@ -497,7 +513,8 @@ function wp_set_wpdb_vars()
         wp_load_translations_early();
         wp_die(
         /* translators: 1: $table_prefix 2: wp-config.php */
-            sprintf(__('<strong>ERROR</strong>: %1$s in %2$s can only contain numbers, letters, and underscores.'),
+            sprintf(
+                __('<strong>ERROR</strong>: %1$s in %2$s can only contain numbers, letters, and underscores.'),
                 '<code>$table_prefix</code>',
                 '<code>wp-config.php</code>'
             )

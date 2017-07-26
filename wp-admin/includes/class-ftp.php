@@ -93,46 +93,46 @@ define('FTP_OS_Mac', 'm');
 class ftp_base
 {
     /* Public variables */
-    var $LocalEcho;
-    var $Verbose;
-    var $OS_local;
-    var $OS_remote;
+    public $LocalEcho;
+    public $Verbose;
+    public $OS_local;
+    public $OS_remote;
 
     /* Private variables */
-    var $_lastaction;
-    var $_errors;
-    var $_type;
-    var $_umask;
-    var $_timeout;
-    var $_passive;
-    var $_host;
-    var $_fullhost;
-    var $_port;
-    var $_datahost;
-    var $_dataport;
-    var $_ftp_control_sock;
-    var $_ftp_data_sock;
-    var $_ftp_temp_sock;
-    var $_ftp_buff_size;
-    var $_login;
-    var $_password;
-    var $_connected;
-    var $_ready;
-    var $_code;
-    var $_message;
-    var $_can_restore;
-    var $_port_available;
-    var $_curtype;
-    var $_features;
+    public $_lastaction;
+    public $_errors;
+    public $_type;
+    public $_umask;
+    public $_timeout;
+    public $_passive;
+    public $_host;
+    public $_fullhost;
+    public $_port;
+    public $_datahost;
+    public $_dataport;
+    public $_ftp_control_sock;
+    public $_ftp_data_sock;
+    public $_ftp_temp_sock;
+    public $_ftp_buff_size;
+    public $_login;
+    public $_password;
+    public $_connected;
+    public $_ready;
+    public $_code;
+    public $_message;
+    public $_can_restore;
+    public $_port_available;
+    public $_curtype;
+    public $_features;
 
-    var $_error_array;
-    var $AuthorizedTransferMode;
-    var $OS_FullName;
-    var $_eol_code;
-    var $AutoAsciiExt;
+    public $_error_array;
+    public $AuthorizedTransferMode;
+    public $OS_FullName;
+    public $_eol_code;
+    public $AutoAsciiExt;
 
     /* Constructor */
-    function __construct($port_mode = false, $verb = false, $le = false)
+    public function __construct($port_mode = false, $verb = false, $le = false)
     {
         $this->LocalEcho = $le;
         $this->Verbose = $verb;
@@ -189,20 +189,23 @@ class ftp_base
         }
     }
 
-    function ftp_base($port_mode = false)
+    public function ftp_base($port_mode = false)
     {
         $this->__construct($port_mode);
     }
 
-// <!-- --------------------------------------------------------------------------------------- -->
-// <!--       Public functions                                                                  -->
-// <!-- --------------------------------------------------------------------------------------- -->
+    // <!-- --------------------------------------------------------------------------------------- -->
+    // <!--       Public functions                                                                  -->
+    // <!-- --------------------------------------------------------------------------------------- -->
 
-    function parselisting($line)
+    public function parselisting($line)
     {
         $is_windows = ($this->OS_remote == FTP_OS_Windows);
-        if ($is_windows && preg_match("/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/",
-                $line, $lucifer)) {
+        if ($is_windows && preg_match(
+            "/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/",
+                $line,
+            $lucifer
+        )) {
             $b = array();
             if ($lucifer[3] < 70) {
                 $lucifer[3] += 2000;
@@ -221,8 +224,14 @@ class ftp_base
             $b['year'] = $lucifer[3];
             $b['hour'] = $lucifer[4];
             $b['minute'] = $lucifer[5];
-            $b['time'] = @mktime($lucifer[4] + (strcasecmp($lucifer[6], "PM") == 0 ? 12 : 0), $lucifer[5], 0,
-                $lucifer[1], $lucifer[2], $lucifer[3]);
+            $b['time'] = @mktime(
+                $lucifer[4] + (strcasecmp($lucifer[6], "PM") == 0 ? 12 : 0),
+                $lucifer[5],
+                0,
+                $lucifer[1],
+                $lucifer[2],
+                $lucifer[3]
+            );
             $b['am/pm'] = $lucifer[6];
             $b['name'] = $lucifer[8];
         } else {
@@ -264,8 +273,14 @@ class ftp_base
                         $b['hour'] = 0;
                         $b['minute'] = 0;
                     }
-                    $b['time'] = strtotime(sprintf("%d %s %d %02d:%02d", $b['day'], $b['month'], $b['year'], $b['hour'],
-                        $b['minute']));
+                    $b['time'] = strtotime(sprintf(
+                        "%d %s %d %02d:%02d",
+                        $b['day'],
+                        $b['month'],
+                        $b['year'],
+                        $b['hour'],
+                        $b['minute']
+                    ));
                     $b['name'] = $lucifer[8];
                 }
             }
@@ -274,7 +289,7 @@ class ftp_base
         return $b;
     }
 
-    function SendMSG($message = "", $crlf = true)
+    public function SendMSG($message = "", $crlf = true)
     {
         if ($this->Verbose) {
             echo $message . ($crlf ? CRLF : "");
@@ -283,7 +298,7 @@ class ftp_base
         return true;
     }
 
-    function SetType($mode = FTP_AUTOASCII)
+    public function SetType($mode = FTP_AUTOASCII)
     {
         if (!in_array($mode, $this->AuthorizedTransferMode)) {
             $this->SendMSG("Wrong type");
@@ -294,7 +309,7 @@ class ftp_base
         return true;
     }
 
-    function _settype($mode = FTP_ASCII)
+    public function _settype($mode = FTP_ASCII)
     {
         if ($this->_ready) {
             if ($mode == FTP_BINARY) {
@@ -316,7 +331,7 @@ class ftp_base
         return true;
     }
 
-    function Passive($pasv = null)
+    public function Passive($pasv = null)
     {
         if (is_null($pasv)) {
             $this->_passive = !$this->_passive;
@@ -332,7 +347,7 @@ class ftp_base
         return true;
     }
 
-    function SetServer($host, $port = 21, $reconnect = true)
+    public function SetServer($host, $port = 21, $reconnect = true)
     {
         if (!is_long($port)) {
             $this->verbose = true;
@@ -374,7 +389,7 @@ class ftp_base
         return true;
     }
 
-    function SetUmask($umask = 0022)
+    public function SetUmask($umask = 0022)
     {
         $this->_umask = $umask;
         umask($this->_umask);
@@ -382,7 +397,7 @@ class ftp_base
         return true;
     }
 
-    function SetTimeout($timeout = 30)
+    public function SetTimeout($timeout = 30)
     {
         $this->_timeout = $timeout;
         $this->SendMSG("Timeout " . $this->_timeout);
@@ -394,7 +409,7 @@ class ftp_base
         return true;
     }
 
-    function connect($server = null)
+    public function connect($server = null)
     {
         if (!empty($server)) {
             if (!$this->SetServer($server)) {
@@ -443,7 +458,7 @@ class ftp_base
         return true;
     }
 
-    function quit($force = false)
+    public function quit($force = false)
     {
         if ($this->_ready) {
             if (!$this->_exec("QUIT") and !$force) {
@@ -459,7 +474,7 @@ class ftp_base
         return true;
     }
 
-    function login($user = null, $pass = null)
+    public function login($user = null, $pass = null)
     {
         if (!is_null($user)) {
             $this->_login = $user;
@@ -496,7 +511,7 @@ class ftp_base
         return true;
     }
 
-    function pwd()
+    public function pwd()
     {
         if (!$this->_exec("PWD", "pwd")) {
             return false;
@@ -507,7 +522,7 @@ class ftp_base
         return preg_replace("/^[0-9]{3} \"(.+)\".*$/s", "\\1", $this->_message);
     }
 
-    function cdup()
+    public function cdup()
     {
         if (!$this->_exec("CDUP", "cdup")) {
             return false;
@@ -518,7 +533,7 @@ class ftp_base
         return true;
     }
 
-    function chdir($pathname)
+    public function chdir($pathname)
     {
         if (!$this->_exec("CWD " . $pathname, "chdir")) {
             return false;
@@ -529,7 +544,7 @@ class ftp_base
         return true;
     }
 
-    function rmdir($pathname)
+    public function rmdir($pathname)
     {
         if (!$this->_exec("RMD " . $pathname, "rmdir")) {
             return false;
@@ -540,7 +555,7 @@ class ftp_base
         return true;
     }
 
-    function mkdir($pathname)
+    public function mkdir($pathname)
     {
         if (!$this->_exec("MKD " . $pathname, "mkdir")) {
             return false;
@@ -551,7 +566,7 @@ class ftp_base
         return true;
     }
 
-    function rename($from, $to)
+    public function rename($from, $to)
     {
         if (!$this->_exec("RNFR " . $from, "rename")) {
             return false;
@@ -572,7 +587,7 @@ class ftp_base
         return true;
     }
 
-    function filesize($pathname)
+    public function filesize($pathname)
     {
         if (!isset($this->_features["SIZE"])) {
             $this->PushError("filesize", "not supported by server");
@@ -587,7 +602,7 @@ class ftp_base
         return preg_replace("/^[0-9]{3} ([0-9]+).*$/s", "\\1", $this->_message);
     }
 
-    function abort()
+    public function abort()
     {
         if (!$this->_exec("ABOR", "abort")) {
             return false;
@@ -606,7 +621,7 @@ class ftp_base
         return true;
     }
 
-    function mdtm($pathname)
+    public function mdtm($pathname)
     {
         if (!isset($this->_features["MDTM"])) {
             $this->PushError("mdtm", "not supported by server");
@@ -624,7 +639,7 @@ class ftp_base
         return $timestamp;
     }
 
-    function systype()
+    public function systype()
     {
         if (!$this->_exec("SYST", "systype")) {
             return false;
@@ -636,7 +651,7 @@ class ftp_base
         return array($DATA[1], $DATA[3]);
     }
 
-    function delete($pathname)
+    public function delete($pathname)
     {
         if (!$this->_exec("DELE " . $pathname, "delete")) {
             return false;
@@ -647,7 +662,7 @@ class ftp_base
         return true;
     }
 
-    function site($command, $fnction = "site")
+    public function site($command, $fnction = "site")
     {
         if (!$this->_exec("SITE " . $command, $fnction)) {
             return false;
@@ -658,7 +673,7 @@ class ftp_base
         return true;
     }
 
-    function chmod($pathname, $mode)
+    public function chmod($pathname, $mode)
     {
         if (!$this->site(sprintf('CHMOD %o %s', $mode, $pathname), "chmod")) {
             return false;
@@ -666,7 +681,7 @@ class ftp_base
         return true;
     }
 
-    function restore($from)
+    public function restore($from)
     {
         if (!isset($this->_features["REST"])) {
             $this->PushError("restore", "not supported by server");
@@ -685,7 +700,7 @@ class ftp_base
         return true;
     }
 
-    function features()
+    public function features()
     {
         if (!$this->_exec("FEAT", "features")) {
             return false;
@@ -693,8 +708,12 @@ class ftp_base
         if (!$this->_checkCode()) {
             return false;
         }
-        $f = preg_split("/[" . CRLF . "]+/", preg_replace("/[0-9]{3}[ -].*[" . CRLF . "]+/", "", $this->_message), -1,
-            PREG_SPLIT_NO_EMPTY);
+        $f = preg_split(
+            "/[" . CRLF . "]+/",
+            preg_replace("/[0-9]{3}[ -].*[" . CRLF . "]+/", "", $this->_message),
+            -1,
+            PREG_SPLIT_NO_EMPTY
+        );
         $this->_features = array();
         foreach ($f as $k => $v) {
             $v = explode(" ", trim($v));
@@ -703,22 +722,22 @@ class ftp_base
         return true;
     }
 
-    function rawlist($pathname = "", $arg = "")
+    public function rawlist($pathname = "", $arg = "")
     {
         return $this->_list(($arg ? " " . $arg : "") . ($pathname ? " " . $pathname : ""), "LIST", "rawlist");
     }
 
-    function nlist($pathname = "", $arg = "")
+    public function nlist($pathname = "", $arg = "")
     {
         return $this->_list(($arg ? " " . $arg : "") . ($pathname ? " " . $pathname : ""), "NLST", "nlist");
     }
 
-    function is_exists($pathname)
+    public function is_exists($pathname)
     {
         return $this->file_exists($pathname);
     }
 
-    function file_exists($pathname)
+    public function file_exists($pathname)
     {
         $exists = true;
         if (!$this->_exec("RNFR " . $pathname, "rename")) {
@@ -737,14 +756,16 @@ class ftp_base
         return $exists;
     }
 
-    function fget($fp, $remotefile, $rest = 0)
+    public function fget($fp, $remotefile, $rest = 0)
     {
         if ($this->_can_restore and $rest != 0) {
             fseek($fp, $rest);
         }
         $pi = pathinfo($remotefile);
-        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(strtoupper($pi["extension"]),
-                    $this->AutoAsciiExt))) {
+        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
+            strtoupper($pi["extension"]),
+                    $this->AutoAsciiExt
+        ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -774,7 +795,7 @@ class ftp_base
         return $out;
     }
 
-    function get($remotefile, $localfile = null, $rest = 0)
+    public function get($remotefile, $localfile = null, $rest = 0)
     {
         if (is_null($localfile)) {
             $localfile = $remotefile;
@@ -791,8 +812,10 @@ class ftp_base
             fseek($fp, $rest);
         }
         $pi = pathinfo($remotefile);
-        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(strtoupper($pi["extension"]),
-                    $this->AutoAsciiExt))) {
+        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
+            strtoupper($pi["extension"]),
+                    $this->AutoAsciiExt
+        ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -826,14 +849,16 @@ class ftp_base
         return $out;
     }
 
-    function fput($remotefile, $fp)
+    public function fput($remotefile, $fp)
     {
         if ($this->_can_restore and $rest != 0) {
             fseek($fp, $rest);
         }
         $pi = pathinfo($remotefile);
-        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(strtoupper($pi["extension"]),
-                    $this->AutoAsciiExt))) {
+        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
+            strtoupper($pi["extension"]),
+                    $this->AutoAsciiExt
+        ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -863,7 +888,7 @@ class ftp_base
         return $ret;
     }
 
-    function put($localfile, $remotefile = null, $rest = 0)
+    public function put($localfile, $remotefile = null, $rest = 0)
     {
         if (is_null($remotefile)) {
             $remotefile = $localfile;
@@ -882,8 +907,10 @@ class ftp_base
             fseek($fp, $rest);
         }
         $pi = pathinfo($localfile);
-        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(strtoupper($pi["extension"]),
-                    $this->AutoAsciiExt))) {
+        if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
+            strtoupper($pi["extension"]),
+                    $this->AutoAsciiExt
+        ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -917,7 +944,7 @@ class ftp_base
         return $ret;
     }
 
-    function mput($local = ".", $remote = null, $continious = false)
+    public function mput($local = ".", $remote = null, $continious = false)
     {
         $local = realpath($local);
         if (!@file_exists($local)) {
@@ -962,15 +989,17 @@ class ftp_base
             }
         }
         return $ret;
-
     }
 
-    function mget($remote, $local = ".", $continious = false)
+    public function mget($remote, $local = ".", $continious = false)
     {
         $list = $this->rawlist($remote, "-lA");
         if ($list === false) {
-            $this->PushError("mget", "can't read remote folder list",
-                "Can't read remote folder \"" . $remote . "\" contents");
+            $this->PushError(
+                "mget",
+                "can't read remote folder list",
+                "Can't read remote folder \"" . $remote . "\" contents"
+            );
             return false;
         }
         if (empty($list)) {
@@ -992,8 +1021,11 @@ class ftp_base
         foreach ($list as $el) {
             if ($el["type"] == "d") {
                 if (!$this->mget($remote . "/" . $el["name"], $local . "/" . $el["name"], $continious)) {
-                    $this->PushError("mget", "can't copy folder",
-                        "Can't copy remote folder \"" . $remote . "/" . $el["name"] . "\" to local \"" . $local . "/" . $el["name"] . "\"");
+                    $this->PushError(
+                        "mget",
+                        "can't copy folder",
+                        "Can't copy remote folder \"" . $remote . "/" . $el["name"] . "\" to local \"" . $local . "/" . $el["name"] . "\""
+                    );
                     $ret = false;
                     if (!$continious) {
                         break;
@@ -1001,8 +1033,11 @@ class ftp_base
                 }
             } else {
                 if (!$this->get($remote . "/" . $el["name"], $local . "/" . $el["name"])) {
-                    $this->PushError("mget", "can't copy file",
-                        "Can't copy remote file \"" . $remote . "/" . $el["name"] . "\" to local \"" . $local . "/" . $el["name"] . "\"");
+                    $this->PushError(
+                        "mget",
+                        "can't copy file",
+                        "Can't copy remote file \"" . $remote . "/" . $el["name"] . "\" to local \"" . $local . "/" . $el["name"] . "\""
+                    );
                     $ret = false;
                     if (!$continious) {
                         break;
@@ -1018,12 +1053,15 @@ class ftp_base
         return $ret;
     }
 
-    function mdel($remote, $continious = false)
+    public function mdel($remote, $continious = false)
     {
         $list = $this->rawlist($remote, "-la");
         if ($list === false) {
-            $this->PushError("mdel", "can't read remote folder list",
-                "Can't read remote folder \"" . $remote . "\" contents");
+            $this->PushError(
+                "mdel",
+                "can't read remote folder list",
+                "Can't read remote folder \"" . $remote . "\" contents"
+            );
             return false;
         }
 
@@ -1049,8 +1087,11 @@ class ftp_base
                 }
             } else {
                 if (!$this->delete($remote . "/" . $el["name"])) {
-                    $this->PushError("mdel", "can't delete file",
-                        "Can't delete remote file \"" . $remote . "/" . $el["name"] . "\"");
+                    $this->PushError(
+                        "mdel",
+                        "can't delete file",
+                        "Can't delete remote file \"" . $remote . "/" . $el["name"] . "\""
+                    );
                     $ret = false;
                     if (!$continious) {
                         break;
@@ -1060,14 +1101,17 @@ class ftp_base
         }
 
         if (!$this->rmdir($remote)) {
-            $this->PushError("mdel", "can't delete folder",
-                "Can't delete remote folder \"" . $remote . "/" . $el["name"] . "\"");
+            $this->PushError(
+                "mdel",
+                "can't delete folder",
+                "Can't delete remote folder \"" . $remote . "/" . $el["name"] . "\""
+            );
             $ret = false;
         }
         return $ret;
     }
 
-    function mmkdir($dir, $mode = 0777)
+    public function mmkdir($dir, $mode = 0777)
     {
         if (empty($dir)) {
             return false;
@@ -1083,7 +1127,7 @@ class ftp_base
         return $r;
     }
 
-    function glob($pattern, $handle = null)
+    public function glob($pattern, $handle = null)
     {
         $path = $output = null;
         if (PHP_OS == 'WIN32') {
@@ -1122,7 +1166,7 @@ class ftp_base
         return false;
     }
 
-    function glob_pattern_match($pattern, $string)
+    public function glob_pattern_match($pattern, $string)
     {
         $out = null;
         $chunks = explode(';', $pattern);
@@ -1134,10 +1178,19 @@ class ftp_base
             foreach ($escape as $probe) {
                 $pattern = str_replace($probe, "\\$probe", $pattern);
             }
-            $pattern = str_replace('?*', '*',
-                str_replace('*?', '*',
-                    str_replace('*', ".*",
-                        str_replace('?', '.{1,1}', $pattern))));
+            $pattern = str_replace(
+                '?*',
+                '*',
+                str_replace(
+                    '*?',
+                    '*',
+                    str_replace(
+                        '*',
+                        ".*",
+                        str_replace('?', '.{1,1}', $pattern)
+                    )
+                )
+            );
             $out[] = $pattern;
         }
         if (count($out) == 1) {
@@ -1152,7 +1205,7 @@ class ftp_base
         return false;
     }
 
-    function glob_regexp($pattern, $probe)
+    public function glob_regexp($pattern, $probe)
     {
         $sensitive = (PHP_OS != 'WIN32');
         return ($sensitive ?
@@ -1161,12 +1214,15 @@ class ftp_base
         );
     }
 
-    function dirlist($remote)
+    public function dirlist($remote)
     {
         $list = $this->rawlist($remote, "-la");
         if ($list === false) {
-            $this->PushError("dirlist", "can't read remote folder list",
-                "Can't read remote folder \"" . $remote . "\" contents");
+            $this->PushError(
+                "dirlist",
+                "can't read remote folder list",
+                "Can't read remote folder \"" . $remote . "\" contents"
+            );
             return false;
         }
 
@@ -1186,15 +1242,15 @@ class ftp_base
 
         return $dirlist;
     }
-// <!-- --------------------------------------------------------------------------------------- -->
-// <!--       Private functions                                                                 -->
-// <!-- --------------------------------------------------------------------------------------- -->
-    function _checkCode()
+    // <!-- --------------------------------------------------------------------------------------- -->
+    // <!--       Private functions                                                                 -->
+    // <!-- --------------------------------------------------------------------------------------- -->
+    public function _checkCode()
     {
         return ($this->_code < 400 and $this->_code > 0);
     }
 
-    function _list($arg = "", $cmd = "LIST", $fnction = "_list")
+    public function _list($arg = "", $cmd = "LIST", $fnction = "_list")
     {
         if (!$this->_data_prepare()) {
             return false;
@@ -1221,16 +1277,16 @@ class ftp_base
                 return false;
             }
             $out = preg_split("/[" . CRLF . "]+/", $out, -1, PREG_SPLIT_NO_EMPTY);
-//			$this->SendMSG(implode($this->_eol_code[$this->OS_local], $out));
+            //			$this->SendMSG(implode($this->_eol_code[$this->OS_local], $out));
         }
         return $out;
     }
 
-// <!-- --------------------------------------------------------------------------------------- -->
-// <!-- Partie : gestion des erreurs                                                            -->
-// <!-- --------------------------------------------------------------------------------------- -->
-// Gnre une erreur pour traitement externe  la classe
-    function PushError($fctname, $msg, $desc = false)
+    // <!-- --------------------------------------------------------------------------------------- -->
+    // <!-- Partie : gestion des erreurs                                                            -->
+    // <!-- --------------------------------------------------------------------------------------- -->
+    // Gnre une erreur pour traitement externe  la classe
+    public function PushError($fctname, $msg, $desc = false)
     {
         $error = array();
         $error['time'] = time();
@@ -1246,8 +1302,8 @@ class ftp_base
         return (array_push($this->_error_array, $error));
     }
 
-// Rcupre une erreur externe
-    function PopError()
+    // Rcupre une erreur externe
+    public function PopError()
     {
         if (count($this->_error_array)) {
             return (array_pop($this->_error_array));

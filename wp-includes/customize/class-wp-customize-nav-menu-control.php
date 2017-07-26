@@ -83,10 +83,10 @@ class WP_Customize_Nav_Menu_Control extends WP_Customize_Control
                                class="menu-location"/> <?php echo $description; ?>
                         <span class="theme-location-set"><?php
                             /* translators: %s: menu name */
-                            printf(_x('(Current: %s)', 'menu location'),
+                            printf(
+                                _x('(Current: %s)', 'menu location'),
                                 '<span class="current-menu-location-name-' . esc_attr($location) . '"></span>'
-                            );
-                            ?></span>
+                            ); ?></span>
                     </label>
                 </li>
             <?php endforeach; ?>

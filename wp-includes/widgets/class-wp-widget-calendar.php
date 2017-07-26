@@ -56,8 +56,12 @@ class WP_Widget_Calendar extends WP_Widget
     public function widget($args, $instance)
     {
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-        $title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance,
-            $this->id_base);
+        $title = apply_filters(
+            'widget_title',
+            empty($instance['title']) ? '' : $instance['title'],
+            $instance,
+            $this->id_base
+        );
 
         echo $args['before_widget'];
         if ($title) {
@@ -105,8 +109,7 @@ class WP_Widget_Calendar extends WP_Widget
     public function form($instance)
     {
         $instance = wp_parse_args((array)$instance, array('title' => ''));
-        $title = sanitize_text_field($instance['title']);
-        ?>
+        $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                    name="<?php echo $this->get_field_name('title'); ?>" type="text"

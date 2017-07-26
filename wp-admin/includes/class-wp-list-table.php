@@ -391,8 +391,7 @@ class WP_List_Table
         }
         if (!empty($_REQUEST['detached'])) {
             echo '<input type="hidden" name="detached" value="' . esc_attr($_REQUEST['detached']) . '" />';
-        }
-        ?>
+        } ?>
         <p class="search-box">
             <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo $text; ?>:</label>
             <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s"
@@ -631,8 +630,7 @@ class WP_List_Table
             return;
         }
 
-        $m = isset($_GET['m']) ? (int)$_GET['m'] : 0;
-        ?>
+        $m = isset($_GET['m']) ? (int)$_GET['m'] : 0; ?>
         <label for="filter-by-date" class="screen-reader-text"><?php _e('Filter by date'); ?></label>
         <select name="m" id="filter-by-date">
             <option<?php selected($m, 0); ?> value="0"><?php _e('All dates'); ?></option>
@@ -645,14 +643,14 @@ class WP_List_Table
                 $month = zeroise($arc_row->month, 2);
                 $year = $arc_row->year;
 
-                printf("<option %s value='%s'>%s</option>\n",
+                printf(
+                    "<option %s value='%s'>%s</option>\n",
                     selected($m, $year . $month, false),
                     esc_attr($arc_row->year . $month),
                     /* translators: 1: month name, 2: 4-digit year */
                     sprintf(__('%1$s %2$d'), $wp_locale->get_month($month), $year)
                 );
-            }
-            ?>
+            } ?>
         </select>
         <?php
     }
@@ -682,8 +680,7 @@ class WP_List_Table
                     implode(' ', $classes),
                     $title
                 );
-            }
-            ?>
+            } ?>
         </div>
         <?php
     }
@@ -705,40 +702,53 @@ class WP_List_Table
         $pending_comments_number = number_format_i18n($pending_comments);
 
         $approved_only_phrase = sprintf(_n('%s comment', '%s comments', $approved_comments), $approved_comments_number);
-        $approved_phrase = sprintf(_n('%s approved comment', '%s approved comments', $approved_comments),
-            $approved_comments_number);
-        $pending_phrase = sprintf(_n('%s pending comment', '%s pending comments', $pending_comments),
-            $pending_comments_number);
+        $approved_phrase = sprintf(
+            _n('%s approved comment', '%s approved comments', $approved_comments),
+            $approved_comments_number
+        );
+        $pending_phrase = sprintf(
+            _n('%s pending comment', '%s pending comments', $pending_comments),
+            $pending_comments_number
+        );
 
         // No comments at all.
         if (!$approved_comments && !$pending_comments) {
-            printf('<span aria-hidden="true">—</span><span class="screen-reader-text">%s</span>',
+            printf(
+                '<span aria-hidden="true">—</span><span class="screen-reader-text">%s</span>',
                 __('No comments')
             );
             // Approved comments have different display depending on some conditions.
         } elseif ($approved_comments) {
-            printf('<a href="%s" class="post-com-count post-com-count-approved"><span class="comment-count-approved" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
-                esc_url(add_query_arg(array('p' => $post_id, 'comment_status' => 'approved'),
-                    admin_url('edit-comments.php'))),
+            printf(
+                '<a href="%s" class="post-com-count post-com-count-approved"><span class="comment-count-approved" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
+                esc_url(add_query_arg(
+                    array('p' => $post_id, 'comment_status' => 'approved'),
+                    admin_url('edit-comments.php')
+                )),
                 $approved_comments_number,
                 $pending_comments ? $approved_phrase : $approved_only_phrase
             );
         } else {
-            printf('<span class="post-com-count post-com-count-no-comments"><span class="comment-count comment-count-no-comments" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
+            printf(
+                '<span class="post-com-count post-com-count-no-comments"><span class="comment-count comment-count-no-comments" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
                 $approved_comments_number,
                 $pending_comments ? __('No approved comments') : __('No comments')
             );
         }
 
         if ($pending_comments) {
-            printf('<a href="%s" class="post-com-count post-com-count-pending"><span class="comment-count-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
-                esc_url(add_query_arg(array('p' => $post_id, 'comment_status' => 'moderated'),
-                    admin_url('edit-comments.php'))),
+            printf(
+                '<a href="%s" class="post-com-count post-com-count-pending"><span class="comment-count-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
+                esc_url(add_query_arg(
+                    array('p' => $post_id, 'comment_status' => 'moderated'),
+                    admin_url('edit-comments.php')
+                )),
                 $pending_comments_number,
                 $pending_phrase
             );
         } else {
-            printf('<span class="post-com-count post-com-count-pending post-com-count-no-pending"><span class="comment-count comment-count-no-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
+            printf(
+                '<span class="post-com-count post-com-count-pending post-com-count-no-pending"><span class="comment-count comment-count-no-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
                 $pending_comments_number,
                 $approved_comments ? __('No pending comments') : __('No comments')
             );
@@ -822,8 +832,10 @@ class WP_List_Table
             $this->screen->render_screen_reader_content('heading_pagination');
         }
 
-        $output = '<span class="displaying-num">' . sprintf(_n('%s item', '%s items', $total_items),
-                number_format_i18n($total_items)) . '</span>';
+        $output = '<span class="displaying-num">' . sprintf(
+            _n('%s item', '%s items', $total_items),
+                number_format_i18n($total_items)
+        ) . '</span>';
 
         $current = $this->get_pagenum();
         $removable_query_args = wp_removable_query_args();
@@ -857,7 +869,8 @@ class WP_List_Table
         if ($disable_first) {
             $page_links[] = '<span class="tablenav-pages-navspan" aria-hidden="true">&laquo;</span>';
         } else {
-            $page_links[] = sprintf("<a class='first-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+            $page_links[] = sprintf(
+                "<a class='first-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
                 esc_url(remove_query_arg('paged', $current_url)),
                 __('First page'),
                 '&laquo;'
@@ -867,7 +880,8 @@ class WP_List_Table
         if ($disable_prev) {
             $page_links[] = '<span class="tablenav-pages-navspan" aria-hidden="true">&lsaquo;</span>';
         } else {
-            $page_links[] = sprintf("<a class='prev-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+            $page_links[] = sprintf(
+                "<a class='prev-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
                 esc_url(add_query_arg('paged', max(1, $current - 1), $current_url)),
                 __('Previous page'),
                 '&lsaquo;'
@@ -878,20 +892,25 @@ class WP_List_Table
             $html_current_page = $current;
             $total_pages_before = '<span class="screen-reader-text">' . __('Current Page') . '</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">';
         } else {
-            $html_current_page = sprintf("%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' /><span class='tablenav-paging-text'>",
+            $html_current_page = sprintf(
+                "%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' /><span class='tablenav-paging-text'>",
                 '<label for="current-page-selector" class="screen-reader-text">' . __('Current Page') . '</label>',
                 $current,
                 strlen($total_pages)
             );
         }
         $html_total_pages = sprintf("<span class='total-pages'>%s</span>", number_format_i18n($total_pages));
-        $page_links[] = $total_pages_before . sprintf(_x('%1$s of %2$s', 'paging'), $html_current_page,
-                $html_total_pages) . $total_pages_after;
+        $page_links[] = $total_pages_before . sprintf(
+            _x('%1$s of %2$s', 'paging'),
+            $html_current_page,
+                $html_total_pages
+        ) . $total_pages_after;
 
         if ($disable_next) {
             $page_links[] = '<span class="tablenav-pages-navspan" aria-hidden="true">&rsaquo;</span>';
         } else {
-            $page_links[] = sprintf("<a class='next-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+            $page_links[] = sprintf(
+                "<a class='next-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
                 esc_url(add_query_arg('paged', min($total_pages, $current + 1), $current_url)),
                 __('Next page'),
                 '&rsaquo;'
@@ -901,7 +920,8 @@ class WP_List_Table
         if ($disable_last) {
             $page_links[] = '<span class="tablenav-pages-navspan" aria-hidden="true">&raquo;</span>';
         } else {
-            $page_links[] = sprintf("<a class='last-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+            $page_links[] = sprintf(
+                "<a class='last-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
                 esc_url(add_query_arg('paged', $total_pages, $current_url)),
                 __('Last page'),
                 '&raquo;'
@@ -1105,7 +1125,7 @@ class WP_List_Table
      */
     public function get_column_count()
     {
-        list ($columns, $hidden) = $this->get_column_info();
+        list($columns, $hidden) = $this->get_column_info();
         $hidden = array_intersect(array_keys($columns), array_filter($hidden));
         return count($columns) - count($hidden);
     }
@@ -1176,8 +1196,10 @@ class WP_List_Table
                     $class[] = $desc_first ? 'asc' : 'desc';
                 }
 
-                $column_display_name = '<a href="' . esc_url(add_query_arg(compact('orderby', 'order'),
-                        $current_url)) . '"><span>' . $column_display_name . '</span><span class="sorting-indicator"></span></a>';
+                $column_display_name = '<a href="' . esc_url(add_query_arg(
+                    compact('orderby', 'order'),
+                        $current_url
+                )) . '"><span>' . $column_display_name . '</span><span class="sorting-indicator"></span></a>';
             }
 
             $tag = ('cb' === $column_key) ? 'td' : 'th';
@@ -1204,8 +1226,7 @@ class WP_List_Table
 
         $this->display_tablenav('top');
 
-        $this->screen->render_screen_reader_content('heading_list');
-        ?>
+        $this->screen->render_screen_reader_content('heading_list'); ?>
         <table class="wp-list-table <?php echo implode(' ', $this->get_table_classes()); ?>">
             <thead>
                 <tr>
@@ -1255,8 +1276,7 @@ class WP_List_Table
     {
         if ('top' === $which) {
             wp_nonce_field('bulk-' . $this->_args['plural']);
-        }
-        ?>
+        } ?>
         <div class="tablenav <?php echo esc_attr($which); ?>">
 
             <?php if ($this->has_items()): ?>
@@ -1264,9 +1284,8 @@ class WP_List_Table
                     <?php $this->bulk_actions($which); ?>
                 </div>
             <?php endif;
-            $this->extra_tablenav($which);
-            $this->pagination($which);
-            ?>
+        $this->extra_tablenav($which);
+        $this->pagination($which); ?>
 
             <br class="clear"/>
         </div>

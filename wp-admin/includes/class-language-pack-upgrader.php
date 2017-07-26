@@ -234,7 +234,6 @@ class Language_Pack_Upgrader extends WP_Upgrader
         $language_updates_results = array();
 
         foreach ($language_updates as $language_update) {
-
             $this->skin->language_update = $language_update;
 
             $destination = WP_LANG_DIR;
@@ -346,9 +345,12 @@ class Language_Pack_Upgrader extends WP_Upgrader
         }
 
         if (!$mo || !$po) {
-            return new WP_Error('incompatible_archive_pomo', $this->strings['incompatible_archive'],
+            return new WP_Error(
+                'incompatible_archive_pomo',
+                $this->strings['incompatible_archive'],
                 /* translators: 1: .po 2: .mo */
-                sprintf(__('The language pack is missing either the %1$s or %2$s files.'),
+                sprintf(
+                    __('The language pack is missing either the %1$s or %2$s files.'),
                     '<code>.po</code>',
                     '<code>.mo</code>'
                 )
@@ -389,5 +391,4 @@ class Language_Pack_Upgrader extends WP_Upgrader
         }
         return '';
     }
-
 }

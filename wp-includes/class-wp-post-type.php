@@ -479,8 +479,10 @@ final class WP_Post_Type
         }
 
         // Back compat with quirky handling in version 3.0. #14122.
-        if (empty($args['capabilities']) && null === $args['map_meta_cap'] && in_array($args['capability_type'],
-                array('post', 'page'))) {
+        if (empty($args['capabilities']) && null === $args['map_meta_cap'] && in_array(
+            $args['capability_type'],
+                array('post', 'page')
+        )) {
             $args['map_meta_cap'] = true;
         }
 
@@ -578,11 +580,17 @@ final class WP_Post_Type
 
         if (false !== $this->rewrite && (is_admin() || '' != get_option('permalink_structure'))) {
             if ($this->hierarchical) {
-                add_rewrite_tag("%$this->name%", '(.+?)',
-                    $this->query_var ? "{$this->query_var}=" : "post_type=$this->name&pagename=");
+                add_rewrite_tag(
+                    "%$this->name%",
+                    '(.+?)',
+                    $this->query_var ? "{$this->query_var}=" : "post_type=$this->name&pagename="
+                );
             } else {
-                add_rewrite_tag("%$this->name%", '([^/]+)',
-                    $this->query_var ? "{$this->query_var}=" : "post_type=$this->name&name=");
+                add_rewrite_tag(
+                    "%$this->name%",
+                    '([^/]+)',
+                    $this->query_var ? "{$this->query_var}=" : "post_type=$this->name&name="
+                );
             }
 
             if ($this->has_archive) {
@@ -596,14 +604,23 @@ final class WP_Post_Type
                 add_rewrite_rule("{$archive_slug}/?$", "index.php?post_type=$this->name", 'top');
                 if ($this->rewrite['feeds'] && $wp_rewrite->feeds) {
                     $feeds = '(' . trim(implode('|', $wp_rewrite->feeds)) . ')';
-                    add_rewrite_rule("{$archive_slug}/feed/$feeds/?$",
-                        "index.php?post_type=$this->name" . '&feed=$matches[1]', 'top');
-                    add_rewrite_rule("{$archive_slug}/$feeds/?$",
-                        "index.php?post_type=$this->name" . '&feed=$matches[1]', 'top');
+                    add_rewrite_rule(
+                        "{$archive_slug}/feed/$feeds/?$",
+                        "index.php?post_type=$this->name" . '&feed=$matches[1]',
+                        'top'
+                    );
+                    add_rewrite_rule(
+                        "{$archive_slug}/$feeds/?$",
+                        "index.php?post_type=$this->name" . '&feed=$matches[1]',
+                        'top'
+                    );
                 }
                 if ($this->rewrite['pages']) {
-                    add_rewrite_rule("{$archive_slug}/{$wp_rewrite->pagination_base}/([0-9]{1,})/?$",
-                        "index.php?post_type=$this->name" . '&paged=$matches[1]', 'top');
+                    add_rewrite_rule(
+                        "{$archive_slug}/{$wp_rewrite->pagination_base}/([0-9]{1,})/?$",
+                        "index.php?post_type=$this->name" . '&paged=$matches[1]',
+                        'top'
+                    );
                 }
             }
 

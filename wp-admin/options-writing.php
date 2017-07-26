@@ -64,13 +64,17 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                         <fieldset>
                             <legend class="screen-reader-text"><span><?php _e('Formatting') ?></span></legend>
                             <label for="use_smilies">
-                                <input name="use_smilies" type="checkbox" id="use_smilies" value="1" <?php checked('1',
-                                    get_option('use_smilies')); ?> />
+                                <input name="use_smilies" type="checkbox" id="use_smilies" value="1" <?php checked(
+    '1',
+                                    get_option('use_smilies')
+); ?> />
                                 <?php _e('Convert emoticons like <code>:-)</code> and <code>:-P</code> to graphics on display') ?>
                             </label><br/>
                             <label for="use_balanceTags"><input name="use_balanceTags" type="checkbox"
-                                                                id="use_balanceTags" value="1" <?php checked('1',
-                                    get_option('use_balanceTags')); ?> /> <?php _e('WordPress should correct invalidly nested XHTML automatically') ?>
+                                                                id="use_balanceTags" value="1" <?php checked(
+                                        '1',
+                                    get_option('use_balanceTags')
+                                    ); ?> /> <?php _e('WordPress should correct invalidly nested XHTML automatically') ?>
                             </label>
                         </fieldset>
                     </td>
@@ -144,8 +148,7 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                     sprintf('<kbd>%s</kbd>', wp_generate_password(8, false)),
                     sprintf('<kbd>%s</kbd>', wp_generate_password(8, false)),
                     sprintf('<kbd>%s</kbd>', wp_generate_password(8, false))
-                );
-                ?></p>
+                ); ?></p>
 
             <table class="form-table">
                 <tr>
@@ -180,13 +183,13 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                             'orderby' => 'name',
                             'selected' => get_option('default_email_category'),
                             'hierarchical' => true
-                        ));
-                        ?>
+                        )); ?>
                     </td>
                 </tr>
                 <?php do_settings_fields('writing', 'post_via_email'); ?>
             </table>
-        <?php } ?>
+        <?php
+        } ?>
 
         <?php
         /**
@@ -211,11 +214,14 @@ include(ABSPATH . 'wp-admin/admin-header.php');
 
             <?php else : ?>
 
-                <p><?php printf(__('WordPress is not notifying any <a href="https://codex.wordpress.org/Update_Services">Update Services</a> because of your site&#8217;s <a href="%s">visibility settings</a>.'),
-                        'options-reading.php'); ?></p>
+                <p><?php printf(
+                __('WordPress is not notifying any <a href="https://codex.wordpress.org/Update_Services">Update Services</a> because of your site&#8217;s <a href="%s">visibility settings</a>.'),
+                        'options-reading.php'
+            ); ?></p>
 
             <?php endif; ?>
-        <?php } // multisite ?>
+        <?php
+        } // multisite?>
 
         <?php do_settings_sections('writing'); ?>
 

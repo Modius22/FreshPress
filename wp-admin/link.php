@@ -31,7 +31,7 @@ if (!empty($_POST['linkcheck'])) {
 $this_file = admin_url('link-manager.php');
 
 switch ($action) {
-    case 'deletebookmarks' :
+    case 'deletebookmarks':
         check_admin_referer('bulk-bookmarks');
 
         // For each link id (in $linkcheck[]) change category to selected value.
@@ -52,7 +52,7 @@ switch ($action) {
         wp_redirect("$this_file?deleted=$deleted");
         exit;
 
-    case 'move' :
+    case 'move':
         check_admin_referer('bulk-bookmarks');
 
         // For each link id (in $linkcheck[]) change category to selected value.
@@ -69,7 +69,7 @@ switch ($action) {
         wp_redirect($this_file);
         exit;
 
-    case 'add' :
+    case 'add':
         check_admin_referer('add-bookmark');
 
         $redir = wp_get_referer();
@@ -80,7 +80,7 @@ switch ($action) {
         wp_redirect($redir);
         exit;
 
-    case 'save' :
+    case 'save':
         $link_id = (int)$_POST['link_id'];
         check_admin_referer('update-bookmark_' . $link_id);
 
@@ -89,7 +89,7 @@ switch ($action) {
         wp_redirect($this_file);
         exit;
 
-    case 'delete' :
+    case 'delete':
         $link_id = (int)$_GET['link_id'];
         check_admin_referer('delete-bookmark_' . $link_id);
 
@@ -98,7 +98,7 @@ switch ($action) {
         wp_redirect($this_file);
         exit;
 
-    case 'edit' :
+    case 'edit':
         wp_enqueue_script('link');
         wp_enqueue_script('xfn');
 
@@ -120,6 +120,6 @@ switch ($action) {
         include(ABSPATH . 'wp-admin/admin-footer.php');
         break;
 
-    default :
+    default:
         break;
 }

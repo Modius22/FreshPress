@@ -87,7 +87,6 @@ if (!function_exists('maybe_add_column')) :
     {
         global $wpdb;
         foreach ($wpdb->get_col("DESC $table_name", 0) as $column) {
-
             if ($column == $column_name) {
                 return true;
             }
@@ -175,14 +174,13 @@ function check_column($table_name, $col_name, $col_type, $is_null = null, $key =
     $results = $wpdb->get_results("DESC $table_name");
 
     foreach ($results as $row) {
-
         if ($row->Field == $col_name) {
 
             // Got our column, check the params.
             if (($col_type != null) && ($row->Type != $col_type)) {
                 ++$diffs;
             }
-            if (($is_null != null) && ($row->Null != $is_null)) {
+            if (($is_null != null) && ($row->null != $is_null)) {
                 ++$diffs;
             }
             if (($key != null) && ($row->Key != $key)) {

@@ -34,8 +34,12 @@ class WP_Importer
         // Grab all posts in chunks
         do {
             $meta_key = $importer_name . '_' . $bid . '_permalink';
-            $sql = $wpdb->prepare("SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d,%d",
-                $meta_key, $offset, $limit);
+            $sql = $wpdb->prepare(
+                "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d,%d",
+                $meta_key,
+                $offset,
+                $limit
+            );
             $results = $wpdb->get_results($sql);
 
             // Increment offset
@@ -114,7 +118,7 @@ class WP_Importer
             if (!empty($results)) {
                 foreach ($results as $r) {
                     // Explode comment_agent key
-                    list ($ca_bid, $source_comment_id) = explode('-', $r->comment_agent);
+                    list($ca_bid, $source_comment_id) = explode('-', $r->comment_agent);
                     $source_comment_id = intval($source_comment_id);
 
                     // Check if this comment came from this blog

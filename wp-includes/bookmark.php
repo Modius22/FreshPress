@@ -36,11 +36,16 @@ function get_bookmark($bookmark, $output = OBJECT, $filter = 'raw')
         if (isset($GLOBALS['link']) && ($GLOBALS['link']->link_id == $bookmark)) {
             $_bookmark = &$GLOBALS['link'];
         } elseif (!$_bookmark = wp_cache_get($bookmark, 'bookmark')) {
-            $_bookmark = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->links WHERE link_id = %d LIMIT 1",
-                $bookmark));
+            $_bookmark = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM $wpdb->links WHERE link_id = %d LIMIT 1",
+                $bookmark
+            ));
             if ($_bookmark) {
-                $_bookmark->link_category = array_unique(wp_get_object_terms($_bookmark->link_id, 'link_category',
-                    array('fields' => 'ids')));
+                $_bookmark->link_category = array_unique(wp_get_object_terms(
+                    $_bookmark->link_id,
+                    'link_category',
+                    array('fields' => 'ids')
+                ));
                 wp_cache_add($_bookmark->link_id, $_bookmark, 'bookmark');
             }
         }
@@ -222,8 +227,12 @@ function get_bookmarks($args = '')
     $search = '';
     if (!empty($r['search'])) {
         $like = '%' . $wpdb->esc_like($r['search']) . '%';
-        $search = $wpdb->prepare(" AND ( (link_url LIKE %s) OR (link_name LIKE %s) OR (link_description LIKE %s) ) ",
-            $like, $like, $like);
+        $search = $wpdb->prepare(
+            " AND ( (link_url LIKE %s) OR (link_name LIKE %s) OR (link_description LIKE %s) ) ",
+            $like,
+            $like,
+            $like
+        );
     }
 
     $category_query = '';
@@ -401,20 +410,20 @@ function sanitize_bookmark($bookmark, $context = 'display')
 function sanitize_bookmark_field($field, $value, $bookmark_id, $context)
 {
     switch ($field) {
-        case 'link_id' : // ints
-        case 'link_rating' :
+        case 'link_id': // ints
+        case 'link_rating':
             $value = (int)$value;
             break;
-        case 'link_category' : // array( ints )
+        case 'link_category': // array( ints )
             $value = array_map('absint', (array)$value);
             // We return here so that the categories aren't filtered.
             // The 'link_category' filter is for the name of a link category, not an array of a link's link categories
             return $value;
 
-        case 'link_visible' : // bool stored as Y|N
+        case 'link_visible': // bool stored as Y|N
             $value = preg_replace('/[^YNyn]/', '', $value);
             break;
-        case 'link_target' : // "enum"
+        case 'link_target': // "enum"
             $targets = array('_top', '_blank');
             if (!in_array($value, $targets)) {
                 $value = '';

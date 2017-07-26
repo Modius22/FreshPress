@@ -31,8 +31,10 @@ get_current_screen()->add_help_tab(array(
 	<p id="newcontent-description">' . __('In the editing area the Tab key enters a tab character. To move below this area by pressing Tab, press the Esc key followed by the Tab key. In some cases the Esc key will need to be pressed twice before the Tab key will allow you to continue.') . '</p>
 	<p>' . __('After typing in your edits, click Update File.') . '</p>
 	<p>' . __('<strong>Advice:</strong> think very carefully about your site crashing if you are live-editing the theme currently in use.') . '</p>
-	<p>' . sprintf(__('Upgrading to a newer version of the same theme will override changes made here. To avoid this, consider creating a <a href="%s">child theme</a> instead.'),
-            __('https://codex.wordpress.org/Child_Themes')) . '</p>' .
+	<p>' . sprintf(
+            __('Upgrading to a newer version of the same theme will override changes made here. To avoid this, consider creating a <a href="%s">child theme</a> instead.'),
+            __('https://codex.wordpress.org/Child_Themes')
+        ) . '</p>' .
         (is_network_admin() ? '<p>' . __('Any edits to files from this screen will be reflected on all sites in the network.') . '</p>' : '')
 ));
 
@@ -219,8 +221,10 @@ switch ($action) {
                                     if ($has_templates || $theme->parent()) :
                                         echo "\t<h2>" . __('Templates') . "</h2>\n";
                                         if ($theme->parent()) {
-                                            echo '<p class="howto">' . sprintf(__('This child theme inherits templates from a parent theme, %s.'),
-                                                    sprintf('<a href="%s">%s</a>',
+                                            echo '<p class="howto">' . sprintf(
+                                                __('This child theme inherits templates from a parent theme, %s.'),
+                                                    sprintf(
+                                                        '<a href="%s">%s</a>',
                                                         self_admin_url('theme-editor.php?theme=' . urlencode($theme->get_template())),
                                                         $theme->parent()->display('Name')
                                                     )
@@ -283,7 +287,9 @@ switch ($action) {
 
                     <div>
                         <?php if (is_child_theme() && $theme->get_stylesheet() == get_template()) : ?>
-                            <p><?php if (is_writeable($file)) { ?><strong><?php _e('Caution:'); ?></strong><?php } ?>
+                            <p><?php if (is_writeable($file)) {
+                ?><strong><?php _e('Caution:'); ?></strong><?php
+            } ?>
                                 <?php _e('This is a file in your current parent theme.'); ?></p>
                         <?php endif; ?>
                         <?php

@@ -181,8 +181,12 @@ switch ($wp_list_table->current_action()) {
         check_admin_referer('bulk-tags');
         $tags = (array)$_REQUEST['delete_tags'];
         /** This action is documented in wp-admin/edit-comments.php */
-        $location = apply_filters('handle_bulk_actions-' . get_current_screen()->id, $location,
-            $wp_list_table->current_action(), $tags);
+        $location = apply_filters(
+            'handle_bulk_actions-' . get_current_screen()->id,
+            $location,
+            $wp_list_table->current_action(),
+            $tags
+        );
         break;
 }
 
@@ -223,8 +227,10 @@ if (current_user_can($tax->cap->edit_terms)) {
 if ('category' == $taxonomy || 'link_category' == $taxonomy || 'post_tag' == $taxonomy) {
     $help = '';
     if ('category' == $taxonomy) {
-        $help = '<p>' . sprintf(__('You can use categories to define sections of your site and group related posts. The default category is &#8220;Uncategorized&#8221; until you change it in your <a href="%s">writing settings</a>.'),
-                'options-writing.php') . '</p>';
+        $help = '<p>' . sprintf(
+            __('You can use categories to define sections of your site and group related posts. The default category is &#8220;Uncategorized&#8221; until you change it in your <a href="%s">writing settings</a>.'),
+                'options-writing.php'
+        ) . '</p>';
     } elseif ('link_category' == $taxonomy) {
         $help = '<p>' . __('You can create groups of links by using Link Categories. Link Category names must be unique and Link Categories are separate from the categories you use for posts.') . '</p>';
     } else {
@@ -310,8 +316,10 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
         <?php
         if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
             /* translators: %s: search keywords */
-            printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
-                esc_html(wp_unslash($_REQUEST['s'])));
+            printf(
+                '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
+                esc_html(wp_unslash($_REQUEST['s']))
+            );
         }
         ?>
 
@@ -380,8 +388,7 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
                          *
                          * @param string $taxonomy The taxonomy slug.
                          */
-                        do_action("{$taxonomy}_pre_add_form", $taxonomy);
-                        ?>
+                        do_action("{$taxonomy}_pre_add_form", $taxonomy); ?>
 
                         <div class="form-wrap">
                             <h2><?php echo $tax->labels->add_new_item; ?></h2>
@@ -393,8 +400,7 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
                              *
                              * @since 3.7.0
                              */
-                            do_action("{$taxonomy}_term_new_form_tag");
-                            ?>>
+                            do_action("{$taxonomy}_term_new_form_tag"); ?>>
                                 <input type="hidden" name="action" value="add-tag"/>
                                 <input type="hidden" name="screen"
                                        value="<?php echo esc_attr($current_screen->id); ?>"/>
@@ -414,7 +420,7 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
                                         <input name="slug" id="tag-slug" type="text" value="" size="40"/>
                                         <p><?php _e('The &#8220;slug&#8221; is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.'); ?></p>
                                     </div>
-                                <?php endif; // global_terms_enabled() ?>
+                                <?php endif; // global_terms_enabled()?>
                                 <?php if (is_taxonomy_hierarchical($taxonomy)) : ?>
                                     <div class="form-field term-parent-wrap">
                                         <label for="parent"><?php echo esc_html($tax->labels->parent_item); ?></label>
@@ -429,39 +435,42 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
                                             'show_option_none' => __('None'),
                                         );
 
-                                        /**
-                                         * Filters the taxonomy parent drop-down on the Edit Term page.
-                                         *
-                                         * @since 3.7.0
-                                         * @since 4.2.0 Added `$context` parameter.
-                                         *
-                                         * @param array $dropdown_args {
-                                         *     An array of taxonomy parent drop-down arguments.
-                                         *
-                                         * @type int|bool $hide_empty Whether to hide terms not attached to any posts. Default 0|false.
-                                         * @type bool $hide_if_empty Whether to hide the drop-down if no terms exist. Default false.
-                                         * @type string $taxonomy The taxonomy slug.
-                                         * @type string $name Value of the name attribute to use for the drop-down select element.
-                                         *                                      Default 'parent'.
-                                         * @type string $orderby The field to order by. Default 'name'.
-                                         * @type bool $hierarchical Whether the taxonomy is hierarchical. Default true.
-                                         * @type string $show_option_none Label to display if there are no terms. Default 'None'.
-                                         * }
-                                         * @param string $taxonomy The taxonomy slug.
-                                         * @param string $context Filter context. Accepts 'new' or 'edit'.
-                                         */
-                                        $dropdown_args = apply_filters('taxonomy_parent_dropdown_args', $dropdown_args,
-                                            $taxonomy, 'new');
+                        /**
+                         * Filters the taxonomy parent drop-down on the Edit Term page.
+                         *
+                         * @since 3.7.0
+                         * @since 4.2.0 Added `$context` parameter.
+                         *
+                         * @param array $dropdown_args {
+                         *     An array of taxonomy parent drop-down arguments.
+                         *
+                         * @type int|bool $hide_empty Whether to hide terms not attached to any posts. Default 0|false.
+                         * @type bool $hide_if_empty Whether to hide the drop-down if no terms exist. Default false.
+                         * @type string $taxonomy The taxonomy slug.
+                         * @type string $name Value of the name attribute to use for the drop-down select element.
+                         *                                      Default 'parent'.
+                         * @type string $orderby The field to order by. Default 'name'.
+                         * @type bool $hierarchical Whether the taxonomy is hierarchical. Default true.
+                         * @type string $show_option_none Label to display if there are no terms. Default 'None'.
+                         * }
+                         * @param string $taxonomy The taxonomy slug.
+                         * @param string $context Filter context. Accepts 'new' or 'edit'.
+                         */
+                        $dropdown_args = apply_filters(
+                                            'taxonomy_parent_dropdown_args',
+                                            $dropdown_args,
+                                            $taxonomy,
+                                            'new'
+                                        );
 
-                                        wp_dropdown_categories($dropdown_args);
-                                        ?>
+                        wp_dropdown_categories($dropdown_args); ?>
                                         <?php if ('category' == $taxonomy) : ?>
                                             <p><?php _e('Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.'); ?></p>
                                         <?php else : ?>
                                             <p><?php _e('Assign a parent term to create a hierarchy. The term Jazz, for example, would be the parent of Bebop and Big Band.'); ?></p>
                                         <?php endif; ?>
                                     </div>
-                                <?php endif; // is_taxonomy_hierarchical() ?>
+                                <?php endif; // is_taxonomy_hierarchical()?>
                                 <div class="form-field term-description-wrap">
                                     <label for="tag-description"><?php _e('Description'); ?></label>
                                     <textarea name="description" id="tag-description" rows="5" cols="40"></textarea>
@@ -480,65 +489,65 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
                                     do_action('add_tag_form_fields', $taxonomy);
                                 }
 
-                                /**
-                                 * Fires after the Add Term form fields.
-                                 *
-                                 * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
-                                 *
-                                 * @since 3.0.0
-                                 *
-                                 * @param string $taxonomy The taxonomy slug.
-                                 */
-                                do_action("{$taxonomy}_add_form_fields", $taxonomy);
+                        /**
+                         * Fires after the Add Term form fields.
+                         *
+                         * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
+                         *
+                         * @since 3.0.0
+                         *
+                         * @param string $taxonomy The taxonomy slug.
+                         */
+                        do_action("{$taxonomy}_add_form_fields", $taxonomy);
 
-                                submit_button($tax->labels->add_new_item);
+                        submit_button($tax->labels->add_new_item);
 
-                                if ('category' == $taxonomy) {
-                                    /**
-                                     * Fires at the end of the Edit Category form.
-                                     *
-                                     * @since 2.1.0
-                                     * @deprecated 3.0.0 Use {$taxonomy}_add_form instead.
-                                     *
-                                     * @param object $arg Optional arguments cast to an object.
-                                     */
-                                    do_action('edit_category_form', (object)array('parent' => 0));
-                                } elseif ('link_category' == $taxonomy) {
-                                    /**
-                                     * Fires at the end of the Edit Link form.
-                                     *
-                                     * @since 2.3.0
-                                     * @deprecated 3.0.0 Use {$taxonomy}_add_form instead.
-                                     *
-                                     * @param object $arg Optional arguments cast to an object.
-                                     */
-                                    do_action('edit_link_category_form', (object)array('parent' => 0));
-                                } else {
-                                    /**
-                                     * Fires at the end of the Add Tag form.
-                                     *
-                                     * @since 2.7.0
-                                     * @deprecated 3.0.0 Use {$taxonomy}_add_form instead.
-                                     *
-                                     * @param string $taxonomy The taxonomy slug.
-                                     */
-                                    do_action('add_tag_form', $taxonomy);
-                                }
+                        if ('category' == $taxonomy) {
+                            /**
+                             * Fires at the end of the Edit Category form.
+                             *
+                             * @since 2.1.0
+                             * @deprecated 3.0.0 Use {$taxonomy}_add_form instead.
+                             *
+                             * @param object $arg Optional arguments cast to an object.
+                             */
+                            do_action('edit_category_form', (object)array('parent' => 0));
+                        } elseif ('link_category' == $taxonomy) {
+                            /**
+                             * Fires at the end of the Edit Link form.
+                             *
+                             * @since 2.3.0
+                             * @deprecated 3.0.0 Use {$taxonomy}_add_form instead.
+                             *
+                             * @param object $arg Optional arguments cast to an object.
+                             */
+                            do_action('edit_link_category_form', (object)array('parent' => 0));
+                        } else {
+                            /**
+                             * Fires at the end of the Add Tag form.
+                             *
+                             * @since 2.7.0
+                             * @deprecated 3.0.0 Use {$taxonomy}_add_form instead.
+                             *
+                             * @param string $taxonomy The taxonomy slug.
+                             */
+                            do_action('add_tag_form', $taxonomy);
+                        }
 
-                                /**
-                                 * Fires at the end of the Add Term form for all taxonomies.
-                                 *
-                                 * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
-                                 *
-                                 * @since 3.0.0
-                                 *
-                                 * @param string $taxonomy The taxonomy slug.
-                                 */
-                                do_action("{$taxonomy}_add_form", $taxonomy);
-                                ?>
+                        /**
+                         * Fires at the end of the Add Term form for all taxonomies.
+                         *
+                         * The dynamic portion of the hook name, `$taxonomy`, refers to the taxonomy slug.
+                         *
+                         * @since 3.0.0
+                         *
+                         * @param string $taxonomy The taxonomy slug.
+                         */
+                        do_action("{$taxonomy}_add_form", $taxonomy); ?>
                             </form>
                         </div>
-                    <?php } ?>
+                    <?php
+                    } ?>
 
                 </div>
             </div><!-- /col-left -->
@@ -562,20 +571,26 @@ if (is_plugin_active('wpcat2tag-importer/wpcat2tag-importer.php')) {
                                 /* translators: %s: default category */
                                     __('Deleting a category does not delete the posts in that category. Instead, posts that were only assigned to the deleted category are set to the category %s.'),
                                     /** This filter is documented in wp-includes/category-template.php */
-                                    '<strong>' . apply_filters('the_category',
-                                        get_cat_name(get_option('default_category'))) . '</strong>'
+                                    '<strong>' . apply_filters(
+                                        'the_category',
+                                        get_cat_name(get_option('default_category'))
+                                    ) . '</strong>'
                                 );
                                 ?>
                             </p>
                             <?php if (current_user_can('import')) : ?>
-                                <p><?php printf(__('Categories can be selectively converted to tags using the <a href="%s">category to tag converter</a>.'),
-                                        esc_url($import_link)) ?></p>
+                                <p><?php printf(
+                                    __('Categories can be selectively converted to tags using the <a href="%s">category to tag converter</a>.'),
+                                        esc_url($import_link)
+                                ) ?></p>
                             <?php endif; ?>
                         </div>
                     <?php elseif ('post_tag' == $taxonomy && current_user_can('import')) : ?>
                         <div class="form-wrap edit-term-notes">
-                            <p><?php printf(__('Tags can be selectively converted to categories using the <a href="%s">tag to category converter</a>.'),
-                                    esc_url($import_link)); ?></p>
+                            <p><?php printf(
+                                            __('Tags can be selectively converted to categories using the <a href="%s">tag to category converter</a>.'),
+                                    esc_url($import_link)
+                                        ); ?></p>
                         </div>
                     <?php endif;
 

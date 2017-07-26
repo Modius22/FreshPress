@@ -56,15 +56,15 @@ $step = isset($_GET['step']) ? (int)$_GET['step'] : 0;
  *
  * @param string $body_classes
  */
-function display_header($body_classes = '') {
-header('Content-Type: text/html; charset=utf-8');
-if (is_rtl()) {
-    $body_classes .= 'rtl';
-}
-if ($body_classes) {
-    $body_classes = ' ' . $body_classes;
-}
-?>
+function display_header($body_classes = '')
+{
+    header('Content-Type: text/html; charset=utf-8');
+    if (is_rtl()) {
+        $body_classes .= 'rtl';
+    }
+    if ($body_classes) {
+        $body_classes = ' ' . $body_classes;
+    } ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
     <head>
@@ -74,15 +74,14 @@ if ($body_classes) {
         <title><?php _e('WordPress &rsaquo; Installation'); ?></title>
         <?php
         wp_admin_css('install', true);
-        wp_admin_css('dashicons', true);
-        ?>
+    wp_admin_css('dashicons', true); ?>
     </head>
     <body class="wp-core-ui<?php echo $body_classes ?>">
         <p id="logo"><a href="<?php echo esc_url(__('https://wordpress.org/')); ?>"
                         tabindex="-1"><?php _e('WordPress'); ?></a></p>
 
         <?php
-        } // end display_header()
+} // end display_header()
 
         /**
          * Display installer setup form.
@@ -112,7 +111,8 @@ if ($body_classes) {
                 ?>
                 <h1><?php _ex('Welcome', 'Howdy'); ?></h1>
                 <p class="message"><?php echo $error; ?></p>
-            <?php } ?>
+            <?php
+            } ?>
             <form id="setup" method="post" action="install.php?step=2" novalidate="novalidate">
                 <table class="form-table">
                     <tr>
@@ -198,30 +198,42 @@ if ($body_classes) {
                                     <span><?php has_action('blog_privacy_selector') ? _e('Site Visibility') : _e('Search Engine Visibility'); ?> </span>
                                 </legend>
                                 <?php
-                                if (has_action('blog_privacy_selector')) { ?>
-                                    <input id="blog-public" type="radio" name="blog_public" value="1" <?php checked(1,
-                                        $blog_public); ?> />
+                                if (has_action('blog_privacy_selector')) {
+                                    ?>
+                                    <input id="blog-public" type="radio" name="blog_public" value="1" <?php checked(
+                                    1,
+                                        $blog_public
+                                ); ?> />
                                     <label for="blog-public"><?php _e('Allow search engines to index this site'); ?></label>
                                     <br/>
-                                    <input id="blog-norobots" type="radio" name="blog_public" value="0" <?php checked(0,
-                                        $blog_public); ?> />
+                                    <input id="blog-norobots" type="radio" name="blog_public" value="0" <?php checked(
+                                            0,
+                                        $blog_public
+                                        ); ?> />
                                     <label for="blog-norobots"><?php _e('Discourage search engines from indexing this site'); ?></label>
                                     <p class="description"><?php _e('Note: Neither of these options blocks access to your site &mdash; it is up to search engines to honor your request.'); ?></p>
                                     <?php
                                     /** This action is documented in wp-admin/options-reading.php */
                                     do_action('blog_privacy_selector');
-                                } else { ?>
+                                } else {
+                                    ?>
                                     <label for="blog_public"><input name="blog_public" type="checkbox" id="blog_public"
                                                                     value="0" <?php checked(0, $blog_public); ?> />
                                         <?php _e('Discourage search engines from indexing this site'); ?></label>
                                     <p class="description"><?php _e('It is up to search engines to honor this request.'); ?></p>
-                                <?php } ?>
+                                <?php
+                                } ?>
                             </fieldset>
                         </td>
                     </tr>
                 </table>
-                <p class="step"><?php submit_button(__('Install WordPress'), 'large', 'Submit', false,
-                        array('id' => 'submit')); ?></p>
+                <p class="step"><?php submit_button(
+                                    __('Install WordPress'),
+                                    'large',
+                                    'Submit',
+                                    false,
+                        array('id' => 'submit')
+                                ); ?></p>
                 <input type="hidden" name="language"
                        value="<?php echo isset($_REQUEST['language']) ? esc_attr($_REQUEST['language']) : ''; ?>"/>
             </form>
@@ -250,21 +262,38 @@ if ($body_classes) {
         $php_version = phpversion();
         $mysql_version = $wpdb->db_version();
         $php_compat = version_compare($php_version, $required_php_version, '>=');
-        $mysql_compat = version_compare($mysql_version, $required_mysql_version,
-                '>=') || file_exists(WP_CONTENT_DIR . '/db.php');
+        $mysql_compat = version_compare(
+            $mysql_version,
+            $required_mysql_version,
+                '>='
+        ) || file_exists(WP_CONTENT_DIR . '/db.php');
 
         if (!$mysql_compat && !$php_compat) {
             /* translators: 1: WordPress version number, 2: Minimum required PHP version number, 3: Minimum required MySQL version number, 4: Current PHP version number, 5: Current MySQL version number */
-            $compat = sprintf(__('You cannot install because <a href="https://codex.wordpress.org/Version_%1$s">WordPress %1$s</a> requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.'),
-                $wp_version, $required_php_version, $required_mysql_version, $php_version, $mysql_version);
+            $compat = sprintf(
+                __('You cannot install because <a href="https://codex.wordpress.org/Version_%1$s">WordPress %1$s</a> requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.'),
+                $wp_version,
+                $required_php_version,
+                $required_mysql_version,
+                $php_version,
+                $mysql_version
+            );
         } elseif (!$php_compat) {
             /* translators: 1: WordPress version number, 2: Minimum required PHP version number, 3: Current PHP version number */
-            $compat = sprintf(__('You cannot install because <a href="https://codex.wordpress.org/Version_%1$s">WordPress %1$s</a> requires PHP version %2$s or higher. You are running version %3$s.'),
-                $wp_version, $required_php_version, $php_version);
+            $compat = sprintf(
+                __('You cannot install because <a href="https://codex.wordpress.org/Version_%1$s">WordPress %1$s</a> requires PHP version %2$s or higher. You are running version %3$s.'),
+                $wp_version,
+                $required_php_version,
+                $php_version
+            );
         } elseif (!$mysql_compat) {
             /* translators: 1: WordPress version number, 2: Minimum required MySQL version number, 3: Current MySQL version number */
-            $compat = sprintf(__('You cannot install because <a href="https://codex.wordpress.org/Version_%1$s">WordPress %1$s</a> requires MySQL version %2$s or higher. You are running version %3$s.'),
-                $wp_version, $required_mysql_version, $mysql_version);
+            $compat = sprintf(
+                __('You cannot install because <a href="https://codex.wordpress.org/Version_%1$s">WordPress %1$s</a> requires MySQL version %2$s or higher. You are running version %3$s.'),
+                $wp_version,
+                $required_mysql_version,
+                $mysql_version
+            );
         }
 
         if (!$mysql_compat || !$php_compat) {
@@ -323,6 +352,7 @@ if ($body_classes) {
 
             // Deliberately fall through if we can't reach the translations API.
 
+            // no break
             case 1: // Step 1, direct link or from language chooser.
                 if (!empty($language)) {
                     $loaded_language = wp_download_language_pack($language);
@@ -393,9 +423,15 @@ if ($body_classes) {
 
                 if ($error === false) {
                     $wpdb->show_errors();
-                    $result = wp_install($weblog_title, $user_name, $admin_email, $public, '',
-                        wp_slash($admin_password), $loaded_language);
-                    ?>
+                    $result = wp_install(
+                        $weblog_title,
+                        $user_name,
+                        $admin_email,
+                        $public,
+                        '',
+                        wp_slash($admin_password),
+                        $loaded_language
+                    ); ?>
 
                     <h1><?php _e('Success!'); ?></h1>
 

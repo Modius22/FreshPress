@@ -19,7 +19,7 @@ class Text_Diff_Engine_xdiff
 
     /**
      */
-    function diff($from_lines, $to_lines)
+    public function diff($from_lines, $to_lines)
     {
         array_walk($from_lines, array('Text_Diff', 'trimNewlines'));
         array_walk($to_lines, array('Text_Diff', 'trimNewlines'));
@@ -62,5 +62,4 @@ class Text_Diff_Engine_xdiff
 
         return $edits;
     }
-
 }

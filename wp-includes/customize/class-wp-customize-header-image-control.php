@@ -39,7 +39,6 @@ class WP_Customize_Header_Image_Control extends WP_Customize_Image_Control
             'removed' => 'remove-header',
             'get_url' => 'get_header_image',
         ));
-
     }
 
     /**
@@ -173,12 +172,11 @@ class WP_Customize_Header_Image_Control extends WP_Customize_Image_Control
         $this->print_header_image_template();
         $visibility = $this->get_current_image_src() ? '' : ' style="display:none" ';
         $width = absint(get_theme_support('custom-header', 'width'));
-        $height = absint(get_theme_support('custom-header', 'height'));
-        ?>
+        $height = absint(get_theme_support('custom-header', 'height')); ?>
         <div class="customize-control-content">
             <?php if (current_theme_supports('custom-header', 'video')) {
-                echo '<span class="customize-control-title">' . $this->label . '</span>';
-            } ?>
+            echo '<span class="customize-control-title">' . $this->label . '</span>';
+        } ?>
             <div class="customize-control-notifications-container"></div>
             <p class="customizer-section-intro customize-control-description">
                 <?php
@@ -186,21 +184,23 @@ class WP_Customize_Header_Image_Control extends WP_Customize_Image_Control
                     _e('While you can crop images to your liking after clicking <strong>Add new image</strong>, we recommend matching the size of your video.');
                 } elseif ($width && $height) {
                     /* translators: %s: header size in pixels */
-                    printf(__('While you can crop images to your liking after clicking <strong>Add new image</strong>, your theme recommends a header size of %s pixels.'),
+                    printf(
+                        __('While you can crop images to your liking after clicking <strong>Add new image</strong>, your theme recommends a header size of %s pixels.'),
                         sprintf('<strong>%s &times; %s</strong>', $width, $height)
                     );
                 } elseif ($width) {
                     /* translators: %s: header width in pixels */
-                    printf(__('While you can crop images to your liking after clicking <strong>Add new image</strong>, your theme recommends a header width of %s pixels.'),
+                    printf(
+                        __('While you can crop images to your liking after clicking <strong>Add new image</strong>, your theme recommends a header width of %s pixels.'),
                         sprintf('<strong>%s</strong>', $width)
                     );
                 } else {
                     /* translators: %s: header height in pixels */
-                    printf(__('While you can crop images to your liking after clicking <strong>Add new image</strong>, your theme recommends a header height of %s pixels.'),
+                    printf(
+                        __('While you can crop images to your liking after clicking <strong>Add new image</strong>, your theme recommends a header height of %s pixels.'),
                         sprintf('<strong>%s</strong>', $height)
                     );
-                }
-                ?>
+                } ?>
             </p>
             <div class="current">
                 <label for="header_image-button">

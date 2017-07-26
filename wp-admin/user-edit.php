@@ -98,10 +98,15 @@ if (is_multisite() && IS_PROFILE_PAGE && isset($_GET['newuseremail']) && $curren
         $user = new stdClass;
         $user->ID = $current_user->ID;
         $user->user_email = esc_html(trim($new_email['newemail']));
-        if ($wpdb->get_var($wpdb->prepare("SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s",
-            $current_user->user_login))) {
-            $wpdb->query($wpdb->prepare("UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s",
-                $user->user_email, $current_user->user_login));
+        if ($wpdb->get_var($wpdb->prepare(
+            "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s",
+            $current_user->user_login
+        ))) {
+            $wpdb->query($wpdb->prepare(
+                "UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s",
+                $user->user_email,
+                $current_user->user_login
+            ));
         }
         wp_update_user($user);
         delete_user_meta($current_user->ID, '_new_email');
@@ -152,10 +157,15 @@ switch ($action) {
         if (is_multisite()) {
             $user = get_userdata($user_id);
 
-            if ($user->user_login && isset($_POST['email']) && is_email($_POST['email']) && $wpdb->get_var($wpdb->prepare("SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s",
-                    $user->user_login))) {
-                $wpdb->query($wpdb->prepare("UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s",
-                    $_POST['email'], $user_login));
+            if ($user->user_login && isset($_POST['email']) && is_email($_POST['email']) && $wpdb->get_var($wpdb->prepare(
+                "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s",
+                    $user->user_login
+            ))) {
+                $wpdb->query($wpdb->prepare(
+                    "UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s",
+                    $_POST['email'],
+                    $user_login
+                ));
             }
         }
 
@@ -176,6 +186,7 @@ switch ($action) {
             exit;
         }
 
+        // no break
     default:
         $profileuser = get_user_to_edit($user_id);
 
@@ -189,11 +200,13 @@ switch ($action) {
         include(ABSPATH . 'wp-admin/admin-header.php');
         ?>
 
-        <?php if (!IS_PROFILE_PAGE && is_super_admin($profileuser->ID) && current_user_can('manage_network_options')) { ?>
+        <?php if (!IS_PROFILE_PAGE && is_super_admin($profileuser->ID) && current_user_can('manage_network_options')) {
+            ?>
         <div class="notice notice-info"><p>
                 <strong><?php _e('Important:'); ?></strong> <?php _e('This user has super admin privileges.'); ?></p>
         </div>
-    <?php } ?>
+    <?php
+        } ?>
         <?php if (isset($_GET['updated'])) : ?>
         <div id="message" class="updated notice is-dismissible">
             <?php if (IS_PROFILE_PAGE) : ?>
@@ -224,12 +237,18 @@ switch ($action) {
 
             <?php
             if (!IS_PROFILE_PAGE) {
-                if (current_user_can('create_users')) { ?>
+                if (current_user_can('create_users')) {
+                    ?>
                     <a href="user-new.php" class="page-title-action"><?php echo esc_html_x('Add New', 'user'); ?></a>
-                <?php } elseif (is_multisite() && current_user_can('promote_users')) { ?>
-                    <a href="user-new.php" class="page-title-action"><?php echo esc_html_x('Add Existing',
-                            'user'); ?></a>
-                <?php }
+                <?php
+                } elseif (is_multisite() && current_user_can('promote_users')) {
+                    ?>
+                    <a href="user-new.php" class="page-title-action"><?php echo esc_html_x(
+                    'Add Existing',
+                            'user'
+                ); ?></a>
+                <?php
+                }
             }
             ?>
 
@@ -262,8 +281,8 @@ switch ($action) {
                             <th scope="row"><?php _e('Visual Editor'); ?></th>
                             <td><label for="rich_editing"><input name="rich_editing" type="checkbox" id="rich_editing"
                                                                  value="false" <?php if (!empty($profileuser->rich_editing)) {
-                                        checked('false', $profileuser->rich_editing);
-                                    } ?> /> <?php _e('Disable the visual editor when writing'); ?></label></td>
+                checked('false', $profileuser->rich_editing);
+            } ?> /> <?php _e('Disable the visual editor when writing'); ?></label></td>
                         </tr>
                     <?php endif; ?>
                     <?php if (count($_wp_admin_css_colors) > 1 && has_action('admin_color_scheme_picker')) : ?>
@@ -292,8 +311,8 @@ switch ($action) {
                             <td><label for="comment_shortcuts"><input type="checkbox" name="comment_shortcuts"
                                                                       id="comment_shortcuts"
                                                                       value="true" <?php if (!empty($profileuser->comment_shortcuts)) {
-                                        checked('true', $profileuser->comment_shortcuts);
-                                    } ?> /> <?php _e('Enable keyboard shortcuts for comment moderation.'); ?>
+                        checked('true', $profileuser->comment_shortcuts);
+                    } ?> /> <?php _e('Enable keyboard shortcuts for comment moderation.'); ?>
                                 </label> <?php _e('<a href="https://codex.wordpress.org/Keyboard_Shortcuts" target="_blank">More information</a>'); ?>
                             </td>
                         </tr>
@@ -388,8 +407,10 @@ switch ($action) {
                             <td><select name="role" id="role">
                                     <?php
                                     // Compare user role against currently editable roles
-                                    $user_roles = array_intersect(array_values($profileuser->roles),
-                                        array_keys(get_editable_roles()));
+                                    $user_roles = array_intersect(
+                                        array_values($profileuser->roles),
+                                        array_keys(get_editable_roles())
+                                    );
                                     $user_role = reset($user_roles);
 
                                     // print the full list of roles with the primary one selected.
@@ -406,7 +427,8 @@ switch ($action) {
                         </tr>
                     <?php endif; //!IS_PROFILE_PAGE
 
-                    if (is_multisite() && is_network_admin() && !IS_PROFILE_PAGE && current_user_can('manage_network_options') && !isset($super_admins)) { ?>
+                    if (is_multisite() && is_network_admin() && !IS_PROFILE_PAGE && current_user_can('manage_network_options') && !isset($super_admins)) {
+                        ?>
                         <tr class="user-super-admin-wrap">
                             <th><?php _e('Super Admin'); ?></th>
                             <td>
@@ -419,7 +441,8 @@ switch ($action) {
                                 <?php endif; ?>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php
+                    } ?>
 
                     <tr class="user-first-name-wrap">
                         <th><label for="first_name"><?php _e('First Name') ?></label></th>
@@ -462,9 +485,10 @@ switch ($action) {
                                     $public_display['display_lastfirst'] = $profileuser->last_name . ' ' . $profileuser->first_name;
                                 }
 
-                                if (!in_array($profileuser->display_name,
-                                    $public_display)) // Only add this if it isn't duplicated elsewhere
-                                {
+                                if (!in_array(
+                                    $profileuser->display_name,
+                                    $public_display
+                                )) { // Only add this if it isn't duplicated elsewhere
                                     $public_display = array('display_displayname' => $profileuser->display_name) + $public_display;
                                 }
 
@@ -473,8 +497,10 @@ switch ($action) {
 
                                 foreach ($public_display as $id => $item) {
                                     ?>
-                                    <option <?php selected($profileuser->display_name,
-                                        $item); ?>><?php echo $item; ?></option>
+                                    <option <?php selected(
+                                        $profileuser->display_name,
+                                        $item
+                                    ); ?>><?php echo $item; ?></option>
                                     <?php
                                 }
                                 ?>
@@ -503,8 +529,10 @@ switch ($action) {
                                         );
                                         printf(
                                             ' <a href="%1$s">%2$s</a>',
-                                            esc_url(wp_nonce_url(self_admin_url('profile.php?dismiss=' . $current_user->ID . '_new_email'),
-                                                'dismiss-' . $current_user->ID . '_new_email')),
+                                            esc_url(wp_nonce_url(
+                                                self_admin_url('profile.php?dismiss=' . $current_user->ID . '_new_email'),
+                                                'dismiss-' . $current_user->ID . '_new_email'
+                                            )),
                                             __('Cancel')
                                         );
                                         ?></p>
@@ -535,8 +563,7 @@ switch ($action) {
                                      *
                                      * @param string $desc The translatable label for the contactmethod.
                                      */
-                                    echo apply_filters("user_{$name}_label", $desc);
-                                    ?>
+                                    echo apply_filters("user_{$name}_label", $desc); ?>
                                 </label></th>
                             <td><input type="text" name="<?php echo $name; ?>" id="<?php echo $name; ?>"
                                        value="<?php echo esc_attr($profileuser->$name) ?>" class="regular-text"/></td>
@@ -566,7 +593,8 @@ switch ($action) {
                                 <p class="description"><?php
                                     if (IS_PROFILE_PAGE) {
                                         /* translators: %s: Gravatar URL */
-                                        $description = sprintf(__('You can change your profile picture on <a href="%s">Gravatar</a>.'),
+                                        $description = sprintf(
+                                            __('You can change your profile picture on <a href="%s">Gravatar</a>.'),
                                             __('https://en.gravatar.com/')
                                         );
                                     } else {

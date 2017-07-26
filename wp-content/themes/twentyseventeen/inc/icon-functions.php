@@ -135,8 +135,11 @@ function twentyseventeen_nav_menu_social_icons($item_output, $item, $depth, $arg
     if ('social' === $args->theme_location) {
         foreach ($social_icons as $attr => $value) {
             if (false !== strpos($item_output, $attr)) {
-                $item_output = str_replace($args->link_after,
-                    '</span>' . twentyseventeen_get_svg(array('icon' => esc_attr($value))), $item_output);
+                $item_output = str_replace(
+                    $args->link_after,
+                    '</span>' . twentyseventeen_get_svg(array('icon' => esc_attr($value))),
+                    $item_output
+                );
             }
         }
     }

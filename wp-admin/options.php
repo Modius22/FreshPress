@@ -57,8 +57,10 @@ if (is_multisite()) {
     if (!empty($_GET['adminhash'])) {
         $new_admin_details = get_option('adminhash');
         $redirect = 'options-general.php?updated=false';
-        if (is_array($new_admin_details) && hash_equals($new_admin_details['hash'],
-                $_GET['adminhash']) && !empty($new_admin_details['newemail'])) {
+        if (is_array($new_admin_details) && hash_equals(
+            $new_admin_details['hash'],
+                $_GET['adminhash']
+        ) && !empty($new_admin_details['newemail'])) {
             update_option('admin_email', $new_admin_details['newemail']);
             delete_option('adminhash');
             delete_option('new_admin_email');
@@ -259,7 +261,9 @@ if ('update' == $action) {
 
         foreach ($options as $option) {
             if ($unregistered) {
-                _deprecated_argument('options.php', '2.7.0',
+                _deprecated_argument(
+                    'options.php',
+                    '2.7.0',
                     sprintf(
                     /* translators: %s: the option/setting */
                         __('The %s setting is unregistered. Unregistered settings are deprecated. See https://codex.wordpress.org/Settings_API'),

@@ -245,9 +245,9 @@ class wp_xmlrpc_server extends IXR_Server
     public function login($username, $password)
     {
         /*
-		 * Respect old get_option() filters left for back-compat when the 'enable_xmlrpc'
-		 * option was deprecated in 3.5.0. Use the 'xmlrpc_enabled' hook instead.
-		 */
+         * Respect old get_option() filters left for back-compat when the 'enable_xmlrpc'
+         * option was deprecated in 3.5.0. Use the 'xmlrpc_enabled' hook instead.
+         */
         $enabled = apply_filters('pre_option_enable_xmlrpc', false);
         if (false === $enabled) {
             $enabled = apply_filters('option_enable_xmlrpc', true);
@@ -1403,8 +1403,10 @@ class wp_xmlrpc_server extends IXR_Server
                 break;
             case 'private':
                 if (!current_user_can($post_type->cap->publish_posts)) {
-                    return new IXR_Error(401,
-                        __('Sorry, you are not allowed to create private posts in this post type.'));
+                    return new IXR_Error(
+                        401,
+                        __('Sorry, you are not allowed to create private posts in this post type.')
+                    );
                 }
                 break;
             case 'publish':
@@ -1421,8 +1423,10 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         if (!empty($post_data['post_password']) && !current_user_can($post_type->cap->publish_posts)) {
-            return new IXR_Error(401,
-                __('Sorry, you are not allowed to create password protected posts in this post type.'));
+            return new IXR_Error(
+                401,
+                __('Sorry, you are not allowed to create password protected posts in this post type.')
+            );
         }
 
         $post_data['post_author'] = absint($post_data['post_author']);
@@ -1507,13 +1511,17 @@ class wp_xmlrpc_server extends IXR_Server
                 // Validating term ids.
                 foreach ($taxonomies as $taxonomy) {
                     if (!array_key_exists($taxonomy, $post_type_taxonomies)) {
-                        return new IXR_Error(401,
-                            __('Sorry, one of the given taxonomies is not supported by the post type.'));
+                        return new IXR_Error(
+                            401,
+                            __('Sorry, one of the given taxonomies is not supported by the post type.')
+                        );
                     }
 
                     if (!current_user_can($post_type_taxonomies[$taxonomy]->cap->assign_terms)) {
-                        return new IXR_Error(401,
-                            __('Sorry, you are not allowed to assign a term to one of the given taxonomies.'));
+                        return new IXR_Error(
+                            401,
+                            __('Sorry, you are not allowed to assign a term to one of the given taxonomies.')
+                        );
                     }
 
                     $term_ids = $post_data['terms'][$taxonomy];
@@ -1536,19 +1544,23 @@ class wp_xmlrpc_server extends IXR_Server
 
                 foreach ($taxonomies as $taxonomy) {
                     if (!array_key_exists($taxonomy, $post_type_taxonomies)) {
-                        return new IXR_Error(401,
-                            __('Sorry, one of the given taxonomies is not supported by the post type.'));
+                        return new IXR_Error(
+                            401,
+                            __('Sorry, one of the given taxonomies is not supported by the post type.')
+                        );
                     }
 
                     if (!current_user_can($post_type_taxonomies[$taxonomy]->cap->assign_terms)) {
-                        return new IXR_Error(401,
-                            __('Sorry, you are not allowed to assign a term to one of the given taxonomies.'));
+                        return new IXR_Error(
+                            401,
+                            __('Sorry, you are not allowed to assign a term to one of the given taxonomies.')
+                        );
                     }
 
                     /*
-					 * For hierarchical taxonomies, we can't assign a term when multiple terms
-					 * in the hierarchy share the same name.
-					 */
+                     * For hierarchical taxonomies, we can't assign a term when multiple terms
+                     * in the hierarchy share the same name.
+                     */
                     $ambiguous_terms = array();
                     if (is_taxonomy_hierarchical($taxonomy)) {
                         $tax_term_names = get_terms($taxonomy, array('fields' => 'names', 'hide_empty' => false));
@@ -1557,8 +1569,10 @@ class wp_xmlrpc_server extends IXR_Server
                         $tax_term_names_count = array_count_values($tax_term_names);
 
                         // Filter out non-ambiguous term names.
-                        $ambiguous_tax_term_counts = array_filter($tax_term_names_count,
-                            array($this, '_is_greater_than_one'));
+                        $ambiguous_tax_term_counts = array_filter(
+                            $tax_term_names_count,
+                            array($this, '_is_greater_than_one')
+                        );
 
                         $ambiguous_terms = array_keys($ambiguous_tax_term_counts);
                     }
@@ -1566,8 +1580,10 @@ class wp_xmlrpc_server extends IXR_Server
                     $term_names = $post_data['terms_names'][$taxonomy];
                     foreach ($term_names as $term_name) {
                         if (in_array($term_name, $ambiguous_terms)) {
-                            return new IXR_Error(401,
-                                __('Ambiguous term name used in a hierarchical taxonomy. Please use term ID instead.'));
+                            return new IXR_Error(
+                                401,
+                                __('Ambiguous term name used in a hierarchical taxonomy. Please use term ID instead.')
+                            );
                         }
 
                         $term = get_term_by('name', $term_name, $taxonomy);
@@ -1575,8 +1591,10 @@ class wp_xmlrpc_server extends IXR_Server
                         if (!$term) {
                             // Term doesn't exist, so check that the user is allowed to create new terms.
                             if (!current_user_can($post_type_taxonomies[$taxonomy]->cap->edit_terms)) {
-                                return new IXR_Error(401,
-                                    __('Sorry, you are not allowed to add a term to one of the given taxonomies.'));
+                                return new IXR_Error(
+                                    401,
+                                    __('Sorry, you are not allowed to add a term to one of the given taxonomies.')
+                                );
                             }
 
                             // Create the new term.
@@ -1682,8 +1700,10 @@ class wp_xmlrpc_server extends IXR_Server
 
         if (isset($content_struct['if_not_modified_since'])) {
             // If the post has been modified since the date provided, return an error.
-            if (mysql2date('U',
-                    $post['post_modified_gmt']) > $content_struct['if_not_modified_since']->getTimestamp()) {
+            if (mysql2date(
+                'U',
+                    $post['post_modified_gmt']
+            ) > $content_struct['if_not_modified_since']->getTimestamp()) {
                 return new IXR_Error(409, __('There is a revision of this post that is more recent.'));
             }
         }
@@ -1692,9 +1712,9 @@ class wp_xmlrpc_server extends IXR_Server
         $post['post_date'] = $this->_convert_date($post['post_date']);
 
         /*
-		 * Ignore the existing GMT date if it is empty or a non-GMT date was supplied in $content_struct,
-		 * since _insert_post() will ignore the non-GMT date if the GMT date is set.
-		 */
+         * Ignore the existing GMT date if it is empty or a non-GMT date was supplied in $content_struct,
+         * since _insert_post() will ignore the non-GMT date if the GMT date is set.
+         */
         if ($post['post_date_gmt'] == '0000-00-00 00:00:00' || isset($content_struct['post_date'])) {
             unset($post['post_date_gmt']);
         } else {
@@ -1838,8 +1858,11 @@ class wp_xmlrpc_server extends IXR_Server
              * @param array $fields Array of post fields. Default array contains 'post', 'terms', and 'custom_fields'.
              * @param string $method Method name.
              */
-            $fields = apply_filters('xmlrpc_default_post_fields', array('post', 'terms', 'custom_fields'),
-                'wp.getPost');
+            $fields = apply_filters(
+                'xmlrpc_default_post_fields',
+                array('post', 'terms', 'custom_fields'),
+                'wp.getPost'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -1900,8 +1923,11 @@ class wp_xmlrpc_server extends IXR_Server
             $fields = $args[4];
         } else {
             /** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-            $fields = apply_filters('xmlrpc_default_post_fields', array('post', 'terms', 'custom_fields'),
-                'wp.getPosts');
+            $fields = apply_filters(
+                'xmlrpc_default_post_fields',
+                array('post', 'terms', 'custom_fields'),
+                'wp.getPosts'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -2461,8 +2487,11 @@ class wp_xmlrpc_server extends IXR_Server
              * @param array $fields An array of taxonomy fields to retrieve.
              * @param string $method The method name.
              */
-            $fields = apply_filters('xmlrpc_default_taxonomy_fields', array('labels', 'cap', 'object_type'),
-                'wp.getTaxonomy');
+            $fields = apply_filters(
+                'xmlrpc_default_taxonomy_fields',
+                array('labels', 'cap', 'object_type'),
+                'wp.getTaxonomy'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -2520,8 +2549,11 @@ class wp_xmlrpc_server extends IXR_Server
             $fields = $args[4];
         } else {
             /** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-            $fields = apply_filters('xmlrpc_default_taxonomy_fields', array('labels', 'cap', 'object_type'),
-                'wp.getTaxonomies');
+            $fields = apply_filters(
+                'xmlrpc_default_taxonomy_fields',
+                array('labels', 'cap', 'object_type'),
+                'wp.getTaxonomies'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -3175,8 +3207,10 @@ class wp_xmlrpc_server extends IXR_Server
         $num_pages = count($page_list);
         for ($i = 0; $i < $num_pages; $i++) {
             $page_list[$i]->dateCreated = $this->_convert_date($page_list[$i]->post_date);
-            $page_list[$i]->date_created_gmt = $this->_convert_date_gmt($page_list[$i]->post_date_gmt,
-                $page_list[$i]->post_date);
+            $page_list[$i]->date_created_gmt = $this->_convert_date_gmt(
+                $page_list[$i]->post_date_gmt,
+                $page_list[$i]->post_date
+            );
 
             unset($page_list[$i]->post_date_gmt);
             unset($page_list[$i]->post_date);
@@ -3445,8 +3479,10 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         if (!current_user_can('edit_posts')) {
-            return new IXR_Error(401,
-                __('Sorry, you must be able to edit posts on this site in order to view categories.'));
+            return new IXR_Error(
+                401,
+                __('Sorry, you must be able to edit posts on this site in order to view categories.')
+            );
         }
 
         /** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
@@ -3742,8 +3778,16 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         // We've got all the data -- post it:
-        $comment = compact('comment_ID', 'comment_content', 'comment_approved', 'comment_date', 'comment_date_gmt',
-            'comment_author', 'comment_author_email', 'comment_author_url');
+        $comment = compact(
+            'comment_ID',
+            'comment_content',
+            'comment_approved',
+            'comment_date',
+            'comment_date_gmt',
+            'comment_author',
+            'comment_author_email',
+            'comment_author_url'
+        );
 
         $result = wp_update_comment($comment);
         if (is_wp_error($result)) {
@@ -4426,8 +4470,11 @@ class wp_xmlrpc_server extends IXR_Server
              * @param array $fields An array of post type query fields for the given method.
              * @param string $method The method name.
              */
-            $fields = apply_filters('xmlrpc_default_posttype_fields', array('labels', 'cap', 'taxonomies'),
-                'wp.getPostType');
+            $fields = apply_filters(
+                'xmlrpc_default_posttype_fields',
+                array('labels', 'cap', 'taxonomies'),
+                'wp.getPostType'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -4484,8 +4531,11 @@ class wp_xmlrpc_server extends IXR_Server
             $fields = $args[4];
         } else {
             /** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-            $fields = apply_filters('xmlrpc_default_posttype_fields', array('labels', 'cap', 'taxonomies'),
-                'wp.getPostTypes');
+            $fields = apply_filters(
+                'xmlrpc_default_posttype_fields',
+                array('labels', 'cap', 'taxonomies'),
+                'wp.getPostTypes'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -4555,8 +4605,11 @@ class wp_xmlrpc_server extends IXR_Server
              * @param array $field An array of revision query fields.
              * @param string $method The method name.
              */
-            $fields = apply_filters('xmlrpc_default_revision_fields', array('post_date', 'post_date_gmt'),
-                'wp.getRevisions');
+            $fields = apply_filters(
+                'xmlrpc_default_revision_fields',
+                array('post_date', 'post_date_gmt'),
+                'wp.getRevisions'
+            );
         }
 
         if (!$user = $this->login($username, $password)) {
@@ -4666,8 +4719,8 @@ class wp_xmlrpc_server extends IXR_Server
     }
 
     /* Blogger API functions.
-	 * specs on http://plant.blogger.com/api and https://groups.yahoo.com/group/bloggerDev/
-	 */
+     * specs on http://plant.blogger.com/api and https://groups.yahoo.com/group/bloggerDev/
+     */
 
     /**
      * Retrieve blogs that user owns.
@@ -4879,7 +4932,6 @@ class wp_xmlrpc_server extends IXR_Server
      */
     public function blogger_getRecentPosts($args)
     {
-
         $this->escape($args);
 
         // $args[0] = appkey - ignored
@@ -5010,8 +5062,15 @@ class wp_xmlrpc_server extends IXR_Server
         $post_date = current_time('mysql');
         $post_date_gmt = current_time('mysql', 1);
 
-        $post_data = compact('post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_category',
-            'post_status');
+        $post_data = compact(
+            'post_author',
+            'post_date',
+            'post_date_gmt',
+            'post_content',
+            'post_title',
+            'post_category',
+            'post_status'
+        );
 
         $post_ID = wp_insert_post($post_data);
         if (is_wp_error($post_ID)) {
@@ -5056,7 +5115,6 @@ class wp_xmlrpc_server extends IXR_Server
      */
     public function blogger_editPost($args)
     {
-
         $this->escape($args);
 
         $post_ID = (int)$args[1];
@@ -5176,8 +5234,8 @@ class wp_xmlrpc_server extends IXR_Server
     }
 
     /* MetaWeblog API functions
-	 * specs on wherever Dave Winer wants them to be
-	 */
+     * specs on wherever Dave Winer wants them to be
+     */
 
     /**
      * Create a new post.
@@ -5434,8 +5492,7 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         // Do some timestamp voodoo
-        if (!empty($content_struct['date_created_gmt'])) // We know this is supposed to be GMT, so we're going to slap that Z on there by force
-        {
+        if (!empty($content_struct['date_created_gmt'])) { // We know this is supposed to be GMT, so we're going to slap that Z on there by force
             $dateCreated = rtrim($content_struct['date_created_gmt']->getIso(), 'Z') . 'Z';
         } elseif (!empty($content_struct['dateCreated'])) {
             $dateCreated = $content_struct['dateCreated']->getIso();
@@ -5460,9 +5517,26 @@ class wp_xmlrpc_server extends IXR_Server
             }
         }
 
-        $postdata = compact('post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_category',
-            'post_status', 'post_excerpt', 'comment_status', 'ping_status', 'to_ping', 'post_type', 'post_name',
-            'post_password', 'post_parent', 'menu_order', 'tags_input', 'page_template');
+        $postdata = compact(
+            'post_author',
+            'post_date',
+            'post_date_gmt',
+            'post_content',
+            'post_title',
+            'post_category',
+            'post_status',
+            'post_excerpt',
+            'comment_status',
+            'ping_status',
+            'to_ping',
+            'post_type',
+            'post_name',
+            'post_password',
+            'post_parent',
+            'menu_order',
+            'tags_input',
+            'page_template'
+        );
 
         $post_ID = $postdata['ID'] = get_default_post_to_edit($post_type, true)->ID;
 
@@ -5480,7 +5554,7 @@ class wp_xmlrpc_server extends IXR_Server
             $this->set_custom_fields($post_ID, $content_struct['custom_fields']);
         }
 
-        if (isset ($content_struct['wp_post_thumbnail'])) {
+        if (isset($content_struct['wp_post_thumbnail'])) {
             if (set_post_thumbnail($post_ID, $content_struct['wp_post_thumbnail']) === false) {
                 return new IXR_Error(404, __('Invalid attachment ID.'));
             }
@@ -5611,9 +5685,9 @@ class wp_xmlrpc_server extends IXR_Server
         $postdata = get_post($post_ID, ARRAY_A);
 
         /*
-		 * If there is no post data for the give post id, stop now and return an error.
-		 * Otherwise a new post will be created (which was the old behavior).
-		 */
+         * If there is no post data for the give post id, stop now and return an error.
+         * Otherwise a new post will be created (which was the old behavior).
+         */
         if (!$postdata || empty($postdata['ID'])) {
             return new IXR_Error(404, __('Invalid post ID.'));
         }
@@ -5686,14 +5760,18 @@ class wp_xmlrpc_server extends IXR_Server
                 switch ($post_type) {
                     case 'post':
                         if (!current_user_can('edit_others_posts')) {
-                            return new IXR_Error(401,
-                                __('Sorry, you are not allowed to change the post author as this user.'));
+                            return new IXR_Error(
+                                401,
+                                __('Sorry, you are not allowed to change the post author as this user.')
+                            );
                         }
                         break;
                     case 'page':
                         if (!current_user_can('edit_others_pages')) {
-                            return new IXR_Error(401,
-                                __('Sorry, you are not allowed to change the page author as this user.'));
+                            return new IXR_Error(
+                                401,
+                                __('Sorry, you are not allowed to change the page author as this user.')
+                            );
                         }
                         break;
                     default:
@@ -5822,8 +5900,7 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         // Do some timestamp voodoo.
-        if (!empty($content_struct['date_created_gmt'])) // We know this is supposed to be GMT, so we're going to slap that Z on there by force.
-        {
+        if (!empty($content_struct['date_created_gmt'])) { // We know this is supposed to be GMT, so we're going to slap that Z on there by force.
             $dateCreated = rtrim($content_struct['date_created_gmt']->getIso(), 'Z') . 'Z';
         } elseif (!empty($content_struct['dateCreated'])) {
             $dateCreated = $content_struct['dateCreated']->getIso();
@@ -5844,9 +5921,27 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         // We've got all the data -- post it.
-        $newpost = compact('ID', 'post_content', 'post_title', 'post_category', 'post_status', 'post_excerpt',
-            'comment_status', 'ping_status', 'edit_date', 'post_date', 'post_date_gmt', 'to_ping', 'post_name',
-            'post_password', 'post_parent', 'menu_order', 'post_author', 'tags_input', 'page_template');
+        $newpost = compact(
+            'ID',
+            'post_content',
+            'post_title',
+            'post_category',
+            'post_status',
+            'post_excerpt',
+            'comment_status',
+            'ping_status',
+            'edit_date',
+            'post_date',
+            'post_date_gmt',
+            'to_ping',
+            'post_name',
+            'post_password',
+            'post_parent',
+            'menu_order',
+            'post_author',
+            'tags_input',
+            'page_template'
+        );
 
         $result = wp_update_post($newpost, true);
         if (is_wp_error($result)) {
@@ -5872,7 +5967,7 @@ class wp_xmlrpc_server extends IXR_Server
             $this->set_custom_fields($post_ID, $content_struct['custom_fields']);
         }
 
-        if (isset ($content_struct['wp_post_thumbnail'])) {
+        if (isset($content_struct['wp_post_thumbnail'])) {
 
             // Empty value deletes, non-empty value adds/updates.
             if (empty($content_struct['wp_post_thumbnail'])) {
@@ -6204,8 +6299,10 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         if (!current_user_can('edit_posts')) {
-            return new IXR_Error(401,
-                __('Sorry, you must be able to edit posts on this site in order to view categories.'));
+            return new IXR_Error(
+                401,
+                __('Sorry, you must be able to edit posts on this site in order to view categories.')
+            );
         }
 
         /** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
@@ -6344,8 +6441,8 @@ class wp_xmlrpc_server extends IXR_Server
     }
 
     /* MovableType API functions
-	 * specs on http://www.movabletype.org/docs/mtmanual_programmatic.html
-	 */
+     * specs on http://www.movabletype.org/docs/mtmanual_programmatic.html
+     */
 
     /**
      * Retrieve the post titles of recent posts.
@@ -6437,8 +6534,10 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         if (!current_user_can('edit_posts')) {
-            return new IXR_Error(401,
-                __('Sorry, you must be able to edit posts on this site in order to view categories.'));
+            return new IXR_Error(
+                401,
+                __('Sorry, you must be able to edit posts on this site in order to view categories.')
+            );
         }
 
         /** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
@@ -6619,8 +6718,10 @@ class wp_xmlrpc_server extends IXR_Server
             return new IXR_Error(404, __('Sorry, no such post.'));
         }
 
-        $comments = $wpdb->get_results($wpdb->prepare("SELECT comment_author_url, comment_content, comment_author_IP, comment_type FROM $wpdb->comments WHERE comment_post_ID = %d",
-            $post_ID));
+        $comments = $wpdb->get_results($wpdb->prepare(
+            "SELECT comment_author_url, comment_content, comment_author_IP, comment_type FROM $wpdb->comments WHERE comment_post_ID = %d",
+            $post_ID
+        ));
 
         if (!$comments) {
             return array();
@@ -6691,8 +6792,8 @@ class wp_xmlrpc_server extends IXR_Server
     }
 
     /* PingBack functions
-	 * specs on www.hixie.ch/specs/pingback/pingback
-	 */
+     * specs on www.hixie.ch/specs/pingback/pingback
+     */
 
     /**
      * Retrieves a pingback and registers it.
@@ -6735,8 +6836,10 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         // Check if the page linked to is in our site
-        $pos1 = strpos($pagelinkedto,
-            str_replace(array('http://www.', 'http://', 'https://www.', 'https://'), '', get_option('home')));
+        $pos1 = strpos(
+            $pagelinkedto,
+            str_replace(array('http://www.', 'http://', 'https://www.', 'https://'), '', get_option('home'))
+        );
         if (!$pos1) {
             return $this->pingback_error(0, __('Is there no link to us?'));
         }
@@ -6774,33 +6877,43 @@ class wp_xmlrpc_server extends IXR_Server
             }
         } else {
             // TODO: Attempt to extract a post ID from the given URL
-            return $this->pingback_error(33,
-                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.'));
+            return $this->pingback_error(
+                33,
+                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.')
+            );
         }
         $post_ID = (int)$post_ID;
 
         $post = get_post($post_ID);
 
-        if (!$post) // Post_ID not found
-        {
-            return $this->pingback_error(33,
-                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.'));
+        if (!$post) { // Post_ID not found
+            return $this->pingback_error(
+                33,
+                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.')
+            );
         }
 
         if ($post_ID == url_to_postid($pagelinkedfrom)) {
-            return $this->pingback_error(0,
-                __('The source URL and the target URL cannot both point to the same resource.'));
+            return $this->pingback_error(
+                0,
+                __('The source URL and the target URL cannot both point to the same resource.')
+            );
         }
 
         // Check if pings are on
         if (!pings_open($post)) {
-            return $this->pingback_error(33,
-                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.'));
+            return $this->pingback_error(
+                33,
+                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.')
+            );
         }
 
         // Let's check that the remote site didn't already pingback this entry
-        if ($wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_author_url = %s",
-            $post_ID, $pagelinkedfrom))) {
+        if ($wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_author_url = %s",
+            $post_ID,
+            $pagelinkedfrom
+        ))) {
             return $this->pingback_error(48, __('The pingback has already been registered.'));
         }
 
@@ -6810,8 +6923,10 @@ class wp_xmlrpc_server extends IXR_Server
         $remote_ip = preg_replace('/[^0-9a-fA-F:., ]/', '', $_SERVER['REMOTE_ADDR']);
 
         /** This filter is documented in wp-includes/class-http.php */
-        $user_agent = apply_filters('http_headers_useragent',
-            'WordPress/' . get_bloginfo('version') . '; ' . get_bloginfo('url'));
+        $user_agent = apply_filters(
+            'http_headers_useragent',
+            'WordPress/' . get_bloginfo('version') . '; ' . get_bloginfo('url')
+        );
 
         // Let's check the remote site
         $http_api_args = array(
@@ -6844,8 +6959,11 @@ class wp_xmlrpc_server extends IXR_Server
         // Work around bug in strip_tags():
         $remote_source = str_replace('<!DOC', '<DOC', $remote_source);
         $remote_source = preg_replace('/[\r\n\t ]+/', ' ', $remote_source); // normalize spaces
-        $remote_source = preg_replace("/<\/*(h1|h2|h3|h4|h5|h6|p|th|td|li|dt|dd|pre|caption|input|textarea|button|body)[^>]*>/",
-            "\n\n", $remote_source);
+        $remote_source = preg_replace(
+            "/<\/*(h1|h2|h3|h4|h5|h6|p|th|td|li|dt|dd|pre|caption|input|textarea|button|body)[^>]*>/",
+            "\n\n",
+            $remote_source
+        );
 
         preg_match('|<title>([^<]*?)</title>|is', $remote_source, $matchtitle);
         $title = isset($matchtitle[1]) ? $matchtitle[1] : '';
@@ -6888,10 +7006,11 @@ class wp_xmlrpc_server extends IXR_Server
             }
         }
 
-        if (empty($context)) // Link to target not found
-        {
-            return $this->pingback_error(17,
-                __('The source URL does not contain a link to the target URL, and so cannot be used as a source.'));
+        if (empty($context)) { // Link to target not found
+            return $this->pingback_error(
+                17,
+                __('The source URL does not contain a link to the target URL, and so cannot be used as a source.')
+            );
         }
 
         $pagelinkedfrom = str_replace('&', '&amp;', $pagelinkedfrom);
@@ -6909,8 +7028,14 @@ class wp_xmlrpc_server extends IXR_Server
         $comment_type = 'pingback';
 
         $commentdata = compact(
-            'comment_post_ID', 'comment_author', 'comment_author_url', 'comment_author_email',
-            'comment_content', 'comment_type', 'remote_source', 'remote_source_original'
+            'comment_post_ID',
+            'comment_author',
+            'comment_author_url',
+            'comment_author_email',
+            'comment_content',
+            'comment_type',
+            'remote_source',
+            'remote_source_original'
         );
 
         $comment_ID = wp_new_comment($commentdata);
@@ -6925,8 +7050,11 @@ class wp_xmlrpc_server extends IXR_Server
         do_action('pingback_post', $comment_ID);
 
         /* translators: 1: URL of the page linked from, 2: URL of the page linked to */
-        return sprintf(__('Pingback from %1$s to %2$s registered. Keep the web talking! :-)'), $pagelinkedfrom,
-            $pagelinkedto);
+        return sprintf(
+            __('Pingback from %1$s to %2$s registered. Keep the web talking! :-)'),
+            $pagelinkedfrom,
+            $pagelinkedto
+        );
     }
 
     /**
@@ -6953,8 +7081,10 @@ class wp_xmlrpc_server extends IXR_Server
         $post_ID = url_to_postid($url);
         if (!$post_ID) {
             // We aren't sure that the resource is available and/or pingback enabled
-            return $this->pingback_error(33,
-                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.'));
+            return $this->pingback_error(
+                33,
+                __('The specified target URL cannot be used as a target. It either doesn&#8217;t exist, or it is not a pingback-enabled resource.')
+            );
         }
 
         $actual_post = get_post($post_ID, ARRAY_A);
@@ -6964,8 +7094,10 @@ class wp_xmlrpc_server extends IXR_Server
             return $this->pingback_error(32, __('The specified target URL does not exist.'));
         }
 
-        $comments = $wpdb->get_results($wpdb->prepare("SELECT comment_author_url, comment_content, comment_author_IP, comment_type FROM $wpdb->comments WHERE comment_post_ID = %d",
-            $post_ID));
+        $comments = $wpdb->get_results($wpdb->prepare(
+            "SELECT comment_author_url, comment_content, comment_author_IP, comment_type FROM $wpdb->comments WHERE comment_post_ID = %d",
+            $post_ID
+        ));
 
         if (!$comments) {
             return array();

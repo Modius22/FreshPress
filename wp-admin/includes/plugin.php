@@ -67,7 +67,6 @@
  */
 function get_plugin_data($plugin_file, $markup = true, $translate = true)
 {
-
     $default_headers = array(
         'Name' => 'Plugin Name',
         'PluginURI' => 'Plugin URI',
@@ -87,9 +86,15 @@ function get_plugin_data($plugin_file, $markup = true, $translate = true)
     // Site Wide Only is the old header for Network
     if (!$plugin_data['Network'] && $plugin_data['_sitewide']) {
         /* translators: 1: Site Wide Only: true, 2: Network: true */
-        _deprecated_argument(__FUNCTION__, '3.0.0',
-            sprintf(__('The %1$s plugin header is deprecated. Use %2$s instead.'), '<code>Site Wide Only: true</code>',
-                '<code>Network: true</code>'));
+        _deprecated_argument(
+            __FUNCTION__,
+            '3.0.0',
+            sprintf(
+                __('The %1$s plugin header is deprecated. Use %2$s instead.'),
+                '<code>Site Wide Only: true</code>',
+                '<code>Network: true</code>'
+            )
+        );
         $plugin_data['Network'] = $plugin_data['_sitewide'];
     }
     $plugin_data['Network'] = ('true' == strtolower($plugin_data['Network']));
@@ -256,7 +261,6 @@ function get_plugin_files($plugin)
  */
 function get_plugins($plugin_folder = '')
 {
-
     if (!$cache_plugins = wp_cache_get('plugins', 'plugins')) {
         $cache_plugins = array();
     }
@@ -310,10 +314,13 @@ function get_plugins($plugin_folder = '')
             continue;
         }
 
-        $plugin_data = get_plugin_data("$plugin_root/$plugin_file", false,
-            false); //Do not apply markup/translate as it'll be cached.
+        $plugin_data = get_plugin_data(
+            "$plugin_root/$plugin_file",
+            false,
+            false
+        ); //Do not apply markup/translate as it'll be cached.
 
-        if (empty ($plugin_data['Name'])) {
+        if (empty($plugin_data['Name'])) {
             continue;
         }
 
@@ -366,18 +373,20 @@ function get_mu_plugins()
             continue;
         }
 
-        $plugin_data = get_plugin_data(WPMU_PLUGIN_DIR . "/$plugin_file", false,
-            false); //Do not apply markup/translate as it'll be cached.
+        $plugin_data = get_plugin_data(
+            WPMU_PLUGIN_DIR . "/$plugin_file",
+            false,
+            false
+        ); //Do not apply markup/translate as it'll be cached.
 
-        if (empty ($plugin_data['Name'])) {
+        if (empty($plugin_data['Name'])) {
             $plugin_data['Name'] = $plugin_file;
         }
 
         $wp_plugins[$plugin_file] = $plugin_data;
     }
 
-    if (isset($wp_plugins['index.php']) && filesize(WPMU_PLUGIN_DIR . '/index.php') <= 30) // silence is golden
-    {
+    if (isset($wp_plugins['index.php']) && filesize(WPMU_PLUGIN_DIR . '/index.php') <= 30) { // silence is golden
         unset($wp_plugins['index.php']);
     }
 
@@ -431,8 +440,11 @@ function get_dropins()
         if (!is_readable(WP_CONTENT_DIR . "/$plugin_file")) {
             continue;
         }
-        $plugin_data = get_plugin_data(WP_CONTENT_DIR . "/$plugin_file", false,
-            false); //Do not apply markup/translate as it'll be cached.
+        $plugin_data = get_plugin_data(
+            WP_CONTENT_DIR . "/$plugin_file",
+            false,
+            false
+        ); //Do not apply markup/translate as it'll be cached.
         if (empty($plugin_data['Name'])) {
             $plugin_data['Name'] = $plugin_file;
         }
@@ -606,8 +618,11 @@ function activate_plugin($plugin, $redirect = '', $network_wide = false, $silent
 
     if (($network_wide && !isset($current[$plugin])) || (!$network_wide && !in_array($plugin, $current))) {
         if (!empty($redirect)) {
-            wp_redirect(add_query_arg('_error_nonce', wp_create_nonce('plugin-activation-error_' . $plugin),
-                $redirect));
+            wp_redirect(add_query_arg(
+                '_error_nonce',
+                wp_create_nonce('plugin-activation-error_' . $plugin),
+                $redirect
+            ));
         } // we'll override this later if the plugin can be included without fatal error
         ob_start();
         wp_register_plugin_realpath(WP_PLUGIN_DIR . '/' . $plugin);
@@ -918,8 +933,10 @@ function delete_plugins($plugins, $deprecated = '')
         $this_plugin_dir = trailingslashit(dirname($plugins_dir . $plugin_file));
 
         // If plugin is in its own directory, recursively delete the directory.
-        if (strpos($plugin_file,
-                '/') && $this_plugin_dir != $plugins_dir) { //base check on if plugin includes directory separator AND that it's not the root plugin folder
+        if (strpos(
+            $plugin_file,
+                '/'
+        ) && $this_plugin_dir != $plugins_dir) { //base check on if plugin includes directory separator AND that it's not the root plugin folder
             $deleted = $wp_filesystem->delete($this_plugin_dir, true);
         } else {
             $deleted = $wp_filesystem->delete($plugins_dir . $plugin_file);
@@ -965,8 +982,10 @@ function delete_plugins($plugins, $deprecated = '')
     }
 
     if (!empty($errors)) {
-        return new WP_Error('could_not_remove_plugin',
-            sprintf(__('Could not fully remove the plugin(s) %s.'), implode(', ', $errors)));
+        return new WP_Error(
+            'could_not_remove_plugin',
+            sprintf(__('Could not fully remove the plugin(s) %s.'), implode(', ', $errors))
+        );
     }
 
     return true;
@@ -1267,7 +1286,7 @@ function add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $
     $submenu[$parent_slug][] = array($menu_title, $capability, $menu_slug, $page_title);
 
     $hookname = get_plugin_page_hookname($menu_slug, $parent_slug);
-    if (!empty ($function) && !empty ($hookname)) {
+    if (!empty($function) && !empty($hookname)) {
         add_action($hookname, $function);
     }
 
@@ -1633,7 +1652,7 @@ function get_admin_page_parent($parent = '')
     global $parent_file, $menu, $submenu, $pagenow, $typenow,
            $plugin_page, $_wp_real_parent_file, $_wp_menu_nopriv, $_wp_submenu_nopriv;
 
-    if (!empty ($parent) && 'admin.php' != $parent) {
+    if (!empty($parent) && 'admin.php' != $parent) {
         if (isset($_wp_real_parent_file[$parent])) {
             $parent = $_wp_real_parent_file[$parent];
         }
@@ -1675,8 +1694,10 @@ function get_admin_page_parent($parent = '')
             if (!empty($typenow) && ($submenu_array[2] == "$pagenow?post_type=$typenow")) {
                 $parent_file = $parent;
                 return $parent;
-            } elseif ($submenu_array[2] == $pagenow && empty($typenow) && (empty($parent_file) || false === strpos($parent_file,
-                        '?'))) {
+            } elseif ($submenu_array[2] == $pagenow && empty($typenow) && (empty($parent_file) || false === strpos(
+                $parent_file,
+                        '?'
+            ))) {
                 $parent_file = $parent;
                 return $parent;
             } elseif (isset($plugin_page) && ($plugin_page == $submenu_array[2])) {
@@ -1705,7 +1726,7 @@ function get_admin_page_title()
 {
     global $title, $menu, $submenu, $pagenow, $plugin_page, $typenow;
 
-    if (!empty ($title)) {
+    if (!empty($title)) {
         return $title;
     }
 
@@ -1713,7 +1734,7 @@ function get_admin_page_title()
 
     $parent = $parent1 = get_admin_page_parent();
 
-    if (empty ($parent)) {
+    if (empty($parent)) {
         foreach ((array)$menu as $menu_array) {
             if (isset($menu_array[3])) {
                 if ($menu_array[2] == $pagenow) {
@@ -1745,8 +1766,7 @@ function get_admin_page_title()
                     return $submenu_array[3];
                 }
 
-                if ($submenu_array[2] != $pagenow || isset($_GET['page'])) // not the current page
-                {
+                if ($submenu_array[2] != $pagenow || isset($_GET['page'])) { // not the current page
                     continue;
                 }
 
@@ -1759,7 +1779,7 @@ function get_admin_page_title()
                 }
             }
         }
-        if (empty ($title)) {
+        if (empty($title)) {
             foreach ($menu as $menu_array) {
                 if (isset($plugin_page) &&
                     ($plugin_page == $menu_array[2]) &&
@@ -1805,7 +1825,7 @@ function get_plugin_page_hookname($plugin_page, $parent_page)
     $parent = get_admin_page_parent($parent_page);
 
     $page_type = 'admin';
-    if (empty ($parent_page) || 'admin.php' == $parent_page || isset($admin_page_hooks[$plugin_page])) {
+    if (empty($parent_page) || 'admin.php' == $parent_page || isset($admin_page_hooks[$plugin_page])) {
         if (isset($admin_page_hooks[$plugin_page])) {
             $page_type = 'toplevel';
         } elseif (isset($admin_page_hooks[$parent])) {

@@ -87,9 +87,7 @@ class WP_Embed
 
         if (!$post || empty($_GET['message'])) {
             return;
-        }
-
-        ?>
+        } ?>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
                 $.get("<?php echo admin_url('admin-ajax.php?action=oembed-cache&post=' . $post->ID, 'relative'); ?>");
@@ -195,8 +193,7 @@ class WP_Embed
         }
 
         $post_ID = (!empty($post->ID)) ? $post->ID : null;
-        if (!empty($this->post_ID)) // Potentially set by WP_Embed::cache_oembed()
-        {
+        if (!empty($this->post_ID)) { // Potentially set by WP_Embed::cache_oembed()
             $post_ID = $this->post_ID;
         }
 
@@ -353,11 +350,17 @@ class WP_Embed
 
         if (preg_match('#(^|\s|>)https?://#i', $content)) {
             // Find URLs on their own line.
-            $content = preg_replace_callback('|^(\s*)(https?://[^\s<>"]+)(\s*)$|im', array($this, 'autoembed_callback'),
-                $content);
+            $content = preg_replace_callback(
+                '|^(\s*)(https?://[^\s<>"]+)(\s*)$|im',
+                array($this, 'autoembed_callback'),
+                $content
+            );
             // Find URLs in their own paragraph.
-            $content = preg_replace_callback('|(<p(?: [^>]*)?>\s*)(https?://[^\s<>"]+)(\s*<\/p>)|i',
-                array($this, 'autoembed_callback'), $content);
+            $content = preg_replace_callback(
+                '|(<p(?: [^>]*)?>\s*)(https?://[^\s<>"]+)(\s*<\/p>)|i',
+                array($this, 'autoembed_callback'),
+                $content
+            );
         }
 
         // Put the line breaks back.

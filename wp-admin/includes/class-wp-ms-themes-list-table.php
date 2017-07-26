@@ -17,7 +17,6 @@
  */
 class WP_MS_Themes_List_Table extends WP_List_Table
 {
-
     public $site_id;
     public $is_site_themes;
 
@@ -141,8 +140,10 @@ class WP_MS_Themes_List_Table extends WP_List_Table
 
         if ($s) {
             $status = 'search';
-            $themes['search'] = array_filter(array_merge($themes['all'], $themes['broken']),
-                array($this, '_search_callback'));
+            $themes['search'] = array_filter(
+                array_merge($themes['all'], $themes['broken']),
+                array($this, '_search_callback')
+            );
         }
 
         $totals = array();
@@ -314,24 +315,40 @@ class WP_MS_Themes_List_Table extends WP_List_Table
 
             switch ($type) {
                 case 'all':
-                    $text = _nx('All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $count,
-                        'themes');
+                    $text = _nx(
+                        'All <span class="count">(%s)</span>',
+                        'All <span class="count">(%s)</span>',
+                        $count,
+                        'themes'
+                    );
                     break;
                 case 'enabled':
-                    $text = _n('Enabled <span class="count">(%s)</span>', 'Enabled <span class="count">(%s)</span>',
-                        $count);
+                    $text = _n(
+                        'Enabled <span class="count">(%s)</span>',
+                        'Enabled <span class="count">(%s)</span>',
+                        $count
+                    );
                     break;
                 case 'disabled':
-                    $text = _n('Disabled <span class="count">(%s)</span>', 'Disabled <span class="count">(%s)</span>',
-                        $count);
+                    $text = _n(
+                        'Disabled <span class="count">(%s)</span>',
+                        'Disabled <span class="count">(%s)</span>',
+                        $count
+                    );
                     break;
                 case 'upgrade':
-                    $text = _n('Update Available <span class="count">(%s)</span>',
-                        'Update Available <span class="count">(%s)</span>', $count);
+                    $text = _n(
+                        'Update Available <span class="count">(%s)</span>',
+                        'Update Available <span class="count">(%s)</span>',
+                        $count
+                    );
                     break;
-                case 'broken' :
-                    $text = _n('Broken <span class="count">(%s)</span>', 'Broken <span class="count">(%s)</span>',
-                        $count);
+                case 'broken':
+                    $text = _n(
+                        'Broken <span class="count">(%s)</span>',
+                        'Broken <span class="count">(%s)</span>',
+                        $count
+                    );
                     break;
             }
 
@@ -342,7 +359,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
             }
 
             if ('search' != $type) {
-                $status_links[$type] = sprintf("<a href='%s' %s>%s</a>",
+                $status_links[$type] = sprintf(
+                    "<a href='%s' %s>%s</a>",
                     esc_url(add_query_arg('theme_status', $type, $url)),
                     ($type === $status) ? ' class="current"' : '',
                     sprintf($text, number_format_i18n($count))
@@ -400,8 +418,7 @@ class WP_MS_Themes_List_Table extends WP_List_Table
      */
     public function column_cb($theme)
     {
-        $checkbox_id = 'checkbox_' . md5($theme->get('Name'));
-        ?>
+        $checkbox_id = 'checkbox_' . md5($theme->get('Name')); ?>
         <input type="checkbox" name="checked[]" value="<?php echo esc_attr($theme->get_stylesheet()) ?>"
                id="<?php echo $checkbox_id ?>"/>
         <label class="screen-reader-text"
@@ -463,7 +480,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
                     $aria_label = sprintf(__('Network Enable %s'), $theme->display('Name'));
                 }
 
-                $actions['enable'] = sprintf('<a href="%s" class="edit" aria-label="%s">%s</a>',
+                $actions['enable'] = sprintf(
+                    '<a href="%s" class="edit" aria-label="%s">%s</a>',
                     esc_url(wp_nonce_url($url, 'enable-theme_' . $stylesheet)),
                     esc_attr($aria_label),
                     ($this->is_site_themes ? __('Enable') : __('Network Enable'))
@@ -485,7 +503,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
                 $aria_label = sprintf(__('Network Disable %s'), $theme->display('Name'));
             }
 
-            $actions['disable'] = sprintf('<a href="%s" aria-label="%s">%s</a>',
+            $actions['disable'] = sprintf(
+                '<a href="%s" aria-label="%s">%s</a>',
                 esc_url(wp_nonce_url($url, 'disable-theme_' . $stylesheet)),
                 esc_attr($aria_label),
                 ($this->is_site_themes ? __('Disable') : __('Network Disable'))
@@ -500,7 +519,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
             /* translators: %s: theme name */
             $aria_label = sprintf(__('Open %s in the Theme Editor'), $theme->display('Name'));
 
-            $actions['edit'] = sprintf('<a href="%s" class="edit" aria-label="%s">%s</a>',
+            $actions['edit'] = sprintf(
+                '<a href="%s" class="edit" aria-label="%s">%s</a>',
                 esc_url($url),
                 esc_attr($aria_label),
                 __('Edit')
@@ -519,7 +539,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
             /* translators: %s: theme name */
             $aria_label = sprintf(_x('Delete %s', 'theme'), $theme->display('Name'));
 
-            $actions['delete'] = sprintf('<a href="%s" class="delete" aria-label="%s">%s</a>',
+            $actions['delete'] = sprintf(
+                '<a href="%s" class="delete" aria-label="%s">%s</a>',
                 esc_url(wp_nonce_url($url, 'bulk-themes')),
                 esc_attr($aria_label),
                 __('Delete')
@@ -613,7 +634,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
             /* translators: %s: theme name */
             $aria_label = sprintf(__('Visit %s homepage'), $theme->display('Name'));
 
-            $theme_meta[] = sprintf('<a href="%s" aria-label="%s">%s</a>',
+            $theme_meta[] = sprintf(
+                '<a href="%s" aria-label="%s">%s</a>',
                 $theme->display('ThemeURI'),
                 esc_attr($aria_label),
                 __('Visit Theme Site')
@@ -740,7 +762,8 @@ class WP_MS_Themes_List_Table extends WP_List_Table
             $class .= ' update';
         }
 
-        printf('<tr class="%s" data-slug="%s">',
+        printf(
+            '<tr class="%s" data-slug="%s">',
             esc_attr($class),
             esc_attr($stylesheet)
         );

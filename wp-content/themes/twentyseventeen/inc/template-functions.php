@@ -75,7 +75,6 @@ add_filter('body_class', 'twentyseventeen_body_classes');
  */
 function twentyseventeen_panel_count()
 {
-
     $panel_count = 0;
 
     /**

@@ -85,8 +85,11 @@ if ($doaction) {
         $post_status = preg_replace('/[^a-z0-9_-]+/i', '', $_REQUEST['post_status']);
         // Validate the post status exists.
         if (get_post_status_object($post_status)) {
-            $post_ids = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type=%s AND post_status = %s",
-                $post_type, $post_status));
+            $post_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT ID FROM $wpdb->posts WHERE post_type=%s AND post_status = %s",
+                $post_type,
+                $post_status
+            ));
         }
         $doaction = 'delete';
     } elseif (isset($_REQUEST['media'])) {
@@ -123,8 +126,10 @@ if ($doaction) {
                 $trashed++;
             }
 
-            $sendback = add_query_arg(array('trashed' => $trashed, 'ids' => join(',', $post_ids), 'locked' => $locked),
-                $sendback);
+            $sendback = add_query_arg(
+                array('trashed' => $trashed, 'ids' => join(',', $post_ids), 'locked' => $locked),
+                $sendback
+            );
             break;
         case 'untrash':
             $untrashed = 0;
@@ -177,8 +182,12 @@ if ($doaction) {
             break;
         default:
             /** This action is documented in wp-admin/edit-comments.php */
-            $sendback = apply_filters('handle_bulk_actions-' . get_current_screen()->id, $sendback, $doaction,
-                $post_ids);
+            $sendback = apply_filters(
+                'handle_bulk_actions-' . get_current_screen()->id,
+                $sendback,
+                $doaction,
+                $post_ids
+            );
             break;
     }
 
@@ -253,7 +262,6 @@ if ('post' == $post_type) {
         '<p>' . __('<a href="https://codex.wordpress.org/Posts_Screen">Documentation on Managing Posts</a>') . '</p>' .
         '<p>' . __('<a href="https://wordpress.org/support/">Support Forums</a>') . '</p>'
     );
-
 } elseif ('page' == $post_type) {
     get_current_screen()->add_help_tab(array(
         'id' => 'overview',
@@ -274,7 +282,6 @@ if ('post' == $post_type) {
         '<p>' . __('<a href="https://codex.wordpress.org/Pages_Screen">Documentation on Managing Pages</a>') . '</p>' .
         '<p>' . __('<a href="https://wordpress.org/support/">Support Forums</a>') . '</p>'
     );
-
 }
 
 get_current_screen()->set_screen_reader_content(array(
@@ -297,22 +304,34 @@ $bulk_messages = array();
 $bulk_messages['post'] = array(
     'updated' => _n('%s post updated.', '%s posts updated.', $bulk_counts['updated']),
     'locked' => (1 == $bulk_counts['locked']) ? __('1 post not updated, somebody is editing it.') :
-        _n('%s post not updated, somebody is editing it.', '%s posts not updated, somebody is editing them.',
-            $bulk_counts['locked']),
+        _n(
+            '%s post not updated, somebody is editing it.',
+            '%s posts not updated, somebody is editing them.',
+            $bulk_counts['locked']
+        ),
     'deleted' => _n('%s post permanently deleted.', '%s posts permanently deleted.', $bulk_counts['deleted']),
     'trashed' => _n('%s post moved to the Trash.', '%s posts moved to the Trash.', $bulk_counts['trashed']),
-    'untrashed' => _n('%s post restored from the Trash.', '%s posts restored from the Trash.',
-        $bulk_counts['untrashed']),
+    'untrashed' => _n(
+        '%s post restored from the Trash.',
+        '%s posts restored from the Trash.',
+        $bulk_counts['untrashed']
+    ),
 );
 $bulk_messages['page'] = array(
     'updated' => _n('%s page updated.', '%s pages updated.', $bulk_counts['updated']),
     'locked' => (1 == $bulk_counts['locked']) ? __('1 page not updated, somebody is editing it.') :
-        _n('%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.',
-            $bulk_counts['locked']),
+        _n(
+            '%s page not updated, somebody is editing it.',
+            '%s pages not updated, somebody is editing them.',
+            $bulk_counts['locked']
+        ),
     'deleted' => _n('%s page permanently deleted.', '%s pages permanently deleted.', $bulk_counts['deleted']),
     'trashed' => _n('%s page moved to the Trash.', '%s pages moved to the Trash.', $bulk_counts['trashed']),
-    'untrashed' => _n('%s page restored from the Trash.', '%s pages restored from the Trash.',
-        $bulk_counts['untrashed']),
+    'untrashed' => _n(
+        '%s page restored from the Trash.',
+        '%s pages restored from the Trash.',
+        $bulk_counts['untrashed']
+    ),
 );
 
 /**
@@ -343,8 +362,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
 
         if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
             /* translators: %s: search keywords */
-            printf(' <span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
-                get_search_query());
+            printf(
+                ' <span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
+                get_search_query()
+            );
         }
         ?>
 
@@ -362,8 +383,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
 
             if ($message == 'trashed' && isset($_REQUEST['ids'])) {
                 $ids = preg_replace('/[^0-9,]/', '', $_REQUEST['ids']);
-                $messages[] = '<a href="' . esc_url(wp_nonce_url("edit.php?post_type=$post_type&doaction=undo&action=untrash&ids=$ids",
-                        "bulk-posts")) . '">' . __('Undo') . '</a>';
+                $messages[] = '<a href="' . esc_url(wp_nonce_url(
+                    "edit.php?post_type=$post_type&doaction=undo&action=untrash&ids=$ids",
+                        "bulk-posts"
+                )) . '">' . __('Undo') . '</a>';
             }
         }
 
@@ -392,13 +415,17 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                    value="<?php echo !empty($_REQUEST['post_status']) ? esc_attr($_REQUEST['post_status']) : 'all'; ?>"/>
             <input type="hidden" name="post_type" class="post_type_page" value="<?php echo $post_type; ?>"/>
 
-            <?php if (!empty($_REQUEST['author'])) { ?>
+            <?php if (!empty($_REQUEST['author'])) {
+            ?>
                 <input type="hidden" name="author" value="<?php echo esc_attr($_REQUEST['author']); ?>"/>
-            <?php } ?>
+            <?php
+        } ?>
 
-            <?php if (!empty($_REQUEST['show_sticky'])) { ?>
+            <?php if (!empty($_REQUEST['show_sticky'])) {
+            ?>
                 <input type="hidden" name="show_sticky" value="1"/>
-            <?php } ?>
+            <?php
+        } ?>
 
             <?php $wp_list_table->display(); ?>
 

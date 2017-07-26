@@ -38,8 +38,11 @@ do_action('rss_tag_pre', 'rss2-comments');
                 printf(ent2ncr(__('Comments on: %s')), get_the_title_rss());
             } elseif (is_search()) {
                 /* translators: Comments feed title. 1: Site name, 2: Search query */
-                printf(ent2ncr(__('Comments for %1$s searching on %2$s')), get_bloginfo_rss('name'),
-                    get_search_query());
+                printf(
+                    ent2ncr(__('Comments for %1$s searching on %2$s')),
+                    get_bloginfo_rss('name'),
+                    get_search_query()
+                );
             } else {
                 /* translators: Comments feed title. 1: Site name */
                 printf(ent2ncr(__('Comments for %s')), get_wp_title_rss());
@@ -86,13 +89,16 @@ do_action('rss_tag_pre', 'rss2-comments');
                     ?></title>
                 <link><?php comment_link() ?></link>
                 <dc:creator><![CDATA[<?php echo get_comment_author_rss() ?>]]></dc:creator>
-                <pubDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_comment_time('Y-m-d H:i:s', true, false),
-                        false); ?></pubDate>
+                <pubDate><?php echo mysql2date(
+                        'D, d M Y H:i:s +0000',
+                        get_comment_time('Y-m-d H:i:s', true, false),
+                        false
+                    ); ?></pubDate>
                 <guid isPermaLink="false"><?php comment_guid() ?></guid>
                 <?php if (post_password_required($comment_post)) : ?>
                     <description><?php echo ent2ncr(__('Protected Comments: Please enter your password to view comments.')); ?></description>
                     <content:encoded><![CDATA[<?php echo get_the_password_form() ?>]]></content:encoded>
-                <?php else : // post pass ?>
+                <?php else : // post pass?>
                     <description><![CDATA[<?php comment_text_rss() ?>]]></description>
                     <content:encoded><![CDATA[<?php comment_text() ?>]]></content:encoded>
                 <?php endif; // post pass

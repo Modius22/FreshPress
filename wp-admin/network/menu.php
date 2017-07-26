@@ -23,8 +23,10 @@ $submenu['index.php'][0] = array(__('Home'), 'read', 'index.php');
 $update_data = wp_get_update_data();
 if ($update_data['counts']['total']) {
     $submenu['index.php'][10] = array(
-        sprintf(__('Updates %s'),
-            "<span class='update-plugins count-{$update_data['counts']['total']}'><span class='update-count'>" . number_format_i18n($update_data['counts']['total']) . "</span></span>"),
+        sprintf(
+            __('Updates %s'),
+            "<span class='update-plugins count-{$update_data['counts']['total']}'><span class='update-count'>" . number_format_i18n($update_data['counts']['total']) . "</span></span>"
+        ),
         'update_core',
         'update-core.php'
     );
@@ -63,8 +65,10 @@ $submenu['users.php'][10] = array(_x('Add New', 'user'), 'create_users', 'user-n
 
 if (current_user_can('update_themes') && $update_data['counts']['themes']) {
     $menu[15] = array(
-        sprintf(__('Themes %s'),
-            "<span class='update-plugins count-{$update_data['counts']['themes']}'><span class='theme-count'>" . number_format_i18n($update_data['counts']['themes']) . "</span></span>"),
+        sprintf(
+            __('Themes %s'),
+            "<span class='update-plugins count-{$update_data['counts']['themes']}'><span class='theme-count'>" . number_format_i18n($update_data['counts']['themes']) . "</span></span>"
+        ),
         'manage_network_themes',
         'themes.php',
         '',
@@ -89,8 +93,10 @@ $submenu['themes.php'][15] = array(_x('Editor', 'theme editor'), 'edit_themes', 
 
 if (current_user_can('update_plugins') && $update_data['counts']['plugins']) {
     $menu[20] = array(
-        sprintf(__('Plugins %s'),
-            "<span class='update-plugins count-{$update_data['counts']['plugins']}'><span class='plugin-count'>" . number_format_i18n($update_data['counts']['plugins']) . "</span></span>"),
+        sprintf(
+            __('Plugins %s'),
+            "<span class='update-plugins count-{$update_data['counts']['plugins']}'><span class='plugin-count'>" . number_format_i18n($update_data['counts']['plugins']) . "</span></span>"
+        ),
         'manage_network_plugins',
         'plugins.php',
         '',

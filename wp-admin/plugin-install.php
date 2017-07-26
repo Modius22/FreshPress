@@ -82,8 +82,10 @@ get_current_screen()->add_help_tab(array(
     'id' => 'overview',
     'title' => __('Overview'),
     'content' =>
-        '<p>' . sprintf(__('Plugins hook into WordPress to extend its functionality with custom features. Plugins are developed independently from the core WordPress application by thousands of developers all over the world. All plugins in the official <a href="%s">WordPress Plugin Directory</a> are compatible with the license WordPress uses.'),
-            __('https://wordpress.org/plugins/')) . '</p>' .
+        '<p>' . sprintf(
+            __('Plugins hook into WordPress to extend its functionality with custom features. Plugins are developed independently from the core WordPress application by thousands of developers all over the world. All plugins in the official <a href="%s">WordPress Plugin Directory</a> are compatible with the license WordPress uses.'),
+            __('https://wordpress.org/plugins/')
+        ) . '</p>' .
         '<p>' . __('You can find new plugins to install by searching or browsing the directory right here in your own Plugins section.') . ' <span id="live-search-desc" class="hide-if-no-js">' . __('The search results will be updated as you type.') . '</span></p>'
 
 ));
@@ -121,7 +123,8 @@ include(ABSPATH . 'wp-admin/admin-header.php');
 
         <?php
         if (!empty($tabs['upload']) && current_user_can('upload_plugins')) {
-            printf(' <a href="%s" class="upload-view-toggle page-title-action"><span class="upload">%s</span><span class="browse">%s</span></a>',
+            printf(
+                ' <a href="%s" class="upload-view-toggle page-title-action"><span class="upload">%s</span><span class="browse">%s</span></a>',
                 ('upload' === $tab) ? self_admin_url('plugin-install.php') : self_admin_url('plugin-install.php?tab=upload'),
                 __('Upload Plugin'),
                 __('Browse Plugins')
@@ -141,8 +144,7 @@ include(ABSPATH . 'wp-admin/admin-header.php');
             <div class="upload-plugin-wrap">
                 <?php
                 /** This action is documented in wp-admin/plugin-install.php */
-                do_action('install_plugins_upload');
-                ?>
+                do_action('install_plugins_upload'); ?>
             </div>
             <?php
             $wp_list_table->views();

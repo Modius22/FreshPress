@@ -307,8 +307,10 @@ final class WP_Hook implements Iterator, ArrayAccess
                 } elseif ($the_['accepted_args'] >= $num_args) {
                     $value = call_user_func_array($the_['function'], $args);
                 } else {
-                    $value = call_user_func_array($the_['function'],
-                        array_slice($args, 0, (int)$the_['accepted_args']));
+                    $value = call_user_func_array(
+                        $the_['function'],
+                        array_slice($args, 0, (int)$the_['accepted_args'])
+                    );
                 }
             }
         } while (false !== next($this->iterations[$nesting_level]));
@@ -555,5 +557,4 @@ final class WP_Hook implements Iterator, ArrayAccess
     {
         reset($this->callbacks);
     }
-
 }

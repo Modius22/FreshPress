@@ -19,7 +19,6 @@
  */
 class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting
 {
-
     const ID_PATTERN = '/^nav_menu_item\[(?P<id>-?\d+)\]$/';
 
     const POST_TYPE = 'nav_menu_item';
@@ -196,7 +195,6 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting
                 throw new Exception("Supplied nav_menu_item value missing property: $missing");
             }
         }
-
     }
 
     /**
@@ -731,10 +729,14 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting
 
         // Apply the same filters as when calling wp_insert_post().
         $menu_item_value['title'] = wp_unslash(apply_filters('title_save_pre', wp_slash($menu_item_value['title'])));
-        $menu_item_value['attr_title'] = wp_unslash(apply_filters('excerpt_save_pre',
-            wp_slash($menu_item_value['attr_title'])));
-        $menu_item_value['description'] = wp_unslash(apply_filters('content_save_pre',
-            wp_slash($menu_item_value['description'])));
+        $menu_item_value['attr_title'] = wp_unslash(apply_filters(
+            'excerpt_save_pre',
+            wp_slash($menu_item_value['attr_title'])
+        ));
+        $menu_item_value['description'] = wp_unslash(apply_filters(
+            'content_save_pre',
+            wp_slash($menu_item_value['description'])
+        ));
 
         $menu_item_value['url'] = esc_url_raw($menu_item_value['url']);
         if ('publish' !== $menu_item_value['status']) {
@@ -886,7 +888,6 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting
                 }
             }
         }
-
     }
 
     /**

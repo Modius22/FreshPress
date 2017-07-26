@@ -21,8 +21,7 @@ function check_upload_size($file)
         return $file;
     }
 
-    if ($file['error'] != '0') // there's already an error
-    {
+    if ($file['error'] != '0') { // there's already an error
         return $file;
     }
 
@@ -35,14 +34,18 @@ function check_upload_size($file)
     $file_size = filesize($file['tmp_name']);
     if ($space_left < $file_size) {
         /* translators: 1: Required disk space in kilobytes */
-        $file['error'] = sprintf(__('Not enough space to upload. %1$s KB needed.'),
-            number_format(($file_size - $space_left) / KB_IN_BYTES));
+        $file['error'] = sprintf(
+            __('Not enough space to upload. %1$s KB needed.'),
+            number_format(($file_size - $space_left) / KB_IN_BYTES)
+        );
     }
 
     if ($file_size > (KB_IN_BYTES * get_site_option('fileupload_maxk', 1500))) {
         /* translators: 1: Maximum allowed file size in kilobytes */
-        $file['error'] = sprintf(__('This file is too big. Files must be less than %1$s KB in size.'),
-            get_site_option('fileupload_maxk', 1500));
+        $file['error'] = sprintf(
+            __('This file is too big. Files must be less than %1$s KB in size.'),
+            get_site_option('fileupload_maxk', 1500)
+        );
     }
 
     if (upload_is_user_over_quota(false)) {
@@ -342,13 +345,18 @@ All at ###SITENAME###
     $content = str_replace('###USERNAME###', $current_user->user_login, $content);
     $content = str_replace('###ADMIN_URL###', esc_url(self_admin_url('options.php?adminhash=' . $hash)), $content);
     $content = str_replace('###EMAIL###', $value, $content);
-    $content = str_replace('###SITENAME###', wp_specialchars_decode(get_site_option('site_name'), ENT_QUOTES),
-        $content);
+    $content = str_replace(
+        '###SITENAME###',
+        wp_specialchars_decode(get_site_option('site_name'), ENT_QUOTES),
+        $content
+    );
     $content = str_replace('###SITEURL###', network_home_url(), $content);
 
-    wp_mail($value,
+    wp_mail(
+        $value,
         sprintf(__('[%s] New Admin Email Address'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES)),
-        $content);
+        $content
+    );
 
     if ($switched_locale) {
         restore_previous_locale();
@@ -377,15 +385,23 @@ function send_confirmation_on_profile_email()
 
     if ($current_user->user_email != $_POST['email']) {
         if (!is_email($_POST['email'])) {
-            $errors->add('user_email', __("<strong>ERROR</strong>: The email address isn&#8217;t correct."),
-                array('form-field' => 'email'));
+            $errors->add(
+                'user_email',
+                __("<strong>ERROR</strong>: The email address isn&#8217;t correct."),
+                array('form-field' => 'email')
+            );
             return;
         }
 
-        if ($wpdb->get_var($wpdb->prepare("SELECT user_email FROM {$wpdb->users} WHERE user_email=%s",
-            $_POST['email']))) {
-            $errors->add('user_email', __("<strong>ERROR</strong>: The email address is already used."),
-                array('form-field' => 'email'));
+        if ($wpdb->get_var($wpdb->prepare(
+            "SELECT user_email FROM {$wpdb->users} WHERE user_email=%s",
+            $_POST['email']
+        ))) {
+            $errors->add(
+                'user_email',
+                __("<strong>ERROR</strong>: The email address is already used."),
+                array('form-field' => 'email')
+            );
             delete_user_meta($current_user->ID, '_new_email');
             return;
         }
@@ -434,16 +450,24 @@ All at ###SITENAME###
         $content = apply_filters('new_user_email_content', $email_text, $new_user_email);
 
         $content = str_replace('###USERNAME###', $current_user->user_login, $content);
-        $content = str_replace('###ADMIN_URL###', esc_url(self_admin_url('profile.php?newuseremail=' . $hash)),
-            $content);
+        $content = str_replace(
+            '###ADMIN_URL###',
+            esc_url(self_admin_url('profile.php?newuseremail=' . $hash)),
+            $content
+        );
         $content = str_replace('###EMAIL###', $_POST['email'], $content);
-        $content = str_replace('###SITENAME###', wp_specialchars_decode(get_site_option('site_name'), ENT_QUOTES),
-            $content);
+        $content = str_replace(
+            '###SITENAME###',
+            wp_specialchars_decode(get_site_option('site_name'), ENT_QUOTES),
+            $content
+        );
         $content = str_replace('###SITEURL###', network_home_url(), $content);
 
-        wp_mail($_POST['email'],
+        wp_mail(
+            $_POST['email'],
             sprintf(__('[%s] New Email Address'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES)),
-            $content);
+            $content
+        );
         $_POST['email'] = $current_user->user_email;
 
         if ($switched_locale) {
@@ -463,11 +487,16 @@ All at ###SITENAME###
 function new_user_email_admin_notice()
 {
     global $pagenow;
-    if ('profile.php' === $pagenow && isset($_GET['updated']) && $email = get_user_meta(get_current_user_id(),
-            '_new_email', true)) {
+    if ('profile.php' === $pagenow && isset($_GET['updated']) && $email = get_user_meta(
+        get_current_user_id(),
+            '_new_email',
+        true
+    )) {
         /* translators: %s: New email address */
-        echo '<div class="notice notice-info"><p>' . sprintf(__('Your email address has not been updated yet. Please check your inbox at %s for a confirmation email.'),
-                '<code>' . esc_html($email['newemail']) . '</code>') . '</p></div>';
+        echo '<div class="notice notice-info"><p>' . sprintf(
+            __('Your email address has not been updated yet. Please check your inbox at %s for a confirmation email.'),
+                '<code>' . esc_html($email['newemail']) . '</code>'
+        ) . '</p></div>';
     }
 }
 
@@ -521,12 +550,10 @@ function display_space_usage()
         $space = number_format($space_allowed);
         /* translators: Megabytes */
         $space .= __('MB');
-    }
-    ?>
+    } ?>
     <strong><?php
         /* translators: Storage space that's been used. 1: Percentage of used space, 2: Total space allowed in megabytes or gigabytes */
-        printf(__('Used: %1$s%% of %2$s'), number_format($percent_used), $space);
-        ?></strong>
+        printf(__('Used: %1$s%% of %2$s'), number_format($percent_used), $space); ?></strong>
     <?php
 }
 
@@ -562,9 +589,7 @@ function upload_space_setting($id)
 
     if (!$quota) {
         $quota = '';
-    }
-
-    ?>
+    } ?>
     <tr>
         <th><label for="blog-upload-space-number"><?php _e('Site Upload Space Quota'); ?></label></th>
         <td>
@@ -911,12 +936,16 @@ function _access_denied_splash()
     $blog_name = get_bloginfo('name');
 
     if (empty($blogs)) {
-        wp_die(sprintf(__('You attempted to access the "%1$s" dashboard, but you do not currently have privileges on this site. If you believe you should be able to access the "%1$s" dashboard, please contact your network administrator.'),
-            $blog_name), 403);
+        wp_die(sprintf(
+            __('You attempted to access the "%1$s" dashboard, but you do not currently have privileges on this site. If you believe you should be able to access the "%1$s" dashboard, please contact your network administrator.'),
+            $blog_name
+        ), 403);
     }
 
-    $output = '<p>' . sprintf(__('You attempted to access the "%1$s" dashboard, but you do not currently have privileges on this site. If you believe you should be able to access the "%1$s" dashboard, please contact your network administrator.'),
-            $blog_name) . '</p>';
+    $output = '<p>' . sprintf(
+        __('You attempted to access the "%1$s" dashboard, but you do not currently have privileges on this site. If you believe you should be able to access the "%1$s" dashboard, please contact your network administrator.'),
+            $blog_name
+    ) . '</p>';
     $output .= '<p>' . __('If you reached this screen by accident and meant to visit one of your own sites, here are some shortcuts to help you find your way.') . '</p>';
 
     $output .= '<h3>' . __('Your Sites') . '</h3>';
@@ -973,23 +1002,30 @@ function mu_dropdown_languages($lang_files = array(), $current = '')
         if ($code_lang == 'en_US') { // American English
             $flag = true;
             $ae = __('American English');
-            $output[$ae] = '<option value="' . esc_attr($code_lang) . '"' . selected($current, $code_lang,
-                    false) . '> ' . $ae . '</option>';
+            $output[$ae] = '<option value="' . esc_attr($code_lang) . '"' . selected(
+                $current,
+                $code_lang,
+                    false
+            ) . '> ' . $ae . '</option>';
         } elseif ($code_lang == 'en_GB') { // British English
             $flag = true;
             $be = __('British English');
-            $output[$be] = '<option value="' . esc_attr($code_lang) . '"' . selected($current, $code_lang,
-                    false) . '> ' . $be . '</option>';
+            $output[$be] = '<option value="' . esc_attr($code_lang) . '"' . selected(
+                $current,
+                $code_lang,
+                    false
+            ) . '> ' . $be . '</option>';
         } else {
             $translated = format_code_lang($code_lang);
-            $output[$translated] = '<option value="' . esc_attr($code_lang) . '"' . selected($current, $code_lang,
-                    false) . '> ' . esc_html($translated) . '</option>';
+            $output[$translated] = '<option value="' . esc_attr($code_lang) . '"' . selected(
+                $current,
+                $code_lang,
+                    false
+            ) . '> ' . esc_html($translated) . '</option>';
         }
-
     }
 
-    if ($flag === false) // WordPress english
-    {
+    if ($flag === false) { // WordPress english
         $output[] = '<option value=""' . selected($current, '', false) . '>' . __('English') . "</option>";
     }
 
@@ -1033,8 +1069,10 @@ function site_admin_notice()
     }
 
     if (get_site_option('wpmu_upgrade_site') != $wp_db_version) {
-        echo "<div class='update-nag'>" . sprintf(__('Thank you for Updating! Please visit the <a href="%s">Upgrade Network</a> page to update all your sites.'),
-                esc_url(network_admin_url('upgrade.php'))) . "</div>";
+        echo "<div class='update-nag'>" . sprintf(
+            __('Thank you for Updating! Please visit the <a href="%s">Upgrade Network</a> page to update all your sites.'),
+                esc_url(network_admin_url('upgrade.php'))
+        ) . "</div>";
     }
 }
 
@@ -1095,36 +1133,34 @@ function choose_primary_blog()
             <td>
                 <?php
                 $all_blogs = get_blogs_of_user(get_current_user_id());
-                $primary_blog = get_user_meta(get_current_user_id(), 'primary_blog', true);
-                if (count($all_blogs) > 1) {
-                    $found = false;
-                    ?>
+    $primary_blog = get_user_meta(get_current_user_id(), 'primary_blog', true);
+    if (count($all_blogs) > 1) {
+        $found = false; ?>
                     <select name="primary_blog" id="primary_blog">
                         <?php foreach ((array)$all_blogs as $blog) {
-                            if ($primary_blog == $blog->userblog_id) {
-                                $found = true;
-                            }
-                            ?>
-                            <option value="<?php echo $blog->userblog_id ?>"<?php selected($primary_blog,
-                                $blog->userblog_id); ?>><?php echo esc_url(get_home_url($blog->userblog_id)) ?></option><?php
-                        } ?>
+            if ($primary_blog == $blog->userblog_id) {
+                $found = true;
+            } ?>
+                            <option value="<?php echo $blog->userblog_id ?>"<?php selected(
+                                $primary_blog,
+                                $blog->userblog_id
+                            ); ?>><?php echo esc_url(get_home_url($blog->userblog_id)) ?></option><?php
+        } ?>
                     </select>
                     <?php
                     if (!$found) {
                         $blog = reset($all_blogs);
                         update_user_meta(get_current_user_id(), 'primary_blog', $blog->userblog_id);
                     }
-                } elseif (count($all_blogs) == 1) {
-                    $blog = reset($all_blogs);
-                    echo esc_url(get_home_url($blog->userblog_id));
-                    if ($primary_blog != $blog->userblog_id) // Set the primary blog again if it's out of sync with blog list.
-                    {
-                        update_user_meta(get_current_user_id(), 'primary_blog', $blog->userblog_id);
-                    }
-                } else {
-                    echo "N/A";
-                }
-                ?>
+    } elseif (count($all_blogs) == 1) {
+        $blog = reset($all_blogs);
+        echo esc_url(get_home_url($blog->userblog_id));
+        if ($primary_blog != $blog->userblog_id) { // Set the primary blog again if it's out of sync with blog list.
+            update_user_meta(get_current_user_id(), 'primary_blog', $blog->userblog_id);
+        }
+    } else {
+        echo "N/A";
+    } ?>
             </td>
         </tr>
     </table>
@@ -1190,8 +1226,7 @@ function confirm_delete_users($users)
     $current_user = wp_get_current_user();
     if (!is_array($users) || empty($users)) {
         return false;
-    }
-    ?>
+    } ?>
     <h1><?php esc_html_e('Users'); ?></h1>
 
     <?php if (1 == count($users)) : ?>
@@ -1204,30 +1239,31 @@ function confirm_delete_users($users)
         <input type="hidden" name="dodelete"/>
         <?php
         wp_nonce_field('ms-users-delete');
-        $site_admins = get_super_admins();
-        $admin_out = '<option value="' . esc_attr($current_user->ID) . '">' . $current_user->user_login . '</option>'; ?>
+    $site_admins = get_super_admins();
+    $admin_out = '<option value="' . esc_attr($current_user->ID) . '">' . $current_user->user_login . '</option>'; ?>
         <table class="form-table">
             <?php foreach (($allusers = (array)$_POST['allusers']) as $user_id) {
-                if ($user_id != '' && $user_id != '0') {
-                    $delete_user = get_userdata($user_id);
+        if ($user_id != '' && $user_id != '0') {
+            $delete_user = get_userdata($user_id);
 
-                    if (!current_user_can('delete_user', $delete_user->ID)) {
-                        wp_die(sprintf(__('Warning! User %s cannot be deleted.'), $delete_user->user_login));
-                    }
+            if (!current_user_can('delete_user', $delete_user->ID)) {
+                wp_die(sprintf(__('Warning! User %s cannot be deleted.'), $delete_user->user_login));
+            }
 
-                    if (in_array($delete_user->user_login, $site_admins)) {
-                        wp_die(sprintf(__('Warning! User cannot be deleted. The user %s is a network administrator.'),
-                            '<em>' . $delete_user->user_login . '</em>'));
-                    }
-                    ?>
+            if (in_array($delete_user->user_login, $site_admins)) {
+                wp_die(sprintf(
+                            __('Warning! User cannot be deleted. The user %s is a network administrator.'),
+                            '<em>' . $delete_user->user_login . '</em>'
+                        ));
+            } ?>
                     <tr>
                         <th scope="row"><?php echo $delete_user->user_login; ?>
                             <?php echo '<input type="hidden" name="user[]" value="' . esc_attr($user_id) . '" />' . "\n"; ?>
                         </th>
                         <?php $blogs = get_blogs_of_user($user_id, true);
 
-                        if (!empty($blogs)) {
-                        ?>
+            if (!empty($blogs)) {
+                ?>
                         <td>
                             <fieldset>
                                 <p>
@@ -1257,8 +1293,7 @@ function confirm_delete_users($users)
                                             $user_list = $admin_out;
                                         }
                                         $user_dropdown .= $user_list;
-                                        $user_dropdown .= "</select>\n";
-                                        ?>
+                                        $user_dropdown .= "</select>\n"; ?>
                                         <ul style="list-style:none;">
                                             <li><?php printf(__('Site: %s'), $user_site); ?></li>
                                             <li><label><input type="radio" id="delete_option0"
@@ -1274,34 +1309,32 @@ function confirm_delete_users($users)
                                         <?php
                                     }
                                 }
-                                echo "</fieldset></td></tr>";
-                                } else {
-                                ?>
+                echo "</fieldset></td></tr>";
+            } else {
+                ?>
                         <td>
                             <fieldset>
                                 <p>
                                     <legend><?php _e('User has no sites or content and will be deleted.'); ?></legend>
                                 </p>
-                                <?php } ?>
+                                <?php
+            } ?>
                     </tr>
                     <?php
-                }
-            }
-
-            ?>
+        }
+    } ?>
         </table>
         <?php
         /** This action is documented in wp-admin/users.php */
         do_action('delete_user_form', $current_user, $allusers);
 
-        if (1 == count($users)) : ?>
+    if (1 == count($users)) : ?>
             <p><?php _e('Once you hit &#8220;Confirm Deletion&#8221;, the user will be permanently removed.'); ?></p>
         <?php else : ?>
             <p><?php _e('Once you hit &#8220;Confirm Deletion&#8221;, these users will be permanently removed.'); ?></p>
         <?php endif;
 
-        submit_button(__('Confirm Deletion'), 'primary');
-        ?>
+    submit_button(__('Confirm Deletion'), 'primary'); ?>
     </form>
     <?php
     return true;

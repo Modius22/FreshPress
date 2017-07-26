@@ -33,33 +33,33 @@ define('MAGPIE_USER_AGENT', 'WordPress/' . $GLOBALS['wp_version']);
 
 class MagpieRSS
 {
-    var $parser;
-    var $current_item = array();    // item currently being parsed
-    var $items = array();    // collection of parsed items
-    var $channel = array();    // hash of channel fields
-    var $textinput = array();
-    var $image = array();
-    var $feed_type;
-    var $feed_version;
+    public $parser;
+    public $current_item = array();    // item currently being parsed
+    public $items = array();    // collection of parsed items
+    public $channel = array();    // hash of channel fields
+    public $textinput = array();
+    public $image = array();
+    public $feed_type;
+    public $feed_version;
 
     // parser variables
-    var $stack = array(); // parser stack
-    var $inchannel = false;
-    var $initem = false;
-    var $incontent = false; // if in Atom <content mode="xml"> field
-    var $intextinput = false;
-    var $inimage = false;
-    var $current_field = '';
-    var $current_namespace = false;
+    public $stack = array(); // parser stack
+    public $inchannel = false;
+    public $initem = false;
+    public $incontent = false; // if in Atom <content mode="xml"> field
+    public $intextinput = false;
+    public $inimage = false;
+    public $current_field = '';
+    public $current_namespace = false;
 
     //var $ERROR = "";
 
-    var $_CONTENT_CONSTRUCTS = array('content', 'summary', 'info', 'title', 'tagline', 'copyright');
+    public $_CONTENT_CONSTRUCTS = array('content', 'summary', 'info', 'title', 'tagline', 'copyright');
 
     /**
      * PHP5 constructor.
      */
-    function __construct($source)
+    public function __construct($source)
     {
 
         # Check if PHP xml isn't compiled
@@ -76,8 +76,11 @@ class MagpieRSS
         # set up handlers
         #
         xml_set_object($this->parser, $this);
-        xml_set_element_handler($this->parser,
-            'feed_start_element', 'feed_end_element');
+        xml_set_element_handler(
+            $this->parser,
+            'feed_start_element',
+            'feed_end_element'
+        );
 
         xml_set_character_data_handler($this->parser, 'feed_cdata');
 
@@ -108,7 +111,7 @@ class MagpieRSS
         self::__construct($source);
     }
 
-    function feed_start_element($p, $element, &$attrs)
+    public function feed_start_element($p, $element, &$attrs)
     {
         $el = $element = strtolower($element);
         $attrs = array_change_key_case($attrs, CASE_LOWER);
@@ -169,14 +172,17 @@ class MagpieRSS
             }
 
             $this->incontent = $el;
-
         } // if inside an Atom content construct (e.g. content or summary) field treat tags as text
         elseif ($this->feed_type == ATOM and $this->incontent) {
             // if tags are inlined, then flatten
-            $attrs_str = join(' ',
-                array_map(array('MagpieRSS', 'map_attrs'),
+            $attrs_str = join(
+                ' ',
+                array_map(
+                    array('MagpieRSS', 'map_attrs'),
                     array_keys($attrs),
-                    array_values($attrs)));
+                    array_values($attrs)
+                )
+            );
 
             $this->append_content("<$element $attrs_str>");
 
@@ -201,9 +207,8 @@ class MagpieRSS
         }
     }
 
-    function feed_cdata($p, $text)
+    public function feed_cdata($p, $text)
     {
-
         if ($this->feed_type == ATOM and $this->incontent) {
             $this->append_content($text);
         } else {
@@ -212,7 +217,7 @@ class MagpieRSS
         }
     }
 
-    function feed_end_element($p, $el)
+    public function feed_end_element($p, $el)
     {
         $el = strtolower($el);
 
@@ -245,7 +250,7 @@ class MagpieRSS
         $this->current_namespace = false;
     }
 
-    function concat(&$str1, $str2 = "")
+    public function concat(&$str1, $str2 = "")
     {
         if (!isset($str1)) {
             $str1 = "";
@@ -253,7 +258,7 @@ class MagpieRSS
         $str1 .= $str2;
     }
 
-    function append_content($text)
+    public function append_content($text)
     {
         if ($this->initem) {
             $this->concat($this->current_item[$this->incontent], $text);
@@ -263,7 +268,7 @@ class MagpieRSS
     }
 
     // smart append - field and namespace aware
-    function append($el, $text)
+    public function append($el, $text)
     {
         if (!$el) {
             return;
@@ -271,36 +276,51 @@ class MagpieRSS
         if ($this->current_namespace) {
             if ($this->initem) {
                 $this->concat(
-                    $this->current_item[$this->current_namespace][$el], $text);
+                    $this->current_item[$this->current_namespace][$el],
+                    $text
+                );
             } elseif ($this->inchannel) {
                 $this->concat(
-                    $this->channel[$this->current_namespace][$el], $text);
+                    $this->channel[$this->current_namespace][$el],
+                    $text
+                );
             } elseif ($this->intextinput) {
                 $this->concat(
-                    $this->textinput[$this->current_namespace][$el], $text);
+                    $this->textinput[$this->current_namespace][$el],
+                    $text
+                );
             } elseif ($this->inimage) {
                 $this->concat(
-                    $this->image[$this->current_namespace][$el], $text);
+                    $this->image[$this->current_namespace][$el],
+                    $text
+                );
             }
         } else {
             if ($this->initem) {
                 $this->concat(
-                    $this->current_item[$el], $text);
+                    $this->current_item[$el],
+                    $text
+                );
             } elseif ($this->intextinput) {
                 $this->concat(
-                    $this->textinput[$el], $text);
+                    $this->textinput[$el],
+                    $text
+                );
             } elseif ($this->inimage) {
                 $this->concat(
-                    $this->image[$el], $text);
+                    $this->image[$el],
+                    $text
+                );
             } elseif ($this->inchannel) {
                 $this->concat(
-                    $this->channel[$el], $text);
+                    $this->channel[$el],
+                    $text
+                );
             }
-
         }
     }
 
-    function normalize()
+    public function normalize()
     {
         // if atom populate rss fields
         if ($this->is_atom()) {
@@ -332,7 +352,7 @@ class MagpieRSS
         }
     }
 
-    function is_rss()
+    public function is_rss()
     {
         if ($this->feed_type == RSS) {
             return $this->feed_version;
@@ -341,7 +361,7 @@ class MagpieRSS
         }
     }
 
-    function is_atom()
+    public function is_atom()
     {
         if ($this->feed_type == ATOM) {
             return $this->feed_version;
@@ -350,12 +370,12 @@ class MagpieRSS
         }
     }
 
-    function map_attrs($k, $v)
+    public function map_attrs($k, $v)
     {
         return "$k=\"$v\"";
     }
 
-    function error($errormsg, $lvl = E_USER_WARNING)
+    public function error($errormsg, $lvl = E_USER_WARNING)
     {
         // append PHP's error message if track_errors enabled
         if (isset($php_errormsg)) {
@@ -367,7 +387,6 @@ class MagpieRSS
             error_log($errormsg, 0);
         }
     }
-
 }
 
 if (!function_exists('fetch_rss')) :
@@ -498,7 +517,6 @@ if (!function_exists('fetch_rss')) :
             // error( $errormsg );
 
             return false;
-
         } // end if ( !MAGPIE_CACHE_ON ) {
     } // end fetch_rss()
 endif;
@@ -688,14 +706,14 @@ function is_server_error($sc)
 
 class RSSCache
 {
-    var $BASE_CACHE;    // where the cache files are stored
-    var $MAX_AGE = 43200;        // when are files stale, default twelve hours
-    var $ERROR = '';            // accumulate error messages
+    public $BASE_CACHE;    // where the cache files are stored
+    public $MAX_AGE = 43200;        // when are files stale, default twelve hours
+    public $ERROR = '';            // accumulate error messages
 
     /**
      * PHP5 constructor.
      */
-    function __construct($base = '', $age = '')
+    public function __construct($base = '', $age = '')
     {
         $this->BASE_CACHE = WP_CONTENT_DIR . '/cache';
         if ($base) {
@@ -704,7 +722,6 @@ class RSSCache
         if ($age) {
             $this->MAX_AGE = $age;
         }
-
     }
 
     /**
@@ -721,7 +738,7 @@ class RSSCache
         Input:		url from which the rss file was fetched
         Output:		true on success
     \*=======================================================================*/
-    function set($url, $rss)
+    public function set($url, $rss)
     {
         $cache_option = 'rss_' . $this->file_name($url);
 
@@ -736,7 +753,7 @@ class RSSCache
         Input:		url from which the rss file was fetched
         Output:		cached object on HIT, false on MISS
     \*=======================================================================*/
-    function get($url)
+    public function get($url)
     {
         $this->ERROR = "";
         $cache_option = 'rss_' . $this->file_name($url);
@@ -758,7 +775,7 @@ class RSSCache
         Input:		url from which the rss file was fetched
         Output:		cached object on HIT, false on MISS
     \*=======================================================================*/
-    function check_cache($url)
+    public function check_cache($url)
     {
         $this->ERROR = "";
         $cache_option = 'rss_' . $this->file_name($url);
@@ -775,7 +792,7 @@ class RSSCache
     /*=======================================================================*\
         Function:	serialize
     \*=======================================================================*/
-    function serialize($rss)
+    public function serialize($rss)
     {
         return serialize($rss);
     }
@@ -783,7 +800,7 @@ class RSSCache
     /*=======================================================================*\
         Function:	unserialize
     \*=======================================================================*/
-    function unserialize($data)
+    public function unserialize($data)
     {
         return unserialize($data);
     }
@@ -794,7 +811,7 @@ class RSSCache
         Input:		url from which the rss file was fetched
         Output:		a file name
     \*=======================================================================*/
-    function file_name($url)
+    public function file_name($url)
     {
         return md5($url);
     }
@@ -803,7 +820,7 @@ class RSSCache
         Function:	error
         Purpose:	register error
     \*=======================================================================*/
-    function error($errormsg, $lvl = E_USER_WARNING)
+    public function error($errormsg, $lvl = E_USER_WARNING)
     {
         // append PHP's error message if track_errors enabled
         if (isset($php_errormsg)) {
@@ -817,7 +834,7 @@ class RSSCache
         }
     }
 
-    function debug($debugmsg, $lvl = E_USER_NOTICE)
+    public function debug($debugmsg, $lvl = E_USER_NOTICE)
     {
         if (MAGPIE_DEBUG) {
             $this->error("MagpieRSS [debug] $debugmsg", $lvl);

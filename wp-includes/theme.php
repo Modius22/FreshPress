@@ -58,8 +58,10 @@ function wp_get_themes($args = array())
         if ('network' === $allowed) {
             $theme_directories = array_intersect_key($theme_directories, WP_Theme::get_allowed_on_network());
         } elseif ('site' === $allowed) {
-            $theme_directories = array_intersect_key($theme_directories,
-                WP_Theme::get_allowed_on_site($args['blog_id']));
+            $theme_directories = array_intersect_key(
+                $theme_directories,
+                WP_Theme::get_allowed_on_site($args['blog_id'])
+            );
         } elseif ($allowed) {
             $theme_directories = array_intersect_key($theme_directories, WP_Theme::get_allowed($args['blog_id']));
         } else {
@@ -74,8 +76,10 @@ function wp_get_themes($args = array())
         if (isset($_themes[$theme_root['theme_root'] . '/' . $theme])) {
             $themes[$theme] = $_themes[$theme_root['theme_root'] . '/' . $theme];
         } else {
-            $themes[$theme] = $_themes[$theme_root['theme_root'] . '/' . $theme] = new WP_Theme($theme,
-                $theme_root['theme_root']);
+            $themes[$theme] = $_themes[$theme_root['theme_root'] . '/' . $theme] = new WP_Theme(
+                $theme,
+                $theme_root['theme_root']
+            );
         }
     }
 
@@ -773,10 +777,10 @@ function switch_theme($stylesheet)
         add_option("theme_mods_$stylesheet", $default_theme_mods);
     } else {
         /*
-		 * Since retrieve_widgets() is called when initializing a theme in the Customizer,
-		 * we need to remove the theme mods to avoid overwriting changes made via
-		 * the Customizer when accessing wp-admin/widgets.php.
-		 */
+         * Since retrieve_widgets() is called when initializing a theme in the Customizer,
+         * we need to remove the theme mods to avoid overwriting changes made via
+         * the Customizer when accessing wp-admin/widgets.php.
+         */
         if ('wp_ajax_customize_save' === current_action()) {
             remove_theme_mod('sidebars_widgets');
         }
@@ -1123,8 +1127,12 @@ function get_header_image_tag($attr = array())
 
         if (is_array($image_meta)) {
             $srcset = wp_calculate_image_srcset($size_array, $header->url, $image_meta, $header->attachment_id);
-            $sizes = !empty($attr['sizes']) ? $attr['sizes'] : wp_calculate_image_sizes($size_array, $header->url,
-                $image_meta, $header->attachment_id);
+            $sizes = !empty($attr['sizes']) ? $attr['sizes'] : wp_calculate_image_sizes(
+                $size_array,
+                $header->url,
+                $image_meta,
+                $header->attachment_id
+            );
 
             if ($srcset && $sizes) {
                 $attr['srcset'] = $srcset;
@@ -1205,10 +1213,16 @@ function _get_random_header_data()
 
         $_wp_random_header = (object)$headers[array_rand($headers)];
 
-        $_wp_random_header->url = sprintf($_wp_random_header->url, get_template_directory_uri(),
-            get_stylesheet_directory_uri());
-        $_wp_random_header->thumbnail_url = sprintf($_wp_random_header->thumbnail_url, get_template_directory_uri(),
-            get_stylesheet_directory_uri());
+        $_wp_random_header->url = sprintf(
+            $_wp_random_header->url,
+            get_template_directory_uri(),
+            get_stylesheet_directory_uri()
+        );
+        $_wp_random_header->thumbnail_url = sprintf(
+            $_wp_random_header->thumbnail_url,
+            get_template_directory_uri(),
+            get_stylesheet_directory_uri()
+        );
     }
     return $_wp_random_header;
 }
@@ -1339,8 +1353,10 @@ function get_custom_header()
         if (!$data && current_theme_supports('custom-header', 'default-image')) {
             $directory_args = array(get_template_directory_uri(), get_stylesheet_directory_uri());
             $data = array();
-            $data['url'] = $data['thumbnail_url'] = vsprintf(get_theme_support('custom-header', 'default-image'),
-                $directory_args);
+            $data['url'] = $data['thumbnail_url'] = vsprintf(
+                get_theme_support('custom-header', 'default-image'),
+                $directory_args
+            );
             if (!empty($_wp_default_headers)) {
                 foreach ((array)$_wp_default_headers as $default_header) {
                     $url = vsprintf($default_header['url'], $directory_args);
@@ -1677,10 +1693,14 @@ function _custom_background_cb()
         $image = ' background-image: url("' . esc_url_raw($background) . '");';
 
         // Background Position.
-        $position_x = get_theme_mod('background_position_x',
-            get_theme_support('custom-background', 'default-position-x'));
-        $position_y = get_theme_mod('background_position_y',
-            get_theme_support('custom-background', 'default-position-y'));
+        $position_x = get_theme_mod(
+            'background_position_x',
+            get_theme_support('custom-background', 'default-position-x')
+        );
+        $position_y = get_theme_mod(
+            'background_position_y',
+            get_theme_support('custom-background', 'default-position-y')
+        );
 
         if (!in_array($position_x, array('left', 'center', 'right'), true)) {
             $position_x = 'left';
@@ -1711,8 +1731,10 @@ function _custom_background_cb()
         $repeat = " background-repeat: $repeat;";
 
         // Background Scroll.
-        $attachment = get_theme_mod('background_attachment',
-            get_theme_support('custom-background', 'default-attachment'));
+        $attachment = get_theme_mod(
+            'background_attachment',
+            get_theme_support('custom-background', 'default-attachment')
+        );
 
         if ('fixed' !== $attachment) {
             $attachment = 'scroll';
@@ -1721,11 +1743,10 @@ function _custom_background_cb()
         $attachment = " background-attachment: $attachment;";
 
         $style .= $image . $position . $size . $repeat . $attachment;
-    }
-    ?>
+    } ?>
     <style type="text/css" id="custom-background-css">
         body.custom-background {
-        <?php echo trim( $style ); ?>
+        <?php echo trim($style); ?>
         }
     </style>
     <?php
@@ -1742,7 +1763,7 @@ function wp_custom_css_cb()
     $styles = wp_get_custom_css();
     if ($styles || is_customize_preview()) : ?>
         <style type="text/css" id="wp-custom-css">
-            <?php echo strip_tags( $styles ); // Note that esc_html() cannot be used because `div &gt; span` is not interpreted properly. ?>
+            <?php echo strip_tags($styles); // Note that esc_html() cannot be used because `div &gt; span` is not interpreted properly.?>
         </style>
     <?php endif;
 }
@@ -1787,9 +1808,9 @@ function wp_get_custom_css_post($stylesheet = '')
             $query = new WP_Query($custom_css_query_vars);
             $post = $query->post;
             /*
-			 * Cache the lookup. See wp_update_custom_css_post().
-			 * @todo This should get cleared if a custom_css post is added/removed.
-			 */
+             * Cache the lookup. See wp_update_custom_css_post().
+             * @todo This should get cleared if a custom_css post is added/removed.
+             */
             set_theme_mod('custom_css_post_id', $post ? $post->ID : -1);
         }
     } else {
@@ -2077,12 +2098,18 @@ function get_theme_starter_content()
                     'title' => _x('Find Us', 'Theme starter content'),
                     'text' => join('', array(
                         '<p><strong>' . _x('Address', 'Theme starter content') . '</strong><br />',
-                        _x('123 Main Street', 'Theme starter content') . '<br />' . _x('New York, NY 10001',
-                            'Theme starter content') . '</p>',
+                        _x('123 Main Street', 'Theme starter content') . '<br />' . _x(
+                            'New York, NY 10001',
+                            'Theme starter content'
+                        ) . '</p>',
                         '<p><strong>' . _x('Hours', 'Theme starter content') . '</strong><br />',
-                        _x('Monday&mdash;Friday: 9:00AM&ndash;5:00PM',
-                            'Theme starter content') . '<br />' . _x('Saturday &amp; Sunday: 11:00AM&ndash;3:00PM',
-                            'Theme starter content') . '</p>'
+                        _x(
+                            'Monday&mdash;Friday: 9:00AM&ndash;5:00PM',
+                            'Theme starter content'
+                        ) . '<br />' . _x(
+                                'Saturday &amp; Sunday: 11:00AM&ndash;3:00PM',
+                            'Theme starter content'
+                            ) . '</p>'
                     )),
                 )
             ),
@@ -2090,8 +2117,10 @@ function get_theme_starter_content()
                 'text',
                 array(
                     'title' => _x('About This Site', 'Theme starter content'),
-                    'text' => _x('This may be a good place to introduce yourself and your site or include some credits.',
-                        'Theme starter content'),
+                    'text' => _x(
+                        'This may be a good place to introduce yourself and your site or include some credits.',
+                        'Theme starter content'
+                    ),
                 )
             ),
             'archives' => array(
@@ -2214,20 +2243,26 @@ function get_theme_starter_content()
             'home' => array(
                 'post_type' => 'page',
                 'post_title' => _x('Home', 'Theme starter content'),
-                'post_content' => _x('Welcome to your site! This is your homepage, which is what most visitors will see when they come to your site for the first time.',
-                    'Theme starter content'),
+                'post_content' => _x(
+                    'Welcome to your site! This is your homepage, which is what most visitors will see when they come to your site for the first time.',
+                    'Theme starter content'
+                ),
             ),
             'about' => array(
                 'post_type' => 'page',
                 'post_title' => _x('About', 'Theme starter content'),
-                'post_content' => _x('You might be an artist who would like to introduce yourself and your work here or maybe you&rsquo;re a business with a mission to describe.',
-                    'Theme starter content'),
+                'post_content' => _x(
+                    'You might be an artist who would like to introduce yourself and your work here or maybe you&rsquo;re a business with a mission to describe.',
+                    'Theme starter content'
+                ),
             ),
             'contact' => array(
                 'post_type' => 'page',
                 'post_title' => _x('Contact', 'Theme starter content'),
-                'post_content' => _x('This is a page with some basic contact information, such as an address and phone number. You might also try a plugin to add a contact form.',
-                    'Theme starter content'),
+                'post_content' => _x(
+                    'This is a page with some basic contact information, such as an address and phone number. You might also try a plugin to add a contact form.',
+                    'Theme starter content'
+                ),
             ),
             'blog' => array(
                 'post_type' => 'page',
@@ -2241,8 +2276,10 @@ function get_theme_starter_content()
             'homepage-section' => array(
                 'post_type' => 'page',
                 'post_title' => _x('A homepage section', 'Theme starter content'),
-                'post_content' => _x('This is an example of a homepage section. Homepage sections can be any page other than the homepage itself, including the page that shows your latest blog posts.',
-                    'Theme starter content'),
+                'post_content' => _x(
+                    'This is an example of a homepage section. Homepage sections can be any page other than the homepage itself, including the page that shows your latest blog posts.',
+                    'Theme starter content'
+                ),
             ),
         ),
     );
@@ -2252,13 +2289,13 @@ function get_theme_starter_content()
     foreach ($config as $type => $args) {
         switch ($type) {
             // Use options and theme_mods as-is.
-            case 'options' :
-            case 'theme_mods' :
+            case 'options':
+            case 'theme_mods':
                 $content[$type] = $config[$type];
                 break;
 
             // Widgets are grouped into sidebars.
-            case 'widgets' :
+            case 'widgets':
                 foreach ($config[$type] as $sidebar_id => $widgets) {
                     foreach ($widgets as $id => $widget) {
                         if (is_array($widget)) {
@@ -2280,7 +2317,7 @@ function get_theme_starter_content()
                 break;
 
             // And nav menu items are grouped into nav menus.
-            case 'nav_menus' :
+            case 'nav_menus':
                 foreach ($config[$type] as $nav_menu_location => $nav_menu) {
 
                     // Ensure nav menus get a name.
@@ -2307,7 +2344,7 @@ function get_theme_starter_content()
                 break;
 
             // Attachments are posts but have special treatment.
-            case 'attachments' :
+            case 'attachments':
                 foreach ($config[$type] as $id => $item) {
                     if (!empty($item['file'])) {
                         $content[$type][$id] = $item;
@@ -2316,7 +2353,7 @@ function get_theme_starter_content()
                 break;
 
             // All that's left now are posts (besides attachments). Not a default case for the sake of clarity and future work.
-            case 'posts' :
+            case 'posts':
                 foreach ($config[$type] as $id => $item) {
                     if (is_array($item)) {
 
@@ -2399,16 +2436,16 @@ function add_theme_support($feature)
             }
 
             /*
-			 * Merge post types with any that already declared their support
-			 * for post thumbnails.
-			 */
+             * Merge post types with any that already declared their support
+             * for post thumbnails.
+             */
             if (is_array($args[0]) && isset($_wp_theme_features['post-thumbnails'])) {
                 $args[0] = array_unique(array_merge($_wp_theme_features['post-thumbnails'][0], $args[0]));
             }
 
             break;
 
-        case 'post-formats' :
+        case 'post-formats':
             if (is_array($args[0])) {
                 $post_formats = get_post_format_slugs();
                 unset($post_formats['standard']);
@@ -2417,7 +2454,7 @@ function add_theme_support($feature)
             }
             break;
 
-        case 'html5' :
+        case 'html5':
             // You can't just pass 'html5', you need to pass an array of types.
             if (empty($args[0])) {
                 // Build an array of types for back-compat.
@@ -2453,10 +2490,10 @@ function add_theme_support($feature)
             }
             break;
 
-        case 'custom-header-uploads' :
+        case 'custom-header-uploads':
             return add_theme_support('custom-header', array('uploads' => true));
 
-        case 'custom-header' :
+        case 'custom-header':
             if (!is_array($args)) {
                 $args = array(0 => array());
             }
@@ -2546,7 +2583,7 @@ function add_theme_support($feature)
 
             break;
 
-        case 'custom-background' :
+        case 'custom-background':
             if (!is_array($args)) {
                 $args = array(0 => array());
             }
@@ -2592,13 +2629,19 @@ function add_theme_support($feature)
             break;
 
         // Ensure that 'title-tag' is accessible in the admin.
-        case 'title-tag' :
+        case 'title-tag':
             // Can be called in functions.php but must happen before wp_loaded, i.e. not in header.php.
             if (did_action('wp_loaded')) {
                 /* translators: 1: Theme support 2: hook name */
-                _doing_it_wrong("add_theme_support( 'title-tag' )",
-                    sprintf(__('Theme support for %1$s should be registered before the %2$s hook.'),
-                        '<code>title-tag</code>', '<code>wp_loaded</code>'), '4.1.0');
+                _doing_it_wrong(
+                    "add_theme_support( 'title-tag' )",
+                    sprintf(
+                        __('Theme support for %1$s should be registered before the %2$s hook.'),
+                        '<code>title-tag</code>',
+                        '<code>wp_loaded</code>'
+                    ),
+                    '4.1.0'
+                );
 
                 return false;
             }
@@ -2631,8 +2674,10 @@ function _custom_header_background_just_in_time()
 
         if (is_admin()) {
             require_once(ABSPATH . 'wp-admin/custom-header.php');
-            $custom_image_header = new Custom_Image_Header($args[0]['admin-head-callback'],
-                $args[0]['admin-preview-callback']);
+            $custom_image_header = new Custom_Image_Header(
+                $args[0]['admin-head-callback'],
+                $args[0]['admin-preview-callback']
+            );
         }
     }
 
@@ -2645,8 +2690,10 @@ function _custom_header_background_just_in_time()
 
         if (is_admin()) {
             require_once(ABSPATH . 'wp-admin/custom-background.php');
-            $custom_background = new Custom_Background($args[0]['admin-head-callback'],
-                $args[0]['admin-preview-callback']);
+            $custom_background = new Custom_Background(
+                $args[0]['admin-head-callback'],
+                $args[0]['admin-preview-callback']
+            );
         }
     }
 }
@@ -2659,13 +2706,13 @@ function _custom_header_background_just_in_time()
  */
 function _custom_logo_header_styles()
 {
-    if (!current_theme_supports('custom-header', 'header-text') && get_theme_support('custom-logo',
-            'header-text') && !get_theme_mod('header_text', true)) {
+    if (!current_theme_supports('custom-header', 'header-text') && get_theme_support(
+        'custom-logo',
+            'header-text'
+    ) && !get_theme_mod('header_text', true)) {
         $classes = (array)get_theme_support('custom-logo', 'header-text');
         $classes = array_map('sanitize_html_class', $classes);
-        $classes = '.' . implode(', .', $classes);
-
-        ?>
+        $classes = '.' . implode(', .', $classes); ?>
         <!-- Custom Logo: hide header text -->
         <style id="custom-logo-css" type="text/css">
             <?php echo $classes; ?>
@@ -2703,15 +2750,15 @@ function get_theme_support($feature)
 
     $args = array_slice(func_get_args(), 1);
     switch ($feature) {
-        case 'custom-logo' :
-        case 'custom-header' :
-        case 'custom-background' :
+        case 'custom-logo':
+        case 'custom-header':
+        case 'custom-background':
             if (isset($_wp_theme_features[$feature][0][$args[0]])) {
                 return $_wp_theme_features[$feature][0][$args[0]];
             }
             return false;
 
-        default :
+        default:
             return $_wp_theme_features[$feature];
     }
 }
@@ -2754,7 +2801,7 @@ function _remove_theme_support($feature)
     global $_wp_theme_features;
 
     switch ($feature) {
-        case 'custom-header-uploads' :
+        case 'custom-header-uploads':
             if (!isset($_wp_theme_features['custom-header'])) {
                 return false;
             }
@@ -2767,7 +2814,7 @@ function _remove_theme_support($feature)
     }
 
     switch ($feature) {
-        case 'custom-header' :
+        case 'custom-header':
             if (!did_action('wp_loaded')) {
                 break;
             }
@@ -2781,7 +2828,7 @@ function _remove_theme_support($feature)
             }
             break;
 
-        case 'custom-background' :
+        case 'custom-background':
             if (!did_action('wp_loaded')) {
                 break;
             }
@@ -2830,8 +2877,7 @@ function current_theme_supports($feature)
             // post-thumbnails can be registered for only certain content/post types by passing
             // an array of types to add_theme_support(). If no array was passed, then
             // any type is accepted
-            if (true === $_wp_theme_features[$feature])  // Registered for all types
-            {
+            if (true === $_wp_theme_features[$feature]) {  // Registered for all types
                 return true;
             }
             $content_type = $args[0];
@@ -2982,7 +3028,6 @@ function check_theme_switched()
  */
 function _wp_customize_include()
 {
-
     $is_customize_admin_page = (is_admin() && 'customize.php' == basename($_SERVER['PHP_SELF']));
     $should_include = (
         $is_customize_admin_page
@@ -2997,10 +3042,10 @@ function _wp_customize_include()
     }
 
     /*
-	 * Note that wp_unslash() is not being used on the input vars because it is
-	 * called before wp_magic_quotes() gets called. Besides this fact, none of
-	 * the values should contain any characters needing slashes anyway.
-	 */
+     * Note that wp_unslash() is not being used on the input vars because it is
+     * called before wp_magic_quotes() gets called. Besides this fact, none of
+     * the values should contain any characters needing slashes anyway.
+     */
     $keys = array(
         'changeset_uuid',
         'customize_changeset_uuid',
@@ -3066,19 +3111,19 @@ function _wp_customize_publish_changeset($new_status, $old_status, $changeset_po
 
     if (!did_action('customize_register')) {
         /*
-		 * When running from CLI or Cron, the customize_register action will need
-		 * to be triggered in order for core, themes, and plugins to register their
-		 * settings. Normally core will add_action( 'customize_register' ) at
-		 * priority 10 to register the core settings, and if any themes/plugins
-		 * also add_action( 'customize_register' ) at the same priority, they
-		 * will have a $wp_customize with those settings registered since they
-		 * call add_action() afterward, normally. However, when manually doing
-		 * the customize_register action after the setup_theme, then the order
-		 * will be reversed for two actions added at priority 10, resulting in
-		 * the core settings no longer being available as expected to themes/plugins.
-		 * So the following manually calls the method that registers the core
-		 * settings up front before doing the action.
-		 */
+         * When running from CLI or Cron, the customize_register action will need
+         * to be triggered in order for core, themes, and plugins to register their
+         * settings. Normally core will add_action( 'customize_register' ) at
+         * priority 10 to register the core settings, and if any themes/plugins
+         * also add_action( 'customize_register' ) at the same priority, they
+         * will have a $wp_customize with those settings registered since they
+         * call add_action() afterward, normally. However, when manually doing
+         * the customize_register action after the setup_theme, then the order
+         * will be reversed for two actions added at priority 10, resulting in
+         * the core settings no longer being available as expected to themes/plugins.
+         * So the following manually calls the method that registers the core
+         * settings up front before doing the action.
+         */
         remove_action('customize_register', array($wp_customize, 'register_controls'));
         $wp_customize->register_controls();
 
@@ -3088,24 +3133,24 @@ function _wp_customize_publish_changeset($new_status, $old_status, $changeset_po
     $wp_customize->_publish_changeset_values($changeset_post->ID);
 
     /*
-	 * Trash the changeset post if revisions are not enabled. Unpublished
-	 * changesets by default get garbage collected due to the auto-draft status.
-	 * When a changeset post is published, however, it would no longer get cleaned
-	 * out. Ths is a problem when the changeset posts are never displayed anywhere,
-	 * since they would just be endlessly piling up. So here we use the revisions
-	 * feature to indicate whether or not a published changeset should get trashed
-	 * and thus garbage collected.
-	 */
+     * Trash the changeset post if revisions are not enabled. Unpublished
+     * changesets by default get garbage collected due to the auto-draft status.
+     * When a changeset post is published, however, it would no longer get cleaned
+     * out. Ths is a problem when the changeset posts are never displayed anywhere,
+     * since they would just be endlessly piling up. So here we use the revisions
+     * feature to indicate whether or not a published changeset should get trashed
+     * and thus garbage collected.
+     */
     if (!wp_revisions_enabled($changeset_post)) {
         $post = $changeset_post;
         $post_id = $changeset_post->ID;
 
         /*
-		 * The following re-formulates the logic from wp_trash_post() as done in
-		 * wp_publish_post(). The reason for bypassing wp_trash_post() is that it
-		 * will mutate the the post_content and the post_name when they should be
-		 * untouched.
-		 */
+         * The following re-formulates the logic from wp_trash_post() as done in
+         * wp_publish_post(). The reason for bypassing wp_trash_post() is that it
+         * will mutate the the post_content and the post_name when they should be
+         * untouched.
+         */
         if (!EMPTY_TRASH_DAYS) {
             wp_delete_post($post_id, true);
         } else {
@@ -3241,9 +3286,7 @@ function wp_customize_support_script()
 {
     $admin_origin = parse_url(admin_url());
     $home_origin = parse_url(home_url());
-    $cross_domain = (strtolower($admin_origin['host']) != strtolower($home_origin['host']));
-
-    ?>
+    $cross_domain = (strtolower($admin_origin['host']) != strtolower($home_origin['host'])); ?>
     <!--[if lte IE 8]>
     <script type="text/javascript">
         document.body.className = document.body.className.replace(/(^|\s)(no-)?customize-support(?=\s|$)/, '') + ' no-customize-support';
@@ -3255,7 +3298,7 @@ function wp_customize_support_script()
             var request, b = document.body, c = 'className', cs = 'customize-support',
                 rcs = new RegExp('(^|\\s+)(no-)?' + cs + '(\\s+|$)');
 
-            <?php    if ( $cross_domain ) : ?>
+            <?php    if ($cross_domain) : ?>
             request = (function () {
                 var xhr = new XMLHttpRequest();
                 return ('withCredentials' in xhr);
@@ -3320,18 +3363,18 @@ function _wp_keep_alive_customize_changeset_dependent_auto_drafts($new_status, $
 
     if ('auto-draft' === $new_status) {
         /*
-		 * Keep the post date for the post matching the changeset
-		 * so that it will not be garbage-collected before the changeset.
-		 */
+         * Keep the post date for the post matching the changeset
+         * so that it will not be garbage-collected before the changeset.
+         */
         $new_post_date = $post->post_date;
     } else {
         /*
-		 * Since the changeset no longer has an auto-draft (and it is not published)
-		 * it is now a persistent changeset, a long-lived draft, and so any
-		 * associated auto-draft posts should have their dates
-		 * pushed out very far into the future to prevent them from ever
-		 * being garbage-collected.
-		 */
+         * Since the changeset no longer has an auto-draft (and it is not published)
+         * it is now a persistent changeset, a long-lived draft, and so any
+         * associated auto-draft posts should have their dates
+         * pushed out very far into the future to prevent them from ever
+         * being garbage-collected.
+         */
         $new_post_date = gmdate('Y-m-d H:i:d', strtotime('+100 years'));
     }
 

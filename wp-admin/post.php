@@ -199,6 +199,7 @@ switch ($action) {
 
         wp_update_attachment_metadata($post_id, $newmeta);
 
+        // no break
     case 'editpost':
         check_admin_referer('update-post_' . $post_id);
 
@@ -206,8 +207,14 @@ switch ($action) {
 
         // Session cookie flag that the post was saved
         if (isset($_COOKIE['wp-saving-post']) && $_COOKIE['wp-saving-post'] === $post_id . '-check') {
-            setcookie('wp-saving-post', $post_id . '-saved', time() + DAY_IN_SECONDS, ADMIN_COOKIE_PATH, COOKIE_DOMAIN,
-                is_ssl());
+            setcookie(
+                'wp-saving-post',
+                $post_id . '-saved',
+                time() + DAY_IN_SECONDS,
+                ADMIN_COOKIE_PATH,
+                COOKIE_DOMAIN,
+                is_ssl()
+            );
         }
 
         redirect_post($post_id); // Send user on their way while we keep working
@@ -231,8 +238,10 @@ switch ($action) {
 
         if ($user_id = wp_check_post_lock($post_id)) {
             $user = get_userdata($user_id);
-            wp_die(sprintf(__('You cannot move this item to the Trash. %s is currently editing.'),
-                $user->display_name));
+            wp_die(sprintf(
+                __('You cannot move this item to the Trash. %s is currently editing.'),
+                $user->display_name
+            ));
         }
 
         if (!wp_trash_post($post_id)) {

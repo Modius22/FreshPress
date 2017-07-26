@@ -170,8 +170,7 @@ class WP_Media_List_Table extends WP_List_Table
     {
         if ('bar' !== $which) {
             return;
-        }
-        ?>
+        } ?>
         <div class="actions">
             <?php
             if (!is_singular()) {
@@ -185,9 +184,9 @@ class WP_Media_List_Table extends WP_List_Table
                 submit_button(__('Filter'), '', 'filter_action', false, array('id' => 'post-query-submit'));
             }
 
-            if ($this->is_trash && current_user_can('edit_others_posts') && $this->has_items()) {
-                submit_button(__('Empty Trash'), 'apply', 'delete_all', false);
-            } ?>
+        if ($this->is_trash && current_user_can('edit_others_posts') && $this->has_items()) {
+            submit_button(__('Empty Trash'), 'apply', 'delete_all', false);
+        } ?>
         </div>
         <?php
     }
@@ -241,8 +240,7 @@ class WP_Media_List_Table extends WP_List_Table
 
         $views = $this->get_views();
 
-        $this->screen->render_screen_reader_content('heading_views');
-        ?>
+        $this->screen->render_screen_reader_content('heading_views'); ?>
         <div class="wp-filter">
             <div class="filter-items">
                 <?php $this->view_switcher($mode); ?>
@@ -254,25 +252,23 @@ class WP_Media_List_Table extends WP_List_Table
                         foreach ($views as $class => $view) {
                             echo "\t$view\n";
                         }
-                    }
-                    ?>
+                    } ?>
                 </select>
 
                 <?php
                 $this->extra_tablenav('bar');
 
-                /** This filter is documented in wp-admin/inclues/class-wp-list-table.php */
-                $views = apply_filters("views_{$this->screen->id}", array());
+        /** This filter is documented in wp-admin/inclues/class-wp-list-table.php */
+        $views = apply_filters("views_{$this->screen->id}", array());
 
-                // Back compat for pre-4.0 view links.
-                if (!empty($views)) {
-                    echo '<ul class="filter-links">';
-                    foreach ($views as $class => $view) {
-                        echo "<li class='$class'>$view</li>";
-                    }
-                    echo '</ul>';
-                }
-                ?>
+        // Back compat for pre-4.0 view links.
+        if (!empty($views)) {
+            echo '<ul class="filter-links">';
+            foreach ($views as $class => $view) {
+                echo "<li class='$class'>$view</li>";
+            }
+            echo '</ul>';
+        } ?>
             </div>
 
             <div class="search-form">
@@ -366,13 +362,14 @@ class WP_Media_List_Table extends WP_List_Table
      */
     public function column_cb($post)
     {
-        if (current_user_can('edit_post', $post->ID)) { ?>
+        if (current_user_can('edit_post', $post->ID)) {
+            ?>
             <label class="screen-reader-text" for="cb-select-<?php echo $post->ID; ?>"><?php
-                echo sprintf(__('Select %s'), _draft_or_post_title());
-                ?></label>
+                echo sprintf(__('Select %s'), _draft_or_post_title()); ?></label>
             <input type="checkbox" name="media[]" id="cb-select-<?php echo $post->ID; ?>"
                    value="<?php echo $post->ID; ?>"/>
-        <?php }
+        <?php
+        }
     }
 
     /**
@@ -401,24 +398,21 @@ class WP_Media_List_Table extends WP_List_Table
             $link_end = '</a>';
         }
 
-        $class = $thumb ? ' class="has-media-icon"' : '';
-        ?>
+        $class = $thumb ? ' class="has-media-icon"' : ''; ?>
         <strong<?php echo $class; ?>>
             <?php
             echo $link_start;
-            if ($thumb) : ?>
+        if ($thumb) : ?>
                 <span class="media-icon <?php echo sanitize_html_class($mime . '-icon'); ?>"><?php echo $thumb; ?></span>
             <?php endif;
-            echo $title . $link_end;
-            _media_states($post);
-            ?>
+        echo $title . $link_end;
+        _media_states($post); ?>
         </strong>
         <p class="filename">
             <span class="screen-reader-text"><?php _e('File name:'); ?> </span>
             <?php
             $file = get_attached_file($post->ID);
-            echo esc_html(wp_basename($file));
-            ?>
+        echo esc_html(wp_basename($file)); ?>
         </p>
         <?php
     }
@@ -433,7 +427,8 @@ class WP_Media_List_Table extends WP_List_Table
      */
     public function column_author($post)
     {
-        printf('<a href="%s">%s</a>',
+        printf(
+            '<a href="%s">%s</a>',
             esc_url(add_query_arg(array('author' => get_the_author_meta('ID')), 'upload.php')),
             get_the_author()
         );
@@ -520,7 +515,7 @@ class WP_Media_List_Table extends WP_List_Table
                     'media[]' => $post->ID,
                     '_wpnonce' => wp_create_nonce('bulk-' . $this->_args['plural'])
                 ), 'upload.php');
-                printf(
+            printf(
                     '<br /><a href="%s" class="hide-if-no-js detach-from-parent" aria-label="%s">%s</a>',
                     $detach_url,
                     /* translators: %s: title of the post the attachment is attached to */
@@ -596,7 +591,8 @@ class WP_Media_List_Table extends WP_List_Table
                     $posts_in_term_qv['taxonomy'] = $taxonomy;
                     $posts_in_term_qv['term'] = $t->slug;
 
-                    $out[] = sprintf('<a href="%s">%s</a>',
+                    $out[] = sprintf(
+                        '<a href="%s">%s</a>',
                         esc_url(add_query_arg($posts_in_term_qv, 'upload.php')),
                         esc_html(sanitize_term_field('name', $t->name, $t->term_id, $taxonomy, 'display'))
                     );
@@ -639,14 +635,13 @@ class WP_Media_List_Table extends WP_List_Table
         add_filter('the_title', 'esc_html');
 
         while (have_posts()) : the_post();
-            if (
+        if (
                 ($this->is_trash && $post->post_status != 'trash')
                 || (!$this->is_trash && $post->post_status === 'trash')
             ) {
-                continue;
-            }
-            $post_owner = (get_current_user_id() == $post->post_author) ? 'self' : 'other';
-            ?>
+            continue;
+        }
+        $post_owner = (get_current_user_id() == $post->post_author) ? 'self' : 'other'; ?>
             <tr id="post-<?php echo $post->ID; ?>"
                 class="<?php echo trim(' author-' . $post_owner . ' status-' . $post->post_status); ?>">
                 <?php $this->single_row_columns($post); ?>

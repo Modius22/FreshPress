@@ -24,8 +24,7 @@ $parent_file = 'plugins.php';
 $plugins = get_plugins();
 
 if (empty($plugins)) {
-    include(ABSPATH . 'wp-admin/admin-header.php');
-    ?>
+    include(ABSPATH . 'wp-admin/admin-header.php'); ?>
     <div class="wrap">
         <h1><?php echo esc_html($title); ?></h1>
         <div id="message" class="error">
@@ -66,7 +65,6 @@ $real_file = WP_PLUGIN_DIR . '/' . $file;
 $scrollto = isset($_REQUEST['scrollto']) ? (int)$_REQUEST['scrollto'] : 0;
 
 if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
-
     check_admin_referer('edit-plugin_' . $file);
 
     $newcontent = wp_unslash($_POST['newcontent']);
@@ -86,12 +84,17 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
             if (!is_network_admin()) {
                 update_option('recently_activated', array($file => time()) + (array)get_option('recently_activated'));
             } else {
-                update_site_option('recently_activated',
-                    array($file => time()) + (array)get_site_option('recently_activated'));
+                update_site_option(
+                    'recently_activated',
+                    array($file => time()) + (array)get_site_option('recently_activated')
+                );
             }
 
-            wp_redirect(add_query_arg('_wpnonce', wp_create_nonce('edit-plugin-test_' . $file),
-                "plugin-editor.php?file=$file&plugin=$plugin&liveupdate=1&scrollto=$scrollto&networkwide=" . $network_wide));
+            wp_redirect(add_query_arg(
+                '_wpnonce',
+                wp_create_nonce('edit-plugin-test_' . $file),
+                "plugin-editor.php?file=$file&plugin=$plugin&liveupdate=1&scrollto=$scrollto&networkwide=" . $network_wide
+            ));
             exit;
         }
         wp_redirect(self_admin_url("plugin-editor.php?file=$file&plugin=$plugin&a=te&scrollto=$scrollto"));
@@ -99,9 +102,7 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
         wp_redirect(self_admin_url("plugin-editor.php?file=$file&plugin=$plugin&scrollto=$scrollto"));
     }
     exit;
-
 } else {
-
     if (isset($_GET['liveupdate'])) {
         check_admin_referer('edit-plugin-test_' . $file);
 
@@ -182,8 +183,7 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
         }
     }
 
-    $content = esc_textarea($content);
-    ?>
+    $content = esc_textarea($content); ?>
     <?php if (isset($_GET['a'])) : ?>
         <div id="message" class="updated notice is-dismissible"><p><?php _e('File edited successfully.') ?></p></div>
     <?php elseif (isset($_GET['phperror'])) : ?>
@@ -195,10 +195,10 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
                     'action' => 'error_scrape',
                     'plugin' => urlencode($file),
                     '_wpnonce' => urlencode($_GET['_error_nonce']),
-                ), admin_url('plugins.php'));
-                ?>
+                ), admin_url('plugins.php')); ?>
                 <iframe style="border:0" width="100%" height="70px" src="<?php echo esc_url($iframe_url); ?>"></iframe>
-            <?php } ?>
+            <?php
+            } ?>
         </div>
     <?php endif; ?>
     <div class="wrap">
@@ -223,8 +223,7 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
                             /* translators: %s: plugin file name */
                             echo sprintf(__('Browsing %s (inactive)'), '<strong>' . $file . '</strong>');
                         }
-                    }
-                    ?></big>
+                    } ?></big>
             </div>
             <div class="alignright">
                 <form action="plugin-editor.php" method="post">
@@ -241,8 +240,7 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
                             $plugin_name = esc_attr($plugin_name);
                             $plugin_key = esc_attr($plugin_key);
                             echo "\n\t<option value=\"$plugin_key\" $selected>$plugin_name</option>";
-                        }
-                        ?>
+                        } ?>
                     </select>
                     <?php submit_button(__('Select'), '', 'Submit', false); ?>
                 </form>
@@ -266,8 +264,7 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
                     } else {
                         // No extension found
                         continue;
-                    }
-                    ?>
+                    } ?>
                     <li<?php echo $file == $plugin_file ? ' class="highlight"' : ''; ?>><a
                                 href="plugin-editor.php?file=<?php echo urlencode($plugin_file) ?>&amp;plugin=<?php echo urlencode($plugin) ?>"><?php echo $plugin_file ?></a>
                     </li>
@@ -291,9 +288,11 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
                 </div>
             <?php endif; ?>
             <?php if (is_writeable($real_file)) : ?>
-                <?php if (in_array($plugin, (array)get_option('active_plugins', array()))) { ?>
+                <?php if (in_array($plugin, (array)get_option('active_plugins', array()))) {
+                        ?>
                     <p><?php _e('<strong>Warning:</strong> Making changes to active plugins is not recommended. If your changes cause a fatal error, the plugin will be automatically deactivated.'); ?></p>
-                <?php } ?>
+                <?php
+                    } ?>
                 <p class="submit">
                     <?php
                     if (isset($_GET['phperror'])) {
@@ -301,8 +300,7 @@ if (isset($_REQUEST['action']) && 'update' === $_REQUEST['action']) {
                         submit_button(__('Update File and Attempt to Reactivate'), 'primary', 'submit', false);
                     } else {
                         submit_button(__('Update File'), 'primary', 'submit', false);
-                    }
-                    ?>
+                    } ?>
                 </p>
             <?php else : ?>
                 <p>

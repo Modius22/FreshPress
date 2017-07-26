@@ -110,8 +110,7 @@ if (!function_exists('wp_setcookie')) :
         _deprecated_function(__FUNCTION__, '2.5.0', 'wp_set_auth_cookie()');
         $user = get_user_by('login', $username);
         wp_set_auth_cookie($user->ID, $remember);
-    }
-else :
+    } else :
     _deprecated_function('wp_setcookie', '2.5.0', 'wp_set_auth_cookie()');
 endif;
 
@@ -127,8 +126,7 @@ if (!function_exists('wp_clearcookie')) :
     {
         _deprecated_function(__FUNCTION__, '2.5.0', 'wp_clear_auth_cookie()');
         wp_clear_auth_cookie();
-    }
-else :
+    } else :
     _deprecated_function('wp_clearcookie', '2.5.0', 'wp_clear_auth_cookie()');
 endif;
 
@@ -148,8 +146,7 @@ if (!function_exists('wp_get_cookie_login')):
     {
         _deprecated_function(__FUNCTION__, '2.5.0');
         return false;
-    }
-else :
+    } else :
     _deprecated_function('wp_get_cookie_login', '2.5.0');
 endif;
 
@@ -188,8 +185,7 @@ if (!function_exists('wp_login')) :
 
         $error = $user->get_error_message();
         return false;
-    }
-else :
+    } else :
     _deprecated_function('wp_login', '2.5.0', 'wp_signon()');
 endif;
 

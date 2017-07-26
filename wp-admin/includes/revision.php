@@ -78,8 +78,13 @@ function wp_get_revision_ui_diff($post, $compare_from, $compare_to)
          * @param string  null                  The context of whether the current revision is the old
          *                                      or the new one. Values are 'to' or 'from'.
          */
-        $content_from = $compare_from ? apply_filters("_wp_post_revision_field_{$field}", $compare_from->$field, $field,
-            $compare_from, 'from') : '';
+        $content_from = $compare_from ? apply_filters(
+            "_wp_post_revision_field_{$field}",
+            $compare_from->$field,
+            $field,
+            $compare_from,
+            'from'
+        ) : '';
 
         /** This filter is documented in wp-admin/includes/revision.php */
         $content_to = apply_filters("_wp_post_revision_field_{$field}", $compare_to->$field, $field, $compare_to, 'to');
@@ -137,7 +142,6 @@ function wp_get_revision_ui_diff($post, $compare_from, $compare_to)
      * @param WP_Post $compare_to The revision post to compare to.
      */
     return apply_filters('wp_get_revision_ui_diff', $return, $compare_from, $compare_to);
-
 }
 
 /**
@@ -330,8 +334,7 @@ function wp_prepare_revisions_for_js($post, $selected_revision_id, $from = null)
  */
 function wp_print_revision_templates()
 {
-    global $post;
-    ?>
+    global $post; ?>
     <script id="tmpl-revisions-frame" type="text/html">
         <div class="revisions-control-frame"></div>
         <div class="revisions-diff-frame"></div>
@@ -377,26 +380,36 @@ function wp_print_revision_templates()
                                 {{{ data.attributes.author.avatar }}}
                                 <div class="author-info">
                                     <# if ( data.attributes.autosave ) { #>
-						<span class="byline"><?php printf(__('Autosave by %s'),
-                                '<span class="author-name">{{ data.attributes.author.name }}</span>'); ?></span>
+						<span class="byline"><?php printf(
+        __('Autosave by %s'),
+                                '<span class="author-name">{{ data.attributes.author.name }}</span>'
+    ); ?></span>
                                         <# } else if ( data.attributes.current ) { #>
-						<span class="byline"><?php printf(__('Current Revision by %s'),
-                                '<span class="author-name">{{ data.attributes.author.name }}</span>'); ?></span>
+						<span class="byline"><?php printf(
+                                    __('Current Revision by %s'),
+                                '<span class="author-name">{{ data.attributes.author.name }}</span>'
+                                ); ?></span>
                                             <# } else { #>
-						<span class="byline"><?php printf(__('Revision by %s'),
-                                '<span class="author-name">{{ data.attributes.author.name }}</span>'); ?></span>
+						<span class="byline"><?php printf(
+                                    __('Revision by %s'),
+                                '<span class="author-name">{{ data.attributes.author.name }}</span>'
+                                ); ?></span>
                                                 <# } #>
                                                     <span class="time-ago">{{ data.attributes.timeAgo }}</span>
                                                     <span class="date">({{ data.attributes.dateShort }})</span>
                                 </div>
                                 <# if ( 'to' === data.type && data.attributes.restoreUrl ) { #>
-                                    <input <?php if (wp_check_post_lock($post->ID)) { ?>
+                                    <input <?php if (wp_check_post_lock($post->ID)) {
+                                    ?>
                                             disabled="disabled"
-                                    <?php } else { ?>
+                                    <?php
+                                } else {
+                                    ?>
                                     <# if ( data.attributes.current ) { #>
                                         disabled="disabled"
                                         <# } #>
-                                            <?php } ?>
+                                            <?php
+                                } ?>
                                             <# if ( data.attributes.autosave ) { #>
                                                 type="button" class="restore-revision button button-primary"
                                                 value="<?php esc_attr_e('Restore This Autosave'); ?>" />

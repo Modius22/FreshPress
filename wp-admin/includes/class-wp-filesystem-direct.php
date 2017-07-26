@@ -329,8 +329,7 @@ class WP_Filesystem_Direct extends WP_Filesystem_Base
      */
     public function delete($file, $recursive = false, $type = false)
     {
-        if (empty($file)) // Some filesystems report this as /, which can cause non-expected recursive deletion of all files in the filesystem.
-        {
+        if (empty($file)) { // Some filesystems report this as /, which can cause non-expected recursive deletion of all files in the filesystem.
             return false;
         }
         $file = str_replace('\\', '/', $file); // for win32, occasional problems deleting files otherwise

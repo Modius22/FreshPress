@@ -71,15 +71,16 @@ if (isset($_GET['action'])) {
                             case 'spam':
                                 $user = get_userdata($user_id);
                                 if (is_super_admin($user->ID)) {
-                                    wp_die(sprintf(__('Warning! User cannot be modified. The user %s is a network administrator.'),
-                                        esc_html($user->user_login)));
+                                    wp_die(sprintf(
+                                        __('Warning! User cannot be modified. The user %s is a network administrator.'),
+                                        esc_html($user->user_login)
+                                    ));
                                 }
 
                                 $userfunction = 'all_spam';
                                 $blogs = get_blogs_of_user($user_id, true);
                                 foreach ((array)$blogs as $details) {
-                                    if ($details->userblog_id != get_network()->site_id) // main blog not a spam !
-                                    {
+                                    if ($details->userblog_id != get_network()->site_id) { // main blog not a spam !
                                         update_blog_status($details->userblog_id, 'spam', '1');
                                     }
                                 }
@@ -104,15 +105,21 @@ if (isset($_GET['action'])) {
 
                     $user_ids = (array)$_POST['allusers'];
                     /** This action is documented in wp-admin/network/site-themes.php */
-                    $sendback = apply_filters('handle_network_bulk_actions-' . get_current_screen()->id, $sendback,
-                        $doaction, $user_ids);
+                    $sendback = apply_filters(
+                        'handle_network_bulk_actions-' . get_current_screen()->id,
+                        $sendback,
+                        $doaction,
+                        $user_ids
+                    );
 
                     wp_safe_redirect($sendback);
                     exit();
                 }
 
-                wp_safe_redirect(add_query_arg(array('updated' => 'true', 'action' => $userfunction),
-                    wp_get_referer()));
+                wp_safe_redirect(add_query_arg(
+                    array('updated' => 'true', 'action' => $userfunction),
+                    wp_get_referer()
+                ));
             } else {
                 $location = network_admin_url('users.php');
 
@@ -161,8 +168,10 @@ if (isset($_GET['action'])) {
                 $deletefunction = 'all_delete';
             }
 
-            wp_redirect(add_query_arg(array('updated' => 'true', 'action' => $deletefunction),
-                network_admin_url('users.php')));
+            wp_redirect(add_query_arg(
+                array('updated' => 'true', 'action' => $deletefunction),
+                network_admin_url('users.php')
+            ));
             exit();
     }
 }
@@ -227,8 +236,7 @@ if (isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' && !empty($_RE
                 case 'add':
                     _e('User added.');
                     break;
-            }
-            ?>
+            } ?>
         </p></div>
     <?php
 }
@@ -244,8 +252,10 @@ if (isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' && !empty($_RE
 
     if (strlen($usersearch)) {
         /* translators: %s: search keywords */
-        printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
-            esc_html($usersearch));
+        printf(
+            '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
+            esc_html($usersearch)
+        );
     }
     ?>
 

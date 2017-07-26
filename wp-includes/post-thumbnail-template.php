@@ -91,7 +91,7 @@ function update_post_thumbnail_cache($wp_query = null)
         }
     }
 
-    if (!empty ($thumb_ids)) {
+    if (!empty($thumb_ids)) {
         _prime_post_caches($thumb_ids, false, true);
     }
 
@@ -167,7 +167,6 @@ function get_the_post_thumbnail($post = null, $size = 'post-thumbnail', $attr = 
          *                                        and height values (in that order). Default 'post-thumbnail'.
          */
         do_action('end_fetch_post_thumbnail_html', $post->ID, $post_thumbnail_id, $size);
-
     } else {
         $html = '';
     }

@@ -179,8 +179,10 @@ final class WP_Site
         $_site = wp_cache_get($site_id, 'sites');
 
         if (!$_site) {
-            $_site = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->blogs} WHERE blog_id = %d LIMIT 1",
-                $site_id));
+            $_site = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->blogs} WHERE blog_id = %d LIMIT 1",
+                $site_id
+            ));
 
             if (empty($_site) || is_wp_error($_site)) {
                 return false;
@@ -342,7 +344,6 @@ final class WP_Site
         $details = wp_cache_get($this->blog_id, 'site-details');
 
         if (false === $details) {
-
             switch_to_blog($this->blog_id);
             // Create a raw copy of the object for backwards compatibility with the filter below.
             $details = new stdClass();

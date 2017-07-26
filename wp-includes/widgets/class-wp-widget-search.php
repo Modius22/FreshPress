@@ -46,8 +46,12 @@ class WP_Widget_Search extends WP_Widget
     public function widget($args, $instance)
     {
         /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-        $title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance,
-            $this->id_base);
+        $title = apply_filters(
+            'widget_title',
+            empty($instance['title']) ? '' : $instance['title'],
+            $instance,
+            $this->id_base
+        );
 
         echo $args['before_widget'];
         if ($title) {
@@ -71,8 +75,7 @@ class WP_Widget_Search extends WP_Widget
     public function form($instance)
     {
         $instance = wp_parse_args((array)$instance, array('title' => ''));
-        $title = $instance['title'];
-        ?>
+        $title = $instance['title']; ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat"
                                                                                                   id="<?php echo $this->get_field_id('title'); ?>"
                                                                                                   name="<?php echo $this->get_field_name('title'); ?>"
@@ -100,5 +103,4 @@ class WP_Widget_Search extends WP_Widget
         $instance['title'] = sanitize_text_field($new_instance['title']);
         return $instance;
     }
-
 }

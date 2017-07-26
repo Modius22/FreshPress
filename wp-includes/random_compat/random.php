@@ -42,7 +42,6 @@ if (!defined('PHP_VERSION_ID')) {
 }
 
 if (PHP_VERSION_ID < 70000) {
-
     if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
         define('RANDOM_COMPAT_READ_BUFFER', 8);
     }

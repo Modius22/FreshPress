@@ -29,8 +29,7 @@
  */
 class Text_Diff_Engine_native
 {
-
-    function diff($from_lines, $to_lines)
+    public function diff($from_lines, $to_lines)
     {
         array_walk($from_lines, array('Text_Diff', 'trimNewlines'));
         array_walk($to_lines, array('Text_Diff', 'trimNewlines'));
@@ -149,7 +148,7 @@ class Text_Diff_Engine_native
      * match.  The caller must trim matching lines from the beginning and end
      * of the portions it is going to specify.
      */
-    function _diag($xoff, $xlim, $yoff, $ylim, $nchunks)
+    public function _diag($xoff, $xlim, $yoff, $ylim, $nchunks)
     {
         $flip = false;
 
@@ -157,7 +156,7 @@ class Text_Diff_Engine_native
             /* Things seems faster (I'm not sure I understand why) when the
              * shortest sequence is in X. */
             $flip = true;
-            list ($xoff, $xlim, $yoff, $ylim)
+            list($xoff, $xlim, $yoff, $ylim)
                 = array($yoff, $ylim, $xoff, $xlim);
         }
 
@@ -230,7 +229,7 @@ class Text_Diff_Engine_native
         return array($this->lcs, $seps);
     }
 
-    function _lcsPos($ypos)
+    public function _lcsPos($ypos)
     {
         $end = $this->lcs;
         if ($end == 0 || $ypos > $this->seq[$end]) {
@@ -269,7 +268,7 @@ class Text_Diff_Engine_native
      * Note that XLIM, YLIM are exclusive bounds.  All line numbers are
      * origin-0 and discarded lines are not counted.
      */
-    function _compareseq($xoff, $xlim, $yoff, $ylim)
+    public function _compareseq($xoff, $xlim, $yoff, $ylim)
     {
         /* Slide down the bottom initial diagonal. */
         while ($xoff < $xlim && $yoff < $ylim
@@ -328,7 +327,7 @@ class Text_Diff_Engine_native
      *
      * This is extracted verbatim from analyze.c (GNU diffutils-2.7).
      */
-    function _shiftBoundaries($lines, &$changed, $other_changed)
+    public function _shiftBoundaries($lines, &$changed, $other_changed)
     {
         $i = 0;
         $j = 0;
@@ -436,5 +435,4 @@ class Text_Diff_Engine_native
             }
         }
     }
-
 }

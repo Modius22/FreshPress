@@ -178,12 +178,17 @@ class WP_Widget
      */
     public function __construct($id_base, $name, $widget_options = array(), $control_options = array())
     {
-        $this->id_base = empty($id_base) ? preg_replace('/(wp_)?widget_/', '',
-            strtolower(get_class($this))) : strtolower($id_base);
+        $this->id_base = empty($id_base) ? preg_replace(
+            '/(wp_)?widget_/',
+            '',
+            strtolower(get_class($this))
+        ) : strtolower($id_base);
         $this->name = $name;
         $this->option_name = 'widget_' . $this->id_base;
-        $this->widget_options = wp_parse_args($widget_options,
-            array('classname' => $this->option_name, 'customize_selective_refresh' => false));
+        $this->widget_options = wp_parse_args(
+            $widget_options,
+            array('classname' => $this->option_name, 'customize_selective_refresh' => false)
+        );
         $this->control_options = wp_parse_args($control_options, array('id_base' => $this->id_base));
     }
 
@@ -227,8 +232,12 @@ class WP_Widget
         if (false === $pos = strpos($field_name, '[')) {
             return 'widget-' . $this->id_base . '[' . $this->number . '][' . $field_name . ']';
         } else {
-            return 'widget-' . $this->id_base . '[' . $this->number . '][' . substr_replace($field_name, '][', $pos,
-                    strlen('['));
+            return 'widget-' . $this->id_base . '[' . $this->number . '][' . substr_replace(
+                $field_name,
+                '][',
+                $pos,
+                    strlen('[')
+            );
         }
     }
 
@@ -247,8 +256,11 @@ class WP_Widget
      */
     public function get_field_id($field_name)
     {
-        return 'widget-' . $this->id_base . '-' . $this->number . '-' . trim(str_replace(array('[]', '[', ']'),
-                array('', '-', ''), $field_name), '-');
+        return 'widget-' . $this->id_base . '-' . $this->number . '-' . trim(str_replace(
+            array('[]', '[', ']'),
+                array('', '-', ''),
+            $field_name
+        ), '-');
     }
 
     /**
@@ -588,12 +600,26 @@ class WP_Widget
      */
     public function _register_one($number = -1)
     {
-        wp_register_sidebar_widget($this->id, $this->name, $this->_get_display_callback(), $this->widget_options,
-            array('number' => $number));
-        _register_widget_update_callback($this->id_base, $this->_get_update_callback(), $this->control_options,
-            array('number' => -1));
-        _register_widget_form_callback($this->id, $this->name, $this->_get_form_callback(), $this->control_options,
-            array('number' => $number));
+        wp_register_sidebar_widget(
+            $this->id,
+            $this->name,
+            $this->_get_display_callback(),
+            $this->widget_options,
+            array('number' => $number)
+        );
+        _register_widget_update_callback(
+            $this->id_base,
+            $this->_get_update_callback(),
+            $this->control_options,
+            array('number' => -1)
+        );
+        _register_widget_form_callback(
+            $this->id,
+            $this->name,
+            $this->_get_form_callback(),
+            $this->control_options,
+            array('number' => $number)
+        );
     }
 
     /**
@@ -620,7 +646,6 @@ class WP_Widget
      */
     public function get_settings()
     {
-
         $settings = get_option($this->option_name);
 
         if (false === $settings) {

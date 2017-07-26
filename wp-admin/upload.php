@@ -13,8 +13,10 @@ if (!current_user_can('upload_files')) {
     wp_die(__('Sorry, you are not allowed to upload files.'));
 }
 
-$mode = get_user_option('media_library_mode', get_current_user_id()) ? get_user_option('media_library_mode',
-    get_current_user_id()) : 'grid';
+$mode = get_user_option('media_library_mode', get_current_user_id()) ? get_user_option(
+    'media_library_mode',
+    get_current_user_id()
+) : 'grid';
 $modes = array('grid', 'list');
 
 if (isset($_GET['mode']) && in_array($_GET['mode'], $modes)) {
@@ -72,17 +74,16 @@ if ('grid' === $mode) {
     $title = __('Media Library');
     $parent_file = 'upload.php';
 
-    require_once(ABSPATH . 'wp-admin/admin-header.php');
-    ?>
+    require_once(ABSPATH . 'wp-admin/admin-header.php'); ?>
     <div class="wrap" id="wp-media-grid" data-search="<?php _admin_search_query() ?>">
         <h1 class="wp-heading-inline"><?php echo esc_html($title); ?></h1>
 
         <?php
-        if (current_user_can('upload_files')) { ?>
+        if (current_user_can('upload_files')) {
+            ?>
             <a href="<?php echo admin_url('media-new.php'); ?>"
                class="page-title-action aria-button-if-js"><?php echo esc_html_x('Add New', 'file'); ?></a><?php
-        }
-        ?>
+        } ?>
 
         <hr class="wp-header-end">
 
@@ -120,8 +121,10 @@ if ($doaction) {
     $location = 'upload.php';
     if ($referer = wp_get_referer()) {
         if (false !== strpos($referer, 'upload.php')) {
-            $location = remove_query_arg(array('trashed', 'untrashed', 'deleted', 'message', 'ids', 'posted'),
-                $referer);
+            $location = remove_query_arg(
+                array('trashed', 'untrashed', 'deleted', 'message', 'ids', 'posted'),
+                $referer
+            );
         }
     }
 
@@ -181,8 +184,12 @@ if ($doaction) {
             break;
         default:
             /** This action is documented in wp-admin/edit-comments.php */
-            $location = apply_filters('handle_bulk_actions-' . get_current_screen()->id, $location, $doaction,
-                $post_ids);
+            $location = apply_filters(
+                'handle_bulk_actions-' . get_current_screen()->id,
+                $location,
+                $doaction,
+                $post_ids
+            );
     }
 
     wp_redirect($location);
@@ -241,15 +248,18 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
         <h1 class="wp-heading-inline"><?php echo esc_html($title); ?></h1>
 
         <?php
-        if (current_user_can('upload_files')) { ?>
+        if (current_user_can('upload_files')) {
+            ?>
             <a href="<?php echo admin_url('media-new.php'); ?>"
                class="page-title-action"><?php echo esc_html_x('Add New', 'file'); ?></a><?php
         }
 
         if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
             /* translators: %s: search keywords */
-            printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
-                get_search_query());
+            printf(
+                '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>',
+                get_search_query()
+            );
         }
         ?>
 
@@ -303,8 +313,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                 $message = _n('%s media file moved to the trash.', '%s media files moved to the trash.', $trashed);
             }
             $message = sprintf($message, number_format_i18n($trashed));
-            $message .= ' <a href="' . esc_url(wp_nonce_url('upload.php?doaction=undo&action=untrash&ids=' . (isset($_GET['ids']) ? $_GET['ids'] : ''),
-                    "bulk-media")) . '">' . __('Undo') . '</a>';
+            $message .= ' <a href="' . esc_url(wp_nonce_url(
+                'upload.php?doaction=undo&action=untrash&ids=' . (isset($_GET['ids']) ? $_GET['ids'] : ''),
+                    "bulk-media"
+            )) . '">' . __('Undo') . '</a>';
             $_SERVER['REQUEST_URI'] = remove_query_arg(array('trashed'), $_SERVER['REQUEST_URI']);
         }
 
@@ -313,8 +325,11 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                 $message = __('Media file restored from the trash.');
             } else {
                 /* translators: %s: number of media files */
-                $message = _n('%s media file restored from the trash.', '%s media files restored from the trash.',
-                    $untrashed);
+                $message = _n(
+                    '%s media file restored from the trash.',
+                    '%s media files restored from the trash.',
+                    $untrashed
+                );
             }
             $message = sprintf($message, number_format_i18n($untrashed));
             $_SERVER['REQUEST_URI'] = remove_query_arg(array('untrashed'), $_SERVER['REQUEST_URI']);
@@ -323,8 +338,10 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
         $messages[1] = __('Media file updated.');
         $messages[2] = __('Media file permanently deleted.');
         $messages[3] = __('Error saving media file.');
-        $messages[4] = __('Media file moved to the trash.') . ' <a href="' . esc_url(wp_nonce_url('upload.php?doaction=undo&action=untrash&ids=' . (isset($_GET['ids']) ? $_GET['ids'] : ''),
-                "bulk-media")) . '">' . __('Undo') . '</a>';
+        $messages[4] = __('Media file moved to the trash.') . ' <a href="' . esc_url(wp_nonce_url(
+            'upload.php?doaction=undo&action=untrash&ids=' . (isset($_GET['ids']) ? $_GET['ids'] : ''),
+                "bulk-media"
+        )) . '">' . __('Undo') . '</a>';
         $messages[5] = __('Media file restored from the trash.');
 
         if (!empty($_GET['message']) && isset($messages[$_GET['message']])) {
@@ -332,9 +349,11 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
             $_SERVER['REQUEST_URI'] = remove_query_arg(array('message'), $_SERVER['REQUEST_URI']);
         }
 
-        if (!empty($message)) { ?>
+        if (!empty($message)) {
+            ?>
             <div id="message" class="updated notice is-dismissible"><p><?php echo $message; ?></p></div>
-        <?php } ?>
+        <?php
+        } ?>
 
         <form id="posts-filter" method="get">
 

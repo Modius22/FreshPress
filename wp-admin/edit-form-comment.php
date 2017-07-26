@@ -97,14 +97,24 @@ if (!defined('ABSPATH')) {
                                             <fieldset class="misc-pub-section misc-pub-comment-status"
                                                       id="comment-status-radio">
                                                 <legend class="screen-reader-text"><?php _e('Comment status'); ?></legend>
-                                                <label><input type="radio"<?php checked($comment->comment_approved,
-                                                        '1'); ?> name="comment_status" value="1"/><?php _ex('Approved',
-                                                        'comment status'); ?></label><br/>
-                                                <label><input type="radio"<?php checked($comment->comment_approved,
-                                                        '0'); ?> name="comment_status" value="0"/><?php _ex('Pending',
-                                                        'comment status'); ?></label><br/>
-                                                <label><input type="radio"<?php checked($comment->comment_approved,
-                                                        'spam'); ?> name="comment_status"
+                                                <label><input type="radio"<?php checked(
+                                $comment->comment_approved,
+                                                        '1'
+                            ); ?> name="comment_status" value="1"/><?php _ex(
+                                                            'Approved',
+                                                        'comment status'
+                                                        ); ?></label><br/>
+                                                <label><input type="radio"<?php checked(
+                                                            $comment->comment_approved,
+                                                        '0'
+                                                        ); ?> name="comment_status" value="0"/><?php _ex(
+                                                            'Pending',
+                                                        'comment status'
+                                                        ); ?></label><br/>
+                                                <label><input type="radio"<?php checked(
+                                                            $comment->comment_approved,
+                                                        'spam'
+                                                        ); ?> name="comment_status"
                                                               value="spam"/><?php _ex('Spam', 'comment status'); ?>
                                                 </label>
                                             </fieldset>
@@ -118,8 +128,10 @@ if (!defined('ABSPATH')) {
                                                     printf(
                                                     /* translators: %s: comment date */
                                                         __('Submitted on: %s'),
-                                                        '<b>' . date_i18n($datef,
-                                                            strtotime($comment->comment_date)) . '</b>'
+                                                        '<b>' . date_i18n(
+                                                            $datef,
+                                                            strtotime($comment->comment_date)
+                                                        ) . '</b>'
                                                     );
                                                     ?></span>
                                                 <a href="#edit_timestamp" class="edit-timestamp hide-if-no-js"><span
@@ -184,8 +196,10 @@ if (!defined('ABSPATH')) {
 
                                     <div id="major-publishing-actions">
                                         <div id="delete-action">
-                                            <?php echo "<a class='submitdelete deletion' href='" . wp_nonce_url("comment.php?action=" . (!EMPTY_TRASH_DAYS ? 'deletecomment' : 'trashcomment') . "&amp;c=$comment->comment_ID&amp;_wp_original_http_referer=" . urlencode(wp_get_referer()),
-                                                    'delete-comment_' . $comment->comment_ID) . "'>" . (!EMPTY_TRASH_DAYS ? __('Delete Permanently') : __('Move to Trash')) . "</a>\n"; ?>
+                                            <?php echo "<a class='submitdelete deletion' href='" . wp_nonce_url(
+                                                "comment.php?action=" . (!EMPTY_TRASH_DAYS ? 'deletecomment' : 'trashcomment') . "&amp;c=$comment->comment_ID&amp;_wp_original_http_referer=" . urlencode(wp_get_referer()),
+                                                    'delete-comment_' . $comment->comment_ID
+                                            ) . "'>" . (!EMPTY_TRASH_DAYS ? __('Delete Permanently') : __('Move to Trash')) . "</a>\n"; ?>
                                         </div>
                                         <div id="publishing-action">
                                             <?php submit_button(__('Update'), 'primary large', 'save', false); ?>

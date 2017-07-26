@@ -16,8 +16,10 @@
 
         $post_thumbnail_id = get_post_thumbnail_id($post->ID);
 
-        $thumbnail_attributes = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID),
-            'twentyseventeen-featured-image');
+        $thumbnail_attributes = wp_get_attachment_image_src(
+            get_post_thumbnail_id($post->ID),
+            'twentyseventeen-featured-image'
+        );
 
         // Calculate aspect ratio: h / w * 100%.
         $ratio = $thumbnail_attributes[2] / $thumbnail_attributes[1] * 100;

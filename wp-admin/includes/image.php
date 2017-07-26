@@ -149,15 +149,18 @@ function wp_generate_attachment_metadata($attachment_id, $file)
         if ($image_meta) {
             $metadata['image_meta'] = $image_meta;
         }
-
     } elseif (wp_attachment_is('video', $attachment)) {
         $metadata = wp_read_video_metadata($file);
-        $support = current_theme_supports('post-thumbnails',
-                'attachment:video') || post_type_supports('attachment:video', 'thumbnail');
+        $support = current_theme_supports(
+            'post-thumbnails',
+                'attachment:video'
+        ) || post_type_supports('attachment:video', 'thumbnail');
     } elseif (wp_attachment_is('audio', $attachment)) {
         $metadata = wp_read_audio_metadata($file);
-        $support = current_theme_supports('post-thumbnails',
-                'attachment:audio') || post_type_supports('attachment:audio', 'thumbnail');
+        $support = current_theme_supports(
+            'post-thumbnails',
+                'attachment:audio'
+        ) || post_type_supports('attachment:audio', 'thumbnail');
     }
 
     if ($support && !empty($metadata['image']['data'])) {
@@ -418,21 +421,17 @@ function wp_read_image_metadata($file)
                 $meta['caption'] = $caption;
             }
 
-            if (!empty($iptc['2#110'][0])) // credit
-            {
+            if (!empty($iptc['2#110'][0])) { // credit
                 $meta['credit'] = trim($iptc['2#110'][0]);
-            } elseif (!empty($iptc['2#080'][0])) // creator / legacy byline
-            {
+            } elseif (!empty($iptc['2#080'][0])) { // creator / legacy byline
                 $meta['credit'] = trim($iptc['2#080'][0]);
             }
 
-            if (!empty($iptc['2#055'][0]) && !empty($iptc['2#060'][0])) // created date and time
-            {
+            if (!empty($iptc['2#055'][0]) && !empty($iptc['2#060'][0])) { // created date and time
                 $meta['created_timestamp'] = strtotime($iptc['2#055'][0] . ' ' . $iptc['2#060'][0]);
             }
 
-            if (!empty($iptc['2#116'][0])) // copyright
-            {
+            if (!empty($iptc['2#116'][0])) { // copyright
                 $meta['copyright'] = trim($iptc['2#116'][0]);
             }
 
@@ -449,8 +448,10 @@ function wp_read_image_metadata($file)
      *
      * @param array $image_types Image types to check for exif data.
      */
-    if (is_callable('exif_read_data') && in_array($sourceImageType, apply_filters('wp_read_image_metadata_types',
-            array(IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM)))) {
+    if (is_callable('exif_read_data') && in_array($sourceImageType, apply_filters(
+        'wp_read_image_metadata_types',
+            array(IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM)
+    ))) {
         $exif = @exif_read_data($file);
 
         if (!empty($exif['ImageDescription'])) {
@@ -535,7 +536,6 @@ function wp_read_image_metadata($file)
      * @param array $iptc IPTC data.
      */
     return apply_filters('wp_read_image_metadata', $meta, $file, $sourceImageType, $iptc);
-
 }
 
 /**
@@ -664,8 +664,12 @@ function _load_image_to_edit_path($attachment_id, $size = 'full')
              * @param string $attachment_id Attachment ID.
              * @param string $size Size of the image.
              */
-            $filepath = apply_filters('load_image_to_edit_filesystempath', path_join(dirname($filepath), $data['file']),
-                $attachment_id, $size);
+            $filepath = apply_filters(
+                'load_image_to_edit_filesystempath',
+                path_join(dirname($filepath), $data['file']),
+                $attachment_id,
+                $size
+            );
         }
     } elseif (function_exists('fopen') && true == ini_get('allow_url_fopen')) {
         /**
@@ -679,8 +683,12 @@ function _load_image_to_edit_path($attachment_id, $size = 'full')
          * @param string $attachment_id Attachment ID.
          * @param string $size Size of the image.
          */
-        $filepath = apply_filters('load_image_to_edit_attachmenturl', wp_get_attachment_url($attachment_id),
-            $attachment_id, $size);
+        $filepath = apply_filters(
+            'load_image_to_edit_attachmenturl',
+            wp_get_attachment_url($attachment_id),
+            $attachment_id,
+            $size
+        );
     }
 
     /**

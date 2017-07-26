@@ -118,8 +118,10 @@ class WP_MS_Sites_List_Table extends WP_List_Table
             preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.?$/', $s) ||
             preg_match('/^[0-9]{1,3}\.$/', $s)) {
             // IPv4 address
-            $sql = $wpdb->prepare("SELECT blog_id FROM {$wpdb->registration_log} WHERE {$wpdb->registration_log}.IP LIKE %s",
-                $wpdb->esc_like($s) . (!empty($wild) ? '%' : ''));
+            $sql = $wpdb->prepare(
+                "SELECT blog_id FROM {$wpdb->registration_log} WHERE {$wpdb->registration_log}.IP LIKE %s",
+                $wpdb->esc_like($s) . (!empty($wild) ? '%' : '')
+            );
             $reg_blog_ids = $wpdb->get_col($sql);
 
             if ($reg_blog_ids) {
@@ -283,11 +285,9 @@ class WP_MS_Sites_List_Table extends WP_List_Table
     public function column_cb($blog)
     {
         if (!is_main_site($blog['blog_id'])) :
-            $blogname = untrailingslashit($blog['domain'] . $blog['path']);
-            ?>
+            $blogname = untrailingslashit($blog['domain'] . $blog['path']); ?>
             <label class="screen-reader-text" for="blog_<?php echo $blog['blog_id']; ?>"><?php
-                printf(__('Select %s'), $blogname);
-                ?></label>
+                printf(__('Select %s'), $blogname); ?></label>
             <input type="checkbox" id="blog_<?php echo $blog['blog_id'] ?>" name="allblogs[]"
                    value="<?php echo esc_attr($blog['blog_id']) ?>"/>
         <?php endif;
@@ -339,9 +339,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table
                 $sep = ($i == $state_count) ? '' : ', ';
                 $blog_state .= "<span class='post-state'>$state$sep</span>";
             }
-        }
-
-        ?>
+        } ?>
         <strong>
             <a href="<?php echo esc_url(network_admin_url('site-info.php?id=' . $blog['blog_id'])); ?>"
                class="edit"><?php echo $blogname; ?></a>
@@ -558,37 +556,53 @@ class WP_MS_Sites_List_Table extends WP_List_Table
         $actions['backend'] = "<a href='" . esc_url(get_admin_url($blog['blog_id'])) . "' class='edit'>" . __('Dashboard') . '</a>';
         if (get_network()->site_id != $blog['blog_id']) {
             if ($blog['deleted'] == '1') {
-                $actions['activate'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=activateblog&amp;id=' . $blog['blog_id']),
-                        'activateblog_' . $blog['blog_id'])) . '">' . __('Activate') . '</a>';
+                $actions['activate'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=activateblog&amp;id=' . $blog['blog_id']),
+                        'activateblog_' . $blog['blog_id']
+                )) . '">' . __('Activate') . '</a>';
             } else {
-                $actions['deactivate'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=deactivateblog&amp;id=' . $blog['blog_id']),
-                        'deactivateblog_' . $blog['blog_id'])) . '">' . __('Deactivate') . '</a>';
+                $actions['deactivate'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=deactivateblog&amp;id=' . $blog['blog_id']),
+                        'deactivateblog_' . $blog['blog_id']
+                )) . '">' . __('Deactivate') . '</a>';
             }
 
             if ($blog['archived'] == '1') {
-                $actions['unarchive'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=unarchiveblog&amp;id=' . $blog['blog_id']),
-                        'unarchiveblog_' . $blog['blog_id'])) . '">' . __('Unarchive') . '</a>';
+                $actions['unarchive'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=unarchiveblog&amp;id=' . $blog['blog_id']),
+                        'unarchiveblog_' . $blog['blog_id']
+                )) . '">' . __('Unarchive') . '</a>';
             } else {
-                $actions['archive'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=archiveblog&amp;id=' . $blog['blog_id']),
-                        'archiveblog_' . $blog['blog_id'])) . '">' . _x('Archive', 'verb; site') . '</a>';
+                $actions['archive'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=archiveblog&amp;id=' . $blog['blog_id']),
+                        'archiveblog_' . $blog['blog_id']
+                )) . '">' . _x('Archive', 'verb; site') . '</a>';
             }
 
             if ($blog['spam'] == '1') {
-                $actions['unspam'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=unspamblog&amp;id=' . $blog['blog_id']),
-                        'unspamblog_' . $blog['blog_id'])) . '">' . _x('Not Spam', 'site') . '</a>';
+                $actions['unspam'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=unspamblog&amp;id=' . $blog['blog_id']),
+                        'unspamblog_' . $blog['blog_id']
+                )) . '">' . _x('Not Spam', 'site') . '</a>';
             } else {
-                $actions['spam'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=spamblog&amp;id=' . $blog['blog_id']),
-                        'spamblog_' . $blog['blog_id'])) . '">' . _x('Spam', 'site') . '</a>';
+                $actions['spam'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=spamblog&amp;id=' . $blog['blog_id']),
+                        'spamblog_' . $blog['blog_id']
+                )) . '">' . _x('Spam', 'site') . '</a>';
             }
 
             if (current_user_can('delete_site', $blog['blog_id'])) {
-                $actions['delete'] = '<a href="' . esc_url(wp_nonce_url(network_admin_url('sites.php?action=confirm&amp;action2=deleteblog&amp;id=' . $blog['blog_id']),
-                        'deleteblog_' . $blog['blog_id'])) . '">' . __('Delete') . '</a>';
+                $actions['delete'] = '<a href="' . esc_url(wp_nonce_url(
+                    network_admin_url('sites.php?action=confirm&amp;action2=deleteblog&amp;id=' . $blog['blog_id']),
+                        'deleteblog_' . $blog['blog_id']
+                )) . '">' . __('Delete') . '</a>';
             }
         }
 
-        $actions['visit'] = "<a href='" . esc_url(get_home_url($blog['blog_id'],
-                '/')) . "' rel='bookmark'>" . __('Visit') . '</a>';
+        $actions['visit'] = "<a href='" . esc_url(get_home_url(
+            $blog['blog_id'],
+                '/'
+        )) . "' rel='bookmark'>" . __('Visit') . '</a>';
 
         /**
          * Filters the action links displayed for each site in the Sites list table.

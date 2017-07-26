@@ -293,8 +293,10 @@ class WP_Date_Query
      */
     public function get_compare($query)
     {
-        if (!empty($query['compare']) && in_array($query['compare'],
-                array('=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'))) {
+        if (!empty($query['compare']) && in_array(
+            $query['compare'],
+                array('=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN')
+        )) {
             return strtoupper($query['compare']);
         }
 
@@ -386,7 +388,6 @@ class WP_Date_Query
              * Note: the number of weeks in a year is the date in which Dec 28 appears.
              */
             $week_count = date('W', mktime(0, 0, 0, 12, 28, $_year));
-
         } else {
             // Otherwise set the week-count to a maximum of 53.
             $week_count = 53;
@@ -461,8 +462,12 @@ class WP_Date_Query
 
         if ($day_exists && $month_exists && $year_exists) {
             // 1. Checking day, month, year combination.
-            if (!wp_checkdate($date_query['month'], $date_query['day'], $date_query['year'],
-                sprintf('%s-%s-%s', $date_query['year'], $date_query['month'], $date_query['day']))) {
+            if (!wp_checkdate(
+                $date_query['month'],
+                $date_query['day'],
+                $date_query['year'],
+                sprintf('%s-%s-%s', $date_query['year'], $date_query['month'], $date_query['day'])
+            )) {
                 /* translators: 1: year, 2: month, 3: day of month */
                 $day_month_year_error_msg = sprintf(
                     __('The following values do not describe a valid date: year %1$s, month %2$s, day %3$s.'),
@@ -473,14 +478,17 @@ class WP_Date_Query
 
                 $valid = false;
             }
-
         } elseif ($day_exists && $month_exists) {
             /*
              * 2. checking day, month combination
              * We use 2012 because, as a leap year, it's the most permissive.
              */
-            if (!wp_checkdate($date_query['month'], $date_query['day'], 2012,
-                sprintf('2012-%s-%s', $date_query['month'], $date_query['day']))) {
+            if (!wp_checkdate(
+                $date_query['month'],
+                $date_query['day'],
+                2012,
+                sprintf('2012-%s-%s', $date_query['month'], $date_query['day'])
+            )) {
                 /* translators: 1: month, 2: day of month */
                 $day_month_year_error_msg = sprintf(
                     __('The following values do not describe a valid date: month %1$s, day %2$s.'),
@@ -573,7 +581,6 @@ class WP_Date_Query
                     break;
                 }
             }
-
         }
 
         // Remove unsafe characters.
@@ -712,8 +719,10 @@ class WP_Date_Query
 
         // Generate a single WHERE clause with proper brackets and indentation.
         if (!empty($sql_chunks['where'])) {
-            $sql['where'] = '( ' . "\n  " . $indent . implode(' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
-                    $sql_chunks['where']) . "\n" . $indent . ')';
+            $sql['where'] = '( ' . "\n  " . $indent . implode(
+                ' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
+                    $sql_chunks['where']
+            ) . "\n" . $indent . ')';
         }
 
         return $sql;
@@ -782,12 +791,16 @@ class WP_Date_Query
 
         // Range queries.
         if (!empty($query['after'])) {
-            $where_parts[] = $wpdb->prepare("$column $gt %s",
-                $this->build_mysql_datetime($query['after'], !$inclusive));
+            $where_parts[] = $wpdb->prepare(
+                "$column $gt %s",
+                $this->build_mysql_datetime($query['after'], !$inclusive)
+            );
         }
         if (!empty($query['before'])) {
-            $where_parts[] = $wpdb->prepare("$column $lt %s",
-                $this->build_mysql_datetime($query['before'], $inclusive));
+            $where_parts[] = $wpdb->prepare(
+                "$column $lt %s",
+                $this->build_mysql_datetime($query['before'], $inclusive)
+            );
         }
         // Specific value queries.
 
@@ -829,8 +842,13 @@ class WP_Date_Query
                 }
             }
 
-            if ($time_query = $this->build_time_query($column, $compare, $query['hour'], $query['minute'],
-                $query['second'])) {
+            if ($time_query = $this->build_time_query(
+                $column,
+                $compare,
+                $query['hour'],
+                $query['minute'],
+                $query['second']
+            )) {
                 $where_parts[] = $time_query;
             }
         }
@@ -894,7 +912,7 @@ class WP_Date_Query
 
                 return $value[0] . ' AND ' . $value[1];
 
-            default;
+            default:
                 if (!is_numeric($value)) {
                     return false;
                 }
@@ -935,14 +953,12 @@ class WP_Date_Query
                 $datetime = array(
                     'year' => intval($matches[1]),
                 );
-
             } elseif (preg_match('/^(\d{4})\-(\d{2})$/', $datetime, $matches)) {
                 // Y-m
                 $datetime = array(
                     'year' => intval($matches[1]),
                     'month' => intval($matches[2]),
                 );
-
             } elseif (preg_match('/^(\d{4})\-(\d{2})\-(\d{2})$/', $datetime, $matches)) {
                 // Y-m-d
                 $datetime = array(
@@ -950,7 +966,6 @@ class WP_Date_Query
                     'month' => intval($matches[2]),
                     'day' => intval($matches[3]),
                 );
-
             } elseif (preg_match('/^(\d{4})\-(\d{2})\-(\d{2}) (\d{2}):(\d{2})$/', $datetime, $matches)) {
                 // Y-m-d H:i
                 $datetime = array(
@@ -980,8 +995,10 @@ class WP_Date_Query
         }
 
         if (!isset($datetime['day'])) {
-            $datetime['day'] = ($default_to_max) ? (int)date('t',
-                mktime(0, 0, 0, $datetime['month'], 1, $datetime['year'])) : 1;
+            $datetime['day'] = ($default_to_max) ? (int)date(
+                't',
+                mktime(0, 0, 0, $datetime['month'], 1, $datetime['year'])
+            ) : 1;
         }
 
         if (!isset($datetime['hour'])) {
@@ -996,8 +1013,15 @@ class WP_Date_Query
             $datetime['second'] = ($default_to_max) ? 59 : 0;
         }
 
-        return sprintf('%04d-%02d-%02d %02d:%02d:%02d', $datetime['year'], $datetime['month'], $datetime['day'],
-            $datetime['hour'], $datetime['minute'], $datetime['second']);
+        return sprintf(
+            '%04d-%02d-%02d %02d:%02d:%02d',
+            $datetime['year'],
+            $datetime['month'],
+            $datetime['day'],
+            $datetime['hour'],
+            $datetime['minute'],
+            $datetime['second']
+        );
     }
 
     /**
@@ -1046,14 +1070,20 @@ class WP_Date_Query
         }
 
         // Cases where just one unit is set
-        if (isset($hour) && !isset($minute) && !isset($second) && false !== ($value = $this->build_value($compare,
-                $hour))) {
+        if (isset($hour) && !isset($minute) && !isset($second) && false !== ($value = $this->build_value(
+            $compare,
+                $hour
+        ))) {
             return "HOUR( $column ) $compare $value";
-        } elseif (!isset($hour) && isset($minute) && !isset($second) && false !== ($value = $this->build_value($compare,
-                $minute))) {
+        } elseif (!isset($hour) && isset($minute) && !isset($second) && false !== ($value = $this->build_value(
+            $compare,
+                $minute
+        ))) {
             return "MINUTE( $column ) $compare $value";
-        } elseif (!isset($hour) && !isset($minute) && isset($second) && false !== ($value = $this->build_value($compare,
-                $second))) {
+        } elseif (!isset($hour) && !isset($minute) && isset($second) && false !== ($value = $this->build_value(
+            $compare,
+                $second
+        ))) {
             return "SECOND( $column ) $compare $value";
         }
 

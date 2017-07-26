@@ -106,7 +106,6 @@ class WP_Http_Curl
         $proxy = new WP_HTTP_Proxy();
 
         if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) {
-
             curl_setopt($handle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
             curl_setopt($handle, CURLOPT_PROXY, $proxy->host());
             curl_setopt($handle, CURLOPT_PROXYPORT, $proxy->port());
@@ -151,8 +150,7 @@ class WP_Http_Curl
          * a bug #17490 with redirected POST requests, so handle redirections outside Curl.
          */
         curl_setopt($handle, CURLOPT_FOLLOWLOCATION, false);
-        if (defined('CURLOPT_PROTOCOLS')) // PHP 5.2.10 / cURL 7.19.4
-        {
+        if (defined('CURLOPT_PROTOCOLS')) { // PHP 5.2.10 / cURL 7.19.4
             curl_setopt($handle, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
         }
 
@@ -197,8 +195,10 @@ class WP_Http_Curl
                 $this->stream_handle = fopen($r['filename'], 'w+');
             }
             if (!$this->stream_handle) {
-                return new WP_Error('http_request_failed',
-                    sprintf(__('Could not open handle for fopen() to %s'), $r['filename']));
+                return new WP_Error(
+                    'http_request_failed',
+                    sprintf(__('Could not open handle for fopen() to %s'), $r['filename'])
+                );
             }
         } else {
             $this->stream_handle = false;

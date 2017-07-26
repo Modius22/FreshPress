@@ -62,20 +62,25 @@ if (isset($_REQUEST['attachment_id']) && ($id = intval($_REQUEST['attachment_id'
     }
 
     switch ($_REQUEST['fetch']) {
-        case 3 :
+        case 3:
             if ($thumb_url = wp_get_attachment_image_src($id, 'thumbnail', true)) {
                 echo '<img class="pinkynail" src="' . esc_url($thumb_url[0]) . '" alt="" />';
             }
-            echo '<a class="edit-attachment" href="' . esc_url(get_edit_post_link($id)) . '" target="_blank">' . _x('Edit',
-                    'media item') . '</a>';
+            echo '<a class="edit-attachment" href="' . esc_url(get_edit_post_link($id)) . '" target="_blank">' . _x(
+                'Edit',
+                    'media item'
+            ) . '</a>';
 
             // Title shouldn't ever be empty, but use filename just in case.
             $file = get_attached_file($post->ID);
             $title = $post->post_title ? $post->post_title : wp_basename($file);
-            echo '<div class="filename new"><span class="title">' . esc_html(wp_html_excerpt($title, 60,
-                    '&hellip;')) . '</span></div>';
+            echo '<div class="filename new"><span class="title">' . esc_html(wp_html_excerpt(
+                $title,
+                60,
+                    '&hellip;'
+            )) . '</span></div>';
             break;
-        case 2 :
+        case 2:
             add_filter('attachment_fields_to_edit', 'media_single_attachment_fields_to_edit', 10, 2);
             echo get_media_item($id, array('send' => false, 'delete' => true));
             break;
@@ -101,8 +106,10 @@ $id = media_handle_upload('async-upload', $post_id);
 if (is_wp_error($id)) {
     echo '<div class="error-div error">
 	<a class="dismiss" href="#" onclick="jQuery(this).parents(\'div.media-item\').slideUp(200, function(){jQuery(this).remove();});">' . __('Dismiss') . '</a>
-	<strong>' . sprintf(__('&#8220;%s&#8221; has failed to upload.'),
-            esc_html($_FILES['async-upload']['name'])) . '</strong><br />' .
+	<strong>' . sprintf(
+        __('&#8220;%s&#8221; has failed to upload.'),
+            esc_html($_FILES['async-upload']['name'])
+    ) . '</strong><br />' .
         esc_html($id->get_error_message()) . '</div>';
     exit;
 }

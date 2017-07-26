@@ -423,7 +423,6 @@ function wp_doc_link_parse($content)
  */
 function set_screen_options()
 {
-
     if (isset($_POST['wp_screen_options']) && is_array($_POST['wp_screen_options'])) {
         check_admin_referer('screen-options-nonce', 'screenoptionnonce');
 
@@ -697,14 +696,12 @@ function admin_color_scheme_picker($user_id)
 
     if (empty($current_color) || !isset($_wp_admin_css_colors[$current_color])) {
         $current_color = 'fresh';
-    }
-
-    ?>
+    } ?>
     <fieldset id="color-picker" class="scheme-list">
         <legend class="screen-reader-text"><span><?php _e('Admin Color Scheme'); ?></span></legend>
         <?php
         wp_nonce_field('save-color-scheme', 'color-nonce', false);
-        foreach ($_wp_admin_css_colors as $color => $color_info) :
+    foreach ($_wp_admin_css_colors as $color => $color_info) :
 
             ?>
             <div class="color-option <?php echo ($color == $current_color) ? 'selected' : ''; ?>">
@@ -722,17 +719,13 @@ function admin_color_scheme_picker($user_id)
                             ?>
                             <td style="background-color: <?php echo esc_attr($html_color); ?>">&nbsp;</td>
                             <?php
-                        }
-
-                        ?>
+                        } ?>
                     </tr>
                 </table>
             </div>
             <?php
 
-        endforeach;
-
-        ?>
+        endforeach; ?>
     </fieldset>
     <?php
 }
@@ -796,8 +789,10 @@ function wp_check_locked_posts($response, $data, $screen_id)
                 continue;
             }
 
-            if (($user_id = wp_check_post_lock($post_id)) && ($user = get_userdata($user_id)) && current_user_can('edit_post',
-                    $post_id)) {
+            if (($user_id = wp_check_post_lock($post_id)) && ($user = get_userdata($user_id)) && current_user_can(
+                'edit_post',
+                    $post_id
+            )) {
                 $send = array('text' => sprintf(__('%s is currently editing'), $user->display_name));
 
                 if (($avatar = get_avatar($user->ID, 18)) && preg_match("|src='([^']+)'|", $avatar, $matches)) {
@@ -974,8 +969,7 @@ function wp_admin_canonical_url()
 
     // Ensure we're using an absolute URL.
     $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-    $filtered_url = remove_query_arg($removable_query_args, $current_url);
-    ?>
+    $filtered_url = remove_query_arg($removable_query_args, $current_url); ?>
     <link id="wp-admin-canonical" rel="canonical" href="<?php echo esc_url($filtered_url); ?>"/>
     <script>
         if (window.history.replaceState) {

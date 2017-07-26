@@ -51,7 +51,8 @@ if (isset($_REQUEST['action']) && 'add-site' == $_REQUEST['action']) {
         if (in_array($domain, $subdirectory_reserved_names)) {
             wp_die(
             /* translators: %s: reserved names list */
-                sprintf(__('The following words are reserved for use by WordPress functions and cannot be used as blog names: %s'),
+                sprintf(
+                    __('The following words are reserved for use by WordPress functions and cannot be used as blog names: %s'),
                     '<code>' . implode('</code>, <code>', $subdirectory_reserved_names) . '</code>'
                 )
             );
@@ -204,19 +205,25 @@ require(ABSPATH . 'wp-admin/admin-header.php');
                 <tr class="form-field form-required">
                     <th scope="row"><label for="site-address"><?php _e('Site Address (URL)') ?></label></th>
                     <td>
-                        <?php if (is_subdomain_install()) { ?>
+                        <?php if (is_subdomain_install()) {
+            ?>
                             <input name="blog[domain]" type="text" class="regular-text" id="site-address"
                                    aria-describedby="site-address-desc" autocapitalize="none" autocorrect="off"/><span
-                                    class="no-break">.<?php echo preg_replace('|^www\.|', '',
-                                    get_network()->domain); ?></span>
-                        <?php } else {
-                            echo get_network()->domain . get_network()->path ?><input name="blog[domain]" type="text"
+                                    class="no-break">.<?php echo preg_replace(
+            '|^www\.|',
+            '',
+                                    get_network()->domain
+        ); ?></span>
+                        <?php
+        } else {
+            echo get_network()->domain . get_network()->path ?><input name="blog[domain]" type="text"
                                                                                       class="regular-text"
                                                                                       id="site-address"
                                                                                       aria-describedby="site-address-desc"
                                                                                       autocapitalize="none"
                                                                                       autocorrect="off"/>
-                        <?php }
+                        <?php
+        }
                         echo '<p class="description" id="site-address-desc">' . __('Only lowercase letters (a-z), numbers, and hyphens are allowed.') . '</p>';
                         ?>
                     </td>
@@ -253,7 +260,7 @@ require(ABSPATH . 'wp-admin/admin-header.php');
                             ?>
                         </td>
                     </tr>
-                <?php endif; // Languages. ?>
+                <?php endif; // Languages.?>
                 <tr class="form-field form-required">
                     <th scope="row"><label for="admin-email"><?php _e('Admin Email') ?></label></th>
                     <td><input name="blog[email]" type="email" class="regular-text wp-suggest-user" id="admin-email"

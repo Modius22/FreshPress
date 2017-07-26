@@ -205,9 +205,22 @@ function wp_insert_link($linkdata, $wp_error = false)
     }
 
     if ($update) {
-        if (false === $wpdb->update($wpdb->links,
-                compact('link_url', 'link_name', 'link_image', 'link_target', 'link_description', 'link_visible',
-                    'link_rating', 'link_rel', 'link_notes', 'link_rss'), compact('link_id'))) {
+        if (false === $wpdb->update(
+            $wpdb->links,
+                compact(
+                    'link_url',
+                    'link_name',
+                    'link_image',
+                    'link_target',
+                    'link_description',
+                    'link_visible',
+                    'link_rating',
+                    'link_rel',
+                    'link_notes',
+                    'link_rss'
+                ),
+            compact('link_id')
+        )) {
             if ($wp_error) {
                 return new WP_Error('db_update_error', __('Could not update link in the database'), $wpdb->last_error);
             } else {
@@ -215,12 +228,28 @@ function wp_insert_link($linkdata, $wp_error = false)
             }
         }
     } else {
-        if (false === $wpdb->insert($wpdb->links,
-                compact('link_url', 'link_name', 'link_image', 'link_target', 'link_description', 'link_visible',
-                    'link_owner', 'link_rating', 'link_rel', 'link_notes', 'link_rss'))) {
+        if (false === $wpdb->insert(
+            $wpdb->links,
+                compact(
+                    'link_url',
+                    'link_name',
+                    'link_image',
+                    'link_target',
+                    'link_description',
+                    'link_visible',
+                    'link_owner',
+                    'link_rating',
+                    'link_rel',
+                    'link_notes',
+                    'link_rss'
+                )
+        )) {
             if ($wp_error) {
-                return new WP_Error('db_insert_error', __('Could not insert link into the database'),
-                    $wpdb->last_error);
+                return new WP_Error(
+                    'db_insert_error',
+                    __('Could not insert link into the database'),
+                    $wpdb->last_error
+                );
             } else {
                 return 0;
             }
@@ -330,8 +359,10 @@ function wp_link_manager_disabled_message()
 
     if ($really_can_manage_links && current_user_can('install_plugins')) {
         $link = network_admin_url('plugin-install.php?tab=search&amp;s=Link+Manager');
-        wp_die(sprintf(__('If you are looking to use the link manager, please install the <a href="%s">Link Manager</a> plugin.'),
-            $link));
+        wp_die(sprintf(
+            __('If you are looking to use the link manager, please install the <a href="%s">Link Manager</a> plugin.'),
+            $link
+        ));
     }
 
     wp_die(__('Sorry, you are not allowed to edit the links for this site.'));

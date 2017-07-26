@@ -69,10 +69,12 @@ class WP_Customize_Theme_Control extends WP_Customize_Control
     {
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $active_url = esc_url(remove_query_arg('customize_theme', $current_url));
-        $preview_url = esc_url(add_query_arg('customize_theme', '__THEME__',
-            $current_url)); // Token because esc_url() strips curly braces.
-        $preview_url = str_replace('__THEME__', '{{ data.theme.id }}', $preview_url);
-        ?>
+        $preview_url = esc_url(add_query_arg(
+            'customize_theme',
+            '__THEME__',
+            $current_url
+        )); // Token because esc_url() strips curly braces.
+        $preview_url = str_replace('__THEME__', '{{ data.theme.id }}', $preview_url); ?>
         <# if ( data.theme.isActiveTheme ) { #>
     <div class="theme active" tabindex="0" data-preview-url="<?php echo esc_attr($active_url); ?>"
          aria-describedby="{{ data.theme.id }}-action {{ data.theme.id }}-name">
@@ -99,15 +101,13 @@ class WP_Customize_Theme_Control extends WP_Customize_Control
 
                                         <div class="theme-author"><?php
                                             /* translators: Theme author name */
-                                            printf(_x('By %s', 'theme author'), '{{ data.theme.author }}');
-                                            ?></div>
+                                            printf(_x('By %s', 'theme author'), '{{ data.theme.author }}'); ?></div>
 
                                         <# if ( data.theme.isActiveTheme ) { #>
                                             <h3 class="theme-name" id="{{ data.theme.id }}-name">
                                                 <?php
                                                 /* translators: %s: theme name */
-                                                printf(__('<span>Active:</span> %s'), '{{{ data.theme.name }}}');
-                                                ?>
+                                                printf(__('<span>Active:</span> %s'), '{{{ data.theme.name }}}'); ?>
                                             </h3>
                                             <# } else { #>
                                                 <h3 class="theme-name" id="{{ data.theme.id }}-name">{{{ data.theme.name

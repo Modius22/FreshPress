@@ -90,14 +90,14 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base
         }
 
         // Check if the options provided are OK.
-        if (!empty ($opt['public_key']) && !empty ($opt['private_key'])) {
+        if (!empty($opt['public_key']) && !empty($opt['private_key'])) {
             $this->options['public_key'] = $opt['public_key'];
             $this->options['private_key'] = $opt['private_key'];
 
             $this->options['hostkey'] = array('hostkey' => 'ssh-rsa');
 
             $this->keys = true;
-        } elseif (empty ($opt['username'])) {
+        } elseif (empty($opt['username'])) {
             $this->errors->add('empty_username', __('SSH2 username is required'));
         }
 
@@ -105,7 +105,7 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base
             $this->options['username'] = $opt['username'];
         }
 
-        if (empty ($opt['password'])) {
+        if (empty($opt['password'])) {
             // Password can be blank if we are using keys.
             if (!$this->keys) {
                 $this->errors->add('empty_password', __('SSH2 password is required'));
@@ -129,9 +129,11 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base
         }
 
         if (!$this->link) {
-            $this->errors->add('connect',
+            $this->errors->add(
+                'connect',
                 /* translators: %s: hostname:port */
-                sprintf(__('Failed to connect to SSH2 Server %s'),
+                sprintf(
+                    __('Failed to connect to SSH2 Server %s'),
                     $this->options['hostname'] . ':' . $this->options['port']
                 )
             );
@@ -140,20 +142,29 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base
 
         if (!$this->keys) {
             if (!@ssh2_auth_password($this->link, $this->options['username'], $this->options['password'])) {
-                $this->errors->add('auth',
+                $this->errors->add(
+                    'auth',
                     /* translators: %s: username */
-                    sprintf(__('Username/Password incorrect for %s'),
+                    sprintf(
+                        __('Username/Password incorrect for %s'),
                         $this->options['username']
                     )
                 );
                 return false;
             }
         } else {
-            if (!@ssh2_auth_pubkey_file($this->link, $this->options['username'], $this->options['public_key'],
-                $this->options['private_key'], $this->options['password'])) {
-                $this->errors->add('auth',
+            if (!@ssh2_auth_pubkey_file(
+                $this->link,
+                $this->options['username'],
+                $this->options['public_key'],
+                $this->options['private_key'],
+                $this->options['password']
+            )) {
+                $this->errors->add(
+                    'auth',
                     /* translators: %s: username */
-                    sprintf(__('Public and Private keys incorrect for %s'),
+                    sprintf(
+                        __('Public and Private keys incorrect for %s'),
                         $this->options['username']
                     )
                 );
@@ -163,9 +174,11 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base
 
         $this->sftp_link = ssh2_sftp($this->link);
         if (!$this->sftp_link) {
-            $this->errors->add('connect',
+            $this->errors->add(
+                'connect',
                 /* translators: %s: hostname:port */
-                sprintf(__('Failed to initialize a SFTP subsystem session with the SSH2 Server %s'),
+                sprintf(
+                    __('Failed to initialize a SFTP subsystem session with the SSH2 Server %s'),
                     $this->options['hostname'] . ':' . $this->options['port']
                 )
             );
@@ -213,9 +226,11 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base
         }
 
         if (!($stream = ssh2_exec($this->link, $command))) {
-            $this->errors->add('command',
+            $this->errors->add(
+                'command',
                 /* translators: %s: command */
-                sprintf(__('Unable to perform command: %s'),
+                sprintf(
+                    __('Unable to perform command: %s'),
                     $command
                 )
             );

@@ -142,8 +142,11 @@ final class WP_oEmbed_Controller
     public function get_proxy_item_permissions_check()
     {
         if (!current_user_can('edit_posts')) {
-            return new WP_Error('rest_forbidden', __('Sorry, you are not allowed to make proxied oEmbed requests.'),
-                array('status' => rest_authorization_required_code()));
+            return new WP_Error(
+                'rest_forbidden',
+                __('Sorry, you are not allowed to make proxied oEmbed requests.'),
+                array('status' => rest_authorization_required_code())
+            );
         }
         return true;
     }

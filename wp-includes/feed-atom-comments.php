@@ -46,21 +46,27 @@ do_action('rss_tag_pre', 'atom-comments');
         echo $date ? mysql2date('Y-m-d\TH:i:s\Z', $date, false) : date('Y-m-d\TH:i:s\Z');
         ?></updated>
 
-    <?php if (is_singular()) { ?>
+    <?php if (is_singular()) {
+            ?>
         <link rel="alternate" type="<?php bloginfo_rss('html_type'); ?>" href="<?php comments_link_feed(); ?>"/>
         <link rel="self" type="application/atom+xml"
               href="<?php echo esc_url(get_post_comments_feed_link('', 'atom')); ?>"/>
         <id><?php echo esc_url(get_post_comments_feed_link('', 'atom')); ?></id>
-    <?php } elseif (is_search()) { ?>
+    <?php
+        } elseif (is_search()) {
+            ?>
         <link rel="alternate" type="<?php bloginfo_rss('html_type'); ?>"
               href="<?php echo home_url() . '?s=' . get_search_query(); ?>"/>
         <link rel="self" type="application/atom+xml" href="<?php echo get_search_comments_feed_link('', 'atom'); ?>"/>
         <id><?php echo get_search_comments_feed_link('', 'atom'); ?></id>
-    <?php } else { ?>
+    <?php
+        } else {
+            ?>
         <link rel="alternate" type="<?php bloginfo_rss('html_type'); ?>" href="<?php bloginfo_rss('url'); ?>"/>
         <link rel="self" type="application/atom+xml" href="<?php bloginfo_rss('comments_atom_url'); ?>"/>
         <id><?php bloginfo_rss('comments_atom_url'); ?></id>
-    <?php } ?>
+    <?php
+        } ?>
     <?php
     /**
      * Fires at the end of the Atom comment feed header.
@@ -97,15 +103,21 @@ do_action('rss_tag_pre', 'atom-comments');
             </author>
 
             <id><?php comment_guid(); ?></id>
-            <updated><?php echo mysql2date('Y-m-d\TH:i:s\Z', get_comment_time('Y-m-d H:i:s', true, false),
-                    false); ?></updated>
-            <published><?php echo mysql2date('Y-m-d\TH:i:s\Z', get_comment_time('Y-m-d H:i:s', true, false),
-                    false); ?></published>
+            <updated><?php echo mysql2date(
+                    'Y-m-d\TH:i:s\Z',
+                    get_comment_time('Y-m-d H:i:s', true, false),
+                    false
+                ); ?></updated>
+            <published><?php echo mysql2date(
+                        'Y-m-d\TH:i:s\Z',
+                        get_comment_time('Y-m-d H:i:s', true, false),
+                    false
+                    ); ?></published>
             <?php if (post_password_required($comment_post)) : ?>
                 <content type="html" xml:base="<?php comment_link(); ?>"><![CDATA[<?php echo get_the_password_form(); ?>
                     ]]>
                 </content>
-            <?php else : // post pass ?>
+            <?php else : // post pass?>
                 <content type="html" xml:base="<?php comment_link(); ?>"><![CDATA[<?php comment_text(); ?>]]></content>
             <?php endif; // post pass
             // Return comment threading information (https://www.ietf.org/rfc/rfc4685.txt)

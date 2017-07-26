@@ -197,8 +197,11 @@ function wp_maybe_load_embeds()
         return;
     }
 
-    wp_embed_register_handler('youtube_embed_url', '#https?://(www.)?youtube\.com/(?:v|embed)/([^/]+)#i',
-        'wp_embed_handler_youtube');
+    wp_embed_register_handler(
+        'youtube_embed_url',
+        '#https?://(www.)?youtube\.com/(?:v|embed)/([^/]+)#i',
+        'wp_embed_handler_youtube'
+    );
 
     /**
      * Filters the audio embed handler callback.
@@ -207,8 +210,12 @@ function wp_maybe_load_embeds()
      *
      * @param callable $handler Audio embed handler callback function.
      */
-    wp_embed_register_handler('audio', '#^https?://.+?\.(' . join('|', wp_get_audio_extensions()) . ')$#i',
-        apply_filters('wp_audio_embed_handler', 'wp_embed_handler_audio'), 9999);
+    wp_embed_register_handler(
+        'audio',
+        '#^https?://.+?\.(' . join('|', wp_get_audio_extensions()) . ')$#i',
+        apply_filters('wp_audio_embed_handler', 'wp_embed_handler_audio'),
+        9999
+    );
 
     /**
      * Filters the video embed handler callback.
@@ -217,8 +224,12 @@ function wp_maybe_load_embeds()
      *
      * @param callable $handler Video embed handler callback function.
      */
-    wp_embed_register_handler('video', '#^https?://.+?\.(' . join('|', wp_get_video_extensions()) . ')$#i',
-        apply_filters('wp_video_embed_handler', 'wp_embed_handler_video'), 9999);
+    wp_embed_register_handler(
+        'video',
+        '#^https?://.+?\.(' . join('|', wp_get_video_extensions()) . ')$#i',
+        apply_filters('wp_video_embed_handler', 'wp_embed_handler_video'),
+        9999
+    );
 }
 
 /**
@@ -342,8 +353,10 @@ function wp_oembed_add_discovery_links()
         $output .= '<link rel="alternate" type="application/json+oembed" href="' . esc_url(get_oembed_endpoint_url(get_permalink())) . '" />' . "\n";
 
         if (class_exists('SimpleXMLElement')) {
-            $output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url(get_oembed_endpoint_url(get_permalink(),
-                    'xml')) . '" />' . "\n";
+            $output .= '<link rel="alternate" type="text/xml+oembed" href="' . esc_url(get_oembed_endpoint_url(
+                get_permalink(),
+                    'xml'
+            )) . '" />' . "\n";
         }
     }
 
@@ -384,8 +397,11 @@ function get_post_embed_url($post = null)
     }
 
     $embed_url = trailingslashit(get_permalink($post)) . user_trailingslashit('embed');
-    $path_conflict = get_page_by_path(str_replace(home_url(), '', $embed_url), OBJECT,
-        get_post_types(array('public' => true)));
+    $path_conflict = get_page_by_path(
+        str_replace(home_url(), '', $embed_url),
+        OBJECT,
+        get_post_types(array('public' => true))
+    );
 
     if (!get_option('permalink_structure') || $path_conflict) {
         $embed_url = add_query_arg(array('embed' => 'true'), get_permalink($post));
@@ -617,8 +633,10 @@ function get_oembed_response_data_rich($data, $post, $width, $height)
     }
 
     if ($thumbnail_id) {
-        list($thumbnail_url, $thumbnail_width, $thumbnail_height) = wp_get_attachment_image_src($thumbnail_id,
-            array($width, 99999));
+        list($thumbnail_url, $thumbnail_width, $thumbnail_height) = wp_get_attachment_image_src(
+            $thumbnail_id,
+            array($width, 99999)
+        );
         $data['thumbnail_url'] = $thumbnail_url;
         $data['thumbnail_width'] = $thumbnail_width;
         $data['thumbnail_height'] = $thumbnail_height;
@@ -792,8 +810,11 @@ function wp_filter_oembed_result($result, $data, $url)
         $html = str_replace('<blockquote', '<blockquote class="wp-embedded-content"', $html);
     }
 
-    $html = str_replace('<iframe', '<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"',
-        $html);
+    $html = str_replace(
+        '<iframe',
+        '<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"',
+        $html
+    );
 
     preg_match('/ src=[\'"]([^\'"]*)[\'"]/', $html, $results);
 
@@ -826,7 +847,8 @@ function wp_embed_excerpt_more($more_string)
         return $more_string;
     }
 
-    $link = sprintf('<a href="%1$s" class="wp-embed-more" target="_top">%2$s</a>',
+    $link = sprintf(
+        '<a href="%1$s" class="wp-embed-more" target="_top">%2$s</a>',
         esc_url(get_permalink()),
         /* translators: %s: Name of current post */
         sprintf(__('Continue reading %s'), '<span class="screen-reader-text">' . get_the_title() . '</span>')
@@ -906,8 +928,8 @@ function print_embed_styles()
     ?>
     <style type="text/css">
         <?php
-            if ( SCRIPT_DEBUG ) {
-                readfile( ABSPATH . WPINC . "/css/wp-embed-template.css" );
+            if (SCRIPT_DEBUG) {
+                readfile(ABSPATH . WPINC . "/css/wp-embed-template.css");
             } else {
                 /*
                  * If you're looking at a src version of this file, you'll see an "include"
@@ -1273,8 +1295,7 @@ function print_embed_styles()
         }
 
         <?php
-    }
-?>
+            } ?>
     </style>
     <?php
 }
@@ -1289,19 +1310,19 @@ function print_embed_scripts()
     ?>
     <script type="text/javascript">
         <?php
-        if ( SCRIPT_DEBUG ) {
+        if (SCRIPT_DEBUG) {
             readfile(ABSPATH . WPINC . "/js/wp-embed-template.js");
         } else {
-        /*
-         * If you're looking at a src version of this file, you'll see an "include"
-         * statement below. This is used by the `grunt build` process to directly
-         * include a minified version of wp-embed-template.js, instead of using the
-         * readfile() method from above.
-         *
-         * If you're looking at a build version of this file, you'll see a string of
-         * minified JavaScript. If you need to debug it, please turn on SCRIPT_DEBUG
-         * and edit wp-embed-template.js directly.
-         */
+            /*
+             * If you're looking at a src version of this file, you'll see an "include"
+             * statement below. This is used by the `grunt build` process to directly
+             * include a minified version of wp-embed-template.js, instead of using the
+             * readfile() method from above.
+             *
+             * If you're looking at a build version of this file, you'll see a string of
+             * minified JavaScript. If you need to debug it, please turn on SCRIPT_DEBUG
+             * and edit wp-embed-template.js directly.
+             */
         ?>
         !function (a, b) {
             "use strict";
@@ -1384,8 +1405,7 @@ function print_embed_scripts()
             j && (f(), b.documentElement.className = b.documentElement.className.replace(/\bno-js\b/, "") + " js", b.addEventListener("DOMContentLoaded", d, !1), a.addEventListener("load", d, !1), a.addEventListener("resize", e, !1))
         }(window, document);
         <?php
-        }
-        ?>
+        } ?>
     </script>
     <?php
 }
@@ -1401,8 +1421,11 @@ function print_embed_scripts()
  */
 function _oembed_filter_feed_content($content)
 {
-    return str_replace('<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);"',
-        '<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"', $content);
+    return str_replace(
+        '<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);"',
+        '<iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"',
+        $content
+    );
 }
 
 /**
@@ -1414,8 +1437,7 @@ function print_embed_comments_button()
 {
     if (is_404() || !(get_comments_number() || comments_open())) {
         return;
-    }
-    ?>
+    } ?>
     <div class="wp-embed-comments">
         <a href="<?php comments_link(); ?>" target="_top">
             <span class="dashicons dashicons-admin-comments"></span>
@@ -1427,8 +1449,7 @@ function print_embed_comments_button()
                     get_comments_number()
                 ),
                 number_format_i18n(get_comments_number())
-            );
-            ?>
+            ); ?>
         </a>
     </div>
     <?php
@@ -1443,8 +1464,7 @@ function print_embed_sharing_button()
 {
     if (is_404()) {
         return;
-    }
-    ?>
+    } ?>
     <div class="wp-embed-share">
         <button type="button" class="wp-embed-share-dialog-open"
                 aria-label="<?php esc_attr_e('Open sharing dialog'); ?>">
@@ -1463,8 +1483,7 @@ function print_embed_sharing_dialog()
 {
     if (is_404()) {
         return;
-    }
-    ?>
+    } ?>
     <div class="wp-embed-share-dialog hidden" role="dialog" aria-label="<?php esc_attr_e('Sharing options'); ?>">
         <div class="wp-embed-share-dialog-content">
             <div class="wp-embed-share-dialog-text">
@@ -1488,8 +1507,10 @@ function print_embed_sharing_dialog()
                 </div>
                 <div id="wp-embed-share-tab-html" class="wp-embed-share-tab" role="tabpanel" aria-hidden="true">
                     <textarea class="wp-embed-share-input" aria-describedby="wp-embed-share-description-html"
-                              tabindex="0" readonly><?php echo esc_textarea(get_post_embed_html(600,
-                            400)); ?></textarea>
+                              tabindex="0" readonly><?php echo esc_textarea(get_post_embed_html(
+        600,
+                            400
+    )); ?></textarea>
 
                     <p class="wp-embed-share-description" id="wp-embed-share-description-html">
                         <?php _e('Copy and paste this code into your site to embed'); ?>

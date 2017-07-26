@@ -360,7 +360,6 @@ function wp_admin_bar_site_menu($wp_admin_bar)
                 'href' => network_admin_url('site-info.php?id=' . get_current_blog_id()),
             ));
         }
-
     } else {
         if (current_user_can('read')) {
             // We're on the front end, link to the Dashboard.
@@ -395,8 +394,10 @@ function wp_admin_bar_customize_menu($wp_admin_bar)
     }
 
     // Don't show if the user cannot edit a given customize_changeset post currently being previewed.
-    if (is_customize_preview() && $wp_customize->changeset_post_id() && !current_user_can(get_post_type_object('customize_changeset')->cap->edit_post,
-            $wp_customize->changeset_post_id())) {
+    if (is_customize_preview() && $wp_customize->changeset_post_id() && !current_user_can(
+        get_post_type_object('customize_changeset')->cap->edit_post,
+            $wp_customize->changeset_post_id()
+    )) {
         return;
     }
 
@@ -752,8 +753,10 @@ function wp_admin_bar_new_content_menu($wp_admin_bar)
         return;
     }
 
-    $title = '<span class="ab-icon"></span><span class="ab-label">' . _x('New',
-            'admin bar menu group label') . '</span>';
+    $title = '<span class="ab-icon"></span><span class="ab-label">' . _x(
+        'New',
+            'admin bar menu group label'
+    ) . '</span>';
 
     $wp_admin_bar->add_menu(array(
         'id' => 'new-content',
@@ -788,8 +791,10 @@ function wp_admin_bar_comments_menu($wp_admin_bar)
 
     $awaiting_mod = wp_count_comments();
     $awaiting_mod = $awaiting_mod->moderated;
-    $awaiting_text = sprintf(_n('%s comment awaiting moderation', '%s comments awaiting moderation', $awaiting_mod),
-        number_format_i18n($awaiting_mod));
+    $awaiting_text = sprintf(
+        _n('%s comment awaiting moderation', '%s comments awaiting moderation', $awaiting_mod),
+        number_format_i18n($awaiting_mod)
+    );
 
     $icon = '<span class="ab-icon"></span>';
     $title = '<span class="ab-label awaiting-mod pending-count count-' . $awaiting_mod . '" aria-hidden="true">' . number_format_i18n($awaiting_mod) . '</span>';
@@ -867,7 +872,6 @@ function wp_admin_bar_appearance_menu($wp_admin_bar)
             ),
         ));
     }
-
 }
 
 /**
@@ -879,7 +883,6 @@ function wp_admin_bar_appearance_menu($wp_admin_bar)
  */
 function wp_admin_bar_updates_menu($wp_admin_bar)
 {
-
     $update_data = wp_get_update_data();
 
     if (!$update_data['counts']['total']) {
@@ -960,7 +963,8 @@ function wp_admin_bar_add_secondary_groups($wp_admin_bar)
  * @since 3.1.0
  */
 function wp_admin_bar_header()
-{ ?>
+{
+    ?>
     <style type="text/css" media="print">#wpadminbar {
             display: none;
         }</style>
@@ -973,7 +977,8 @@ function wp_admin_bar_header()
  * @since 3.1.0
  */
 function _admin_bar_bump_cb()
-{ ?>
+{
+    ?>
     <style type="text/css" media="screen">
         html {
             margin-top: 32px !important;

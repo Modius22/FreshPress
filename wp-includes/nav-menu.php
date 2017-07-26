@@ -304,9 +304,11 @@ function wp_update_nav_menu_object($menu_id = 0, $menu_data = array())
         isset($_possible_existing->term_id) &&
         $_possible_existing->term_id != $menu_id
     ) {
-        return new WP_Error('menu_exists',
+        return new WP_Error(
+            'menu_exists',
             /* translators: %s: menu name */
-            sprintf(__('The menu name %s conflicts with another menu name. Please try another.'),
+            sprintf(
+                __('The menu name %s conflicts with another menu name. Please try another.'),
                 '<strong>' . esc_html($menu_data['menu-name']) . '</strong>'
             )
         );
@@ -317,9 +319,11 @@ function wp_update_nav_menu_object($menu_id = 0, $menu_data = array())
         $menu_exists = get_term_by('name', $menu_data['menu-name'], 'nav_menu');
 
         if ($menu_exists) {
-            return new WP_Error('menu_exists',
+            return new WP_Error(
+                'menu_exists',
                 /* translators: %s: menu name */
-                sprintf(__('The menu name %s conflicts with another menu name. Please try another.'),
+                sprintf(
+                    __('The menu name %s conflicts with another menu name. Please try another.'),
                     '<strong>' . esc_html($menu_data['menu-name']) . '</strong>'
                 )
             );
@@ -425,8 +429,10 @@ function wp_update_nav_menu_item($menu_id = 0, $menu_item_db_id = 0, $menu_item_
     if (0 == $menu_id) {
         $args['menu-item-position'] = 1;
     } elseif (0 == (int)$args['menu-item-position']) {
-        $menu_items = 0 == $menu_id ? array() : (array)wp_get_nav_menu_items($menu_id,
-            array('post_status' => 'publish,draft'));
+        $menu_items = 0 == $menu_id ? array() : (array)wp_get_nav_menu_items(
+            $menu_id,
+            array('post_status' => 'publish,draft')
+        );
         $last_item = array_pop($menu_items);
         $args['menu-item-position'] = ($last_item && isset($last_item->menu_order)) ? 1 + $last_item->menu_order : count($menu_items);
     }
@@ -446,7 +452,6 @@ function wp_update_nav_menu_item($menu_id = 0, $menu_item_db_id = 0, $menu_item_
             $original_parent = get_term_field('parent', $args['menu-item-object-id'], $args['menu-item-object'], 'raw');
             $original_title = get_term_field('name', $args['menu-item-object-id'], $args['menu-item-object'], 'raw');
         } elseif ('post_type' == $args['menu-item-type']) {
-
             $original_object = get_post($args['menu-item-object-id']);
             $original_parent = (int)$original_object->post_parent;
             $original_title = $original_object->post_title;
@@ -747,14 +752,26 @@ function wp_setup_nav_menu_item($menu_item)
     if (isset($menu_item->post_type)) {
         if ('nav_menu_item' == $menu_item->post_type) {
             $menu_item->db_id = (int)$menu_item->ID;
-            $menu_item->menu_item_parent = !isset($menu_item->menu_item_parent) ? get_post_meta($menu_item->ID,
-                '_menu_item_menu_item_parent', true) : $menu_item->menu_item_parent;
-            $menu_item->object_id = !isset($menu_item->object_id) ? get_post_meta($menu_item->ID,
-                '_menu_item_object_id', true) : $menu_item->object_id;
-            $menu_item->object = !isset($menu_item->object) ? get_post_meta($menu_item->ID, '_menu_item_object',
-                true) : $menu_item->object;
-            $menu_item->type = !isset($menu_item->type) ? get_post_meta($menu_item->ID, '_menu_item_type',
-                true) : $menu_item->type;
+            $menu_item->menu_item_parent = !isset($menu_item->menu_item_parent) ? get_post_meta(
+                $menu_item->ID,
+                '_menu_item_menu_item_parent',
+                true
+            ) : $menu_item->menu_item_parent;
+            $menu_item->object_id = !isset($menu_item->object_id) ? get_post_meta(
+                $menu_item->ID,
+                '_menu_item_object_id',
+                true
+            ) : $menu_item->object_id;
+            $menu_item->object = !isset($menu_item->object) ? get_post_meta(
+                $menu_item->ID,
+                '_menu_item_object',
+                true
+            ) : $menu_item->object;
+            $menu_item->type = !isset($menu_item->type) ? get_post_meta(
+                $menu_item->ID,
+                '_menu_item_type',
+                true
+            ) : $menu_item->type;
 
             if ('post_type' == $menu_item->type) {
                 $object = get_post_type_object($menu_item->object);
@@ -781,7 +798,6 @@ function wp_setup_nav_menu_item($menu_item)
                 }
 
                 $menu_item->title = '' == $menu_item->post_title ? $original_title : $menu_item->post_title;
-
             } elseif ('post_type_archive' == $menu_item->type) {
                 $object = get_post_type_object($menu_item->object);
                 if ($object) {
@@ -813,16 +829,21 @@ function wp_setup_nav_menu_item($menu_item)
                     $original_title = false;
                 }
                 $menu_item->title = '' == $menu_item->post_title ? $original_title : $menu_item->post_title;
-
             } else {
                 $menu_item->type_label = __('Custom Link');
                 $menu_item->title = $menu_item->post_title;
-                $menu_item->url = !isset($menu_item->url) ? get_post_meta($menu_item->ID, '_menu_item_url',
-                    true) : $menu_item->url;
+                $menu_item->url = !isset($menu_item->url) ? get_post_meta(
+                    $menu_item->ID,
+                    '_menu_item_url',
+                    true
+                ) : $menu_item->url;
             }
 
-            $menu_item->target = !isset($menu_item->target) ? get_post_meta($menu_item->ID, '_menu_item_target',
-                true) : $menu_item->target;
+            $menu_item->target = !isset($menu_item->target) ? get_post_meta(
+                $menu_item->ID,
+                '_menu_item_target',
+                true
+            ) : $menu_item->target;
 
             /**
              * Filters a navigation menu item's title attribute.
@@ -831,8 +852,10 @@ function wp_setup_nav_menu_item($menu_item)
              *
              * @param string $item_title The menu item title attribute.
              */
-            $menu_item->attr_title = !isset($menu_item->attr_title) ? apply_filters('nav_menu_attr_title',
-                $menu_item->post_excerpt) : $menu_item->attr_title;
+            $menu_item->attr_title = !isset($menu_item->attr_title) ? apply_filters(
+                'nav_menu_attr_title',
+                $menu_item->post_excerpt
+            ) : $menu_item->attr_title;
 
             if (!isset($menu_item->description)) {
                 /**
@@ -842,14 +865,22 @@ function wp_setup_nav_menu_item($menu_item)
                  *
                  * @param string $description The menu item description.
                  */
-                $menu_item->description = apply_filters('nav_menu_description',
-                    wp_trim_words($menu_item->post_content, 200));
+                $menu_item->description = apply_filters(
+                    'nav_menu_description',
+                    wp_trim_words($menu_item->post_content, 200)
+                );
             }
 
-            $menu_item->classes = !isset($menu_item->classes) ? (array)get_post_meta($menu_item->ID,
-                '_menu_item_classes', true) : $menu_item->classes;
-            $menu_item->xfn = !isset($menu_item->xfn) ? get_post_meta($menu_item->ID, '_menu_item_xfn',
-                true) : $menu_item->xfn;
+            $menu_item->classes = !isset($menu_item->classes) ? (array)get_post_meta(
+                $menu_item->ID,
+                '_menu_item_classes',
+                true
+            ) : $menu_item->classes;
+            $menu_item->xfn = !isset($menu_item->xfn) ? get_post_meta(
+                $menu_item->ID,
+                '_menu_item_xfn',
+                true
+            ) : $menu_item->xfn;
         } else {
             $menu_item->db_id = 0;
             $menu_item->menu_item_parent = 0;
@@ -896,7 +927,6 @@ function wp_setup_nav_menu_item($menu_item)
         $menu_item->description = get_term_field('description', $menu_item->term_id, $menu_item->taxonomy);
         $menu_item->classes = array();
         $menu_item->xfn = '';
-
     }
 
     /**

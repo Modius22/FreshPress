@@ -138,7 +138,6 @@ endif;
 
 function get_file($path)
 {
-
     if (function_exists('realpath')) {
         $path = realpath($path);
     }

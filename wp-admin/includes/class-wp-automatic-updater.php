@@ -155,8 +155,11 @@ class WP_Automatic_Updater
         }
 
         // If we can't do an auto core update, we may still be able to email the user.
-        if (!$skin->request_filesystem_credentials(false, $context,
-                $allow_relaxed_file_ownership) || $this->is_vcs_checkout($context)) {
+        if (!$skin->request_filesystem_credentials(
+            false,
+            $context,
+                $allow_relaxed_file_ownership
+        ) || $this->is_vcs_checkout($context)) {
             if ('core' == $type) {
                 $this->send_core_update_notification_email($item);
             }
@@ -338,8 +341,11 @@ class WP_Automatic_Updater
             case 'translation':
                 $language_item_name = $upgrader->get_name_for_update($item);
                 $item_name = sprintf(__('Translations for %s'), $language_item_name);
-                $skin->feedback(sprintf(__('Updating translations for %1$s (%2$s)&#8230;'), $language_item_name,
-                    $item->language));
+                $skin->feedback(sprintf(
+                    __('Updating translations for %1$s (%2$s)&#8230;'),
+                    $language_item_name,
+                    $item->language
+                ));
                 break;
         }
 
@@ -627,8 +633,11 @@ class WP_Automatic_Updater
         if (!$next_user_core_update) {
             $next_user_core_update = $core_update;
         }
-        $newer_version_available = ('upgrade' == $next_user_core_update->response && version_compare($next_user_core_update->version,
-                $core_update->version, '>'));
+        $newer_version_available = ('upgrade' == $next_user_core_update->response && version_compare(
+            $next_user_core_update->version,
+                $core_update->version,
+            '>'
+        ));
 
         /**
          * Filters whether to send an email following an automatic background core update.
@@ -646,23 +655,23 @@ class WP_Automatic_Updater
         }
 
         switch ($type) {
-            case 'success' : // We updated.
+            case 'success': // We updated.
                 /* translators: 1: Site name, 2: WordPress version number. */
                 $subject = __('[%1$s] Your site has updated to WordPress %2$s');
                 break;
 
-            case 'fail' :   // We tried to update but couldn't.
-            case 'manual' : // We can't update (and made no attempt).
+            case 'fail':   // We tried to update but couldn't.
+            case 'manual': // We can't update (and made no attempt).
                 /* translators: 1: Site name, 2: WordPress version number. */
                 $subject = __('[%1$s] WordPress %2$s is available. Please update!');
                 break;
 
-            case 'critical' : // We tried to update, started to copy files, then things went wrong.
+            case 'critical': // We tried to update, started to copy files, then things went wrong.
                 /* translators: 1: Site name. */
                 $subject = __('[%1$s] URGENT: Your site may be down due to a failed update');
                 break;
 
-            default :
+            default:
                 return;
         }
 
@@ -673,9 +682,12 @@ class WP_Automatic_Updater
         $body = '';
 
         switch ($type) {
-            case 'success' :
-                $body .= sprintf(__('Howdy! Your site at %1$s has been updated automatically to WordPress %2$s.'),
-                    home_url(), $core_update->current);
+            case 'success':
+                $body .= sprintf(
+                    __('Howdy! Your site at %1$s has been updated automatically to WordPress %2$s.'),
+                    home_url(),
+                    $core_update->current
+                );
                 $body .= "\n\n";
                 if (!$newer_version_available) {
                     $body .= __('No further action is needed on your part.') . ' ';
@@ -687,18 +699,23 @@ class WP_Automatic_Updater
                 $body .= "\n" . admin_url('about.php');
 
                 if ($newer_version_available) {
-                    $body .= "\n\n" . sprintf(__('WordPress %s is also now available.'),
-                            $next_user_core_update->current) . ' ';
+                    $body .= "\n\n" . sprintf(
+                        __('WordPress %s is also now available.'),
+                            $next_user_core_update->current
+                    ) . ' ';
                     $body .= __('Updating is easy and only takes a few moments:');
                     $body .= "\n" . network_admin_url('update-core.php');
                 }
 
                 break;
 
-            case 'fail' :
-            case 'manual' :
-                $body .= sprintf(__('Please update your site at %1$s to WordPress %2$s.'), home_url(),
-                    $next_user_core_update->current);
+            case 'fail':
+            case 'manual':
+                $body .= sprintf(
+                    __('Please update your site at %1$s to WordPress %2$s.'),
+                    home_url(),
+                    $next_user_core_update->current
+                );
 
                 $body .= "\n\n";
 
@@ -712,13 +729,19 @@ class WP_Automatic_Updater
                 $body .= "\n" . network_admin_url('update-core.php');
                 break;
 
-            case 'critical' :
+            case 'critical':
                 if ($newer_version_available) {
-                    $body .= sprintf(__('Your site at %1$s experienced a critical failure while trying to update WordPress to version %2$s.'),
-                        home_url(), $core_update->current);
+                    $body .= sprintf(
+                        __('Your site at %1$s experienced a critical failure while trying to update WordPress to version %2$s.'),
+                        home_url(),
+                        $core_update->current
+                    );
                 } else {
-                    $body .= sprintf(__('Your site at %1$s experienced a critical failure while trying to update to the latest version of WordPress, %2$s.'),
-                        home_url(), $core_update->current);
+                    $body .= sprintf(
+                        __('Your site at %1$s experienced a critical failure while trying to update to the latest version of WordPress, %2$s.'),
+                        home_url(),
+                        $core_update->current
+                    );
                 }
 
                 $body .= "\n\n" . __("This means your site may be offline or broken. Don't panic; this can be fixed.");
@@ -731,8 +754,10 @@ class WP_Automatic_Updater
         $critical_support = 'critical' === $type && !empty($core_update->support_email);
         if ($critical_support) {
             // Support offer if available.
-            $body .= "\n\n" . sprintf(__("The WordPress team is willing to help you. Forward this email to %s and the team will work with you to make sure your site is working."),
-                    $core_update->support_email);
+            $body .= "\n\n" . sprintf(
+                __("The WordPress team is willing to help you. Forward this email to %s and the team will work with you to make sure your site is working."),
+                    $core_update->support_email
+            );
         } else {
             // Add a note about the support forums.
             $body .= "\n\n" . __('If you experience any issues or need support, the volunteers in the WordPress.org support forums may be able to help.');
@@ -898,7 +923,8 @@ If you think these failures might be due to a bug in WordPress, could you report
  * Open a thread in the support forums: https://wordpress.org/support/forum/alphabeta
  * Or, if you're comfortable writing a bug report: https://core.trac.wordpress.org/
 
-Thanks! -- The WordPress Team"));
+Thanks! -- The WordPress Team"
+            ));
             $body[] = '';
 
             $subject = sprintf(__('[%s] There were failures during background updates'), $site_title);
@@ -908,7 +934,8 @@ Thanks! -- The WordPress Team"));
 
         $body[] = trim(__(
             'UPDATE LOG
-=========='));
+=========='
+        ));
         $body[] = '';
 
         foreach (array('core', 'plugin', 'theme', 'translation') as $type) {
@@ -934,12 +961,18 @@ Thanks! -- The WordPress Team"));
 
                         if ('rollback' === $result_type) {
                             /* translators: 1: Error code, 2: Error message. */
-                            $body[] = '  ' . sprintf(__('Rollback Error: [%1$s] %2$s'), $result->get_error_code(),
-                                    $result->get_error_message());
+                            $body[] = '  ' . sprintf(
+                                __('Rollback Error: [%1$s] %2$s'),
+                                $result->get_error_code(),
+                                    $result->get_error_message()
+                            );
                         } else {
                             /* translators: 1: Error code, 2: Error message. */
-                            $body[] = '  ' . sprintf(__('Error: [%1$s] %2$s'), $result->get_error_code(),
-                                    $result->get_error_message());
+                            $body[] = '  ' . sprintf(
+                                __('Error: [%1$s] %2$s'),
+                                $result->get_error_code(),
+                                    $result->get_error_message()
+                            );
                         }
 
                         if ($result->get_error_data()) {

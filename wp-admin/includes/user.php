@@ -73,13 +73,15 @@ function edit_user($user_id = 0)
         $user->user_email = sanitize_text_field(wp_unslash($_POST['email']));
     }
     if (isset($_POST['url'])) {
-        if (empty ($_POST['url']) || $_POST['url'] == 'http://') {
+        if (empty($_POST['url']) || $_POST['url'] == 'http://') {
             $user->user_url = '';
         } else {
             $user->user_url = esc_url_raw($_POST['url']);
             $protocols = implode('|', array_map('preg_quote', wp_allowed_protocols()));
-            $user->user_url = preg_match('/^(' . $protocols . '):/is',
-                $user->user_url) ? $user->user_url : 'http://' . $user->user_url;
+            $user->user_url = preg_match(
+                '/^(' . $protocols . '):/is',
+                $user->user_url
+            ) ? $user->user_url : 'http://' . $user->user_url;
         }
     }
     if (isset($_POST['first_name'])) {
@@ -162,14 +164,20 @@ function edit_user($user_id = 0)
 
     // Check for "\" in password.
     if (false !== strpos(wp_unslash($pass1), "\\")) {
-        $errors->add('pass', __('<strong>ERROR</strong>: Passwords may not contain the character "\\".'),
-            array('form-field' => 'pass1'));
+        $errors->add(
+            'pass',
+            __('<strong>ERROR</strong>: Passwords may not contain the character "\\".'),
+            array('form-field' => 'pass1')
+        );
     }
 
     // Checking the password has been typed twice the same.
     if (($update || !empty($pass1)) && $pass1 != $pass2) {
-        $errors->add('pass', __('<strong>ERROR</strong>: Please enter the same password in both password fields.'),
-            array('form-field' => 'pass1'));
+        $errors->add(
+            'pass',
+            __('<strong>ERROR</strong>: Please enter the same password in both password fields.'),
+            array('form-field' => 'pass1')
+        );
     }
 
     if (!empty($pass1)) {
@@ -177,13 +185,17 @@ function edit_user($user_id = 0)
     }
 
     if (!$update && isset($_POST['user_login']) && !validate_username($_POST['user_login'])) {
-        $errors->add('user_login',
-            __('<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.'));
+        $errors->add(
+            'user_login',
+            __('<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.')
+        );
     }
 
     if (!$update && username_exists($user->user_login)) {
-        $errors->add('user_login',
-            __('<strong>ERROR</strong>: This username is already registered. Please choose another one.'));
+        $errors->add(
+            'user_login',
+            __('<strong>ERROR</strong>: This username is already registered. Please choose another one.')
+        );
     }
 
     /** This filter is documented in wp-includes/user.php */
@@ -195,15 +207,23 @@ function edit_user($user_id = 0)
 
     /* checking email address */
     if (empty($user->user_email)) {
-        $errors->add('empty_email', __('<strong>ERROR</strong>: Please enter an email address.'),
-            array('form-field' => 'email'));
+        $errors->add(
+            'empty_email',
+            __('<strong>ERROR</strong>: Please enter an email address.'),
+            array('form-field' => 'email')
+        );
     } elseif (!is_email($user->user_email)) {
-        $errors->add('invalid_email', __('<strong>ERROR</strong>: The email address isn&#8217;t correct.'),
-            array('form-field' => 'email'));
+        $errors->add(
+            'invalid_email',
+            __('<strong>ERROR</strong>: The email address isn&#8217;t correct.'),
+            array('form-field' => 'email')
+        );
     } elseif (($owner_id = email_exists($user->user_email)) && (!$update || ($owner_id != $user->ID))) {
-        $errors->add('email_exists',
+        $errors->add(
+            'email_exists',
             __('<strong>ERROR</strong>: This email is already registered, please choose another one.'),
-            array('form-field' => 'email'));
+            array('form-field' => 'email')
+        );
     }
 
     /**
@@ -305,8 +325,10 @@ function get_user_to_edit($user_id)
 function get_users_drafts($user_id)
 {
     global $wpdb;
-    $query = $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC",
-        $user_id);
+    $query = $wpdb->prepare(
+        "SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC",
+        $user_id
+    );
 
     /**
      * Filters the user's drafts query string.
@@ -388,8 +410,10 @@ function wp_delete_user($id, $reassign = null)
          */
         $post_types_to_delete = apply_filters('post_types_to_delete_with_user', $post_types_to_delete, $id);
         $post_types_to_delete = implode("', '", $post_types_to_delete);
-        $post_ids = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')",
-            $id));
+        $post_ids = $wpdb->get_col($wpdb->prepare(
+            "SELECT ID FROM $wpdb->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')",
+            $id
+        ));
         if ($post_ids) {
             foreach ($post_ids as $post_id) {
                 wp_delete_post($post_id);
@@ -527,8 +551,10 @@ function default_password_nag()
     _e('You&rsquo;re using the auto-generated password for your account. Would you like to change it?');
     echo '</p><p>';
     printf('<a href="%s">' . __('Yes, take me to my profile page') . '</a> | ', get_edit_profile_url() . '#password');
-    printf('<a href="%s" id="default-password-nag-no">' . __('No thanks, do not remind me again') . '</a>',
-        '?default_password_nag=0');
+    printf(
+        '<a href="%s" id="default-password-nag-no">' . __('No thanks, do not remind me again') . '</a>',
+        '?default_password_nag=0'
+    );
     echo '</p></div>';
 }
 
@@ -537,7 +563,8 @@ function default_password_nag()
  * @access private
  */
 function delete_users_add_js()
-{ ?>
+{
+    ?>
     <script>
         jQuery(document).ready(function ($) {
             var submit = $('#submit').prop('disabled', true);
@@ -566,8 +593,10 @@ function use_ssl_preference($user)
     ?>
     <tr class="user-use-ssl-wrap">
         <th scope="row"><?php _e('Use https') ?></th>
-        <td><label for="use_ssl"><input name="use_ssl" type="checkbox" id="use_ssl" value="1" <?php checked('1',
-                    $user->use_ssl); ?> /> <?php _e('Always use https when visiting the admin'); ?></label></td>
+        <td><label for="use_ssl"><input name="use_ssl" type="checkbox" id="use_ssl" value="1" <?php checked(
+        '1',
+                    $user->use_ssl
+    ); ?> /> <?php _e('Always use https when visiting the admin'); ?></label></td>
     </tr>
     <?php
 }
@@ -582,13 +611,17 @@ function admin_created_user_email($text)
     $roles = get_editable_roles();
     $role = $roles[$_REQUEST['role']];
     /* translators: 1: Site name, 2: site URL, 3: role */
-    return sprintf(__('Hi,
+    return sprintf(
+        __('Hi,
 You\'ve been invited to join \'%1$s\' at
 %2$s with the role of %3$s.
 If you do not want to join this site please ignore
 this email. This invitation will expire in a few days.
 
 Please click the following link to activate your user account:
-%%s'), wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES), home_url(),
-        wp_specialchars_decode(translate_user_role($role['name'])));
+%%s'),
+        wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES),
+        home_url(),
+        wp_specialchars_decode(translate_user_role($role['name']))
+    );
 }
