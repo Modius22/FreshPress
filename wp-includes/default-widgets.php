@@ -46,9 +46,6 @@ require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-text.php');
 /** WP_Widget_Categories class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-categories.php');
 
-/** WP_Widget_Recent_Posts class */
-require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-recent-posts.php');
-
 /** WP_Widget_Recent_Comments class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-recent-comments.php');
 

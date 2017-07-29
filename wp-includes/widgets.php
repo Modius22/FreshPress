@@ -21,6 +21,7 @@
 //
 // Global Variables
 //
+use Devtronic\FreshPress\Widgets\RecentPostsWidget;
 use Devtronic\FreshPress\Widgets\Widget;
 
 /** @ignore */
@@ -1573,7 +1574,7 @@ function wp_widgets_init()
 
     register_widget('WP_Widget_Categories');
 
-    register_widget('WP_Widget_Recent_Posts');
+    register_widget(RecentPostsWidget::class);
 
     register_widget('WP_Widget_Recent_Comments');
 

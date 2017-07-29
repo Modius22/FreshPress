@@ -1,13 +1,15 @@
 <?php
 /**
- * Widget API: WP_Widget_Recent_Posts class
+ * Widget API: RecentPostsWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
+
+use WP_Query;
 
 /**
  * Core class used to implement a Recent Posts widget.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Recent_Posts extends Widget
+class RecentPostsWidget extends Widget
 {
 
     /**
