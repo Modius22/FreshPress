@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Widgets\Widget;
+
 /**
  * Core class used to implement the Archives widget.
  *
  * @since 2.8.0
  *
- * @see WP_Widget
+ * @see Widget
  */
-class WP_Widget_Archives extends WP_Widget
+class WP_Widget_Archives extends Widget
 {
 
     /**

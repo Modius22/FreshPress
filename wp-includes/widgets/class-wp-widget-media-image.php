@@ -7,12 +7,14 @@
  * @since 4.8.0
  */
 
+use Devtronic\FreshPress\Widgets\Widget;
+
 /**
  * Core class that implements an image widget.
  *
  * @since 4.8.0
  *
- * @see WP_Widget
+ * @see Widget
  */
 class WP_Widget_Media_Image extends WP_Widget_Media
 {

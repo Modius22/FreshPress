@@ -7,14 +7,16 @@
  * @since 4.8.0
  */
 
+use Devtronic\FreshPress\Widgets\Widget;
+
 /**
  * Core class that implements a media widget.
  *
  * @since 4.8.0
  *
- * @see WP_Widget
+ * @see Widget
  */
-abstract class WP_Widget_Media extends WP_Widget
+abstract class WP_Widget_Media extends Widget
 {
 
     /**
@@ -202,7 +204,7 @@ abstract class WP_Widget_Media extends WP_Widget
      * @since 4.8.0
      * @access public
      *
-     * @see WP_Widget::widget()
+     * @see Widget::widget()
      *
      * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
      * @param array $instance Saved setting from the database.
@@ -247,7 +249,7 @@ abstract class WP_Widget_Media extends WP_Widget
      * @since 4.8.0
      * @access public
      *
-     * @see WP_Widget::update()
+     * @see Widget::update()
      * @see WP_REST_Request::has_valid_params()
      * @see WP_REST_Request::sanitize_params()
      *

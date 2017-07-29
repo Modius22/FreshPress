@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Widgets\Widget;
+
 /**
  * Core class used to implement a Meta widget.
  *
@@ -14,9 +16,9 @@
  *
  * @since 2.8.0
  *
- * @see WP_Widget
+ * @see Widget
  */
-class WP_Widget_Meta extends WP_Widget
+class WP_Widget_Meta extends Widget
 {
 
     /**
@@ -95,8 +97,7 @@ class WP_Widget_Meta extends WP_Widget
      * @since 2.8.0
      * @access public
      *
-     * @param array $new_instance New settings for this instance as input by the user via
-     *                            WP_Widget::form().
+     * @param array $new_instance New settings for this instance as input by the user via Widget::form().
      * @param array $old_instance Old settings for this instance.
      * @return array Updated settings to save.
      */

@@ -1,23 +1,27 @@
 <?php
 /**
- * Widget API: WP_Widget base class
+ * Widget API: Widget base class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Widgets;
+
+use WP_Customize_Manager;
+
 /**
  * Core base class extended to register widgets.
  *
- * This class must be extended for each widget, and WP_Widget::widget() must be overridden.
+ * This class must be extended for each widget, and Widget::widget() must be overridden.
  *
- * If adding widget options, WP_Widget::update() and WP_Widget::form() should also be overridden.
+ * If adding widget options, Widget::update() and Widget::form() should also be overridden.
  *
  * @since 2.8.0
  * @since 4.4.0 Moved to its own file from wp-includes/widgets.php
  */
-class WP_Widget
+class Widget
 {
 
     /**
@@ -116,13 +120,12 @@ class WP_Widget
      * @since 2.8.0
      * @access public
      *
-     * @param array $args Display arguments including 'before_title', 'after_title',
-     *                        'before_widget', and 'after_widget'.
+     * @param array $args Display arguments including 'before_title', 'after_title', 'before_widget', and 'after_widget'.
      * @param array $instance The settings for the particular instance of the widget.
      */
     public function widget($args, $instance)
     {
-        die('function WP_Widget::widget() must be over-ridden in a sub-class.');
+        die('function Widget::widget() must be over-ridden in a sub-class.');
     }
 
     /**
@@ -135,8 +138,7 @@ class WP_Widget
      * @since 2.8.0
      * @access public
      *
-     * @param array $new_instance New settings for this instance as input by the user via
-     *                            WP_Widget::form().
+     * @param array $new_instance New settings for this instance as input by the user via Widget::form().
      * @param array $old_instance Old settings for this instance.
      * @return array Settings to save or bool false to cancel saving.
      */
@@ -193,28 +195,6 @@ class WP_Widget
     }
 
     /**
-     * PHP4 constructor.
-     *
-     * @since 2.8.0
-     * @access public
-     *
-     * @see __construct()
-     *
-     * @param string $id_base Optional Base ID for the widget, lowercase and unique. If left empty,
-     *                                a portion of the widget's class name will be used Has to be unique.
-     * @param string $name Name for the widget displayed on the configuration page.
-     * @param array $widget_options Optional. Widget options. See wp_register_sidebar_widget() for information
-     *                                on accepted arguments. Default empty array.
-     * @param array $control_options Optional. Widget control options. See wp_register_widget_control() for
-     *                                information on accepted arguments. Default empty array.
-     */
-    public function WP_Widget($id_base, $name, $widget_options = array(), $control_options = array())
-    {
-        _deprecated_constructor('WP_Widget', '4.3.0', get_class($this));
-        WP_Widget::__construct($id_base, $name, $widget_options, $control_options);
-    }
-
-    /**
      * Constructs name attributes for use in form() fields
      *
      * This function should be used in form() methods to create name attributes for fields
@@ -232,20 +212,16 @@ class WP_Widget
         if (false === $pos = strpos($field_name, '[')) {
             return 'widget-' . $this->id_base . '[' . $this->number . '][' . $field_name . ']';
         } else {
-            return 'widget-' . $this->id_base . '[' . $this->number . '][' . substr_replace(
-                $field_name,
-                '][',
-                $pos,
-                    strlen('[')
-            );
+            return 'widget-' . $this->id_base . '[' . $this->number . '][' .
+                substr_replace($field_name, '][', $pos, strlen('['));
         }
     }
 
     /**
-     * Constructs id attributes for use in WP_Widget::form() fields.
+     * Constructs id attributes for use in Widget::form() fields.
      *
      * This function should be used in form() methods to create id attributes
-     * for fields to be saved by WP_Widget::update().
+     * for fields to be saved by Widget::update().
      *
      * @since 2.8.0
      * @since 4.4.0 Array format field IDs are now accepted.
@@ -256,11 +232,8 @@ class WP_Widget
      */
     public function get_field_id($field_name)
     {
-        return 'widget-' . $this->id_base . '-' . $this->number . '-' . trim(str_replace(
-            array('[]', '[', ']'),
-                array('', '-', ''),
-            $field_name
-        ), '-');
+        return 'widget-' . $this->id_base . '-' . $this->number . '-' .
+            trim(str_replace(array('[]', '[', ']'), array('', '-', ''), $field_name), '-');
     }
 
     /**
@@ -275,7 +248,7 @@ class WP_Widget
         $empty = true;
 
         // When $settings is an array-like object, get an intrinsic array for use with array_keys().
-        if ($settings instanceof ArrayObject || $settings instanceof ArrayIterator) {
+        if ($settings instanceof \ArrayObject || $settings instanceof \ArrayIterator) {
             $settings = $settings->getArrayCopy();
         }
 
@@ -374,12 +347,12 @@ class WP_Widget
     /**
      * Generates the actual widget content (Do NOT override).
      *
-     * Finds the instance and calls WP_Widget::widget().
+     * Finds the instance and calls Widget::widget().
      *
      * @since 2.8.0
      * @access public
      *
-     * @param array $args Display arguments. See WP_Widget::widget() for information
+     * @param array $args Display arguments. See Widget::widget() for information
      *                               on accepted arguments.
      * @param int|array $widget_args {
      *     Optional. Internal order number of the widget instance, or array of multi-widget arguments.
@@ -409,7 +382,7 @@ class WP_Widget
              * @since 2.8.0
              *
              * @param array $instance The current widget instance's settings.
-             * @param WP_Widget $this The current widget instance.
+             * @param Widget $this The current widget instance.
              * @param array $args An array of default widget arguments.
              */
             $instance = apply_filters('widget_display_callback', $instance, $this, $args);
@@ -505,7 +478,7 @@ class WP_Widget
                  * @param array $instance The current widget instance's settings.
                  * @param array $new_instance Array of new widget settings.
                  * @param array $old_instance Array of old widget settings.
-                 * @param WP_Widget $this The current widget instance.
+                 * @param Widget $this The current widget instance.
                  */
                 $instance = apply_filters('widget_update_callback', $instance, $new_instance, $old_instance, $this);
                 if (false !== $instance) {
@@ -560,7 +533,7 @@ class WP_Widget
          * @since 2.8.0
          *
          * @param array $instance The current widget instance's settings.
-         * @param WP_Widget $this The current widget instance.
+         * @param Widget $this The current widget instance.
          */
         $instance = apply_filters('widget_form_callback', $instance, $this);
 
@@ -580,7 +553,7 @@ class WP_Widget
              *
              * @since 2.8.0
              *
-             * @param WP_Widget $this The widget instance, passed by reference.
+             * @param Widget $this The widget instance, passed by reference.
              * @param null $return Return null if new fields are added.
              * @param array $instance An array of the widget's settings.
              */
@@ -657,7 +630,7 @@ class WP_Widget
             }
         }
 
-        if (!is_array($settings) && !($settings instanceof ArrayObject || $settings instanceof ArrayIterator)) {
+        if (!is_array($settings) && !($settings instanceof \ArrayObject || $settings instanceof \ArrayIterator)) {
             $settings = array();
         }
 

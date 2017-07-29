@@ -21,6 +21,7 @@
 //
 // Global Variables
 //
+use Devtronic\FreshPress\Widgets\Widget;
 
 /** @ignore */
 global $wp_registered_sidebars, $wp_registered_widgets, $wp_registered_widget_controls, $wp_registered_widget_updates;
@@ -97,15 +98,15 @@ $GLOBALS['_wp_deprecated_widgets_callbacks'] = array(
 /**
  * Register a widget
  *
- * Registers a WP_Widget widget
+ * Registers a Widget widget
  *
  * @since 2.8.0
  *
- * @see WP_Widget
+ * @see Widget
  *
  * @global WP_Widget_Factory $wp_widget_factory
  *
- * @param string $widget_class The name of a class that extends WP_Widget
+ * @param string $widget_class The name of a class that extends Widget
  */
 function register_widget($widget_class)
 {
@@ -117,16 +118,16 @@ function register_widget($widget_class)
 /**
  * Unregisters a widget.
  *
- * Unregisters a WP_Widget widget. Useful for un-registering default widgets.
+ * Unregisters a Widget widget. Useful for un-registering default widgets.
  * Run within a function hooked to the {@see 'widgets_init'} action.
  *
  * @since 2.8.0
  *
- * @see WP_Widget
+ * @see Widget
  *
  * @global WP_Widget_Factory $wp_widget_factory
  *
- * @param string $widget_class The name of a class that extends WP_Widget.
+ * @param string $widget_class The name of a class that extends Widget.
  */
 function unregister_widget($widget_class)
 {
@@ -548,7 +549,7 @@ function wp_register_widget_control($id, $name, $control_callback, $options = ar
  *
  * @global array $wp_registered_widget_updates
  *
- * @param string $id_base The base ID of a widget created by extending WP_Widget.
+ * @param string $id_base The base ID of a widget created by extending Widget.
  * @param callable $update_callback Update callback method for the widget.
  * @param array $options Optional. Widget control options. See wp_register_widget_control().
  *                                  Default empty array.
@@ -812,7 +813,7 @@ function dynamic_sidebar($index = 1)
  * Whether widget is displayed on the front end.
  *
  * Either $callback or $id_base can be used
- * $id_base is the first argument when extending WP_Widget class
+ * $id_base is the first argument when extending Widget class
  * Without the optional $widget_id parameter, returns the ID of the first sidebar
  * in which the first instance of the widget with the given callback or $id_base is found.
  * With the $widget_id parameter, returns the ID of the sidebar where
@@ -827,7 +828,7 @@ function dynamic_sidebar($index = 1)
  *
  * @param string|false $callback Optional, Widget callback to check. Default false.
  * @param int|false $widget_id Optional. Widget ID. Optional, but needed for checking. Default false.
- * @param string|false $id_base Optional. The base ID of a widget created by extending WP_Widget. Default false.
+ * @param string|false $id_base Optional. The base ID of a widget created by extending Widget. Default false.
  * @param bool $skip_inactive Optional. Whether to check in 'wp_inactive_widgets'. Default true.
  * @return string|false False if widget is not active or id of sidebar in which the widget is active.
  */
@@ -1080,7 +1081,7 @@ function wp_convert_widget_settings($base_name, $option_name, $settings)
  *
  * @global WP_Widget_Factory $wp_widget_factory
  *
- * @param string $widget The widget's PHP class name (see class-wp-widget.php).
+ * @param string $widget The widget's PHP class name (see Widget).
  * @param array $instance Optional. The widget's instance settings. Default empty array.
  * @param array $args {
  *     Optional. Array of arguments to configure the display of the widget.
@@ -1100,7 +1101,7 @@ function the_widget($widget, $instance = array(), $args = array())
     global $wp_widget_factory;
 
     $widget_obj = $wp_widget_factory->widgets[$widget];
-    if (!($widget_obj instanceof WP_Widget)) {
+    if (!($widget_obj instanceof Widget)) {
         return;
     }
 

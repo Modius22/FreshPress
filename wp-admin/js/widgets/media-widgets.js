@@ -1026,7 +1026,7 @@ wp.mediaWidgets = ( function( $ ) {
 		 * This is inserted into the DOM immediately before the the .widget-content
 		 * element because the contents of this element are essentially "managed"
 		 * by PHP, where each widget update cause the entire element to be emptied
-		 * and replaced with the rendered output of WP_Widget::form() which is
+		 * and replaced with the rendered output of Devtronic\FreshPress\Widgets\Widget::form() which is
 		 * sent back in Ajax request made to save/update the widget instance.
 		 * To prevent a "flash of replaced DOM elements and re-initialized JS
 		 * components", the JS template is rendered outside of the normal form

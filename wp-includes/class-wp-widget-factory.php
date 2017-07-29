@@ -7,8 +7,10 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Widgets\Widget;
+
 /**
- * Singleton that registers and instantiates WP_Widget classes.
+ * Singleton that registers and instantiates Widget classes.
  *
  * @since 2.8.0
  * @since 4.4.0 Moved to its own file from wp-includes/widgets.php
@@ -71,7 +73,7 @@ class WP_Widget_Factory
      * @since 4.6.0
      * @access private
      *
-     * @param WP_Widget $widget Widget.
+     * @param Widget $widget Widget.
      * @return string Object hash.
      */
     private function hash_object($widget)
@@ -97,15 +99,15 @@ class WP_Widget_Factory
      * Registers a widget subclass.
      *
      * @since 2.8.0
-     * @since 4.6.0 Updated the `$widget` parameter to also accept a WP_Widget instance object
-     *              instead of simply a `WP_Widget` subclass name.
+     * @since 4.6.0 Updated the `$widget` parameter to also accept a Widget instance object
+     *              instead of simply a `Widget` subclass name.
      * @access public
      *
-     * @param string|WP_Widget $widget Either the name of a `WP_Widget` subclass or an instance of a `WP_Widget` subclass.
+     * @param string|Widget $widget Either the name of a `Widget` subclass or an instance of a `Widget` subclass.
      */
     public function register($widget)
     {
-        if ($widget instanceof WP_Widget) {
+        if ($widget instanceof Widget) {
             $this->widgets[$this->hash_object($widget)] = $widget;
         } else {
             $this->widgets[$widget] = new $widget();
@@ -116,15 +118,15 @@ class WP_Widget_Factory
      * Un-registers a widget subclass.
      *
      * @since 2.8.0
-     * @since 4.6.0 Updated the `$widget` parameter to also accept a WP_Widget instance object
-     *              instead of simply a `WP_Widget` subclass name.
+     * @since 4.6.0 Updated the `$widget` parameter to also accept a Widget instance object
+     *              instead of simply a `Widget` subclass name.
      * @access public
      *
-     * @param string|WP_Widget $widget Either the name of a `WP_Widget` subclass or an instance of a `WP_Widget` subclass.
+     * @param string|Widget $widget Either the name of a `Widget` subclass or an instance of a `Widget` subclass.
      */
     public function unregister($widget)
     {
-        if ($widget instanceof WP_Widget) {
+        if ($widget instanceof Widget) {
             unset($this->widgets[$this->hash_object($widget)]);
         } else {
             unset($this->widgets[$widget]);

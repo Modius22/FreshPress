@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Widgets\Widget;
+
 /**
  * Core class used to implement the Custom Menu widget.
  *
  * @since 3.0.0
  *
- * @see WP_Widget
+ * @see Widget
  */
-class WP_Nav_Menu_Widget extends WP_Widget
+class WP_Nav_Menu_Widget extends Widget
 {
 
     /**
@@ -97,8 +99,7 @@ class WP_Nav_Menu_Widget extends WP_Widget
      * @since 3.0.0
      * @access public
      *
-     * @param array $new_instance New settings for this instance as input by the user via
-     *                            WP_Widget::form().
+     * @param array $new_instance New settings for this instance as input by the user via Widget::form().
      * @param array $old_instance Old settings for this instance.
      * @return array Updated settings to save.
      */
