@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Recent_Comments class
+ * Widget API: RecentCommentsWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Recent Comments widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Recent_Comments extends Widget
+class RecentCommentsWidget extends Widget
 {
 
     /**
