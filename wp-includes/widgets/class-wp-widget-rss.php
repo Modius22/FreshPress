@@ -89,7 +89,7 @@ class WP_Widget_RSS extends Widget
             $title = empty($desc) ? __('Unknown Feed') : $desc;
         }
 
-        /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+        /** This filter is documented in src/Widgets/PagesWidget.php */
         $title = apply_filters('widget_title', $title, $instance, $this->id_base);
 
         $url = strip_tags($url);

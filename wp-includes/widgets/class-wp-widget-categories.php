@@ -49,7 +49,7 @@ class WP_Widget_Categories extends Widget
     {
         static $first_dropdown = true;
 
-        /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+        /** This filter is documented in src/Widgets/PagesWidget.php */
         $title = apply_filters(
             'widget_title',
             empty($instance['title']) ? __('Categories') : $instance['title'],

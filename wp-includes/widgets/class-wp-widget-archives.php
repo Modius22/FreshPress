@@ -50,7 +50,7 @@ class WP_Widget_Archives extends Widget
         $c = !empty($instance['count']) ? '1' : '0';
         $d = !empty($instance['dropdown']) ? '1' : '0';
 
-        /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+        /** This filter is documented in src/Widgets/PagesWidget.php */
         $title = apply_filters(
             'widget_title',
             empty($instance['title']) ? __('Archives') : $instance['title'],

@@ -222,7 +222,7 @@ abstract class WP_Widget_Media extends Widget
 
         if ($instance['title']) {
 
-            /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+            /** This filter is documented in src/Widgets/PagesWidget.php */
             $title = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
             echo $args['before_title'] . $title . $args['after_title'];
         }

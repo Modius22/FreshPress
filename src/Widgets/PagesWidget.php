@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Pages class
+ * Widget API: PagesWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Pages widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Pages extends Widget
+class PagesWidget extends Widget
 {
 
     /**
@@ -148,13 +148,13 @@ class WP_Widget_Pages extends Widget
             <select name="<?php echo esc_attr($this->get_field_name('sortby')); ?>"
                     id="<?php echo esc_attr($this->get_field_id('sortby')); ?>" class="widefat">
                 <option value="post_title"<?php selected(
-            $instance['sortby'],
+                    $instance['sortby'],
                     'post_title'
-        ); ?>><?php _e('Page title'); ?></option>
+                ); ?>><?php _e('Page title'); ?></option>
                 <option value="menu_order"<?php selected(
-                        $instance['sortby'],
+                    $instance['sortby'],
                     'menu_order'
-                    ); ?>><?php _e('Page order'); ?></option>
+                ); ?>><?php _e('Page order'); ?></option>
                 <option value="ID"<?php selected($instance['sortby'], 'ID'); ?>><?php _e('Page ID'); ?></option>
             </select>
         </p>

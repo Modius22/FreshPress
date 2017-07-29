@@ -49,7 +49,7 @@ class WP_Widget_Meta extends Widget
      */
     public function widget($args, $instance)
     {
-        /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+        /** This filter is documented in src/Widgets/PagesWidget.php */
         $title = apply_filters(
             'widget_title',
             empty($instance['title']) ? __('Meta') : $instance['title'],

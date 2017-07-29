@@ -53,7 +53,7 @@ class WP_Nav_Menu_Widget extends Widget
             return;
         }
 
-        /** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+        /** This filter is documented in src/Widgets/PagesWidget.php */
         $instance['title'] = apply_filters(
             'widget_title',
             empty($instance['title']) ? '' : $instance['title'],
