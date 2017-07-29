@@ -24,6 +24,7 @@
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
 use Devtronic\FreshPress\Widgets\RecentPostsWidget;
+use Devtronic\FreshPress\Widgets\TextWidget;
 use Devtronic\FreshPress\Widgets\Widget;
 
 /** @ignore */
@@ -844,10 +845,10 @@ function is_active_widget($callback = false, $widget_id = false, $id_base = fals
     if (is_array($sidebars_widgets)) {
         foreach ($sidebars_widgets as $sidebar => $widgets) {
             if ($skip_inactive && ('wp_inactive_widgets' === $sidebar || 'orphaned_widgets' === substr(
-                $sidebar,
-                0,
+                        $sidebar,
+                        0,
                         16
-            ))) {
+                    ))) {
                 continue;
             }
 
@@ -1572,7 +1573,7 @@ function wp_widgets_init()
 
     register_widget('WP_Widget_Search');
 
-    register_widget('WP_Widget_Text');
+    register_widget(TextWidget::class);
 
     register_widget('WP_Widget_Categories');
 

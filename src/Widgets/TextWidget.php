@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Text class
+ * Widget API: TextWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Text widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Text extends Widget
+class TextWidKget extends Widget
 {
 
     /**
@@ -88,7 +88,7 @@ class WP_Widget_Text extends Widget
          *
          * @param string $text The widget content.
          * @param array $instance Array of settings for the current widget.
-         * @param WP_Widget_Text $this Current Text widget instance.
+         * @param TextWidget $this Current Text widget instance.
          */
         $text = apply_filters('widget_text', $text, $instance, $this);
 
@@ -104,7 +104,7 @@ class WP_Widget_Text extends Widget
                  *
                  * @param string $text The widget content.
                  * @param array $instance Array of settings for the current widget.
-                 * @param WP_Widget_Text $this Current Text widget instance.
+                 * @param TextWidget $this Current Text widget instance.
                  */
                 $text = apply_filters('widget_text_content', $text, $instance, $this);
             } elseif ($instance['filter']) {
