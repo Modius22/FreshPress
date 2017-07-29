@@ -4,8 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b85c048d667a978d2a78dcc937b8f81",
+    "content-hash": "bfaa351fd853d0bfccdeb1c8989db7de",
     "packages": [
+        {
+            "name": "devtronic/injector",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Devtronic/injector.git",
+                "reference": "d79a60bf40f22a8b6f3f4bac07d4292a21dc5853"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Devtronic/injector/zipball/d79a60bf40f22a8b6f3f4bac07d4292a21dc5853",
+                "reference": "d79a60bf40f22a8b6f3f4bac07d4292a21dc5853",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Devtronic\\Injector\\": "src/",
+                    "Devtronic\\Tests\\Injector\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Julian Finkler",
+                    "email": "julian@developer-heaven.de"
+                }
+            ],
+            "description": "A service container for humans",
+            "time": "2017-07-29T10:30:07+00:00"
+        },
         {
             "name": "hautelook/phpass",
             "version": "0.3.5",
