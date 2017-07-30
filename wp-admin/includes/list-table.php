@@ -9,7 +9,7 @@
 
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
 use Devtronic\FreshPress\Components\ListTables\MediaListTable;
-use Devtronic\FreshPress\Components\ListTables\PluginListTable;
+use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 
 /**
  * Fetch an instance of a ListTable class.
@@ -37,7 +37,7 @@ function _get_list_table($class, $args = array())
         'WP_Plugin_Install_List_Table' => 'plugin-install',
         'WP_Themes_List_Table' => 'themes',
         'WP_Theme_Install_List_Table' => array('themes', 'theme-install'),
-        PluginListTable::class => 'plugins',
+        PluginsListTable::class => 'plugins',
         // Network Admin
         'WP_MS_Sites_List_Table' => 'ms-sites',
         'WP_MS_Users_List_Table' => 'ms-users',

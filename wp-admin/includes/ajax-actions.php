@@ -7,7 +7,7 @@
  * @since 2.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\PluginListTable;
+use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 
 //
 // No-privilege Ajax handlers.
@@ -4250,8 +4250,8 @@ function wp_ajax_search_plugins()
         set_current_screen($pagenow);
     }
 
-    /** @var PluginListTable $wp_list_table */
-    $wp_list_table = _get_list_table(PluginListTable::class, [
+    /** @var PluginsListTable $wp_list_table */
+    $wp_list_table = _get_list_table(PluginsListTable::class, [
         'screen' => get_current_screen()
     ]);
 

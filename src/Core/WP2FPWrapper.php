@@ -25,7 +25,7 @@ $classes = [
     'MO' => 'POMO\\MO',
     'WP_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\ListTable',
     'WP_Media_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\MediaListTable',
-    'WP_Plugins_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\PluginListTable',
+    'WP_Plugins_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\PluginsListTable',
     'WP_Links_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\LinksListTable',
 ];
 

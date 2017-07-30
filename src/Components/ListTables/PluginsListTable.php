@@ -17,7 +17,7 @@ namespace Devtronic\FreshPress\Components\ListTables;
  *
  * @see ListTable
  */
-class PluginListTable extends ListTable
+class PluginsListTable extends ListTable
 {
 
     /**
