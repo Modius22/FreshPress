@@ -4271,12 +4271,13 @@ function _deprecated_file($file, $version, $replacement = null, $message = '')
      *
      * @param bool $trigger Whether to trigger the error for deprecated files. Default true.
      */
+    $message = '';
     if (WP_DEBUG && apply_filters('deprecated_file_trigger_error', true)) {
         $message = empty($message) ? '' : ' ' . $message;
         if (function_exists('__')) {
             if (!is_null($replacement)) {
                 /* translators: 1: PHP file name, 2: version number, 3: alternative file name */
-                trigger_error(sprintf(
+                $message = (sprintf(
                     __('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
                         $file,
                     $version,
@@ -4284,7 +4285,7 @@ function _deprecated_file($file, $version, $replacement = null, $message = '')
                 ) . $message);
             } else {
                 /* translators: 1: PHP file name, 2: version number */
-                trigger_error(sprintf(
+                $message = (sprintf(
                     __('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
                         $file,
                     $version
@@ -4292,20 +4293,26 @@ function _deprecated_file($file, $version, $replacement = null, $message = '')
             }
         } else {
             if (!is_null($replacement)) {
-                trigger_error(sprintf(
+                $message = (sprintf(
                     '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
                         $file,
                     $version,
                     $replacement
                 ) . $message);
             } else {
-                trigger_error(sprintf(
+                $message = (sprintf(
                     '%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
                         $file,
                     $version
                 ) . $message);
             }
         }
+        echo <<<HTML
+    <div class="error notice">
+        <p>{$message}</p>
+    </div>
+HTML;
+
     }
 }
 

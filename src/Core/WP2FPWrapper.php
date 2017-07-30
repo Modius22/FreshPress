@@ -21,6 +21,8 @@ $classes = [
     'WP_Widget_Search' => 'Devtronic\\FreshPress\\Widgets\\SearchWidget',
     'WP_Widget_Tag_Cloud' => 'Devtronic\\FreshPress\\Widgets\\TagCloudWidget',
     'WP_Widget_Text' => 'Devtronic\\FreshPress\\Widgets\\TextWidget',
+    'PO' => 'POMO\\PO',
+    'MO' => 'POMO\\MO',
 ];
 
 $abstractClasses = [
