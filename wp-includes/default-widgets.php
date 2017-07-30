@@ -7,9 +7,6 @@
  * @since 2.8.0
  */
 
-/** WP_Widget_Media class */
-require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-media.php');
-
 /** WP_Widget_Media_Audio class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-media-audio.php');
 

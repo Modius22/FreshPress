@@ -1,13 +1,15 @@
 <?php
 /**
- * Widget API: WP_Media_Widget class
+ * Widget API: MediaWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.8.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
+
+use WP_Post;
 
 /**
  * Core class that implements a media widget.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-abstract class WP_Widget_Media extends Widget
+abstract class MediaWidget extends Widget
 {
 
     /**
@@ -234,7 +236,7 @@ abstract class WP_Widget_Media extends Widget
          *
          * @param array $instance Instance data.
          * @param array $args Widget args.
-         * @param WP_Widget_Media $this Widget object.
+         * @param MediaWidget $this Widget object.
          */
         $instance = apply_filters("widget_{$this->id_base}_instance", $instance, $args, $this);
 
@@ -409,7 +411,7 @@ abstract class WP_Widget_Media extends Widget
             <# var elementIdPrefix = 'el' + String( Math.random() ) + '_' #>
                 <p>
                     <label for="{{ elementIdPrefix }}title"><?php esc_html_e('Title:'); ?></label>
-                    <input id="{{ elementIdPrefix }}title" type="text" class="widefat title">
+                    <input id="{{ elementIdPrefix }}title" class="widefat title">
                 </p>
                 <div class="media-widget-preview">
                     <div class="attachment-media-view">

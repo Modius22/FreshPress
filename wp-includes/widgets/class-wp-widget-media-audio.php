@@ -7,6 +7,7 @@
  * @since 4.8.0
  */
 
+use Devtronic\FreshPress\Widgets\MediaWidget;
 use Devtronic\FreshPress\Widgets\Widget;
 
 /**
@@ -16,7 +17,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Media_Audio extends WP_Widget_Media
+class WP_Widget_Media_Audio extends MediaWidget
 {
 
     /**
