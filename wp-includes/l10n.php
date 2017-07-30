@@ -7,6 +7,9 @@
  * @since 1.2.0
  */
 
+use POMO\MO;
+use POMO\Translations\Translations;
+
 /**
  * Retrieves the current locale.
  *
@@ -994,7 +997,7 @@ function _get_path_to_translation_from_lang_dir($domain)
  * @global array $l10n
  *
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
- * @return Translations|NOOP_Translations A Translations instance.
+ * @return Translations|NOOPTranslations A Translations instance.
  */
 function get_translations_for_domain($domain)
 {
@@ -1005,7 +1008,7 @@ function get_translations_for_domain($domain)
 
     static $noop_translations = null;
     if (null === $noop_translations) {
-        $noop_translations = new NOOP_Translations;
+        $noop_translations = new NOOPTranslations();
     }
 
     return $noop_translations;
