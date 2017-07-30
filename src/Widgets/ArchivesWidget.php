@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Archives class
+ * Widget API: ArchivesWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement the Archives widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Archives extends Widget
+class ArchivesWidget extends Widget
 {
 
     /**
@@ -78,35 +78,31 @@ class WP_Widget_Archives extends Widget
                  *
                  * @param array $args An array of Archives widget drop-down arguments.
                  */
-                $dropdown_args = apply_filters('widget_archives_dropdown_args', array(
+                $dropDownArgs = apply_filters('widget_archives_dropdown_args', array(
                     'type' => 'monthly',
                     'format' => 'option',
                     'show_post_count' => $c
                 ));
 
-            switch ($dropdown_args['type']) {
-                    case 'yearly':
-                        $label = __('Select Year');
-                        break;
-                    case 'monthly':
-                        $label = __('Select Month');
-                        break;
-                    case 'daily':
-                        $label = __('Select Day');
-                        break;
-                    case 'weekly':
-                        $label = __('Select Week');
-                        break;
-                    default:
-                        $label = __('Select Post');
-                        break;
-                } ?>
+                $label = 'Select Post';
+                $labelMap = [
+                    'yearly' => 'Select Year',
+                    'monthly' => 'Select Month',
+                    'daily' => 'Select Day',
+                    'weekly' => 'Select Week',
+                ];
+                $type = $dropDownArgs['type'];
+                if (isset($labelMap[$type])) {
+                    $label = $labelMap[$type];
+                }
+                $label = __($label);
+                ?>
 
                 <option value=""><?php echo esc_attr($label); ?></option>
-                <?php wp_get_archives($dropdown_args); ?>
+                <?php wp_get_archives($dropDownArgs); ?>
 
             </select>
-        <?php
+            <?php
         } else {
             ?>
             <ul>
@@ -137,8 +133,7 @@ class WP_Widget_Archives extends Widget
      * @since 2.8.0
      * @access public
      *
-     * @param array $new_instance New settings for this instance as input by the user via
-     *                            WP_Widget_Archives::form().
+     * @param array $new_instance New settings for this instance as input by the user via ArchivesWidget::form().
      * @param array $old_instance Old settings for this instance.
      * @return array Updated settings to save.
      */
@@ -167,7 +162,7 @@ class WP_Widget_Archives extends Widget
         $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input
                     class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                    name="<?php echo $this->get_field_name('title'); ?>" type="text"
+                    name="<?php echo $this->get_field_name('title'); ?>"
                     value="<?php echo esc_attr($title); ?>"/></p>
         <p>
             <input class="checkbox" type="checkbox"<?php checked($instance['dropdown']); ?>

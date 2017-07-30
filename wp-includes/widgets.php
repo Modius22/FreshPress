@@ -21,6 +21,7 @@
 //
 // Global Variables
 //
+use Devtronic\FreshPress\Widgets\ArchivesWidget;
 use Devtronic\FreshPress\Widgets\CalendarWidget;
 use Devtronic\FreshPress\Widgets\LinksWidget;
 use Devtronic\FreshPress\Widgets\PagesWidget;
@@ -1574,7 +1575,7 @@ function wp_widgets_init()
 
     register_widget(CalendarWidget::class);
 
-    register_widget('WP_Widget_Archives');
+    register_widget(ArchivesWidget::class);
 
     if (get_option('link_manager_enabled')) {
         register_widget(LinksWidget::class);
