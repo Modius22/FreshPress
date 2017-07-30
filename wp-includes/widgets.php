@@ -22,6 +22,7 @@
 // Global Variables
 //
 use Devtronic\FreshPress\Widgets\ArchivesWidget;
+use Devtronic\FreshPress\Widgets\AudioWidget;
 use Devtronic\FreshPress\Widgets\CalendarWidget;
 use Devtronic\FreshPress\Widgets\CategoriesWidget;
 use Devtronic\FreshPress\Widgets\ImageWidget;
@@ -1586,7 +1587,7 @@ function wp_widgets_init()
         register_widget(LinksWidget::class);
     }
 
-    register_widget('WP_Widget_Media_Audio');
+    register_widget(AudioWidget::class);
 
     register_widget(ImageWidget::class);
 
