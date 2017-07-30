@@ -23,6 +23,7 @@
 //
 use Devtronic\FreshPress\Widgets\ArchivesWidget;
 use Devtronic\FreshPress\Widgets\CalendarWidget;
+use Devtronic\FreshPress\Widgets\CategoriesWidget;
 use Devtronic\FreshPress\Widgets\LinksWidget;
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
@@ -1593,7 +1594,7 @@ function wp_widgets_init()
 
     register_widget(TextWidget::class);
 
-    register_widget('WP_Widget_Categories');
+    register_widget(CategoriesWidget::class);
 
     register_widget(RecentPostsWidget::class);
 

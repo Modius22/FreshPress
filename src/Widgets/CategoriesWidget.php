@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Categories class
+ * Widget API: CategoriesWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Categories widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Categories extends Widget
+class CategoriesWidget extends Widget
 {
 
     /**
@@ -169,7 +169,7 @@ class WP_Widget_Categories extends Widget
         $dropdown = isset($instance['dropdown']) ? (bool)$instance['dropdown'] : false; ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                   name="<?php echo $this->get_field_name('title'); ?>" type="text"
+                   name="<?php echo $this->get_field_name('title'); ?>"
                    value="<?php echo esc_attr($title); ?>"/></p>
 
         <p><input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('dropdown'); ?>"

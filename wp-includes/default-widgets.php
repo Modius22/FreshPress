@@ -25,8 +25,5 @@ require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-meta.php');
 /** WP_Widget_Meta class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-meta.php');
 
-/** WP_Widget_Categories class */
-require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-categories.php');
-
 /** WP_Nav_Menu_Widget class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-nav-menu-widget.php');

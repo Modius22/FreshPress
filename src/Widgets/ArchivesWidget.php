@@ -64,45 +64,46 @@ class ArchivesWidget extends Widget
         }
 
         if ($d) {
-            $dropdown_id = "{$this->id_base}-dropdown-{$this->number}"; ?>
-            <label class="screen-reader-text" for="<?php echo esc_attr($dropdown_id); ?>"><?php echo $title; ?></label>
-            <select id="<?php echo esc_attr($dropdown_id); ?>" name="archive-dropdown"
-                    onchange='document.location.href=this.options[this.selectedIndex].value;'>
-                <?php
-                /**
-                 * Filters the arguments for the Archives widget drop-down.
-                 *
-                 * @since 2.8.0
-                 *
-                 * @see wp_get_archives()
-                 *
-                 * @param array $args An array of Archives widget drop-down arguments.
-                 */
-                $dropDownArgs = apply_filters('widget_archives_dropdown_args', array(
-                    'type' => 'monthly',
-                    'format' => 'option',
-                    'show_post_count' => $c
-                ));
+            $dropdown_id = "{$this->id_base}-dropdown-{$this->number}";
+            $escapedDropDownId = esc_attr($dropdown_id);
 
-                $label = 'Select Post';
-                $labelMap = [
-                    'yearly' => 'Select Year',
-                    'monthly' => 'Select Month',
-                    'daily' => 'Select Day',
-                    'weekly' => 'Select Week',
-                ];
-                $type = $dropDownArgs['type'];
-                if (isset($labelMap[$type])) {
-                    $label = $labelMap[$type];
-                }
-                $label = __($label);
-                ?>
+            /**
+             * Filters the arguments for the Archives widget drop-down.
+             *
+             * @since 2.8.0
+             *
+             * @see wp_get_archives()
+             *
+             * @param array $args An array of Archives widget drop-down arguments.
+             */
+            $dropDownArgs = apply_filters('widget_archives_dropdown_args', array(
+                'type' => 'monthly',
+                'format' => 'option',
+                'echo' => false,
+                'show_post_count' => $c
+            ));
 
-                <option value=""><?php echo esc_attr($label); ?></option>
-                <?php wp_get_archives($dropDownArgs); ?>
-
-            </select>
-            <?php
+            $label = 'Select Post';
+            $labelMap = [
+                'yearly' => 'Select Year',
+                'monthly' => 'Select Month',
+                'daily' => 'Select Day',
+                'weekly' => 'Select Week',
+            ];
+            $type = $dropDownArgs['type'];
+            if (isset($labelMap[$type])) {
+                $label = $labelMap[$type];
+            }
+            $label = __($label);
+            $escapedLabel = esc_attr($label);
+            $dropDownCode = wp_get_archives($dropDownArgs);
+            echo <<<HTML
+                <label class="screen-reader-text" for="{$escapedDropDownId}">{$title}</label>
+                <select id="{$escapedDropDownId}" name="archive-dropdown" onchange='document.location.href=this.options[this.selectedIndex].value;'>
+                    <option value="">{$escapedLabel}</option>
+                    {$dropDownCode}
+                </select>
+HTML;
         } else {
             ?>
             <ul>
