@@ -16,7 +16,7 @@ namespace Devtronic\FreshPress\Widgets;
  *
  * @see Widget
  */
-class TextWidKget extends Widget
+class TextWidget extends Widget
 {
 
     /**

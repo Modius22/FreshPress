@@ -24,6 +24,7 @@
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
 use Devtronic\FreshPress\Widgets\RecentPostsWidget;
+use Devtronic\FreshPress\Widgets\SearchWidget;
 use Devtronic\FreshPress\Widgets\TextWidget;
 use Devtronic\FreshPress\Widgets\Widget;
 
@@ -1571,7 +1572,7 @@ function wp_widgets_init()
 
     register_widget('WP_Widget_Meta');
 
-    register_widget('WP_Widget_Search');
+    register_widget(SearchWidget::class);
 
     register_widget(TextWidget::class);
 
