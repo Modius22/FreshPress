@@ -8,6 +8,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\ListTable;
+
 /** Walker_Category_Checklist class */
 require_once(ABSPATH . 'wp-admin/includes/class-walker-category-checklist.php');
 
@@ -350,7 +352,7 @@ function get_inline_data($post)
  *
  * @since 2.7.0
  *
- * @global WP_List_Table $wp_list_table
+ * @global ListTable $wp_list_table
  *
  * @param int    $position
  * @param bool   $checkbox

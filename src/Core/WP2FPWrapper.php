@@ -23,6 +23,7 @@ $classes = [
     'WP_Widget_Text' => 'Devtronic\\FreshPress\\Components\\Widgets\\TextWidget',
     'PO' => 'POMO\\PO',
     'MO' => 'POMO\\MO',
+    'WP_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\ListTable',
 ];
 
 $abstractClasses = [

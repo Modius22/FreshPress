@@ -1,11 +1,15 @@
 <?php
 /**
- * Administration API: WP_List_Table class
+ * Administration API: ListTable class
  *
  * @package WordPress
  * @subpackage List_Table
  * @since 3.1.0
  */
+
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Locale;
 
 /**
  * Base class for displaying a list of items in an ajaxified HTML table.
@@ -13,7 +17,7 @@
  * @since 3.1.0
  * @access private
  */
-class WP_List_Table
+class ListTable
 {
 
     /**
@@ -273,12 +277,12 @@ class WP_List_Table
      */
     public function ajax_user_can()
     {
-        die('function WP_List_Table::ajax_user_can() must be over-ridden in a sub-class.');
+        die('function ListTable::ajax_user_can() must be over-ridden in a sub-class.');
     }
 
     /**
      * Prepares the list of items for displaying.
-     * @uses WP_List_Table::set_pagination_args()
+     * @uses ListTable::set_pagination_args()
      *
      * @since 3.1.0
      * @access public
@@ -286,7 +290,7 @@ class WP_List_Table
      */
     public function prepare_items()
     {
-        die('function WP_List_Table::prepare_items() must be over-ridden in a sub-class.');
+        die('function ListTable::prepare_items() must be over-ridden in a sub-class.');
     }
 
     /**
@@ -832,10 +836,9 @@ class WP_List_Table
             $this->screen->render_screen_reader_content('heading_pagination');
         }
 
-        $output = '<span class="displaying-num">' . sprintf(
-            _n('%s item', '%s items', $total_items),
-                number_format_i18n($total_items)
-        ) . '</span>';
+        $output = '<span class="displaying-num">';
+        $output .= sprintf(_n('%s item', '%s items', $total_items), number_format_i18n($total_items));
+        $output .= '</span>';
 
         $current = $this->get_pagenum();
         $removable_query_args = wp_removable_query_args();
@@ -900,11 +903,10 @@ class WP_List_Table
             );
         }
         $html_total_pages = sprintf("<span class='total-pages'>%s</span>", number_format_i18n($total_pages));
-        $page_links[] = $total_pages_before . sprintf(
-            _x('%1$s of %2$s', 'paging'),
-            $html_current_page,
-                $html_total_pages
-        ) . $total_pages_after;
+        $page_links[] =
+            $total_pages_before .
+            sprintf(_x('%1$s of %2$s', 'paging'), $html_current_page, $html_total_pages) .
+            $total_pages_after;
 
         if ($disable_next) {
             $page_links[] = '<span class="tablenav-pages-navspan" aria-hidden="true">&rsaquo;</span>';
@@ -956,7 +958,7 @@ class WP_List_Table
      */
     public function get_columns()
     {
-        die('function WP_List_Table::get_columns() must be over-ridden in a sub-class.');
+        die('function ListTable::get_columns() must be over-ridden in a sub-class.');
     }
 
     /**
@@ -1009,7 +1011,7 @@ class WP_List_Table
     }
 
     /**
-     * Public wrapper for WP_List_Table::get_default_primary_column_name().
+     * Public wrapper for ListTable::get_default_primary_column_name().
      *
      * @since 4.4.0
      * @access public
@@ -1037,7 +1039,7 @@ class WP_List_Table
         // If the primary column doesn't exist fall back to the
         // first non-checkbox column.
         if (!isset($columns[$default])) {
-            $default = WP_List_Table::get_default_primary_column_name();
+            $default = ListTable::get_default_primary_column_name();
         }
 
         /**
@@ -1196,10 +1198,9 @@ class WP_List_Table
                     $class[] = $desc_first ? 'asc' : 'desc';
                 }
 
-                $column_display_name = '<a href="' . esc_url(add_query_arg(
-                    compact('orderby', 'order'),
-                        $current_url
-                )) . '"><span>' . $column_display_name . '</span><span class="sorting-indicator"></span></a>';
+                $column_display_name =
+                    '<a href="' . esc_url(add_query_arg(compact('orderby', 'order'), $current_url)) .
+                    '"><span>' . $column_display_name . '</span><span class="sorting-indicator"></span></a>';
             }
 
             $tag = ('cb' === $column_key) ? 'td' : 'th';
@@ -1253,7 +1254,7 @@ class WP_List_Table
     }
 
     /**
-     * Get a list of CSS classes for the WP_List_Table table tag.
+     * Get a list of CSS classes for the ListTable table tag.
      *
      * @since 3.1.0
      * @access protected

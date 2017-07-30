@@ -7,15 +7,17 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\ListTable;
+
 /**
  * Core class used to implement displaying media items in a list table.
  *
  * @since 3.1.0
  * @access private
  *
- * @see WP_List_Table
+ * @see ListTable
  */
-class WP_Media_List_Table extends WP_List_Table
+class WP_Media_List_Table extends ListTable
 {
     /**
      * Holds the number of pending comments for each post.
@@ -36,7 +38,7 @@ class WP_Media_List_Table extends WP_List_Table
      * @since 3.1.0
      * @access public
      *
-     * @see WP_List_Table::__construct() for more information on default arguments.
+     * @see ListTable::__construct() for more information on default arguments.
      *
      * @param array $args An associative array of arguments.
      */
@@ -258,7 +260,7 @@ class WP_Media_List_Table extends WP_List_Table
                 <?php
                 $this->extra_tablenav('bar');
 
-        /** This filter is documented in wp-admin/inclues/class-wp-list-table.php */
+        /** This filter is documented in src/Components/ListTables/ListTable.php */
         $views = apply_filters("views_{$this->screen->id}", array());
 
         // Back compat for pre-4.0 view links.

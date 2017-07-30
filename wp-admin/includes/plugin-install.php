@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\ListTable;
+
 /**
  * Retrieves plugin installer pages from the WordPress.org Plugins API.
  *
@@ -351,7 +353,7 @@ function install_plugins_favorites_form()
  *
  * @since 2.7.0
  *
- * @global WP_List_Table $wp_list_table
+ * @global ListTable $wp_list_table
  */
 function display_plugins_table()
 {

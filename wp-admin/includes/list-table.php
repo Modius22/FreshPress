@@ -8,7 +8,7 @@
  */
 
 /**
- * Fetch an instance of a WP_List_Table class.
+ * Fetch an instance of a ListTable class.
  *
  * @access private
  * @since 3.1.0

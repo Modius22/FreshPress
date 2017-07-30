@@ -7,6 +7,8 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\ListTable;
+
 /**
  * Core class used to implement displaying links in a list table.
  *
@@ -15,7 +17,7 @@
  *
  * @see WP_List_Tsble
  */
-class WP_Links_List_Table extends WP_List_Table
+class WP_Links_List_Table extends ListTable
 {
 
     /**
@@ -24,7 +26,7 @@ class WP_Links_List_Table extends WP_List_Table
      * @since 3.1.0
      * @access public
      *
-     * @see WP_List_Table::__construct() for more information on default arguments.
+     * @see ListTable::__construct() for more information on default arguments.
      *
      * @param array $args An associative array of arguments.
      */

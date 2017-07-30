@@ -7,12 +7,14 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\ListTable;
+
 /**
  * Helper class to be used only by back compat functions
  *
  * @since 3.1.0
  */
-class _WP_List_Table_Compat extends WP_List_Table
+class _WP_List_Table_Compat extends ListTable
 {
     public $_screen;
     public $_columns;
