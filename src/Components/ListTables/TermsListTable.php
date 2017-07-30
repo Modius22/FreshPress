@@ -1,13 +1,15 @@
 <?php
 /**
- * List Table API: WP_Terms_List_Table class
+ * List Table API: TermsListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Term;
 
 /**
  * Core class used to implement displaying terms in a list table.
@@ -17,7 +19,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_Terms_List_Table extends ListTable
+class TermsListTable extends ListTable
 {
     public $callback_args;
 
@@ -358,10 +360,8 @@ class WP_Terms_List_Table extends ListTable
     public function column_cb($tag)
     {
         if (current_user_can('delete_term', $tag->term_id)) {
-            return '<label class="screen-reader-text" for="cb-select-' . $tag->term_id . '">' . sprintf(
-                __('Select %s'),
-                    $tag->name
-            ) . '</label>'
+            return '<label class="screen-reader-text" for="cb-select-' . $tag->term_id . '">' .
+                sprintf(__('Select %s'), $tag->name) . '</label>'
                 . '<input type="checkbox" name="delete_tags[]" value="' . $tag->term_id . '" id="cb-select-' . $tag->term_id . '" />';
         }
 
@@ -386,7 +386,7 @@ class WP_Terms_List_Table extends ListTable
          *
          * @since 2.5.0
          *
-         * @see WP_Terms_List_Table::column_name()
+         * @see TermsListTable::column_name()
          *
          * @param string $pad_tag_name The term name, padded if not top-level.
          * @param WP_Term $tag Term object.
@@ -647,7 +647,7 @@ class WP_Terms_List_Table extends ListTable
                                             <span class="input-text-wrap"><input type="text" name="slug" class="ptitle"
                                                                                  value=""/></span>
                                         </label>
-                                    <?php
+                                        <?php
         } ?>
                                 </div>
                             </fieldset>

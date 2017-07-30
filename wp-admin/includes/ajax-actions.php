@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
+use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 
 //
 // No-privilege Ajax handlers.
@@ -1005,7 +1006,7 @@ function wp_ajax_add_tag()
         $x->send();
     }
 
-    $wp_list_table = _get_list_table('WP_Terms_List_Table', array('screen' => $_POST['screen']));
+    $wp_list_table = _get_list_table(TermsListTable::class, array('screen' => $_POST['screen']));
 
     $level = 0;
     if (is_taxonomy_hierarchical($taxonomy)) {
@@ -1976,7 +1977,7 @@ function wp_ajax_inline_save_tax()
         wp_die(-1);
     }
 
-    $wp_list_table = _get_list_table('WP_Terms_List_Table', array('screen' => 'edit-' . $taxonomy));
+    $wp_list_table = _get_list_table(TermsListTable::class, array('screen' => 'edit-' . $taxonomy));
 
     $tag = get_term($id, $taxonomy);
     $_POST['description'] = $tag->description;

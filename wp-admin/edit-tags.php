@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\TermsListTable;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -32,13 +34,13 @@ if (!current_user_can($tax->cap->manage_terms)) {
 }
 
 /**
- * $post_type is set when the WP_Terms_List_Table instance is created
+ * $post_type is set when the Devtronic\FreshPress\Components\ListTables\TermsListTable instance is created
  *
  * @global string $post_type
  */
 global $post_type;
 
-$wp_list_table = _get_list_table('WP_Terms_List_Table');
+$wp_list_table = _get_list_table(TermsListTable::class);
 $pagenum = $wp_list_table->get_pagenum();
 
 $title = $tax->labels->name;

@@ -1228,7 +1228,7 @@ final class WP_Screen
             /** This filter is documented in wp-admin/includes/class-wp-comments-list-table.php */
             $per_page = apply_filters('comments_per_page', $per_page, $comment_status);
         } elseif ('categories_per_page' == $option) {
-            /** This filter is documented in wp-admin/includes/class-wp-terms-list-table.php */
+            /** This filter is documented in src/Components/ListTables/TermsListTable.php */
             $per_page = apply_filters('edit_categories_per_page', $per_page);
         } else {
             /** This filter is documented in src/Components/ListTables/ListTable.php */
