@@ -374,7 +374,7 @@ wp.mediaWidgets = ( function( $ ) {
 		 * Translation strings.
 		 *
 		 * The mapping of translation strings is handled by media widget subclasses,
-		 * exported from PHP to JS such as is done in WP_Widget_Media_Image::enqueue_admin_scripts().
+         * exported from PHP to JS such as is done in Devtronic\FreshPress\Widgets\ImageWidget::enqueue_admin_scripts().
 		 *
 		 * @type {Object}
 		 */
@@ -387,7 +387,7 @@ wp.mediaWidgets = ( function( $ ) {
 		 * Widget ID base.
 		 *
 		 * This may be defined by the subclass. It may be exported from PHP to JS
-		 * such as is done in WP_Widget_Media_Image::enqueue_admin_scripts(). If not,
+         * such as is done in Devtronic\FreshPress\Widgets\ImageWidget::enqueue_admin_scripts(). If not,
 		 * it will attempt to be discovered by looking to see if this control
 		 * instance extends each member of component.controlConstructors, and if
 		 * it does extend one, will use the key as the id_base.
@@ -400,7 +400,7 @@ wp.mediaWidgets = ( function( $ ) {
 		 * Mime type.
 		 *
 		 * This must be defined by the subclass. It may be exported from PHP to JS
-		 * such as is done in WP_Widget_Media_Image::enqueue_admin_scripts().
+         * such as is done in Devtronic\FreshPress\Widgets\ImageWidget::enqueue_admin_scripts().
 		 *
 		 * @type {string}
 		 */
@@ -889,7 +889,7 @@ wp.mediaWidgets = ( function( $ ) {
 		 * Instance schema.
 		 *
 		 * This adheres to JSON Schema and subclasses should have their schema
-		 * exported from PHP to JS such as is done in WP_Widget_Media_Image::enqueue_admin_scripts().
+         * exported from PHP to JS such as is done in Devtronic\FreshPress\Widgets\ImageWidget::enqueue_admin_scripts().
 		 *
 		 * @type {Object.<string, Object>}
 		 */

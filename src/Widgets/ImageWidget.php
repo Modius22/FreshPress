@@ -1,14 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Media_Image class
+ * Widget API: ImageWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.8.0
  */
 
-use Devtronic\FreshPress\Widgets\MediaWidget;
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class that implements an image widget.
@@ -17,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Media_Image extends MediaWidget
+class ImageWidget extends MediaWidget
 {
 
     /**
@@ -211,11 +210,8 @@ class WP_Widget_Media_Image extends MediaWidget
             }
 
             $size = $instance['size'];
-            if ('custom' === $size || !in_array(
-                $size,
-                array_merge(get_intermediate_image_sizes(), array('full')),
-                    true
-            )) {
+            if ('custom' === $size ||
+                !in_array($size, array_merge(get_intermediate_image_sizes(), array('full')), true)) {
                 $size = array($instance['width'], $instance['height']);
             }
             $image_attributes['class'] .= sprintf(

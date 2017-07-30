@@ -24,6 +24,7 @@
 use Devtronic\FreshPress\Widgets\ArchivesWidget;
 use Devtronic\FreshPress\Widgets\CalendarWidget;
 use Devtronic\FreshPress\Widgets\CategoriesWidget;
+use Devtronic\FreshPress\Widgets\ImageWidget;
 use Devtronic\FreshPress\Widgets\LinksWidget;
 use Devtronic\FreshPress\Widgets\MetaWidget;
 use Devtronic\FreshPress\Widgets\NavMenuWidget;
@@ -1587,7 +1588,7 @@ function wp_widgets_init()
 
     register_widget('WP_Widget_Media_Audio');
 
-    register_widget('WP_Widget_Media_Image');
+    register_widget(ImageWidget::class);
 
     register_widget(VideoWidget::class);
 
