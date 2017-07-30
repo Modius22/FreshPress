@@ -34,9 +34,6 @@ require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-calendar.php');
 /** WP_Widget_Categories class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-categories.php');
 
-/** WP_Widget_RSS class */
-require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-rss.php');
-
 /** WP_Widget_Tag_Cloud class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-tag-cloud.php');
 

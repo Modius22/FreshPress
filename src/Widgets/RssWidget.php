@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_RSS class
+ * Widget API: RssWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a RSS widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_RSS extends Widget
+class RssWidget extends Widget
 {
 
     /**
