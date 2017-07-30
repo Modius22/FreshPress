@@ -1,14 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Media_Video class
+ * Widget API: VideoWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.8.0
  */
 
-use Devtronic\FreshPress\Widgets\MediaWidget;
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class that implements a video widget.
@@ -17,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Media_Video extends MediaWidget
+class VideoWidget extends MediaWidget
 {
 
     /**

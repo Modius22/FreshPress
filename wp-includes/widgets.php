@@ -34,6 +34,7 @@ use Devtronic\FreshPress\Widgets\RssWidget;
 use Devtronic\FreshPress\Widgets\SearchWidget;
 use Devtronic\FreshPress\Widgets\TagCloudWidget;
 use Devtronic\FreshPress\Widgets\TextWidget;
+use Devtronic\FreshPress\Widgets\VideoWidget;
 use Devtronic\FreshPress\Widgets\Widget;
 
 /** @ignore */
@@ -1588,7 +1589,7 @@ function wp_widgets_init()
 
     register_widget('WP_Widget_Media_Image');
 
-    register_widget('WP_Widget_Media_Video');
+    register_widget(VideoWidget::class);
 
     register_widget(MetaWidget::class);
 
