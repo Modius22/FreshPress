@@ -8,6 +8,7 @@
  */
 
 use POMO\MO;
+use POMO\Translations\NOOPTranslations;
 use POMO\Translations\Translations;
 
 /**
