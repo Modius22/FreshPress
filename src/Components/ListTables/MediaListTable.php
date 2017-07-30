@@ -1,13 +1,16 @@
 <?php
 /**
- * List Table API: WP_Media_List_Table class
+ * List Table API: MediaListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Post;
+use WP_Query;
 
 /**
  * Core class used to implement displaying media items in a list table.
@@ -17,7 +20,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_Media_List_Table extends ListTable
+class MediaListTable extends ListTable
 {
     /**
      * Holds the number of pending comments for each post.
@@ -370,7 +373,7 @@ class WP_Media_List_Table extends ListTable
                 echo sprintf(__('Select %s'), _draft_or_post_title()); ?></label>
             <input type="checkbox" name="media[]" id="cb-select-<?php echo $post->ID; ?>"
                    value="<?php echo $post->ID; ?>"/>
-        <?php
+            <?php
         }
     }
 

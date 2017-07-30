@@ -24,6 +24,7 @@ $classes = [
     'PO' => 'POMO\\PO',
     'MO' => 'POMO\\MO',
     'WP_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\ListTable',
+    'WP_Media_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\MediaListTable',
 ];
 
 $abstractClasses = [

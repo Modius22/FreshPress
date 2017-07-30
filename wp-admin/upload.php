@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\MediaListTable;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -100,7 +102,7 @@ if ('grid' === $mode) {
     exit;
 }
 
-$wp_list_table = _get_list_table('WP_Media_List_Table');
+$wp_list_table = _get_list_table(MediaListTable::class);
 $pagenum = $wp_list_table->get_pagenum();
 
 // Handle bulk actions

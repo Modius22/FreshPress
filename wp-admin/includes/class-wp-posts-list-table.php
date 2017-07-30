@@ -501,7 +501,7 @@ class WP_Posts_List_Table extends ListTable
                  * @param string $post_type The post type slug.
                  * @param string $which The location of the extra table nav markup:
                  *                          'top' or 'bottom' for WP_Posts_List_Table,
-                 *                          'bar' for WP_Media_List_Table.
+                 *                          'bar' for Devtronic\FreshPress\Components\ListTables\MediaListTable.
                  */
                 do_action('restrict_manage_posts', $this->screen->post_type, $which);
 

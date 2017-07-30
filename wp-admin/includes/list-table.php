@@ -7,6 +7,8 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\MediaListTable;
+
 /**
  * Fetch an instance of a ListTable class.
  *
@@ -24,7 +26,7 @@ function _get_list_table($class, $args = array())
     $core_classes = array(
         //Site Admin
         'WP_Posts_List_Table' => 'posts',
-        'WP_Media_List_Table' => 'media',
+        MediaListTable::class => 'media',
         'WP_Terms_List_Table' => 'terms',
         'WP_Users_List_Table' => 'users',
         'WP_Comments_List_Table' => 'comments',
@@ -41,8 +43,11 @@ function _get_list_table($class, $args = array())
     );
 
     if (isset($core_classes[$class])) {
-        foreach ((array)$core_classes[$class] as $required) {
-            require_once(ABSPATH . 'wp-admin/includes/class-wp-' . $required . '-list-table.php');
+        // @todo remove after every list is psr-4
+        if(!stristr($class, '\\')){
+            foreach ((array)$core_classes[$class] as $required) {
+                require_once(ABSPATH . 'wp-admin/includes/class-wp-' . $required . '-list-table.php');
+            }
         }
 
         if (isset($args['screen'])) {
