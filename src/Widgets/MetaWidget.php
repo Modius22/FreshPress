@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Meta class
+ * Widget API: MetaWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Meta widget.
@@ -18,7 +18,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Meta extends Widget
+class MetaWidget extends Widget
 {
 
     /**
@@ -78,14 +78,12 @@ class WP_Widget_Meta extends Widget
              *
              * @param string $title_text Default title text for the WordPress.org link.
              */
-            echo apply_filters('widget_meta_poweredby', sprintf(
-                '<li><a href="%s" title="%s">%s</a></li>',
-                esc_url(__('https://wordpress.org/')),
-                esc_attr__('Powered by WordPress, state-of-the-art semantic personal publishing platform.'),
-                _x('WordPress.org', 'meta widget link text')
-            ));
-
-        wp_meta(); ?>
+            $escapedUrl = esc_url(__('https://wordpress.org/'));
+            $escapedTitle = esc_attr__('Powered by WordPress, state-of-the-art semantic personal publishing platform.');
+            $escapedText = _x('WordPress.org', 'meta widget link text');
+            $code = '<li><a href="' . $escapedUrl . '" title="' . $escapedTitle . '">' . $escapedText . '</a></li>';
+            echo apply_filters('widget_meta_poweredby', $code);
+            wp_meta(); ?>
         </ul>
         <?php
         echo $args['after_widget'];
@@ -123,7 +121,7 @@ class WP_Widget_Meta extends Widget
         $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input
                     class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                    name="<?php echo $this->get_field_name('title'); ?>" type="text"
+                    name="<?php echo $this->get_field_name('title'); ?>"
                     value="<?php echo esc_attr($title); ?>"/></p>
         <?php
     }

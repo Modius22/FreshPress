@@ -25,6 +25,7 @@ use Devtronic\FreshPress\Widgets\ArchivesWidget;
 use Devtronic\FreshPress\Widgets\CalendarWidget;
 use Devtronic\FreshPress\Widgets\CategoriesWidget;
 use Devtronic\FreshPress\Widgets\LinksWidget;
+use Devtronic\FreshPress\Widgets\MetaWidget;
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
 use Devtronic\FreshPress\Widgets\RecentPostsWidget;
@@ -1588,7 +1589,7 @@ function wp_widgets_init()
 
     register_widget('WP_Widget_Media_Video');
 
-    register_widget('WP_Widget_Meta');
+    register_widget(MetaWidget::class);
 
     register_widget(SearchWidget::class);
 
