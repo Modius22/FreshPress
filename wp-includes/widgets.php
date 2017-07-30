@@ -28,6 +28,7 @@ use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
 use Devtronic\FreshPress\Widgets\RecentPostsWidget;
 use Devtronic\FreshPress\Widgets\RssWidget;
 use Devtronic\FreshPress\Widgets\SearchWidget;
+use Devtronic\FreshPress\Widgets\TagCloudWidget;
 use Devtronic\FreshPress\Widgets\TextWidget;
 use Devtronic\FreshPress\Widgets\Widget;
 
@@ -1599,7 +1600,7 @@ function wp_widgets_init()
 
     register_widget(RssWidget::class);
 
-    register_widget('WP_Widget_Tag_Cloud');
+    register_widget(TagCloudWidget::class);
 
     register_widget('WP_Nav_Menu_Widget');
 

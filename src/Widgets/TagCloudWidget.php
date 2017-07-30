@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Tag_Cloud class
+ * Widget API: TagCloudWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Tag cloud widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Tag_Cloud extends Widget
+class TagCloudWidget extends Widget
 {
 
     /**
@@ -131,7 +131,7 @@ class WP_Widget_Tag_Cloud extends Widget
         $instance['title'] = !empty($instance['title']) ? esc_attr($instance['title']) : '';
 
         echo '<p><label for="' . $title_id . '">' . __('Title:') . '</label>
-			<input type="text" class="widefat" id="' . $title_id . '" name="' . $this->get_field_name('title') . '" value="' . $instance['title'] . '" />
+			<input class="widefat" id="' . $title_id . '" name="' . $this->get_field_name('title') . '" value="' . $instance['title'] . '" />
 		</p>';
 
         $taxonomies = get_taxonomies(array('show_tagcloud' => true), 'object');
@@ -140,7 +140,7 @@ class WP_Widget_Tag_Cloud extends Widget
         $input = '<input type="hidden" id="' . $id . '" name="' . $name . '" value="%s" />';
 
         $count_checkbox = sprintf(
-            '<p><input type="checkbox" class="checkbox" id="%1$s" name="%2$s"%3$s /> <label for="%1$s">%4$s</label></p>',
+            '<p><input type="checkbox" class="checkbox" id="%1$s" name="%2$s" %3$s /> <label for="%1$s">%4$s</label></p>',
             $this->get_field_id('count'),
             $this->get_field_name('count'),
             checked($count, true, false),
@@ -175,7 +175,7 @@ class WP_Widget_Tag_Cloud extends Widget
 
                 foreach ($taxonomies as $taxonomy => $tax) {
                     printf(
-                        '<option value="%s"%s>%s</option>',
+                        '<option value="%s" %s>%s</option>',
                         esc_attr($taxonomy),
                         selected($taxonomy, $current_taxonomy, false),
                         $tax->labels->name
