@@ -146,8 +146,7 @@ class NavMenuWidget extends Widget
                 $url = 'javascript: wp.customize.panel( "nav_menus" ).focus();';
             } else {
                 $url = admin_url('nav-menus.php');
-            }
-            ?>
+            } ?>
             <?php echo sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'), esc_attr($url)); ?>
         </p>
         <div class="nav-menu-widget-form-controls" <?php if (empty($menus)) {
