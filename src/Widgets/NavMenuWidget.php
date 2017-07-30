@@ -134,10 +134,7 @@ class NavMenuWidget extends Widget
         $nav_menu = isset($instance['nav_menu']) ? $instance['nav_menu'] : '';
 
         // Get menus
-        $menus = wp_get_nav_menus();
-
-        // If no menus exists, direct the user to go and create some.
-        ?>
+        $menus = wp_get_nav_menus(); ?>
         <p class="nav-menu-widget-no-menus-message" <?php if (!empty($menus)) {
             echo ' style="display:none" ';
         } ?>>

@@ -60,7 +60,11 @@ class MetaWidget extends Widget
         echo $args['before_widget'];
         if ($title) {
             echo $args['before_title'] . $title . $args['after_title'];
-        } ?>
+        }
+        $escapedUrl = esc_url(__('https://wordpress.org/'));
+        $escapedTitle = esc_attr__('Powered by WordPress, state-of-the-art semantic personal publishing platform.');
+        $escapedText = _x('WordPress.org', 'meta widget link text');
+        $code = '<li><a href="' . $escapedUrl . '" title="' . $escapedTitle . '">' . $escapedText . '</a></li>'; ?>
         <ul>
             <?php wp_register(); ?>
             <li><?php wp_loginout(); ?></li>
@@ -71,17 +75,6 @@ class MetaWidget extends Widget
                 <a href="<?php echo esc_url(get_bloginfo('comments_rss2_url')); ?>"><?php _e('Comments <abbr title="Really Simple Syndication">RSS</abbr>'); ?></a>
             </li>
             <?php
-            /**
-             * Filters the "Powered by WordPress" text in the Meta widget.
-             *
-             * @since 3.6.0
-             *
-             * @param string $title_text Default title text for the WordPress.org link.
-             */
-            $escapedUrl = esc_url(__('https://wordpress.org/'));
-            $escapedTitle = esc_attr__('Powered by WordPress, state-of-the-art semantic personal publishing platform.');
-            $escapedText = _x('WordPress.org', 'meta widget link text');
-            $code = '<li><a href="' . $escapedUrl . '" title="' . $escapedTitle . '">' . $escapedText . '</a></li>';
             echo apply_filters('widget_meta_poweredby', $code);
             wp_meta(); ?>
         </ul>
