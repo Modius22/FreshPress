@@ -64,21 +64,29 @@ class MetaWidget extends Widget
         $escapedUrl = esc_url(__('https://wordpress.org/'));
         $escapedTitle = esc_attr__('Powered by WordPress, state-of-the-art semantic personal publishing platform.');
         $escapedText = _x('WordPress.org', 'meta widget link text');
-        $code = '<li><a href="' . $escapedUrl . '" title="' . $escapedTitle . '">' . $escapedText . '</a></li>'; ?>
+        $code = '<li><a href="' . $escapedUrl . '" title="' . $escapedTitle . '">' . $escapedText . '</a></li>';
+
+        $links = [
+            wp_register('', '', false),
+            wp_loginout('', false),
+            '<a href="' . esc_url(get_bloginfo('rss2_url')) . '">' . _e('Entries <abbr title="Really Simple Syndication">RSS</abbr>') . '</a>',
+            '<a href="' . esc_url(get_bloginfo('comments_rss2_url')) . '">' . _e('Comments <abbr title="Really Simple Syndication">RSS</abbr>') . '</a>',
+        ];
+        $li = '';
+        foreach ($links as $link) {
+            $li .= sprintf('<li>%s</li>', $link);
+        }
+        $li .= apply_filters('widget_meta_poweredby', $code);
+
+        ob_start();
+        wp_meta();
+        $li .= ob_get_contents();
+        ob_end_clean();
+        echo <<<HTML
         <ul>
-            <?php wp_register(); ?>
-            <li><?php wp_loginout(); ?></li>
-            <li>
-                <a href="<?php echo esc_url(get_bloginfo('rss2_url')); ?>"><?php _e('Entries <abbr title="Really Simple Syndication">RSS</abbr>'); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo esc_url(get_bloginfo('comments_rss2_url')); ?>"><?php _e('Comments <abbr title="Really Simple Syndication">RSS</abbr>'); ?></a>
-            </li>
-            <?php
-            echo apply_filters('widget_meta_poweredby', $code);
-            wp_meta(); ?>
+            {$li}
         </ul>
-        <?php
+HTML;
         echo $args['after_widget'];
     }
 

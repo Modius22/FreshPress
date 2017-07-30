@@ -134,49 +134,48 @@ class NavMenuWidget extends Widget
         $nav_menu = isset($instance['nav_menu']) ? $instance['nav_menu'] : '';
 
         // Get menus
-        $menus = wp_get_nav_menus(); ?>
-        <p class="nav-menu-widget-no-menus-message" <?php if (!empty($menus)) {
-            echo ' style="display:none" ';
-        } ?>>
-            <?php
-            if ($wp_customize instanceof WP_Customize_Manager) {
-                $url = 'javascript: wp.customize.panel( "nav_menus" ).focus();';
-            } else {
-                $url = admin_url('nav-menus.php');
-            } ?>
-            <?php echo sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'), esc_attr($url)); ?>
+        $menus = wp_get_nav_menus();
+        $widgetStyle = (!empty($menus) ? ' style="display:none" ' : '');
+
+        echo sprintf('<p class="nav-menu-widget-no-menus-message" %s>', $widgetStyle);
+        $url = admin_url('nav-menus.php');
+        if ($wp_customize instanceof WP_Customize_Manager) {
+            $url = 'javascript: wp.customize.panel( "nav_menus" ).focus();';
+        }
+        echo sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'), esc_attr($url));
+        echo '</p>';
+
+        echo sprintf('<div class="nav-menu-widget-form-controls" %s>', $widgetStyle); ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
+                   name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo esc_attr($title); ?>"/>
         </p>
-        <div class="nav-menu-widget-form-controls" <?php if (empty($menus)) {
-            echo ' style="display:none" ';
-        } ?>>
-            <p>
-                <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
-                <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                       name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo esc_attr($title); ?>"/>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id('nav_menu'); ?>"><?php _e('Select Menu:'); ?></label>
-                <select id="<?php echo $this->get_field_id('nav_menu'); ?>"
-                        name="<?php echo $this->get_field_name('nav_menu'); ?>">
-                    <option value="0"><?php _e('&mdash; Select &mdash;'); ?></option>
-                    <?php foreach ($menus as $menu) : ?>
-                        <option value="<?php echo esc_attr($menu->term_id); ?>" <?php selected(
-                            $nav_menu,
-                            $menu->term_id
-                        ); ?>>
-                            <?php echo esc_html($menu->name); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </p>
-            <?php if ($wp_customize instanceof WP_Customize_Manager) : ?>
-                <p class="edit-selected-nav-menu" style="<?php if (!$nav_menu) {
-                    echo 'display: none;';
-                } ?>">
-                    <button type="button" class="button"><?php _e('Edit Menu') ?></button>
-                </p>
-            <?php endif; ?>
-        </div>
+        <p>
+            <label for="<?php echo $this->get_field_id('nav_menu'); ?>"><?php _e('Select Menu:'); ?></label>
+            <select id="<?php echo $this->get_field_id('nav_menu'); ?>"
+                    name="<?php echo $this->get_field_name('nav_menu'); ?>">
+                <option value="0"><?php _e('&mdash; Select &mdash;'); ?></option>
+                <?php foreach ($menus as $menu) : ?>
+                    <option value="<?php echo esc_attr($menu->term_id); ?>" <?php selected(
+                        $nav_menu,
+                        $menu->term_id
+                    ); ?>>
+                        <?php echo esc_html($menu->name); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </p>
         <?php
+        if ($wp_customize instanceof WP_Customize_Manager) {
+            $paragraphStyle = (!$nav_menu ? 'style="display: none' : '');
+            $buttonText = _e('Edit Menu');
+            echo <<<HTML
+            <p class="edit-selected-nav-menu" {$paragraphStyle}>
+                <button type="button" class="button">{$buttonText}</button>
+            </p>
+HTML;
+        }
+        echo '</div>';
     }
 }
