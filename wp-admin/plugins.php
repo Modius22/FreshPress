@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\PluginListTable;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -13,7 +15,7 @@ if (!current_user_can('activate_plugins')) {
     wp_die(__('Sorry, you are not allowed to manage plugins for this site.'));
 }
 
-$wp_list_table = _get_list_table('WP_Plugins_List_Table');
+$wp_list_table = _get_list_table(PluginListTable::class);
 $pagenum = $wp_list_table->get_pagenum();
 
 $action = $wp_list_table->current_action();

@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\PluginListTable;
+
 /**
  * Selects the first update version from the update_core option.
  *
@@ -415,8 +417,8 @@ function wp_plugin_update_row($file, $plugin_data)
     $plugin_name = wp_kses($plugin_data['Name'], $plugins_allowedtags);
     $details_url = self_admin_url('plugin-install.php?tab=plugin-information&plugin=' . $response->slug . '&section=changelog&TB_iframe=true&width=600&height=800');
 
-    /** @var WP_Plugins_List_Table $wp_list_table */
-    $wp_list_table = _get_list_table('WP_Plugins_List_Table');
+    /** @var PluginListTable $wp_list_table */
+    $wp_list_table = _get_list_table(PluginListTable::class);
 
     if (is_network_admin() || !is_multisite()) {
         if (is_network_admin()) {
