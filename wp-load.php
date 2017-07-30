@@ -16,11 +16,8 @@
  * @package WordPress
  */
 
-/** Include Composer Autoloader */
-require_once(__DIR__ . '/vendor/autoload.php');
-
-/** Wrapper for back compatibility */
-require_once(__DIR__ . '/src/Core/WP2FPWrapper.php');
+/** Include FreshPress Bootstrap */
+require_once(__DIR__ . '/src/Bootstrap.php');
 
 /** Define ABSPATH as this file's directory */
 if (!defined('ABSPATH')) {

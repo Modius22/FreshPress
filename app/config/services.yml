@@ -1,0 +1,4 @@
+services:
+    # app.my_service:
+    #     class: FQCN\To\Service
+    #     arguments: ['Some Arguments', '@service_container']
