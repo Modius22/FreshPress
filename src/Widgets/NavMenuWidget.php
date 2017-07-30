@@ -1,13 +1,16 @@
 <?php
 /**
- * Widget API: WP_Nav_Menu_Widget class
+ * Widget API: NavMenuWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
+
+use WP_Customize_Manager;
+use WP_Term;
 
 /**
  * Core class used to implement the Custom Menu widget.
@@ -16,7 +19,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Nav_Menu_Widget extends Widget
+class NavMenuWidget extends Widget
 {
 
     /**
@@ -133,7 +136,8 @@ class WP_Nav_Menu_Widget extends Widget
         // Get menus
         $menus = wp_get_nav_menus();
 
-        // If no menus exists, direct the user to go and create some.?>
+        // If no menus exists, direct the user to go and create some.
+        ?>
         <p class="nav-menu-widget-no-menus-message" <?php if (!empty($menus)) {
             echo ' style="display:none" ';
         } ?>>
@@ -142,15 +146,16 @@ class WP_Nav_Menu_Widget extends Widget
                 $url = 'javascript: wp.customize.panel( "nav_menus" ).focus();';
             } else {
                 $url = admin_url('nav-menus.php');
-            } ?>
+            }
+            ?>
             <?php echo sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'), esc_attr($url)); ?>
         </p>
         <div class="nav-menu-widget-form-controls" <?php if (empty($menus)) {
-                echo ' style="display:none" ';
-            } ?>>
+            echo ' style="display:none" ';
+        } ?>>
             <p>
                 <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:') ?></label>
-                <input type="text" class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
+                <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                        name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo esc_attr($title); ?>"/>
             </p>
             <p>
@@ -160,9 +165,9 @@ class WP_Nav_Menu_Widget extends Widget
                     <option value="0"><?php _e('&mdash; Select &mdash;'); ?></option>
                     <?php foreach ($menus as $menu) : ?>
                         <option value="<?php echo esc_attr($menu->term_id); ?>" <?php selected(
-            $nav_menu,
+                            $nav_menu,
                             $menu->term_id
-        ); ?>>
+                        ); ?>>
                             <?php echo esc_html($menu->name); ?>
                         </option>
                     <?php endforeach; ?>
@@ -170,8 +175,8 @@ class WP_Nav_Menu_Widget extends Widget
             </p>
             <?php if ($wp_customize instanceof WP_Customize_Manager) : ?>
                 <p class="edit-selected-nav-menu" style="<?php if (!$nav_menu) {
-            echo 'display: none;';
-        } ?>">
+                    echo 'display: none;';
+                } ?>">
                     <button type="button" class="button"><?php _e('Edit Menu') ?></button>
                 </p>
             <?php endif; ?>

@@ -26,6 +26,7 @@ use Devtronic\FreshPress\Widgets\CalendarWidget;
 use Devtronic\FreshPress\Widgets\CategoriesWidget;
 use Devtronic\FreshPress\Widgets\LinksWidget;
 use Devtronic\FreshPress\Widgets\MetaWidget;
+use Devtronic\FreshPress\Widgets\NavMenuWidget;
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
 use Devtronic\FreshPress\Widgets\RecentPostsWidget;
@@ -1605,7 +1606,7 @@ function wp_widgets_init()
 
     register_widget(TagCloudWidget::class);
 
-    register_widget('WP_Nav_Menu_Widget');
+    register_widget(NavMenuWidget::class);
 
     /**
      * Fires after all default WordPress widgets have been registered.
