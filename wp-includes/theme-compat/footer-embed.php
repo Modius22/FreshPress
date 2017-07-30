@@ -15,7 +15,7 @@
  *
  * @since 4.4.0
  */
-do_action( 'embed_footer' );
+do_action('embed_footer');
 ?>
 </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * General API for generating and formatting diffs - the differences between
  * two sequences of strings.
@@ -15,25 +16,26 @@
  * @package Text_Diff
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  */
-class Text_Diff {
+class Text_Diff
+{
 
     /**
      * Array of changes.
      *
      * @var array
      */
-    var $_edits;
+    public $_edits;
 
     /**
      * Computes diffs between sequences of strings.
      *
-     * @param string $engine     Name of the diffing engine to use.  'auto'
+     * @param string $engine Name of the diffing engine to use.  'auto'
      *                           will automatically select the best.
-     * @param array $params      Parameters to pass to the diffing engine.
+     * @param array $params Parameters to pass to the diffing engine.
      *                           Normally an array of two arrays, each
      *                           containing the lines from a file.
      */
-    function __construct( $engine, $params )
+    public function __construct($engine, $params)
     {
         // Backward compatibility workaround.
         if (!is_string($engine)) {
@@ -48,24 +50,25 @@ class Text_Diff {
         }
 
         // WP #7391
-        require_once dirname(__FILE__).'/Diff/Engine/' . $engine . '.php';
+        require_once dirname(__FILE__) . '/Diff/Engine/' . $engine . '.php';
         $class = 'Text_Diff_Engine_' . $engine;
         $diff_engine = new $class();
 
         $this->_edits = call_user_func_array(array($diff_engine, 'diff'), $params);
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff( $engine, $params ) {
-		self::__construct( $engine, $params );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_Diff($engine, $params)
+    {
+        self::__construct($engine, $params);
+    }
 
     /**
      * Returns the array of differences.
      */
-    function getDiff()
+    public function getDiff()
     {
         return $this->_edits;
     }
@@ -77,7 +80,7 @@ class Text_Diff {
      *
      * @return integer The number of new lines
      */
-    function countAddedLines()
+    public function countAddedLines()
     {
         $count = 0;
         foreach ($this->_edits as $edit) {
@@ -96,7 +99,7 @@ class Text_Diff {
      *
      * @return integer The number of deleted lines
      */
-    function countDeletedLines()
+    public function countDeletedLines()
     {
         $count = 0;
         foreach ($this->_edits as $edit) {
@@ -122,7 +125,7 @@ class Text_Diff {
      *                    reference here, since this essentially is a clone()
      *                    method.
      */
-    function reverse()
+    public function reverse()
     {
         if (version_compare(zend_version(), '2', '>')) {
             $rev = clone($this);
@@ -141,7 +144,7 @@ class Text_Diff {
      *
      * @return boolean  True if two sequences were identical.
      */
-    function isEmpty()
+    public function isEmpty()
     {
         foreach ($this->_edits as $edit) {
             if (!is_a($edit, 'Text_Diff_Op_copy')) {
@@ -158,7 +161,7 @@ class Text_Diff {
      *
      * @return integer  The length of the LCS.
      */
-    function lcs()
+    public function lcs()
     {
         $lcs = 0;
         foreach ($this->_edits as $edit) {
@@ -176,7 +179,7 @@ class Text_Diff {
      *
      * @return array  The original sequence of strings.
      */
-    function getOriginal()
+    public function getOriginal()
     {
         $lines = array();
         foreach ($this->_edits as $edit) {
@@ -194,7 +197,7 @@ class Text_Diff {
      *
      * @return array  The sequence of strings.
      */
-    function getFinal()
+    public function getFinal()
     {
         $lines = array();
         foreach ($this->_edits as $edit) {
@@ -209,10 +212,10 @@ class Text_Diff {
      * Removes trailing newlines from a line of text. This is meant to be used
      * with array_walk().
      *
-     * @param string $line  The line to trim.
-     * @param integer $key  The index of the line in the array. Not used.
+     * @param string $line The line to trim.
+     * @param integer $key The index of the line in the array. Not used.
      */
-    static function trimNewlines(&$line, $key)
+    public static function trimNewlines(&$line, $key)
     {
         $line = str_replace(array("\n", "\r"), '', $line);
     }
@@ -227,10 +230,16 @@ class Text_Diff {
      * @return string  A directory name which can be used for temp files.
      *                 Returns false if one could not be found.
      */
-    function _getTempDir()
+    public function _getTempDir()
     {
-        $tmp_locations = array('/tmp', '/var/tmp', 'c:\WUTemp', 'c:\temp',
-                               'c:\windows\temp', 'c:\winnt\temp');
+        $tmp_locations = array(
+            '/tmp',
+            '/var/tmp',
+            'c:\WUTemp',
+            'c:\temp',
+            'c:\windows\temp',
+            'c:\winnt\temp'
+        );
 
         /* Try PHP's upload_tmp_dir directive. */
         $tmp = ini_get('upload_tmp_dir');
@@ -259,7 +268,7 @@ class Text_Diff {
      *
      * This is here only for debugging purposes.
      */
-    function _check($from_lines, $to_lines)
+    public function _check($from_lines, $to_lines)
     {
         if (serialize($from_lines) != serialize($this->getOriginal())) {
             trigger_error("Reconstructed original doesn't match", E_USER_ERROR);
@@ -286,14 +295,14 @@ class Text_Diff {
 
         return true;
     }
-
 }
 
 /**
  * @package Text_Diff
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  */
-class Text_MappedDiff extends Text_Diff {
+class Text_MappedDiff extends Text_Diff
+{
 
     /**
      * Computes a diff between sequences of strings.
@@ -301,19 +310,22 @@ class Text_MappedDiff extends Text_Diff {
      * This can be used to compute things like case-insensitve diffs, or diffs
      * which ignore changes in white-space.
      *
-     * @param array $from_lines         An array of strings.
-     * @param array $to_lines           An array of strings.
-     * @param array $mapped_from_lines  This array should have the same size
+     * @param array $from_lines An array of strings.
+     * @param array $to_lines An array of strings.
+     * @param array $mapped_from_lines This array should have the same size
      *                                  number of elements as $from_lines.  The
      *                                  elements in $mapped_from_lines and
      *                                  $mapped_to_lines are what is actually
      *                                  compared when computing the diff.
-     * @param array $mapped_to_lines    This array should have the same number
+     * @param array $mapped_to_lines This array should have the same number
      *                                  of elements as $to_lines.
      */
-    function __construct($from_lines, $to_lines,
-                             $mapped_from_lines, $mapped_to_lines)
-    {
+    public function __construct(
+        $from_lines,
+        $to_lines,
+        $mapped_from_lines,
+        $mapped_to_lines
+    ) {
         assert(count($from_lines) == count($mapped_from_lines));
         assert(count($to_lines) == count($mapped_to_lines));
 
@@ -335,15 +347,22 @@ class Text_MappedDiff extends Text_Diff {
         }
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_MappedDiff( $from_lines, $to_lines,
-                             $mapped_from_lines, $mapped_to_lines ) {
-		self::__construct( $from_lines, $to_lines,
-                             $mapped_from_lines, $mapped_to_lines );
-	}
-
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_MappedDiff(
+        $from_lines,
+        $to_lines,
+        $mapped_from_lines,
+        $mapped_to_lines
+    ) {
+        self::__construct(
+            $from_lines,
+            $to_lines,
+            $mapped_from_lines,
+            $mapped_to_lines
+        );
+    }
 }
 
 /**
@@ -352,26 +371,25 @@ class Text_MappedDiff extends Text_Diff {
  *
  * @access private
  */
-class Text_Diff_Op {
+class Text_Diff_Op
+{
+    public $orig;
+    public $final;
 
-    var $orig;
-    var $final;
-
-    function &reverse()
+    public function &reverse()
     {
         trigger_error('Abstract method', E_USER_ERROR);
     }
 
-    function norig()
+    public function norig()
     {
         return $this->orig ? count($this->orig) : 0;
     }
 
-    function nfinal()
+    public function nfinal()
     {
         return $this->final ? count($this->final) : 0;
     }
-
 }
 
 /**
@@ -380,12 +398,13 @@ class Text_Diff_Op {
  *
  * @access private
  */
-class Text_Diff_Op_copy extends Text_Diff_Op {
+class Text_Diff_Op_copy extends Text_Diff_Op
+{
 
-	/**
-	 * PHP5 constructor.
-	 */
-    function __construct( $orig, $final = false )
+    /**
+     * PHP5 constructor.
+     */
+    public function __construct($orig, $final = false)
     {
         if (!is_array($final)) {
             $final = $orig;
@@ -394,19 +413,19 @@ class Text_Diff_Op_copy extends Text_Diff_Op {
         $this->final = $final;
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_copy( $orig, $final = false ) {
-		self::__construct( $orig, $final );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_Diff_Op_copy($orig, $final = false)
+    {
+        self::__construct($orig, $final);
+    }
 
-    function &reverse()
+    public function &reverse()
     {
         $reverse = new Text_Diff_Op_copy($this->final, $this->orig);
         return $reverse;
     }
-
 }
 
 /**
@@ -415,30 +434,31 @@ class Text_Diff_Op_copy extends Text_Diff_Op {
  *
  * @access private
  */
-class Text_Diff_Op_delete extends Text_Diff_Op {
+class Text_Diff_Op_delete extends Text_Diff_Op
+{
 
-	/**
-	 * PHP5 constructor.
-	 */
-	function __construct( $lines )
+    /**
+     * PHP5 constructor.
+     */
+    public function __construct($lines)
     {
         $this->orig = $lines;
         $this->final = false;
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_delete( $lines ) {
-		self::__construct( $lines );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_Diff_Op_delete($lines)
+    {
+        self::__construct($lines);
+    }
 
-    function &reverse()
+    public function &reverse()
     {
         $reverse = new Text_Diff_Op_add($this->orig);
         return $reverse;
     }
-
 }
 
 /**
@@ -447,30 +467,31 @@ class Text_Diff_Op_delete extends Text_Diff_Op {
  *
  * @access private
  */
-class Text_Diff_Op_add extends Text_Diff_Op {
+class Text_Diff_Op_add extends Text_Diff_Op
+{
 
-	/**
-	 * PHP5 constructor.
-	 */
-    function __construct( $lines )
+    /**
+     * PHP5 constructor.
+     */
+    public function __construct($lines)
     {
         $this->final = $lines;
         $this->orig = false;
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_add( $lines ) {
-		self::__construct( $lines );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_Diff_Op_add($lines)
+    {
+        self::__construct($lines);
+    }
 
-    function &reverse()
+    public function &reverse()
     {
         $reverse = new Text_Diff_Op_delete($this->final);
         return $reverse;
     }
-
 }
 
 /**
@@ -479,28 +500,29 @@ class Text_Diff_Op_add extends Text_Diff_Op {
  *
  * @access private
  */
-class Text_Diff_Op_change extends Text_Diff_Op {
+class Text_Diff_Op_change extends Text_Diff_Op
+{
 
-	/**
-	 * PHP5 constructor.
-	 */
-    function __construct( $orig, $final )
+    /**
+     * PHP5 constructor.
+     */
+    public function __construct($orig, $final)
     {
         $this->orig = $orig;
         $this->final = $final;
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_change( $orig, $final ) {
-		self::__construct( $orig, $final );
-	}
+    /**
+     * PHP4 constructor.
+     */
+    public function Text_Diff_Op_change($orig, $final)
+    {
+        self::__construct($orig, $final);
+    }
 
-    function &reverse()
+    public function &reverse()
     {
         $reverse = new Text_Diff_Op_change($this->final, $this->orig);
         return $reverse;
     }
-
 }

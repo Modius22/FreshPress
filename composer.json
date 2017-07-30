@@ -1,0 +1,33 @@
+{
+    "name": "devtronic/freshpress",
+    "description": "WordPress with an better ecosystem",
+    "type": "project",
+    "require": {
+        "php": ">=5.6",
+        "james-heinrich/getid3": "1.9.9",
+        "phpmailer/phpmailer": "5.2.22",
+        "kissifrot/php-ixr": "1.7.4",
+        "hautelook/phpass": "~0.3",
+        "simplepie/simplepie": "1.3.1",
+        "rmccue/requests": "1.7",
+        "symfony/yaml": "^3.3",
+        "devtronic/injector": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.7",
+        "friendsofphp/php-cs-fixer": "^2.4"
+    },
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Julian Finkler",
+            "email": "julian@developer-heaven.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Devtronic\\FreshPress\\": "src/"
+        }
+    }
+}

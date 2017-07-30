@@ -16,15 +16,18 @@
  *
  * @see WP_Customize_Setting
  */
-class WP_Customize_Filter_Setting extends WP_Customize_Setting {
+class WP_Customize_Filter_Setting extends WP_Customize_Setting
+{
 
-	/**
-	 * Saves the value of the setting, using the related API.
-	 *
-	 * @since 3.4.0
-	 * @access public
-	 *
-	 * @param mixed $value The value to update.
-	 */
-	public function update( $value ) {}
+    /**
+     * Saves the value of the setting, using the related API.
+     *
+     * @since 3.4.0
+     * @access public
+     *
+     * @param mixed $value The value to update.
+     */
+    public function update($value)
+    {
+    }
 }
