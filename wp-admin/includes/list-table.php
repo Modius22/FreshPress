@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
 use Devtronic\FreshPress\Components\ListTables\MediaListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
+use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 
 /**
  * Fetch an instance of a ListTable class.
@@ -27,7 +28,7 @@ function _get_list_table($class, $args = array())
 {
     $core_classes = array(
         //Site Admin
-        'WP_Posts_List_Table' => 'posts',
+        PostsListTable::class => 'posts',
         MediaListTable::class => 'media',
         'WP_Terms_List_Table' => 'terms',
         'WP_Users_List_Table' => 'users',

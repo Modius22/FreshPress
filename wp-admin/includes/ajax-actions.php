@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
+use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 
 //
 // No-privilege Ajax handlers.
@@ -1904,7 +1905,7 @@ function wp_ajax_inline_save()
     if (!empty($data['tax_input'])) {
         foreach ($data['tax_input'] as $taxonomy => $terms) {
             $tax_object = get_taxonomy($taxonomy);
-            /** This filter is documented in wp-admin/includes/class-wp-posts-list-table.php */
+            /** This filter is documented in src/Components/ListTables/PostsListTable.php */
             if (!apply_filters(
                 'quick_edit_show_taxonomy',
                 $tax_object->show_in_quick_edit,
@@ -1931,7 +1932,7 @@ function wp_ajax_inline_save()
     // Update the post.
     edit_post();
 
-    $wp_list_table = _get_list_table('WP_Posts_List_Table', array('screen' => $_POST['screen']));
+    $wp_list_table = _get_list_table(PostsListTable::class, array('screen' => $_POST['screen']));
 
     $mode = $_POST['post_view'] === 'excerpt' ? 'excerpt' : 'list';
 

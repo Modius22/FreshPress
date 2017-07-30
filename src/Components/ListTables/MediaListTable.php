@@ -183,7 +183,7 @@ class MediaListTable extends ListTable
                     $this->months_dropdown('attachment');
                 }
 
-                /** This action is documented in wp-admin/includes/class-wp-posts-list-table.php */
+                /** This action is documented in src/Components/ListTables/PostsListTable.php */
                 do_action('restrict_manage_posts', $this->screen->post_type, $which);
 
                 submit_button(__('Filter'), '', 'filter_action', false, array('id' => 'post-query-submit'));

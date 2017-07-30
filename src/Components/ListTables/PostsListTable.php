@@ -1,13 +1,17 @@
 <?php
 /**
- * List Table API: WP_Posts_List_Table class
+ * List Table API: PostsListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Post;
+use WP_Post_Type;
+use WP_Query;
 
 /**
  * Core class used to implement displaying posts in a list table.
@@ -17,7 +21,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_Posts_List_Table extends ListTable
+class PostsListTable extends ListTable
 {
 
     /**
@@ -500,8 +504,8 @@ class WP_Posts_List_Table extends ListTable
                  *
                  * @param string $post_type The post type slug.
                  * @param string $which The location of the extra table nav markup:
-                 *                          'top' or 'bottom' for WP_Posts_List_Table,
-                 *                          'bar' for Devtronic\FreshPress\Components\ListTables\MediaListTable.
+                 *                          'top' or 'bottom' for PostsListTable,
+                 *                          'bar' for MediaListTable.
                  */
                 do_action('restrict_manage_posts', $this->screen->post_type, $which);
 
@@ -605,10 +609,9 @@ class WP_Posts_List_Table extends ListTable
         }
 
         $post_status = !empty($_REQUEST['post_status']) ? $_REQUEST['post_status'] : 'all';
-        if (post_type_supports($post_type, 'comments') && !in_array(
-            $post_status,
-                array('pending', 'draft', 'future')
-        )) {
+        if (post_type_supports($post_type, 'comments') &&
+            !in_array($post_status, ['pending', 'draft', 'future'])
+        ) {
             $posts_columns['comments'] = '<span class="vers comment-grey-bubble" title="' . esc_attr__('Comments') . '"><span class="screen-reader-text">' . __('Comments') . '</span></span>';
         }
 
@@ -1008,10 +1011,9 @@ class WP_Posts_List_Table extends ListTable
         }
         echo "</strong>\n";
 
-        if (!is_post_type_hierarchical($this->screen->post_type) && 'excerpt' === $mode && current_user_can(
-            'read_post',
-                $post->ID
-        )) {
+        if (!is_post_type_hierarchical($this->screen->post_type) && 'excerpt' === $mode &&
+            current_user_can('read_post', $post->ID)
+        ) {
             echo esc_html(get_the_excerpt());
         }
 
@@ -1095,14 +1097,9 @@ class WP_Posts_List_Table extends ListTable
             echo apply_filters('post_date_column_time', $t_time, $post, 'date', $mode);
         } else {
 
-            /** This filter is documented in wp-admin/includes/class-wp-posts-list-table.php */
-            echo '<abbr title="' . $t_time . '">' . apply_filters(
-                'post_date_column_time',
-                $h_time,
-                $post,
-                'date',
-                    $mode
-            ) . '</abbr>';
+            /** This filter is documented in src/Components/ListTables/PostsListTable.php */
+            echo '<abbr title="' . $t_time . '">' .
+                apply_filters('post_date_column_time', $h_time, $post, 'date', $mode) . '</abbr>';
         }
     }
 
@@ -1478,7 +1475,8 @@ class WP_Posts_List_Table extends ListTable
 
                         <tr id="<?php echo $bulk ? 'bulk-edit' : 'inline-edit'; ?>"
                             class="inline-edit-row inline-edit-row-<?php echo "$hclass inline-edit-" . $screen->post_type;
-            echo $bulk ? " bulk-edit-row bulk-edit-row-$hclass bulk-edit-{$screen->post_type}" : " quick-edit-row quick-edit-row-$hclass inline-edit-{$screen->post_type}"; ?>" style="display: none">
+            echo $bulk ? " bulk-edit-row bulk-edit-row-$hclass bulk-edit-{$screen->post_type}" : " quick-edit-row quick-edit-row-$hclass inline-edit-{$screen->post_type}"; ?>"
+                            style="display: none">
                             <td colspan="<?php echo $this->get_column_count(); ?>" class="colspanchange">
 
                                 <fieldset class="inline-edit-col-left">
@@ -1701,10 +1699,8 @@ class WP_Posts_List_Table extends ListTable
 
                                         <?php endif; // count( $flat_taxonomies ) && !$bulk?>
 
-                                        <?php if (post_type_supports(
-                                                        $screen->post_type,
-                                                'comments'
-                                                    ) || post_type_supports($screen->post_type, 'trackbacks')) :
+                                        <?php if (post_type_supports($screen->post_type, 'comments') ||
+                                            post_type_supports($screen->post_type, 'trackbacks')) :
                                             if ($bulk) : ?>
 
                                                 <div class="inline-edit-group wp-clearfix">
@@ -1797,10 +1793,9 @@ class WP_Posts_List_Table extends ListTable
 
                                         <?php
 
-                                        if ($bulk && current_theme_supports('post-formats') && post_type_supports(
-                                            $screen->post_type,
-                                                'post-formats'
-                                        )) {
+                                        if ($bulk && current_theme_supports('post-formats') &&
+                                            post_type_supports($screen->post_type, 'post-formats')
+                                        ) {
                                             $post_formats = get_theme_support('post-formats'); ?>
                                             <label class="alignleft">
                                                 <span class="title"><?php _ex('Format', 'post format'); ?></span>
@@ -1862,7 +1857,7 @@ class WP_Posts_List_Table extends ListTable
                                         <button type="button"
                                                 class="button button-primary save alignright"><?php _e('Update'); ?></button>
                                         <span class="spinner"></span>
-                                    <?php
+                                        <?php
             } else {
                 submit_button(__('Update'), 'primary alignright', 'bulk_edit', false);
             } ?>
@@ -1872,7 +1867,7 @@ class WP_Posts_List_Table extends ListTable
                 ?>
                                         <input type="hidden" name="post_author"
                                                value="<?php echo esc_attr($post->post_author); ?>"/>
-                                    <?php
+                                        <?php
             } ?>
                                     <span class="error" style="display:none"></span>
                                     <br class="clear"/>
