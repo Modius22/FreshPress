@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Links class
+ * Widget API: LinksWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement a Links widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Links extends Widget
+class LinksWidget extends Widget
 {
 
     /**
@@ -150,9 +150,9 @@ class WP_Widget_Links extends Widget
                 <option value=""><?php _ex('All Links', 'links widget'); ?></option>
                 <?php
                 foreach ($link_cats as $link_cat) {
-                    echo '<option value="' . intval($link_cat->term_id) . '"'
-                        . selected($instance['category'], $link_cat->term_id, false)
-                        . '>' . $link_cat->name . "</option>\n";
+                    $id = intval($link_cat->term_id);
+                    $selected = selected($instance['category'], $link_cat->term_id, false);
+                    echo sprintf('<option value="%s" %s>%s</option>', $id, $selected, $link_cat->name);
                 } ?>
             </select>
             <label for="<?php echo $this->get_field_id('orderby'); ?>"><?php _e('Sort by:'); ?></label>
@@ -190,7 +190,7 @@ class WP_Widget_Links extends Widget
         <p>
             <label for="<?php echo $this->get_field_id('limit'); ?>"><?php _e('Number of links to show:'); ?></label>
             <input id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>"
-                   type="text" value="<?php echo $limit == -1 ? '' : intval($limit); ?>" size="3"/>
+                   value="<?php echo $limit == -1 ? '' : intval($limit); ?>" size="3"/>
         </p>
         <?php
     }

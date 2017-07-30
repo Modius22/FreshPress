@@ -21,6 +21,7 @@
 //
 // Global Variables
 //
+use Devtronic\FreshPress\Widgets\LinksWidget;
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
 use Devtronic\FreshPress\Widgets\RecentPostsWidget;
@@ -117,6 +118,7 @@ function register_widget($widget_class)
 {
     global $wp_widget_factory;
 
+    /** @var WP_Widget_Factory $wp_widget_factory */
     $wp_widget_factory->register($widget_class);
 }
 
@@ -138,6 +140,7 @@ function unregister_widget($widget_class)
 {
     global $wp_widget_factory;
 
+    /** @var WP_Widget_Factory $wp_widget_factory */
     $wp_widget_factory->unregister($widget_class);
 }
 
@@ -409,19 +412,21 @@ function wp_register_sidebar_widget($id, $name, $output_callback, $options = arr
  * @global array $wp_registered_widgets
  *
  * @param int|string $id Widget ID.
- * @return string|void Widget description, if available.
+ * @return string|null Widget description, if available.
  */
 function wp_widget_description($id)
 {
     if (!is_scalar($id)) {
-        return;
+        return null;
     }
 
     global $wp_registered_widgets;
 
+    $res = null;
     if (isset($wp_registered_widgets[$id]['description'])) {
-        return esc_html($wp_registered_widgets[$id]['description']);
+        $res = esc_html($wp_registered_widgets[$id]['description']);
     }
+    return $res;
 }
 
 /**
@@ -435,19 +440,21 @@ function wp_widget_description($id)
  * @global array $wp_registered_sidebars
  *
  * @param string $id sidebar ID.
- * @return string|void Sidebar description, if available.
+ * @return string|null Sidebar description, if available.
  */
 function wp_sidebar_description($id)
 {
     if (!is_scalar($id)) {
-        return;
+        return null;
     }
 
     global $wp_registered_sidebars;
 
+    $res = null;
     if (isset($wp_registered_sidebars[$id]['description'])) {
-        return esc_html($wp_registered_sidebars[$id]['description']);
+        $res = esc_html($wp_registered_sidebars[$id]['description']);
     }
+    return $res;
 }
 
 /**
@@ -831,17 +838,22 @@ function dynamic_sidebar($index = 1)
  *
  * @global array $wp_registered_widgets
  *
- * @param string|false $callback Optional, Widget callback to check. Default false.
- * @param int|false $widget_id Optional. Widget ID. Optional, but needed for checking. Default false.
- * @param string|false $id_base Optional. The base ID of a widget created by extending Widget. Default false.
+ * @param string $callback Optional, Widget callback to check. Default false.
+ * @param int $widget_id Optional. Widget ID. Optional, but needed for checking. Default false.
+ * @param string $id_base Optional. The base ID of a widget created by extending Widget. Default false.
  * @param bool $skip_inactive Optional. Whether to check in 'wp_inactive_widgets'. Default true.
- * @return string|false False if widget is not active or id of sidebar in which the widget is active.
+ * @return string False if widget is not active or id of sidebar in which the widget is active.
  */
-function is_active_widget($callback = false, $widget_id = false, $id_base = false, $skip_inactive = true)
+function is_active_widget($callback = null, $widget_id = null, $id_base = null, $skip_inactive = null)
 {
     global $wp_registered_widgets;
 
     $sidebars_widgets = wp_get_sidebars_widgets();
+
+    $callback = (!is_null($callback) ? $callback : false);
+    $widget_id = (!is_null($widget_id) ? $widget_id : false);
+    $id_base = (!is_null($id_base) ? $id_base : false);
+    $skip_inactive = (!is_null($id_base) ? $skip_inactive : false);
 
     if (is_array($sidebars_widgets)) {
         foreach ($sidebars_widgets as $sidebar => $widgets) {
@@ -1179,7 +1191,7 @@ function _wp_sidebars_changed()
  *
  * @param string|bool $theme_changed Whether the theme was changed as a boolean. A value
  *                                   of 'customize' defers updates for the Customizer.
- * @return array|void
+ * @return array|null
  */
 function retrieve_widgets($theme_changed = false)
 {
@@ -1209,7 +1221,7 @@ function retrieve_widgets($theme_changed = false)
         }
     } else {
         if (empty($sidebars_widgets)) {
-            return;
+            return null;
         }
 
         unset($sidebars_widgets['array_version']);
@@ -1219,7 +1231,7 @@ function retrieve_widgets($theme_changed = false)
         sort($registered_sidebar_keys);
 
         if ($old == $registered_sidebar_keys) {
-            return;
+            return null;
         }
 
         $_sidebars_widgets = array(
@@ -1341,6 +1353,7 @@ function wp_widget_rss_output($rss, $args = array())
     }
 
     echo '<ul>';
+    /** @var SimplePie_Item $item */
     foreach ($rss->get_items(0, $items) as $item) {
         $link = $item->get_link();
         while (stristr($link, 'http') != $link) {
@@ -1444,13 +1457,13 @@ function wp_widget_rss_form($args, $inputs = null)
         ?>
         <p><label for="rss-url-<?php echo $esc_number; ?>"><?php _e('Enter the RSS feed URL here:'); ?></label>
             <input class="widefat" id="rss-url-<?php echo $esc_number; ?>"
-                   name="widget-rss[<?php echo $esc_number; ?>][url]" type="text"
+                   name="widget-rss[<?php echo $esc_number; ?>][url]"
                    value="<?php echo esc_url($args['url']); ?>"/></p>
     <?php endif;
     if ($inputs['title']) : ?>
         <p><label for="rss-title-<?php echo $esc_number; ?>"><?php _e('Give the feed a title (optional):'); ?></label>
             <input class="widefat" id="rss-title-<?php echo $esc_number; ?>"
-                   name="widget-rss[<?php echo $esc_number; ?>][title]" type="text"
+                   name="widget-rss[<?php echo $esc_number; ?>][title]"
                    value="<?php echo esc_attr($args['title']); ?>"/></p>
     <?php endif;
     if ($inputs['items']) : ?>
@@ -1561,7 +1574,7 @@ function wp_widgets_init()
     register_widget('WP_Widget_Archives');
 
     if (get_option('link_manager_enabled')) {
-        register_widget('WP_Widget_Links');
+        register_widget(LinksWidget::class);
     }
 
     register_widget('WP_Widget_Media_Audio');
