@@ -7,7 +7,7 @@
  * @since 4.8.0
  */
 
-namespace Devtronic\FreshPress\Widgets;
+namespace Devtronic\FreshPress\Components\Widgets;
 
 /**
  * Core class that implements a video widget.

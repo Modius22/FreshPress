@@ -7,7 +7,7 @@
  * @since 4.4.0
  */
 
-namespace Devtronic\FreshPress\Widgets;
+namespace Devtronic\FreshPress\Components\Widgets;
 
 /**
  * Core class used to implement a Search widget.

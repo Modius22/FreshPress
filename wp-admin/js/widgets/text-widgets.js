@@ -43,7 +43,7 @@ wp.textWidgets = ( function( $ ) {
 			 * This is inserted into the DOM immediately before the the .widget-content
 			 * element because the contents of this element are essentially "managed"
 			 * by PHP, where each widget update cause the entire element to be emptied
-			 * and replaced with the rendered output of Devtronic\FreshPress\Widgets\Widget::form() which is
+			 * and replaced with the rendered output of Devtronic\FreshPress\Components\Widgets\Widget::form() which is
 			 * sent back in Ajax request made to save/update the widget instance.
 			 * To prevent a "flash of replaced DOM elements and re-initialized JS
 			 * components", the JS template is rendered outside of the normal form
@@ -174,7 +174,7 @@ wp.textWidgets = ( function( $ ) {
 						 * logic starts. Note that the debounced update-widget request should be able
 						 * to be removed with the removal of the update-widget request entirely once
 						 * widgets are able to mutate their own instance props directly in JS without
-						 * having to make server round-trips to call the respective Devtronic\FreshPress\Widgets\Widget::update()
+						 * having to make server round-trips to call the respective Devtronic\FreshPress\Components\Widgets\Widget::update()
 						 * callbacks. See <https://core.trac.wordpress.org/ticket/33507>.
 						 */
 						if ( wp.customize ) {

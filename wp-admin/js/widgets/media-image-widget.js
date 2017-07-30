@@ -7,7 +7,7 @@
 	/**
 	 * Image widget model.
 	 *
-     * See Devtronic\FreshPress\Widgets\ImageWidget::enqueue_admin_scripts() for amending prototype from PHP exports.
+     * See Devtronic\FreshPress\Components\Widgets\ImageWidget::enqueue_admin_scripts() for amending prototype from PHP exports.
 	 *
 	 * @class ImageWidgetModel
 	 * @constructor
@@ -17,7 +17,7 @@
 	/**
 	 * Image widget control.
 	 *
-     * See Devtronic\FreshPress\Widgets\ImageWidget::enqueue_admin_scripts() for amending prototype from PHP exports.
+     * See Devtronic\FreshPress\Components\Widgets\ImageWidget::enqueue_admin_scripts() for amending prototype from PHP exports.
 	 *
 	 * @class ImageWidgetModel
 	 * @constructor

@@ -7,7 +7,7 @@
  * @since 4.4.0
  */
 
-namespace Devtronic\FreshPress\Widgets;
+namespace Devtronic\FreshPress\Components\Widgets;
 
 use WP_Customize_Manager;
 

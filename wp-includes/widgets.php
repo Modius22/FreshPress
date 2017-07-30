@@ -21,23 +21,23 @@
 //
 // Global Variables
 //
-use Devtronic\FreshPress\Widgets\ArchivesWidget;
-use Devtronic\FreshPress\Widgets\AudioWidget;
-use Devtronic\FreshPress\Widgets\CalendarWidget;
-use Devtronic\FreshPress\Widgets\CategoriesWidget;
-use Devtronic\FreshPress\Widgets\ImageWidget;
-use Devtronic\FreshPress\Widgets\LinksWidget;
-use Devtronic\FreshPress\Widgets\MetaWidget;
-use Devtronic\FreshPress\Widgets\NavMenuWidget;
-use Devtronic\FreshPress\Widgets\PagesWidget;
-use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
-use Devtronic\FreshPress\Widgets\RecentPostsWidget;
-use Devtronic\FreshPress\Widgets\RssWidget;
-use Devtronic\FreshPress\Widgets\SearchWidget;
-use Devtronic\FreshPress\Widgets\TagCloudWidget;
-use Devtronic\FreshPress\Widgets\TextWidget;
-use Devtronic\FreshPress\Widgets\VideoWidget;
-use Devtronic\FreshPress\Widgets\Widget;
+use Devtronic\FreshPress\Components\Widgets\ArchivesWidget;
+use Devtronic\FreshPress\Components\Widgets\AudioWidget;
+use Devtronic\FreshPress\Components\Widgets\CalendarWidget;
+use Devtronic\FreshPress\Components\Widgets\CategoriesWidget;
+use Devtronic\FreshPress\Components\Widgets\ImageWidget;
+use Devtronic\FreshPress\Components\Widgets\LinksWidget;
+use Devtronic\FreshPress\Components\Widgets\MetaWidget;
+use Devtronic\FreshPress\Components\Widgets\NavMenuWidget;
+use Devtronic\FreshPress\Components\Widgets\PagesWidget;
+use Devtronic\FreshPress\Components\Widgets\RecentCommentsWidget;
+use Devtronic\FreshPress\Components\Widgets\RecentPostsWidget;
+use Devtronic\FreshPress\Components\Widgets\RssWidget;
+use Devtronic\FreshPress\Components\Widgets\SearchWidget;
+use Devtronic\FreshPress\Components\Widgets\TagCloudWidget;
+use Devtronic\FreshPress\Components\Widgets\TextWidget;
+use Devtronic\FreshPress\Components\Widgets\VideoWidget;
+use Devtronic\FreshPress\Components\Widgets\Widget;
 
 /** @ignore */
 global $wp_registered_sidebars, $wp_registered_widgets, $wp_registered_widget_controls, $wp_registered_widget_updates;

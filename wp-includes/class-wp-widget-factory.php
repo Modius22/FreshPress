@@ -7,7 +7,7 @@
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+use Devtronic\FreshPress\Components\Widgets\Widget;
 
 /**
  * Singleton that registers and instantiates Widget classes.
