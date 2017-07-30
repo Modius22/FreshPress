@@ -21,6 +21,7 @@
 //
 // Global Variables
 //
+use Devtronic\FreshPress\Widgets\CalendarWidget;
 use Devtronic\FreshPress\Widgets\LinksWidget;
 use Devtronic\FreshPress\Widgets\PagesWidget;
 use Devtronic\FreshPress\Widgets\RecentCommentsWidget;
@@ -1570,7 +1571,7 @@ function wp_widgets_init()
 
     register_widget(PagesWidget::class);
 
-    register_widget('WP_Widget_Calendar');
+    register_widget(CalendarWidget::class);
 
     register_widget('WP_Widget_Archives');
 

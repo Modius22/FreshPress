@@ -28,9 +28,6 @@ require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-meta.php');
 /** WP_Widget_Meta class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-meta.php');
 
-/** WP_Widget_Calendar class */
-require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-calendar.php');
-
 /** WP_Widget_Categories class */
 require_once(ABSPATH . WPINC . '/widgets/class-wp-widget-categories.php');
 

@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Calendar class
+ * Widget API: CalendarWidget class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Widgets\Widget;
+namespace Devtronic\FreshPress\Widgets;
 
 /**
  * Core class used to implement the Calendar widget.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Widgets\Widget;
  *
  * @see Widget
  */
-class WP_Widget_Calendar extends Widget
+class CalendarWidget extends Widget
 {
     /**
      * Ensure that the ID attribute only appears in the markup once
