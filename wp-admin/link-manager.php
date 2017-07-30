@@ -6,13 +6,15 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\LinksListTable;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 if (!current_user_can('manage_links')) {
     wp_die(__('Sorry, you are not allowed to edit the links for this site.'));
 }
 
-$wp_list_table = _get_list_table('WP_Links_List_Table');
+$wp_list_table = _get_list_table(LinksListTable::class);
 
 // Handle bulk deletes
 $doaction = $wp_list_table->current_action();

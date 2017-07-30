@@ -1,13 +1,13 @@
 <?php
 /**
- * List Table API: WP_Links_List_Table class
+ * List Table API: LinksListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
 
 /**
  * Core class used to implement displaying links in a list table.
@@ -15,9 +15,9 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  * @since 3.1.0
  * @access private
  *
- * @see WP_List_Tsble
+ * @see ListTable
  */
-class WP_Links_List_Table extends ListTable
+class LinksListTable extends ListTable
 {
 
     /**
@@ -186,10 +186,8 @@ class WP_Links_List_Table extends ListTable
     {
         ?>
         <label class="screen-reader-text"
-               for="cb-select-<?php echo $link->link_id; ?>"><?php echo sprintf(
-            __('Select %s'),
-                $link->link_name
-        ); ?></label>
+               for="cb-select-<?php echo $link->link_id; ?>"><?php
+            echo sprintf(__('Select %s'), $link->link_name); ?></label>
         <input type="checkbox" name="linkcheck[]" id="cb-select-<?php echo $link->link_id; ?>"
                value="<?php echo esc_attr($link->link_id); ?>"/>
         <?php
@@ -358,12 +356,12 @@ class WP_Links_List_Table extends ListTable
         $actions = array();
         $actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit') . '</a>';
         $actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url(
-            "link.php?action=delete&amp;link_id=$link->link_id",
+                "link.php?action=delete&amp;link_id=$link->link_id",
                 'delete-bookmark_' . $link->link_id
-        ) . "' onclick=\"if ( confirm( '" . esc_js(sprintf(
-                    __("You are about to delete this link '%s'\n  'Cancel' to stop, 'OK' to delete."),
+            ) . "' onclick=\"if ( confirm( '" . esc_js(sprintf(
+                __("You are about to delete this link '%s'\n  'Cancel' to stop, 'OK' to delete."),
                 $link->link_name
-                )) . "' ) ) { return true;}return false;\">" . __('Delete') . "</a>";
+            )) . "' ) ) { return true;}return false;\">" . __('Delete') . "</a>";
         return $this->row_actions($actions);
     }
 }
