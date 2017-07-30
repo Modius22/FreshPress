@@ -4,6 +4,7 @@
  */
 
 $classes = [
+    'WP_Widget' => 'Devtronic\\FreshPress\\Widgets\\Widget',
     'WP_Nav_Menu_Widget' => 'Devtronic\\FreshPress\\Widgets\\NavMenuWidget',
     'WP_Widget_Archives' => 'Devtronic\\FreshPress\\Widgets\\ArchivesWidget',
     'WP_Widget_Calendar' => 'Devtronic\\FreshPress\\Widgets\\CalendarWidget',
