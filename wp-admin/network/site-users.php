@@ -7,6 +7,8 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -14,7 +16,7 @@ if (!current_user_can('manage_sites')) {
     wp_die(__('Sorry, you are not allowed to edit this site.'));
 }
 
-$wp_list_table = _get_list_table('WP_Users_List_Table');
+$wp_list_table = _get_list_table(UsersListTable::class);
 $wp_list_table->prepare_items();
 
 get_current_screen()->add_help_tab(array(

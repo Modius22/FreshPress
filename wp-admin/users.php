@@ -7,6 +7,8 @@
  * @since 1.0.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -18,7 +20,7 @@ if (!current_user_can('list_users')) {
     );
 }
 
-$wp_list_table = _get_list_table('WP_Users_List_Table');
+$wp_list_table = _get_list_table(UsersListTable::class);
 $pagenum = $wp_list_table->get_pagenum();
 $title = __('Users');
 $parent_file = 'users.php';

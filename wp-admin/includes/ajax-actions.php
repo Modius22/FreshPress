@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
+use Devtronic\FreshPress\Components\ListTables\UsersListTable;
 
 //
 // No-privilege Ajax handlers.
@@ -1547,7 +1548,7 @@ function wp_ajax_add_user($action)
     }
     $user_object = get_userdata($user_id);
 
-    $wp_list_table = _get_list_table('WP_Users_List_Table');
+    $wp_list_table = _get_list_table(UsersListTable::class);
 
     $role = current($user_object->roles);
 

@@ -12,6 +12,7 @@ use Devtronic\FreshPress\Components\ListTables\MediaListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
+use Devtronic\FreshPress\Components\ListTables\UsersListTable;
 
 /**
  * Fetch an instance of a ListTable class.
@@ -32,7 +33,7 @@ function _get_list_table($class, $args = array())
         PostsListTable::class => 'posts',
         MediaListTable::class => 'media',
         TermsListTable::class => 'terms',
-        'WP_Users_List_Table' => 'users',
+        UsersListTable::class => 'users',
         'WP_Comments_List_Table' => 'comments',
         'WP_Post_Comments_List_Table' => array('comments', 'post-comments'),
         LinksListTable::class => 'links',
