@@ -8,7 +8,9 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\ListTable;
+use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 
 /** Walker_Category_Checklist class */
 require_once(ABSPATH . 'wp-admin/includes/class-walker-category-checklist.php');
@@ -386,7 +388,7 @@ function wp_comment_reply($position = 1, $checkbox = false, $mode = 'single', $t
 
     if (! $wp_list_table) {
         if ($mode == 'single') {
-            $wp_list_table = _get_list_table('WP_Post_Comments_List_Table');
+            $wp_list_table = _get_list_table(PostCommentsListTable::class);
         } else {
             $wp_list_table = _get_list_table(CommentsListTable::class);
         }

@@ -1,6 +1,7 @@
 <?php
 
 // -- Post related Meta Boxes
+use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 
 /**
  * Displays post submit form fields.
@@ -838,7 +839,7 @@ function post_comment_meta_box($post)
     <?php
 
     $total = get_comments(array('post_id' => $post->ID, 'number' => 1, 'count' => true));
-    $wp_list_table = _get_list_table('WP_Post_Comments_List_Table');
+    $wp_list_table = _get_list_table(PostCommentsListTable::class);
     $wp_list_table->display(true);
 
     if (1 > $total) {

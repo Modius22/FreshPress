@@ -1,13 +1,13 @@
 <?php
 /**
- * List Table API: WP_Post_Comments_List_Table class
+ * List Table API: PostCommentsListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
 
 /**
  * Core class used to implement displaying post comments in a list table.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
  *
  * @see CommentsListTable
  */
-class WP_Post_Comments_List_Table extends CommentsListTable
+class PostCommentsListTable extends CommentsListTable
 {
 
     /**
@@ -26,15 +26,15 @@ class WP_Post_Comments_List_Table extends CommentsListTable
      */
     protected function get_column_info()
     {
-        return array(
-            array(
+        return [
+            [
                 'author' => __('Author'),
                 'comment' => _x('Comment', 'column name'),
-            ),
-            array(),
-            array(),
+            ],
+            [],
+            [],
             'comment',
-        );
+        ];
     }
 
     /**
@@ -57,18 +57,18 @@ class WP_Post_Comments_List_Table extends CommentsListTable
     {
         $singular = $this->_args['singular'];
 
-        wp_nonce_field("fetch-list-" . get_class($this), '_ajax_fetch_list_nonce'); ?>
-        <table class="<?php echo implode(' ', $this->get_table_classes()); ?>" style="display:none;">
-            <tbody id="the-comment-list"<?php
-            if ($singular) {
-                echo " data-wp-lists='list:$singular'";
-            } ?>>
-                <?php if (!$output_empty) {
-                $this->display_rows_or_placeholder();
-            } ?>
-            </tbody>
-        </table>
-        <?php
+        wp_nonce_field("fetch-list-" . get_class($this), '_ajax_fetch_list_nonce');
+        $classes = implode(' ', $this->get_table_classes());
+        echo '<table class="' . $classes . '" style="display:none;">';
+
+        $dataList = ($singular ? ' data-wp-lists="list:' . $singular . '"' : '');
+        echo '<tbody id="the-comment-list" ' . $dataList . '>';
+        if (!$output_empty) {
+            $this->display_rows_or_placeholder();
+        }
+
+        echo '</tbody>';
+        echo '</table>';
     }
 
     /**
