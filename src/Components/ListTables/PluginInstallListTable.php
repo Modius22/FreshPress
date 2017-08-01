@@ -1,13 +1,13 @@
 <?php
 /**
- * List Table API: WP_Plugin_Install_List_Table class
+ * List Table API: PluginInstallListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
 
 /**
  * Core class used to implement displaying plugins to install in a list table.
@@ -17,11 +17,11 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_Plugin_Install_List_Table extends ListTable
+class PluginInstallListTable extends ListTable
 {
     public $order = 'ASC';
     public $orderby = null;
-    public $groups = array();
+    public $groups = [];
 
     private $error;
 
@@ -48,7 +48,7 @@ class WP_Plugin_Install_List_Table extends ListTable
      */
     protected function get_installed_plugin_slugs()
     {
-        $slugs = array();
+        $slugs = [];
 
         $plugin_info = get_site_transient('update_plugins');
         if (isset($plugin_info->no_update)) {
@@ -80,14 +80,14 @@ class WP_Plugin_Install_List_Table extends ListTable
 
         global $tabs, $tab, $paged, $type, $term;
 
-        wp_reset_vars(array('tab'));
+        wp_reset_vars(['tab']);
 
         $paged = $this->get_pagenum();
 
         $per_page = 30;
 
         // These are the tabs which are shown on the page
-        $tabs = array();
+        $tabs = [];
 
         if ('search' === $tab) {
             $tabs['search'] = __('Search Results');
@@ -105,7 +105,7 @@ class WP_Plugin_Install_List_Table extends ListTable
             $tabs['upload'] = __('Upload Plugin');
         }
 
-        $nonmenu_tabs = array('plugin-information'); // Valid actions to perform which do not have a Menu item.
+        $nonmenu_tabs = ['plugin-information']; // Valid actions to perform which do not have a Menu item.
 
         /**
          * Filters the tabs shown on the Plugin Install screen.
@@ -131,18 +131,18 @@ class WP_Plugin_Install_List_Table extends ListTable
             $tab = key($tabs);
         }
 
-        $args = array(
+        $args = [
             'page' => $paged,
             'per_page' => $per_page,
-            'fields' => array(
+            'fields' => [
                 'last_updated' => true,
                 'icons' => true,
                 'active_installs' => true
-            ),
+            ],
             // Send the locale and installed plugin slugs to the API so it can provide context-sensitive results.
             'locale' => get_user_locale(),
             'installed_plugins' => $this->get_installed_plugin_slugs(),
-        );
+        ];
 
         switch ($tab) {
             case 'search':
@@ -164,10 +164,10 @@ class WP_Plugin_Install_List_Table extends ListTable
                 break;
 
             case 'featured':
+                $args['browse'] = $tab;
                 $args['fields']['group'] = true;
                 $this->orderby = 'group';
-            // No break!
-            // no break
+                break;
             case 'popular':
             case 'new':
             case 'beta':
@@ -223,13 +223,13 @@ class WP_Plugin_Install_List_Table extends ListTable
         $this->items = $api->plugins;
 
         if ($this->orderby) {
-            uasort($this->items, array($this, 'order_callback'));
+            uasort($this->items, [$this, 'order_callback']);
         }
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $api->info['results'],
             'per_page' => $args['per_page'],
-        ));
+        ]);
 
         if (isset($api->info['groups'])) {
             $this->groups = $api->info['groups'];
@@ -260,7 +260,7 @@ class WP_Plugin_Install_List_Table extends ListTable
     {
         global $tabs, $tab;
 
-        $display_tabs = array();
+        $display_tabs = [];
         foreach ((array)$tabs as $action => $text) {
             $class = ($action === $tab) ? ' current' : '';
             $href = self_admin_url('plugin-install.php?tab=' . $action);
@@ -336,28 +336,24 @@ class WP_Plugin_Install_List_Table extends ListTable
         }
 
         if ('top' === $which) {
-            wp_referer_field(); ?>
-            <div class="tablenav top">
-                <div class="alignleft actions">
-                    <?php
-                    /**
-                     * Fires before the Plugin Install table header pagination is displayed.
-                     *
-                     * @since 2.7.0
-                     */
-                    do_action('install_plugins_table_header'); ?>
-                </div>
-                <?php $this->pagination($which); ?>
-                <br class="clear"/>
-            </div>
-        <?php
+            wp_referer_field();
+            echo '<div class="tablenav top">';
+            echo '    <div class="alignleft actions">';
+            /**
+             * Fires before the Plugin Install table header pagination is displayed.
+             *
+             * @since 2.7.0
+             */
+            do_action('install_plugins_table_header');
+            echo '    </div>';
+            $this->pagination($which);
+            echo '    <br class="clear"/>';
+            echo '</div>';
         } else {
-            ?>
-            <div class="tablenav bottom">
-                <?php $this->pagination($which); ?>
-                <br class="clear"/>
-            </div>
-            <?php
+            echo '<div class="tablenav bottom">';
+            $this->pagination($which);
+            echo '    <br class="clear"/>';
+            echo '</div>';
         }
     }
 
@@ -366,7 +362,7 @@ class WP_Plugin_Install_List_Table extends ListTable
      */
     protected function get_table_classes()
     {
-        return array('widefat', $this->_args['plural']);
+        return ['widefat', $this->_args['plural']];
     }
 
     /**
@@ -374,7 +370,7 @@ class WP_Plugin_Install_List_Table extends ListTable
      */
     public function get_columns()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -405,26 +401,26 @@ class WP_Plugin_Install_List_Table extends ListTable
 
     public function display_rows()
     {
-        $plugins_allowedtags = array(
-            'a' => array('href' => array(), 'title' => array(), 'target' => array()),
-            'abbr' => array('title' => array()),
-            'acronym' => array('title' => array()),
-            'code' => array(),
-            'pre' => array(),
-            'em' => array(),
-            'strong' => array(),
-            'ul' => array(),
-            'ol' => array(),
-            'li' => array(),
-            'p' => array(),
-            'br' => array()
-        );
+        $plugins_allowedtags = [
+            'a' => ['href' => [], 'title' => [], 'target' => []],
+            'abbr' => ['title' => []],
+            'acronym' => ['title' => []],
+            'code' => [],
+            'pre' => [],
+            'em' => [],
+            'strong' => [],
+            'ul' => [],
+            'ol' => [],
+            'li' => [],
+            'p' => [],
+            'br' => []
+        ];
 
-        $plugins_group_titles = array(
+        $plugins_group_titles = [
             'Performance' => _x('Performance', 'Plugin installer group title'),
             'Social' => _x('Social', 'Plugin installer group title'),
             'Tools' => _x('Tools', 'Plugin installer group title'),
-        );
+        ];
 
         $group = null;
 
@@ -468,7 +464,7 @@ class WP_Plugin_Install_List_Table extends ListTable
                 $author = ' <cite>' . sprintf(__('By %s'), $author) . '</cite>';
             }
 
-            $action_links = array();
+            $action_links = [];
 
             if (current_user_can('install_plugins') || current_user_can('update_plugins')) {
                 $status = install_plugin_install_status($plugin);
@@ -477,45 +473,41 @@ class WP_Plugin_Install_List_Table extends ListTable
                     case 'install':
                         if ($status['url']) {
                             /* translators: 1: Plugin name and version. */
-                            $action_links[] = '<a class="install-now button" data-slug="' . esc_attr($plugin['slug']) . '" href="' . esc_url($status['url']) . '" aria-label="' . esc_attr(sprintf(
-                                __('Install %s now'),
-                                    $name
-                            )) . '" data-name="' . esc_attr($name) . '">' . __('Install Now') . '</a>';
+                            $action_links[] = '<a class="install-now button" data-slug="' . esc_attr($plugin['slug']) . '" href="' . esc_url($status['url']) . '" aria-label="' .
+                                esc_attr(sprintf(__('Install %s now'), $name)) .
+                                '" data-name="' . esc_attr($name) . '">' . __('Install Now') . '</a>';
                         }
                         break;
 
                     case 'update_available':
                         if ($status['url']) {
                             /* translators: 1: Plugin name and version */
-                            $action_links[] = '<a class="update-now button aria-button-if-js" data-plugin="' . esc_attr($status['file']) . '" data-slug="' . esc_attr($plugin['slug']) . '" href="' . esc_url($status['url']) . '" aria-label="' . esc_attr(sprintf(
-                                __('Update %s now'),
-                                    $name
-                            )) . '" data-name="' . esc_attr($name) . '">' . __('Update Now') . '</a>';
+                            $action_links[] = '<a class="update-now button aria-button-if-js" data-plugin="' . esc_attr($status['file']) . '" data-slug="' . esc_attr($plugin['slug']) . '" href="' . esc_url($status['url']) . '" aria-label="' .
+                                esc_attr(sprintf(__('Update %s now'), $name)) .
+                                '" data-name="' . esc_attr($name) . '">' . __('Update Now') . '</a>';
                         }
                         break;
 
                     case 'latest_installed':
                     case 'newer_installed':
                         if (is_plugin_active($status['file'])) {
-                            $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . _x(
-                                'Active',
-                                    'plugin'
-                            ) . '</button>';
+                            $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' .
+                                _x('Active', 'plugin') . '</button>';
                         } elseif (current_user_can('activate_plugins')) {
                             $button_text = __('Activate');
                             /* translators: %s: Plugin name */
                             $button_label = _x('Activate %s', 'plugin');
-                            $activate_url = add_query_arg(array(
+                            $activate_url = add_query_arg([
                                 '_wpnonce' => wp_create_nonce('activate-plugin_' . $status['file']),
                                 'action' => 'activate',
                                 'plugin' => $status['file'],
-                            ), network_admin_url('plugins.php'));
+                            ], network_admin_url('plugins.php'));
 
                             if (is_network_admin()) {
                                 $button_text = __('Network Activate');
                                 /* translators: %s: Plugin name */
                                 $button_label = _x('Network Activate %s', 'plugin');
-                                $activate_url = add_query_arg(array('networkwide' => 1), $activate_url);
+                                $activate_url = add_query_arg(['networkwide' => 1], $activate_url);
                             }
 
                             $action_links[] = sprintf(
@@ -525,10 +517,8 @@ class WP_Plugin_Install_List_Table extends ListTable
                                 $button_text
                             );
                         } else {
-                            $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . _x(
-                                'Installed',
-                                    'plugin'
-                            ) . '</button>';
+                            $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' .
+                                _x('Installed', 'plugin') . '</button>';
                         }
                         break;
                 }
@@ -538,10 +528,9 @@ class WP_Plugin_Install_List_Table extends ListTable
                 '&amp;TB_iframe=true&amp;width=600&amp;height=550');
 
             /* translators: 1: Plugin name and version. */
-            $action_links[] = '<a href="' . esc_url($details_link) . '" class="thickbox open-plugin-details-modal" aria-label="' . esc_attr(sprintf(
-                __('More information about %s'),
-                    $name
-            )) . '" data-title="' . esc_attr($name) . '">' . __('More Details') . '</a>';
+            $action_links[] = '<a href="' . esc_url($details_link) . '" class="thickbox open-plugin-details-modal" aria-label="' .
+                esc_attr(sprintf(__('More information about %s'), $name)) .
+                '" data-title="' . esc_attr($name) . '">' . __('More Details') . '</a>';
 
             if (!empty($plugin['icons']['svg'])) {
                 $plugin_icon_url = $plugin['icons']['svg'];
@@ -563,81 +552,76 @@ class WP_Plugin_Install_List_Table extends ListTable
              */
             $action_links = apply_filters('plugin_install_action_links', $action_links, $plugin);
 
-            $last_updated_timestamp = strtotime($plugin['last_updated']); ?>
-            <div class="plugin-card plugin-card-<?php echo sanitize_html_class($plugin['slug']); ?>">
-                <div class="plugin-card-top">
-                    <div class="name column-name">
-                        <h3>
-                            <a href="<?php echo esc_url($details_link); ?>" class="thickbox open-plugin-details-modal">
-                                <?php echo $title; ?>
-                                <img src="<?php echo esc_attr($plugin_icon_url) ?>" class="plugin-icon" alt="">
-                            </a>
-                        </h3>
-                    </div>
-                    <div class="action-links">
-                        <?php
-                        if ($action_links) {
-                            echo '<ul class="plugin-action-buttons"><li>' . implode(
-                                '</li><li>',
-                                    $action_links
-                            ) . '</li></ul>';
-                        } ?>
-                    </div>
-                    <div class="desc column-description">
-                        <p><?php echo $description; ?></p>
-                        <p class="authors"><?php echo $author; ?></p>
-                    </div>
-                </div>
-                <div class="plugin-card-bottom">
-                    <div class="vers column-rating">
-                        <?php wp_star_rating(array(
-                            'rating' => $plugin['rating'],
-                            'type' => 'percent',
-                            'number' => $plugin['num_ratings']
-                        )); ?>
-                        <span class="num-ratings"
-                              aria-hidden="true">(<?php echo number_format_i18n($plugin['num_ratings']); ?>)</span>
-                    </div>
-                    <div class="column-updated">
-                        <strong><?php _e('Last Updated:'); ?></strong> <?php printf(
-                            __('%s ago'),
-                            human_time_diff($last_updated_timestamp)
-                        ); ?>
-                    </div>
-                    <div class="column-downloaded">
-                        <?php
-                        if ($plugin['active_installs'] >= 1000000) {
-                            $active_installs_text = _x('1+ Million', 'Active plugin installs');
-                        } elseif (0 == $plugin['active_installs']) {
-                            $active_installs_text = _x('Less Than 10', 'Active plugin installs');
-                        } else {
-                            $active_installs_text = number_format_i18n($plugin['active_installs']) . '+';
-                        }
-            printf(__('%s Active Installs'), $active_installs_text); ?>
-                    </div>
-                    <div class="column-compatibility">
-                        <?php
-                        $wp_version = get_bloginfo('version');
+            $last_updated_timestamp = strtotime($plugin['last_updated']);
+            echo '<div class="plugin-card plugin-card-' . sanitize_html_class($plugin['slug']) . '">';
+            echo '    <div class="plugin-card-top">';
+            echo '        <div class="name column-name">';
+            echo '            <h3>';
+            echo '                <a href="' . esc_url($details_link) . '" class="thickbox open-plugin-details-modal">';
+            echo $title;
+            echo '                    <img src="' . esc_attr($plugin_icon_url) . '" class="plugin-icon" alt="">';
+            echo '            </h3>';
+            echo '        </div>';
+            echo '        <div class="action-links">';
+
+            if ($action_links) {
+                echo '<ul class="plugin-action-buttons">';
+                echo '    <li>' . implode('</li><li>', $action_links) . '</li>';
+                echo '</ul>';
+            }
+            echo '        </div>';
+            echo '        <div class="desc column-description">';
+            echo '            <p>' . $description . '</p>';
+            echo '            <p class="authors">' . $author . '</p>';
+            echo '        </div>';
+            echo '    </div>';
+            echo '    <div class="plugin-card-bottom">';
+            echo '        <div class="vers column-rating">';
+            wp_star_rating([
+                'rating' => $plugin['rating'],
+                'type' => 'percent',
+                'number' => $plugin['num_ratings']
+            ]);
+            echo '            <span class="num-ratings" aria-hidden="true">(' . number_format_i18n($plugin['num_ratings']) . ')</span>';
+            echo '        </div>';
+            echo '        <div class="column-updated">';
+            echo '            <strong>' . __('Last Updated:') . '</strong>';
+            echo sprintf(__('%s ago'), human_time_diff($last_updated_timestamp));
+            echo '        </div>';
+
+            if ($plugin['active_installs'] >= 1000000) {
+                $active_installs_text = _x('1+ Million', 'Active plugin installs');
+            } elseif (0 == $plugin['active_installs']) {
+                $active_installs_text = _x('Less Than 10', 'Active plugin installs');
+            } else {
+                $active_installs_text = number_format_i18n($plugin['active_installs']) . '+';
+            }
+            echo '        <div class="column-downloaded">';
+            echo sprintf(__('%s Active Installs'), $active_installs_text);
+            echo '        </div>';
+            echo '        <div class="column-compatibility">';
+            $wp_version = get_bloginfo('version');
 
             if (!empty($plugin['tested']) && version_compare(substr(
-                            $wp_version,
-                            0,
-                                strlen($plugin['tested'])
-                        ), $plugin['tested'], '>')) {
+                    $wp_version,
+                    0,
+                    strlen($plugin['tested'])
+                ), $plugin['tested'], '>')
+            ) {
                 echo '<span class="compatibility-untested">' . __('Untested with your version of WordPress') . '</span>';
             } elseif (!empty($plugin['requires']) && version_compare(substr(
-                            $wp_version,
-                            0,
-                                strlen($plugin['requires'])
-                        ), $plugin['requires'], '<')) {
+                    $wp_version,
+                    0,
+                    strlen($plugin['requires'])
+                ), $plugin['requires'], '<')
+            ) {
                 echo '<span class="compatibility-incompatible">' . __('<strong>Incompatible</strong> with your version of WordPress') . '</span>';
             } else {
                 echo '<span class="compatibility-compatible">' . __('<strong>Compatible</strong> with your version of WordPress') . '</span>';
-            } ?>
-                    </div>
-                </div>
-            </div>
-            <?php
+            }
+            echo '        </div>';
+            echo '    </div>';
+            echo '</div>';
         }
 
         // Close off the group divs of the last one

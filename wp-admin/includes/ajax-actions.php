@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
+use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
@@ -4298,8 +4299,8 @@ function wp_ajax_search_install_plugins()
         set_current_screen($pagenow);
     }
 
-    /** @var WP_Plugin_Install_List_Table $wp_list_table */
-    $wp_list_table = _get_list_table('WP_Plugin_Install_List_Table', array(
+    /** @var PluginInstallListTable $wp_list_table */
+    $wp_list_table = _get_list_table(PluginInstallListTable::class, array(
         'screen' => get_current_screen(),
     ));
 

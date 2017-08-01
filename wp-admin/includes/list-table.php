@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
 use Devtronic\FreshPress\Components\ListTables\MediaListTable;
+use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
@@ -39,7 +40,7 @@ function _get_list_table($class, $args = array())
         CommentsListTable::class => 'comments',
         PostCommentsListTable::class => array('comments', 'post-comments'),
         LinksListTable::class => 'links',
-        'WP_Plugin_Install_List_Table' => 'plugin-install',
+        PluginInstallListTable::class => 'plugin-install',
         'WP_Themes_List_Table' => 'themes',
         'WP_Theme_Install_List_Table' => array('themes', 'theme-install'),
         PluginsListTable::class => 'plugins',
