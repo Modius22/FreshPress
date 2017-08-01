@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 
 /**
@@ -583,8 +584,8 @@ function wp_theme_update_row($theme_key, $theme)
         'height' => 800,
     ), $current->response[$theme_key]['url']);
 
-    /** @var WP_MS_Themes_List_Table $wp_list_table */
-    $wp_list_table = _get_list_table('WP_MS_Themes_List_Table');
+    /** @var MSThemesListTable $wp_list_table */
+    $wp_list_table = _get_list_table(MSThemesListTable::class);
 
     $active = $theme->is_allowed('network') ? ' active' : '';
 

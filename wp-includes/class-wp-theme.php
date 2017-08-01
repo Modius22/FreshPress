@@ -1,5 +1,7 @@
 <?php
 
+use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
+
 /**
  * WP_Theme Class
  *
@@ -17,7 +19,7 @@ final class WP_Theme implements ArrayAccess
      * @access public
      * @var bool
      *
-     * @see WP_MS_Themes_List_Table
+     * @see MSThemesListTable
      */
     public $update = false;
 

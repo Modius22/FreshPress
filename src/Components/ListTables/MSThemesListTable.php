@@ -1,13 +1,15 @@
 <?php
 /**
- * List Table API: WP_MS_Themes_List_Table class
+ * List Table API: MSThemesListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Theme;
 
 /**
  * Core class used to implement displaying themes in a list table for the network admin.
@@ -17,7 +19,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_MS_Themes_List_Table extends ListTable
+class MSThemesListTable extends ListTable
 {
     public $site_id;
     public $is_site_themes;
@@ -37,17 +39,17 @@ class WP_MS_Themes_List_Table extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         global $status, $page;
 
-        parent::__construct(array(
+        parent::__construct([
             'plural' => 'themes',
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
 
         $status = isset($_REQUEST['theme_status']) ? $_REQUEST['theme_status'] : 'all';
-        if (!in_array($status, array('all', 'enabled', 'disabled', 'upgrade', 'search', 'broken'))) {
+        if (!in_array($status, ['all', 'enabled', 'disabled', 'upgrade', 'search', 'broken'])) {
             $status = 'all';
         }
 
@@ -67,7 +69,7 @@ class WP_MS_Themes_List_Table extends ListTable
     protected function get_table_classes()
     {
         // todo: remove and add CSS for .themes
-        return array('widefat', 'plugins');
+        return ['widefat', 'plugins'];
     }
 
     /**
@@ -96,9 +98,9 @@ class WP_MS_Themes_List_Table extends ListTable
     {
         global $status, $totals, $page, $orderby, $order, $s;
 
-        wp_reset_vars(array('orderby', 'order', 's'));
+        wp_reset_vars(['orderby', 'order', 's']);
 
-        $themes = array(
+        $themes = [
             /**
              * Filters the full array of WP_Theme objects to list in the Multisite
              * themes list table.
@@ -108,12 +110,12 @@ class WP_MS_Themes_List_Table extends ListTable
              * @param array $all An array of WP_Theme objects to display in the list table.
              */
             'all' => apply_filters('all_themes', wp_get_themes()),
-            'search' => array(),
-            'enabled' => array(),
-            'disabled' => array(),
-            'upgrade' => array(),
-            'broken' => $this->is_site_themes ? array() : wp_get_themes(array('errors' => true)),
-        );
+            'search' => [],
+            'enabled' => [],
+            'disabled' => [],
+            'upgrade' => [],
+            'broken' => $this->is_site_themes ? [] : wp_get_themes(['errors' => true]),
+        ];
 
         if ($this->is_site_themes) {
             $themes_per_page = $this->get_items_per_page('site_themes_network_per_page');
@@ -144,16 +146,16 @@ class WP_MS_Themes_List_Table extends ListTable
             $status = 'search';
             $themes['search'] = array_filter(
                 array_merge($themes['all'], $themes['broken']),
-                array($this, '_search_callback')
+                [$this, '_search_callback']
             );
         }
 
-        $totals = array();
+        $totals = [];
         foreach ($themes as $type => $list) {
             $totals[$type] = count($list);
         }
 
-        if (empty($themes[$status]) && !in_array($status, array('all', 'search'))) {
+        if (empty($themes[$status]) && !in_array($status, ['all', 'search'])) {
             $status = 'all';
         }
 
@@ -163,10 +165,10 @@ class WP_MS_Themes_List_Table extends ListTable
         $this->has_items = !empty($themes['all']);
         $total_this_page = $totals[$status];
 
-        wp_localize_script('updates', '_wpUpdatesItemCounts', array(
+        wp_localize_script('updates', '_wpUpdatesItemCounts', [
             'themes' => $totals,
             'totals' => wp_get_update_data(),
-        ));
+        ]);
 
         if ($orderby) {
             $orderby = ucfirst($orderby);
@@ -177,7 +179,7 @@ class WP_MS_Themes_List_Table extends ListTable
                     $this->items = array_reverse($this->items);
                 }
             } else {
-                uasort($this->items, array($this, '_order_callback'));
+                uasort($this->items, [$this, '_order_callback']);
             }
         }
 
@@ -187,10 +189,10 @@ class WP_MS_Themes_List_Table extends ListTable
             $this->items = array_slice($this->items, $start, $themes_per_page, true);
         }
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $total_this_page,
             'per_page' => $themes_per_page,
-        ));
+        ]);
     }
 
     /**
@@ -205,7 +207,7 @@ class WP_MS_Themes_List_Table extends ListTable
             $term = wp_unslash($_REQUEST['s']);
         }
 
-        foreach (array('Name', 'Description', 'Author', 'Author', 'AuthorURI') as $field) {
+        foreach (['Name', 'Description', 'Author', 'Author', 'AuthorURI'] as $field) {
             // Don't mark up; Do translate.
             if (false !== stripos($theme->display($field, false, true), $term)) {
                 return true;
@@ -268,11 +270,11 @@ class WP_MS_Themes_List_Table extends ListTable
      */
     public function get_columns()
     {
-        return array(
+        return [
             'cb' => '<input type="checkbox" />',
             'name' => __('Theme'),
             'description' => __('Description'),
-        );
+        ];
     }
 
     /**
@@ -281,9 +283,9 @@ class WP_MS_Themes_List_Table extends ListTable
      */
     protected function get_sortable_columns()
     {
-        return array(
+        return [
             'name' => 'name',
-        );
+        ];
     }
 
     /**
@@ -309,7 +311,7 @@ class WP_MS_Themes_List_Table extends ListTable
     {
         global $totals, $status;
 
-        $status_links = array();
+        $status_links = [];
         foreach ($totals as $type => $count) {
             if (!$count) {
                 continue;
@@ -382,7 +384,7 @@ class WP_MS_Themes_List_Table extends ListTable
     {
         global $status;
 
-        $actions = array();
+        $actions = [];
         if ('enabled' != $status) {
             $actions['enable-selected'] = $this->is_site_themes ? __('Enable') : __('Network Enable');
         }
@@ -455,24 +457,24 @@ class WP_MS_Themes_List_Table extends ListTable
         }
 
         // Pre-order.
-        $actions = array(
+        $actions = [
             'enable' => '',
             'disable' => '',
             'edit' => '',
             'delete' => ''
-        );
+        ];
 
         $stylesheet = $theme->get_stylesheet();
         $theme_key = urlencode($stylesheet);
 
         if (!$allowed) {
             if (!$theme->errors()) {
-                $url = add_query_arg(array(
+                $url = add_query_arg([
                     'action' => 'enable',
                     'theme' => $theme_key,
                     'paged' => $page,
                     's' => $s,
-                ), $url);
+                ], $url);
 
                 if ($this->is_site_themes) {
                     /* translators: %s: theme name */
@@ -490,12 +492,12 @@ class WP_MS_Themes_List_Table extends ListTable
                 );
             }
         } else {
-            $url = add_query_arg(array(
+            $url = add_query_arg([
                 'action' => 'disable',
                 'theme' => $theme_key,
                 'paged' => $page,
                 's' => $s,
-            ), $url);
+            ], $url);
 
             if ($this->is_site_themes) {
                 /* translators: %s: theme name */
@@ -514,9 +516,9 @@ class WP_MS_Themes_List_Table extends ListTable
         }
 
         if (current_user_can('edit_themes')) {
-            $url = add_query_arg(array(
+            $url = add_query_arg([
                 'theme' => $theme_key,
-            ), 'theme-editor.php');
+            ], 'theme-editor.php');
 
             /* translators: %s: theme name */
             $aria_label = sprintf(__('Open %s in the Theme Editor'), $theme->display('Name'));
@@ -530,13 +532,13 @@ class WP_MS_Themes_List_Table extends ListTable
         }
 
         if (!$allowed && current_user_can('delete_themes') && !$this->is_site_themes && $stylesheet != get_option('stylesheet') && $stylesheet != get_option('template')) {
-            $url = add_query_arg(array(
+            $url = add_query_arg([
                 'action' => 'delete-selected',
                 'checked[]' => $theme_key,
                 'theme_status' => $context,
                 'paged' => $page,
                 's' => $s,
-            ), 'themes.php');
+            ], 'themes.php');
 
             /* translators: %s: theme name */
             $aria_label = sprintf(_x('Delete %s', 'theme'), $theme->display('Name'));
@@ -625,7 +627,7 @@ class WP_MS_Themes_List_Table extends ListTable
 			<div class='$class second theme-version-author-uri'>";
 
         $stylesheet = $theme->get_stylesheet();
-        $theme_meta = array();
+        $theme_meta = [];
 
         if ($theme->get('Version')) {
             $theme_meta[] = sprintf(__('Version %s'), $theme->display('Version'));

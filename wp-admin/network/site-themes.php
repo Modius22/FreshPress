@@ -7,6 +7,8 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -40,7 +42,7 @@ get_current_screen()->set_screen_reader_content(array(
     'heading_list' => __('Site themes list'),
 ));
 
-$wp_list_table = _get_list_table('WP_MS_Themes_List_Table');
+$wp_list_table = _get_list_table(MSThemesListTable::class);
 
 $action = $wp_list_table->current_action();
 

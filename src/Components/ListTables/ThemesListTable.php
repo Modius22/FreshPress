@@ -239,10 +239,10 @@ class ThemesListTable extends ListTable
                         . "' );" . '">' . __('Delete') . '</a>';
         }
 
-        /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
+        /** This filter is documented in src/Components/ListTables/MSThemesListTable.php */
         $actions = apply_filters('theme_action_links', $actions, $theme);
 
-        /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
+        /** This filter is documented in src/Components/ListTables/MSThemesListTable.php */
         $actions = apply_filters("theme_action_links_$stylesheet", $actions, $theme);
         $delete_action = isset($actions['delete']) ? '<div class="delete-theme">' . $actions['delete'] . '</div>' : '';
         unset($actions['delete']); ?>

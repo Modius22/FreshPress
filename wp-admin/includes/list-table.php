@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
 use Devtronic\FreshPress\Components\ListTables\MediaListTable;
 use Devtronic\FreshPress\Components\ListTables\MSSitesListTable;
+use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
 use Devtronic\FreshPress\Components\ListTables\MSUsersListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
@@ -37,31 +38,24 @@ function _get_list_table($class, $args = array())
 {
     $core_classes = array(
         //Site Admin
-        PostsListTable::class => 'posts',
-        MediaListTable::class => 'media',
-        TermsListTable::class => 'terms',
-        UsersListTable::class => 'users',
-        CommentsListTable::class => 'comments',
-        PostCommentsListTable::class => array('comments', 'post-comments'),
-        LinksListTable::class => 'links',
-        PluginInstallListTable::class => 'plugin-install',
-        ThemesListTable::class => 'themes',
-        ThemeInstallListTable::class => array('themes', 'theme-install'),
-        PluginsListTable::class => 'plugins',
+        PostsListTable::class,
+        MediaListTable::class,
+        TermsListTable::class,
+        UsersListTable::class,
+        CommentsListTable::class,
+        PostCommentsListTable::class,
+        LinksListTable::class,
+        PluginInstallListTable::class,
+        ThemesListTable::class,
+        ThemeInstallListTable::class,
+        PluginsListTable::class,
         // Network Admin
-        MSSitesListTable::class => 'ms-sites',
-        MSUsersListTable::class => 'ms-users',
-        'WP_MS_Themes_List_Table' => 'ms-themes',
+        MSSitesListTable::class,
+        MSUsersListTable::class,
+        MSThemesListTable::class,
     );
 
-    if (isset($core_classes[$class])) {
-        // @todo remove after every list is psr-4
-        if(!stristr($class, '\\')){
-            foreach ((array)$core_classes[$class] as $required) {
-                require_once(ABSPATH . 'wp-admin/includes/class-wp-' . $required . '-list-table.php');
-            }
-        }
-
+    if (in_array($class, $core_classes)) {
         if (isset($args['screen'])) {
             $args['screen'] = convert_to_screen($args['screen']);
         } elseif (isset($GLOBALS['hook_suffix'])) {
