@@ -7,15 +7,17 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\ThemesListTable;
+
 /**
  * Core class used to implement displaying themes to install in a list table.
  *
  * @since 3.1.0
  * @access private
  *
- * @see WP_Themes_List_Table
+ * @see ThemesListTable
  */
-class WP_Theme_Install_List_Table extends WP_Themes_List_Table
+class WP_Theme_Install_List_Table extends ThemesListTable
 {
     public $features = array();
 

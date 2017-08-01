@@ -1,13 +1,15 @@
 <?php
 /**
- * List Table API: WP_Themes_List_Table class
+ * List Table API: ThemesListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Theme;
 
 /**
  * Core class used to implement displaying installed themes in a list table.
@@ -17,10 +19,10 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_Themes_List_Table extends ListTable
+class ThemesListTable extends ListTable
 {
-    protected $search_terms = array();
-    public $features = array();
+    protected $search_terms = [];
+    public $features = [];
 
     /**
      * Constructor.
@@ -32,12 +34,12 @@ class WP_Themes_List_Table extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'ajax' => true,
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
     }
 
     /**
@@ -55,7 +57,7 @@ class WP_Themes_List_Table extends ListTable
      */
     public function prepare_items()
     {
-        $themes = wp_get_themes(array('allowed' => true));
+        $themes = wp_get_themes(['allowed' => true]);
 
         if (!empty($_REQUEST['s'])) {
             $this->search_terms = array_unique(array_filter(array_map(
@@ -86,11 +88,11 @@ class WP_Themes_List_Table extends ListTable
 
         $this->items = array_slice($themes, $start, $per_page, true);
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => count($themes),
             'per_page' => $per_page,
             'infinite_scroll' => true,
-        ));
+        ]);
     }
 
     /**
@@ -177,7 +179,7 @@ class WP_Themes_List_Table extends ListTable
      */
     public function get_columns()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -205,36 +207,36 @@ class WP_Themes_List_Table extends ListTable
             ?>
             <div class="available-theme"><?php
 
-            $template = $theme->get_template();
+                $template = $theme->get_template();
         $stylesheet = $theme->get_stylesheet();
         $title = $theme->display('Name');
         $version = $theme->display('Version');
         $author = $theme->display('Author');
 
         $activate_link = wp_nonce_url(
-                "themes.php?action=activate&amp;template=" . urlencode($template) . "&amp;stylesheet=" . urlencode($stylesheet),
-                'switch-theme_' . $stylesheet
-            );
+                    "themes.php?action=activate&amp;template=" . urlencode($template) . "&amp;stylesheet=" . urlencode($stylesheet),
+                    'switch-theme_' . $stylesheet
+                );
 
-        $actions = array();
+        $actions = [];
         $actions['activate'] = '<a href="' . $activate_link . '" class="activatelink" title="'
-                . esc_attr(sprintf(__('Activate &#8220;%s&#8221;'), $title)) . '">' . __('Activate') . '</a>';
+                    . esc_attr(sprintf(__('Activate &#8220;%s&#8221;'), $title)) . '">' . __('Activate') . '</a>';
 
         if (current_user_can('edit_theme_options') && current_user_can('customize')) {
             $actions['preview'] .= '<a href="' . wp_customize_url($stylesheet) . '" class="load-customize hide-if-no-customize">'
-                    . __('Live Preview') . '</a>';
+                        . __('Live Preview') . '</a>';
         }
 
         if (!is_multisite() && current_user_can('delete_themes')) {
             $actions['delete'] = '<a class="submitdelete deletion" href="' . wp_nonce_url(
-                    'themes.php?action=delete&amp;stylesheet=' . urlencode($stylesheet),
-                        'delete-theme_' . $stylesheet
-                )
-                    . '" onclick="' . "return confirm( '" . esc_js(sprintf(
-                        __("You are about to delete this theme '%s'\n  'Cancel' to stop, 'OK' to delete."),
-                        $title
-                    ))
-                    . "' );" . '">' . __('Delete') . '</a>';
+                            'themes.php?action=delete&amp;stylesheet=' . urlencode($stylesheet),
+                            'delete-theme_' . $stylesheet
+                        )
+                        . '" onclick="' . "return confirm( '" . esc_js(sprintf(
+                            __("You are about to delete this theme '%s'\n  'Cancel' to stop, 'OK' to delete."),
+                            $title
+                        ))
+                        . "' );" . '">' . __('Delete') . '</a>';
         }
 
         /** This filter is documented in wp-admin/includes/class-wp-ms-themes-list-table.php */
@@ -245,43 +247,43 @@ class WP_Themes_List_Table extends ListTable
         $delete_action = isset($actions['delete']) ? '<div class="delete-theme">' . $actions['delete'] . '</div>' : '';
         unset($actions['delete']); ?>
 
-            <span class="screenshot hide-if-customize">
+                <span class="screenshot hide-if-customize">
 				<?php if ($screenshot = $theme->get_screenshot()) : ?>
                     <img src="<?php echo esc_url($screenshot); ?>" alt=""/>
                 <?php endif; ?>
 			</span>
-            <a href="<?php echo wp_customize_url($stylesheet); ?>"
-               class="screenshot load-customize hide-if-no-customize">
-                <?php if ($screenshot = $theme->get_screenshot()) : ?>
-                    <img src="<?php echo esc_url($screenshot); ?>" alt=""/>
-                <?php endif; ?>
-            </a>
+                <a href="<?php echo wp_customize_url($stylesheet); ?>"
+                   class="screenshot load-customize hide-if-no-customize">
+                    <?php if ($screenshot = $theme->get_screenshot()) : ?>
+                        <img src="<?php echo esc_url($screenshot); ?>" alt=""/>
+                    <?php endif; ?>
+                </a>
 
-            <h3><?php echo $title; ?></h3>
-            <div class="theme-author"><?php printf(__('By %s'), $author); ?></div>
-            <div class="action-links">
-                <ul>
-                    <?php foreach ($actions as $action): ?>
-                        <li><?php echo $action; ?></li>
-                    <?php endforeach; ?>
-                    <li class="hide-if-no-js"><a href="#" class="theme-detail"><?php _e('Details') ?></a></li>
-                </ul>
-                <?php echo $delete_action; ?>
+                <h3><?php echo $title; ?></h3>
+                <div class="theme-author"><?php printf(__('By %s'), $author); ?></div>
+                <div class="action-links">
+                    <ul>
+                        <?php foreach ($actions as $action): ?>
+                            <li><?php echo $action; ?></li>
+                        <?php endforeach; ?>
+                        <li class="hide-if-no-js"><a href="#" class="theme-detail"><?php _e('Details') ?></a></li>
+                    </ul>
+                    <?php echo $delete_action; ?>
 
-                <?php theme_update_available($theme); ?>
-            </div>
+                    <?php theme_update_available($theme); ?>
+                </div>
 
-            <div class="themedetaildiv hide-if-js">
-                <p><strong><?php _e('Version:'); ?></strong> <?php echo $version; ?></p>
-                <p><?php echo $theme->display('Description'); ?></p>
-                <?php if ($theme->parent()) {
+                <div class="themedetaildiv hide-if-js">
+                    <p><strong><?php _e('Version:'); ?></strong> <?php echo $version; ?></p>
+                    <p><?php echo $theme->display('Description'); ?></p>
+                    <?php if ($theme->parent()) {
             printf(
-                        ' <p class="howto">' . __('This <a href="%1$s">child theme</a> requires its parent theme, %2$s.') . '</p>',
-                        __('https://codex.wordpress.org/Child_Themes'),
-                        $theme->parent()->display('Name')
-                    );
+                            ' <p class="howto">' . __('This <a href="%1$s">child theme</a> requires its parent theme, %2$s.') . '</p>',
+                            __('https://codex.wordpress.org/Child_Themes'),
+                            $theme->parent()->display('Name')
+                        );
         } ?>
-            </div>
+                </div>
 
             </div>
             <?php
@@ -307,7 +309,7 @@ class WP_Themes_List_Table extends ListTable
                 continue;
             }
 
-            foreach (array('Name', 'Description', 'Author', 'AuthorURI') as $header) {
+            foreach (['Name', 'Description', 'Author', 'AuthorURI'] as $header) {
                 // Don't mark up; Do translate.
                 if (false !== stripos(strip_tags($theme->display($header, false, true)), $word)) {
                     continue 2;
@@ -336,16 +338,16 @@ class WP_Themes_List_Table extends ListTable
      *
      * @param array $extra_args
      */
-    public function _js_vars($extra_args = array())
+    public function _js_vars($extra_args = [])
     {
         $search_string = isset($_REQUEST['s']) ? esc_attr(wp_unslash($_REQUEST['s'])) : '';
 
-        $args = array(
+        $args = [
             'search' => $search_string,
             'features' => $this->features,
             'paged' => $this->get_pagenum(),
             'total_pages' => !empty($this->_pagination_args['total_pages']) ? $this->_pagination_args['total_pages'] : 1,
-        );
+        ];
 
         if (is_array($extra_args)) {
             $args = array_merge($args, $extra_args);

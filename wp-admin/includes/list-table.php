@@ -15,6 +15,7 @@ use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
+use Devtronic\FreshPress\Components\ListTables\ThemesListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
 
 /**
@@ -41,7 +42,7 @@ function _get_list_table($class, $args = array())
         PostCommentsListTable::class => array('comments', 'post-comments'),
         LinksListTable::class => 'links',
         PluginInstallListTable::class => 'plugin-install',
-        'WP_Themes_List_Table' => 'themes',
+        ThemesListTable::class => 'themes',
         'WP_Theme_Install_List_Table' => array('themes', 'theme-install'),
         PluginsListTable::class => 'plugins',
         // Network Admin
