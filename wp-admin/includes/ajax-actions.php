@@ -3257,7 +3257,7 @@ function wp_ajax_query_themes()
 
     $old_filter = isset($args['browse']) ? $args['browse'] : 'search';
 
-    /** This filter is documented in wp-admin/includes/class-wp-theme-install-list-table.php */
+    /** This filter is documented in src/Components/ListTables/ThemeInstallList_Table.php */
     $args = apply_filters('install_themes_table_api_args_' . $old_filter, $args);
 
     $api = themes_api('query_themes', $args);
@@ -3802,7 +3802,7 @@ function wp_ajax_install_theme()
     }
 
     /*
-     * See WP_Theme_Install_List_Table::_get_theme_status() if we wanted to check
+     * See Devtronic\FreshPress\Components\ListTables\WP_Theme_Install_List_Table::_get_theme_status() if we wanted to check
      * on post-install status.
      */
     wp_send_json_success($status);

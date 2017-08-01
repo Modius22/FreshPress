@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\ThemeInstallListTable;
+
 $themes_allowedtags = array(
     'a' => array('href' => array(), 'title' => array(), 'target' => array()),
     'abbr' => array('title' => array()),
@@ -185,7 +187,7 @@ function install_themes_upload()
  *
  * @deprecated 3.4.0
  *
- * @global WP_Theme_Install_List_Table $wp_list_table
+ * @global ThemeInstallListTable $wp_list_table
  *
  * @param object $theme
  */
@@ -194,7 +196,7 @@ function display_theme($theme)
     _deprecated_function(__FUNCTION__, '3.4.0');
     global $wp_list_table;
     if (!isset($wp_list_table)) {
-        $wp_list_table = _get_list_table('WP_Theme_Install_List_Table');
+        $wp_list_table = _get_list_table(ThemeInstallListTable::class);
     }
     $wp_list_table->prepare_items();
     $wp_list_table->single_row($theme);
@@ -205,14 +207,14 @@ function display_theme($theme)
  *
  * @since 2.8.0
  *
- * @global WP_Theme_Install_List_Table $wp_list_table
+ * @global ThemeInstallListTable $wp_list_table
  */
 function display_themes()
 {
     global $wp_list_table;
 
     if (!isset($wp_list_table)) {
-        $wp_list_table = _get_list_table('WP_Theme_Install_List_Table');
+        $wp_list_table = _get_list_table(ThemeInstallListTable::class);
     }
     $wp_list_table->prepare_items();
     $wp_list_table->display();
@@ -223,7 +225,7 @@ function display_themes()
  *
  * @since 2.8.0
  *
- * @global WP_Theme_Install_List_Table $wp_list_table
+ * @global ThemeInstallListTable $wp_list_table
  */
 function install_theme_information()
 {
@@ -237,7 +239,7 @@ function install_theme_information()
 
     iframe_header(__('Theme Install'));
     if (!isset($wp_list_table)) {
-        $wp_list_table = _get_list_table('WP_Theme_Install_List_Table');
+        $wp_list_table = _get_list_table(ThemeInstallListTable::class);
     }
     $wp_list_table->theme_installer_single($theme);
     iframe_footer();

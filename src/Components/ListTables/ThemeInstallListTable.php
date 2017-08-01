@@ -1,13 +1,15 @@
 <?php
 /**
- * List Table API: WP_Theme_Install_List_Table class
+ * List Table API: ThemeInstallListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ThemesListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_Theme;
 
 /**
  * Core class used to implement displaying themes to install in a list table.
@@ -17,9 +19,9 @@ use Devtronic\FreshPress\Components\ListTables\ThemesListTable;
  *
  * @see ThemesListTable
  */
-class WP_Theme_Install_List_Table extends ThemesListTable
+class ThemeInstallListTable extends ThemesListTable
 {
-    public $features = array();
+    public $features = [];
 
     /**
      *
@@ -43,9 +45,9 @@ class WP_Theme_Install_List_Table extends ThemesListTable
         include(ABSPATH . 'wp-admin/includes/theme-install.php');
 
         global $tabs, $tab, $paged, $type, $theme_field_defaults;
-        wp_reset_vars(array('tab'));
+        wp_reset_vars(['tab']);
 
-        $search_terms = array();
+        $search_terms = [];
         $search_string = '';
         if (!empty($_REQUEST['s'])) {
             $search_string = strtolower(wp_unslash($_REQUEST['s']));
@@ -61,7 +63,7 @@ class WP_Theme_Install_List_Table extends ThemesListTable
         $per_page = 36;
 
         // These are the tabs which are shown on the page,
-        $tabs = array();
+        $tabs = [];
         $tabs['dashboard'] = __('Search');
         if ('search' === $tab) {
             $tabs['search'] = __('Search Results');
@@ -72,7 +74,7 @@ class WP_Theme_Install_List_Table extends ThemesListTable
         $tabs['new'] = _x('Latest', 'themes');
         $tabs['updated'] = _x('Recently Updated', 'themes');
 
-        $nonmenu_tabs = array('theme-information'); // Valid actions to perform which do not have a Menu item.
+        $nonmenu_tabs = ['theme-information']; // Valid actions to perform which do not have a Menu item.
 
         /** This filter is documented in wp-admin/theme-install.php */
         $tabs = apply_filters('install_themes_tabs', $tabs);
@@ -92,7 +94,7 @@ class WP_Theme_Install_List_Table extends ThemesListTable
             $tab = key($tabs);
         }
 
-        $args = array('page' => $paged, 'per_page' => $per_page, 'fields' => $theme_field_defaults);
+        $args = ['page' => $paged, 'per_page' => $per_page, 'fields' => $theme_field_defaults];
 
         switch ($tab) {
             case 'search':
@@ -155,11 +157,11 @@ class WP_Theme_Install_List_Table extends ThemesListTable
 
         $this->items = $api->themes;
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $api->info['results'],
             'per_page' => $args['per_page'],
             'infinite_scroll' => true,
-        ));
+        ]);
     }
 
     /**
@@ -180,7 +182,7 @@ class WP_Theme_Install_List_Table extends ThemesListTable
     {
         global $tabs, $tab;
 
-        $display_tabs = array();
+        $display_tabs = [];
         foreach ((array)$tabs as $action => $text) {
             $class = ($action === $tab) ? ' class="current"' : '';
             $href = self_admin_url('theme-install.php?tab=' . $action);
@@ -228,7 +230,7 @@ class WP_Theme_Install_List_Table extends ThemesListTable
             ?>
             <div class="available-theme installable-theme"><?php
                 $this->single_row($theme); ?></div>
-        <?php
+            <?php
         } // end foreach $theme_names
 
         $this->theme_installer();
@@ -270,58 +272,47 @@ class WP_Theme_Install_List_Table extends ThemesListTable
         $author = wp_kses($theme->author, $themes_allowedtags);
 
         $preview_title = sprintf(__('Preview &#8220;%s&#8221;'), $name);
-        $preview_url = add_query_arg(array(
+        $preview_url = add_query_arg([
             'tab' => 'theme-information',
             'theme' => $theme->slug,
-        ), self_admin_url('theme-install.php'));
+        ], self_admin_url('theme-install.php'));
 
-        $actions = array();
+        $actions = [];
 
-        $install_url = add_query_arg(array(
+        $install_url = add_query_arg([
             'action' => 'install-theme',
             'theme' => $theme->slug,
-        ), self_admin_url('update.php'));
+        ], self_admin_url('update.php'));
 
-        $update_url = add_query_arg(array(
+        $update_url = add_query_arg([
             'action' => 'upgrade-theme',
             'theme' => $theme->slug,
-        ), self_admin_url('update.php'));
+        ], self_admin_url('update.php'));
 
         $status = $this->_get_theme_status($theme);
 
         switch ($status) {
             case 'update_available':
-                $actions[] = '<a class="install-now" href="' . esc_url(wp_nonce_url(
-                    $update_url,
-                        'upgrade-theme_' . $theme->slug
-                )) . '" title="' . esc_attr(sprintf(
-                            __('Update to version %s'),
-                        $theme->version
-                        )) . '">' . __('Update') . '</a>';
+                $actions[] = '<a class="install-now" href="' .
+                    esc_url(wp_nonce_url($update_url, 'upgrade-theme_' . $theme->slug)) .
+                    '" title="' . esc_attr(sprintf(__('Update to version %s'), $theme->version)) .
+                    '">' . __('Update') . '</a>';
                 break;
             case 'newer_installed':
             case 'latest_installed':
-                $actions[] = '<span class="install-now" title="' . esc_attr__('This theme is already installed and is up to date') . '">' . _x(
-                    'Installed',
-                        'theme'
-                ) . '</span>';
+                $actions[] = '<span class="install-now" title="' . esc_attr__('This theme is already installed and is up to date') . '">' .
+                    _x('Installed', 'theme') . '</span>';
                 break;
             case 'install':
             default:
-                $actions[] = '<a class="install-now" href="' . esc_url(wp_nonce_url(
-                    $install_url,
-                        'install-theme_' . $theme->slug
-                )) . '" title="' . esc_attr(sprintf(
-                            __('Install %s'),
-                        $name
-                        )) . '">' . __('Install Now') . '</a>';
+                $actions[] = '<a class="install-now" href="' .
+                    esc_url(wp_nonce_url($install_url, 'install-theme_' . $theme->slug)) .
+                    '" title="' . esc_attr(sprintf(__('Install %s'), $name)) . '">' . __('Install Now') . '</a>';
                 break;
         }
 
-        $actions[] = '<a class="install-theme-preview" href="' . esc_url($preview_url) . '" title="' . esc_attr(sprintf(
-            __('Preview %s'),
-                $name
-        )) . '">' . __('Preview') . '</a>';
+        $actions[] = '<a class="install-theme-preview" href="' . esc_url($preview_url) . '" title="' .
+            esc_attr(sprintf(__('Preview %s'), $name)) . '">' . __('Preview') . '</a>';
 
         /**
          * Filters the install action links for a theme in the Install Themes list table.
@@ -420,41 +411,35 @@ class WP_Theme_Install_List_Table extends ThemesListTable
         $name = wp_kses($theme->name, $themes_allowedtags);
         $author = wp_kses($theme->author, $themes_allowedtags);
 
-        $install_url = add_query_arg(array(
+        $install_url = add_query_arg([
             'action' => 'install-theme',
             'theme' => $theme->slug,
-        ), self_admin_url('update.php'));
+        ], self_admin_url('update.php'));
 
-        $update_url = add_query_arg(array(
+        $update_url = add_query_arg([
             'action' => 'upgrade-theme',
             'theme' => $theme->slug,
-        ), self_admin_url('update.php'));
+        ], self_admin_url('update.php'));
 
         $status = $this->_get_theme_status($theme); ?>
         <div class="install-theme-info"><?php
             switch ($status) {
                 case 'update_available':
-                    echo '<a class="theme-install button button-primary" href="' . esc_url(wp_nonce_url(
-                        $update_url,
-                            'upgrade-theme_' . $theme->slug
-                    )) . '" title="' . esc_attr(sprintf(
-                                __('Update to version %s'),
-                            $theme->version
-                            )) . '">' . __('Update') . '</a>';
+                    echo '<a class="theme-install button button-primary" href="' .
+                        esc_url(wp_nonce_url($update_url, 'upgrade-theme_' . $theme->slug)) .
+                        '" title="' . esc_attr(sprintf(__('Update to version %s'), $theme->version)) .
+                        '">' . __('Update') . '</a>';
                     break;
                 case 'newer_installed':
                 case 'latest_installed':
-                    echo '<span class="theme-install" title="' . esc_attr__('This theme is already installed and is up to date') . '">' . _x(
-                        'Installed',
-                            'theme'
-                    ) . '</span>';
+                    echo '<span class="theme-install" title="' . esc_attr__('This theme is already installed and is up to date') . '">' .
+                        _x('Installed', 'theme') . '</span>';
                     break;
                 case 'install':
                 default:
-                    echo '<a class="theme-install button button-primary" href="' . esc_url(wp_nonce_url(
-                        $install_url,
-                            'install-theme_' . $theme->slug
-                    )) . '">' . __('Install') . '</a>';
+                    echo '<a class="theme-install button button-primary" href="' .
+                        esc_url(wp_nonce_url($install_url, 'install-theme_' . $theme->slug)) .
+                        '">' . __('Install') . '</a>';
                     break;
             } ?>
             <h3 class="theme-name"><?php echo $name; ?></h3>
@@ -463,11 +448,11 @@ class WP_Theme_Install_List_Table extends ThemesListTable
                 <img class="theme-screenshot" src="<?php echo esc_url($theme->screenshot_url); ?>" alt=""/>
             <?php endif; ?>
             <div class="theme-details">
-                <?php wp_star_rating(array(
+                <?php wp_star_rating([
                     'rating' => $theme->rating,
                     'type' => 'percent',
                     'number' => $theme->num_ratings
-                )); ?>
+                ]); ?>
                 <div class="theme-version">
                     <strong><?php _e('Version:') ?> </strong>
                     <?php echo wp_kses($theme->version, $themes_allowedtags); ?>
@@ -492,7 +477,7 @@ class WP_Theme_Install_List_Table extends ThemesListTable
      *
      * @param array $extra_args Unused.
      */
-    public function _js_vars($extra_args = array())
+    public function _js_vars($extra_args = [])
     {
         global $tab, $type;
         parent::_js_vars(compact('tab', 'type'));
@@ -513,12 +498,11 @@ class WP_Theme_Install_List_Table extends ThemesListTable
 
         $installed_theme = wp_get_theme($theme->slug);
         if ($installed_theme->exists()) {
+            $status = 'update_available';
             if (version_compare($installed_theme->get('Version'), $theme->version, '=')) {
                 $status = 'latest_installed';
             } elseif (version_compare($installed_theme->get('Version'), $theme->version, '>')) {
                 $status = 'newer_installed';
-            } else {
-                $status = 'update_available';
             }
         }
 
