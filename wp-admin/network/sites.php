@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\MSSitesListTable;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -14,7 +16,7 @@ if (!current_user_can('manage_sites')) {
     wp_die(__('Sorry, you are not allowed to access this page.'), 403);
 }
 
-$wp_list_table = _get_list_table('WP_MS_Sites_List_Table');
+$wp_list_table = _get_list_table(MSSitesListTable::class);
 $pagenum = $wp_list_table->get_pagenum();
 
 $title = __('Sites');
