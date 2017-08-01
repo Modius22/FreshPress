@@ -6,6 +6,8 @@
  * @subpackage Theme
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Returns an array of WP_Theme objects based on the arguments.
  *
@@ -3349,7 +3351,7 @@ function is_customize_preview()
  * @param string $new_status Transition to this post status.
  * @param string $old_status Previous post status.
  * @param \WP_Post $post Post data.
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  */
 function _wp_keep_alive_customize_changeset_dependent_auto_drafts($new_status, $old_status, $post)
 {

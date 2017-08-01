@@ -9,6 +9,8 @@
  * @since 2.3.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Redirects incoming links to the proper URL based on the site url.
  *
@@ -31,7 +33,7 @@
  * @global WP_Rewrite $wp_rewrite
  * @global bool $is_IIS
  * @global WP_Query $wp_query
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $requested_url Optional. The URL that was requested, used to
  *        figure if redirect is needed.
@@ -707,7 +709,7 @@ function strip_fragment_from_url($url)
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @return false|string The correct URL if one is found. False on failure.
  */

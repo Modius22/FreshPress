@@ -8,6 +8,8 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Retrieve the author of the current comment.
  *
@@ -1336,7 +1338,7 @@ function wp_comment_form_unfiltered_html_nonce()
  *
  * @global WP_Query $wp_query
  * @global WP_Post $post
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global int $id
  * @global WP_Comment $comment
  * @global string $user_login

@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used for interacting with a multisite network.
  *
@@ -94,7 +96,7 @@ class WP_Network
      * @since 4.4.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $network_id The ID of the network to retrieve.
      * @return WP_Network|bool The network's object if found. False if not.

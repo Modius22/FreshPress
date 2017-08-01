@@ -10,12 +10,14 @@
  * @subpackage Meta
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Add metadata for the specified object.
  *
  * @since 2.9.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, or user)
  * @param int $object_id ID of the object metadata is for
@@ -136,7 +138,7 @@ function add_metadata($meta_type, $object_id, $meta_key, $meta_value, $unique = 
  *
  * @since 2.9.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, or user)
  * @param int $object_id ID of the object metadata is for
@@ -303,7 +305,7 @@ function update_metadata($meta_type, $object_id, $meta_key, $meta_value, $prev_v
  *
  * @since 2.9.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, or user)
  * @param int $object_id ID of the object metadata is for
@@ -588,7 +590,7 @@ function metadata_exists($meta_type, $object_id, $meta_key)
  *
  * @since 3.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, term, or user).
  * @param int $meta_id ID for a specific meta row
@@ -632,7 +634,7 @@ function get_metadata_by_mid($meta_type, $meta_id)
  *
  * @since 3.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, or user)
  * @param int $meta_id ID for a specific meta row
@@ -727,7 +729,7 @@ function update_metadata_by_mid($meta_type, $meta_id, $meta_value, $meta_key = f
  *
  * @since 3.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, term, or user).
  * @param int $meta_id ID for a specific meta row
@@ -814,7 +816,7 @@ function delete_metadata_by_mid($meta_type, $meta_id)
  *
  * @since 2.9.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, or user)
  * @param int|array $object_ids Array or comma delimited list of object IDs to update cache for
@@ -938,7 +940,7 @@ function get_meta_sql($meta_query, $type, $primary_table, $primary_id_column, $c
  *
  * @since 2.9.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $type Type of object to get metadata table for (e.g., comment, post, or user)
  * @return string|false Metadata table name, or false if no metadata table exists

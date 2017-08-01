@@ -5,6 +5,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Return the HTTP protocol sent by the server.
  *
@@ -432,13 +434,12 @@ function wp_set_lang_dir()
  *
  * @since 2.5.0
  *
- * @global wpdb $wpdb The WordPress database class.
+ * @global WPDB $wpdb The WordPress database class.
  */
 function require_wp_db()
 {
     global $wpdb;
 
-    require_once(ABSPATH . WPINC . '/wp-db.php');
     if (file_exists(WP_CONTENT_DIR . '/db.php')) {
         require_once(WP_CONTENT_DIR . '/db.php');
     }
@@ -447,7 +448,7 @@ function require_wp_db()
         return;
     }
 
-    $wpdb = new wpdb(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
+    $wpdb = new WPDB(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
 }
 
 /**
@@ -459,7 +460,7 @@ function require_wp_db()
  * @since 3.0.0
  * @access private
  *
- * @global wpdb $wpdb The WordPress database class.
+ * @global WPDB $wpdb The WordPress database class.
  * @global string $table_prefix The database table prefix.
  */
 function wp_set_wpdb_vars()
@@ -762,7 +763,7 @@ function wp_magic_quotes()
         $_COOKIE = stripslashes_deep($_COOKIE);
     }
 
-    // Escape with wpdb.
+    // Escape with Devtronic\FreshPress\Core\wpdb.
     $_GET = add_magic_quotes($_GET);
     $_POST = add_magic_quotes($_POST);
     $_COOKIE = add_magic_quotes($_COOKIE);

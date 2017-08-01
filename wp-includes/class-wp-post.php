@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used to implement the WP_Post object.
  *
@@ -203,7 +205,7 @@ final class WP_Post
      * @static
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $post_id Post ID.
      * @return WP_Post|false Post object, false otherwise.

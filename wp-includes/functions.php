@@ -5,6 +5,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 require(ABSPATH . WPINC . '/option.php');
 
 /**
@@ -586,7 +588,7 @@ function wp_extract_urls($content)
  *
  * @since 1.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $content Post Content.
  * @param int $post_ID Post ID.
@@ -1258,7 +1260,7 @@ function cache_javascript_headers()
  *
  * @since 2.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @return int Number of database queries.
  */
@@ -1439,7 +1441,7 @@ function do_robots()
  *
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @return bool Whether the site is already installed.
  */
@@ -4015,7 +4017,7 @@ function wp_ob_end_flush_all()
  *
  * @since 2.3.2
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function dead_db()
 {
@@ -5210,7 +5212,7 @@ function _cleanup_header_comment($str)
  *
  * @since 2.9.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function wp_scheduled_delete()
 {

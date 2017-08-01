@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used to implement taxonomy queries for the Taxonomy API.
  *
@@ -403,7 +405,7 @@ class WP_Tax_Query
      * @since 4.1.0
      * @access public
      *
-     * @global wpdb $wpdb The WordPress database abstraction object.
+     * @global WPDB $wpdb The WordPress database abstraction object.
      *
      * @param array $clause Query clause, passed by reference.
      * @param array $parent_query Parent query array.
@@ -609,7 +611,7 @@ class WP_Tax_Query
      *
      * @since 3.2.0
      *
-     * @global wpdb $wpdb The WordPress database abstraction object.
+     * @global WPDB $wpdb The WordPress database abstraction object.
      *
      * @param array $query The single query. Passed by reference.
      * @param string $resulting_field The resulting field. Accepts 'slug', 'name', 'term_taxonomy_id',

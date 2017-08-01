@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Gets the network's site and user counts.
  *
@@ -35,7 +37,7 @@ function get_sitestats()
  *
  * @since MU 1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $user_id The unique ID of the user
  * @return WP_Site|void The blog object
@@ -206,7 +208,7 @@ function add_user_to_blog($blog_id, $user_id, $role)
  *
  * @since MU 1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $user_id ID of the user you're removing.
  * @param int $blog_id ID of the blog you're removing the user from.
@@ -320,7 +322,7 @@ function get_blog_permalink($blog_id, $post_id)
  *
  * @since MU 2.6.5
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $domain
  * @param string $path Optional. Not required for subdomain installations.
@@ -429,7 +431,7 @@ function is_email_address_unsafe($user_email)
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $user_name The login name provided by the user.
  * @param string $user_email The email provided by the user.
@@ -585,7 +587,7 @@ function wpmu_validate_user_signup($user_name, $user_email)
  *
  * @since MU
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global string $domain
  *
  * @param string $blogname The blog name provided by the user. Must be unique.
@@ -748,7 +750,7 @@ function wpmu_validate_blog_signup($blogname, $blog_title, $user = '')
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $domain The requested domain.
  * @param string $path The requested path.
@@ -815,7 +817,7 @@ function wpmu_signup_blog($domain, $path, $title, $user, $user_email, $meta = ar
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $user The user's requested login name.
  * @param string $user_email The user's email address.
@@ -1125,7 +1127,7 @@ function wpmu_signup_user_notification($user_login, $user_email, $key, $meta = a
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $key The activation key provided to the user.
  * @return array|WP_Error An array containing information about the activated user and/or blog
@@ -1461,7 +1463,7 @@ Disable these notifications: %3$s'), $user->user_login, wp_unslash($_SERVER['REM
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $domain The domain to be checked.
  * @param string $path The path to be checked.
@@ -1501,7 +1503,7 @@ function domain_exists($domain, $path, $site_id = 1)
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $domain The domain of the new site.
  * @param string $path The path of the new site.
@@ -1540,7 +1542,7 @@ function insert_blog($domain, $path, $site_id)
  *
  * @since MU
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global WP_Roles $wp_roles
  *
  * @param int $blog_id The value returned by insert_blog().
@@ -1609,7 +1611,7 @@ function install_blog($blog_id, $blog_title = '')
  * @deprecated MU
  * @deprecated Use wp_install_defaults()
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $blog_id Ignored in this function.
  * @param int $user_id
@@ -1879,7 +1881,7 @@ function get_current_site()
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $user_id
  * @return array Contains the blog_id, post_id, post_date_gmt, and post_gmt_ts
@@ -2037,7 +2039,7 @@ function check_upload_mimes($mimes)
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $deprecated Not used.
  */
@@ -2055,7 +2057,7 @@ function update_posts_count($deprecated = '')
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $blog_id
  * @param int $user_id
@@ -2081,7 +2083,7 @@ function wpmu_log_new_registrations($blog_id, $user_id)
  *
  * @see term_id_filter
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @staticvar int $global_terms_recurse
  *
  * @param int $term_id An ID for a term on the current blog.
@@ -2411,7 +2413,7 @@ function update_blog_public($old_value, $value)
  *
  * @since MU
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $key
  * @param int $user_id Optional. Defaults to current user.
@@ -2638,7 +2640,7 @@ function wp_update_network_site_counts($network_id = null)
  * @since 3.7.0
  * @since 4.8.0 The $network_id parameter has been added.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|null $network_id ID of the network. Default is the current network.
  */

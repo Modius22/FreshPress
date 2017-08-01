@@ -11,6 +11,8 @@
  * @subpackage Query
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Retrieve variable in the WP_Query class.
  *
@@ -989,7 +991,7 @@ function the_comment()
  *
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function wp_old_slug_redirect()
 {

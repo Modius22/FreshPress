@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Version number for the export format.
  *
@@ -24,7 +26,7 @@ define('WXR_VERSION', '1.2');
  *
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global WP_Post $post Global `$post`.
  *
  * @param array $args {
@@ -364,7 +366,7 @@ function export_wp($args = array())
      *
      * @since 3.1.0
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param array $post_ids Array of post IDs to filter the query by. Optional.
      */

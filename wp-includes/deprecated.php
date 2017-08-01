@@ -8,6 +8,8 @@
  * @subpackage Deprecated
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /*
  * Deprecated functions come here to die.
  */
@@ -2706,7 +2708,7 @@ function update_usermeta($user_id, $meta_key, $meta_value)
  * @deprecated 3.1.0 Use get_users()
  * @see get_users()
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $id Site ID.
  * @return array List of users that are part of that site ID
@@ -3845,7 +3847,7 @@ function default_topic_count_text($count)
 /**
  * Formerly used to escape strings before inserting into the DB.
  *
- * Has not performed this function for many, many years. Use wpdb::prepare() instead.
+ * Has not performed this function for many, many years. Use Devtronic\FreshPress\Core\WPDB::prepare() instead.
  *
  * @since 0.71
  * @deprecated 3.9.0
@@ -3863,15 +3865,15 @@ function format_to_post($content)
  * Formerly used to escape strings before searching the DB. It was poorly documented and never worked as described.
  *
  * @since 2.5.0
- * @deprecated 4.0.0 Use wpdb::esc_like()
- * @see wpdb::esc_like()
+ * @deprecated 4.0.0 Use Devtronic\FreshPress\Core\WPDB::esc_like()
+ * @see WPDB::esc_like()
  *
  * @param string $text The text to be escaped.
  * @return string text, safe for inclusion in LIKE query.
  */
 function like_escape($text)
 {
-    _deprecated_function(__FUNCTION__, '4.0.0', 'wpdb::esc_like()');
+    _deprecated_function(__FUNCTION__, '4.0.0', 'Devtronic\FreshPress\Core\WPDB::esc_like()');
     return str_replace(array("%", "_"), array("\\%", "\\_"), $text);
 }
 

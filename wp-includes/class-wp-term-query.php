@@ -8,6 +8,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Class used for querying terms.
  *
@@ -304,7 +306,7 @@ class WP_Term_Query
      * @since 4.6.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @return array List of terms.
      */
@@ -848,7 +850,7 @@ class WP_Term_Query
      * @since 4.6.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $orderby_raw Alias for the field to order by.
      * @return string|false Value to used in the ORDER clause. False otherwise.
@@ -989,7 +991,7 @@ class WP_Term_Query
      * @since 4.6.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $string
      * @return string

@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used to organize comments as instantiated objects with defined members.
  *
@@ -206,7 +208,7 @@ final class WP_Comment
      * @access public
      * @static
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $id Comment ID.
      * @return WP_Comment|false Comment object, otherwise false.

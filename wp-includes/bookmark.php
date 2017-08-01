@@ -6,12 +6,14 @@
  * @subpackage Bookmark
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Retrieve Bookmark data
  *
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|stdClass $bookmark
  * @param string $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
@@ -107,7 +109,7 @@ function get_bookmark_field($field, $bookmark, $context = 'display')
  *
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string|array $args {
  *     Optional. String or array of arguments to retrieve bookmarks.

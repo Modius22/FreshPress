@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used to implement the WP_User object.
  *
@@ -113,7 +115,7 @@ class WP_User
      * @since 2.0.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int|string|stdClass|WP_User $id User's ID, a WP_User object, or a user object from the DB.
      * @param string $name Optional. User's username
@@ -183,7 +185,7 @@ class WP_User
      *
      * @static
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $field The field to query against: 'id', 'ID', 'slug', 'email' or 'login'.
      * @param string|int $value The field value
@@ -477,7 +479,7 @@ class WP_User
      * @access protected
      * @since 2.1.0
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $cap_key Optional capability key
      */
@@ -679,7 +681,7 @@ class WP_User
      * @since 2.0.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      */
     public function update_user_level_from_caps()
     {
@@ -730,7 +732,7 @@ class WP_User
      * @since 2.1.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      */
     public function remove_all_caps()
     {
@@ -831,7 +833,7 @@ class WP_User
      *
      * @since 3.0.0
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $blog_id Optional. Site ID, defaults to current site.
      */

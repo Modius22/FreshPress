@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Rename $_POST data from form names to DB post columns.
  *
@@ -209,7 +211,7 @@ function _wp_translate_postdata($update = false, $post_data = null)
  *
  * @since 1.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $post_data Optional.
  * @return int Post ID.
@@ -469,7 +471,7 @@ function edit_post($post_data = null)
  *
  * @since 2.7.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $post_data Optional, the array of post data to process if not provided will use $_POST superglobal.
  * @return array
@@ -760,7 +762,7 @@ function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
  *
  * @since 2.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $title Post title
  * @param string $content Optional post content
@@ -961,7 +963,7 @@ function delete_meta($mid)
  *
  * @since 1.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @return mixed
  */
@@ -996,7 +998,7 @@ function get_post_meta_by_id($mid)
  *
  * @since 1.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $postid
  * @return mixed
@@ -1207,7 +1209,7 @@ function wp_edit_posts_query($q = false)
  *
  * @since 2.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $type
  * @return mixed

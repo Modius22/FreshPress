@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Determine if uploaded file exceeds space quota.
  *
@@ -64,7 +66,7 @@ function check_upload_size($file)
  *
  * @since 3.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $blog_id Site ID.
  * @param bool $drop True if site's database tables should be dropped. Default is false.
@@ -208,7 +210,7 @@ function wpmu_delete_blog($blog_id, $drop = false)
  *
  * @todo Merge with wp_delete_user() ?
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $id The user ID.
  * @return bool True if the user was deleted, otherwise false.
@@ -369,7 +371,7 @@ All at ###SITENAME###
  * @since 3.0.0
  *
  * @global WP_Error $errors WP_Error object.
- * @global wpdb $wpdb WordPress database object.
+ * @global WPDB $wpdb WordPress database object.
  */
 function send_confirmation_on_profile_email()
 {
@@ -610,7 +612,7 @@ function upload_space_setting($id)
  *
  * @since 3.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $id The user ID.
  * @param string $pref The column in the wp_users table to update the user's status
@@ -1175,7 +1177,7 @@ function choose_primary_blog()
  *
  * @since 3.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $site_id The network/site ID to check.
  * @return bool True if network can be edited, otherwise false.

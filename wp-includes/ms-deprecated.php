@@ -9,6 +9,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /*
  * Deprecated functions come here to die.
  */
@@ -429,7 +431,7 @@ function create_empty_blog($domain, $path, $weblog_title, $site_id = 1)
         return __('<strong>ERROR</strong>: Site URL already taken.');
     }
 
-    // Need to back up wpdb table names, and create a new wp_blogs entry for new blog.
+    // Need to back up Devtronic\FreshPress\Core\WPDB table names, and create a new wp_blogs entry for new blog.
     // Need to get blog_id from wp_blogs, and create new table names.
     // Must restore table names at the end of function.
 
@@ -450,7 +452,7 @@ function create_empty_blog($domain, $path, $weblog_title, $site_id = 1)
  * @since MU 1.0
  * @deprecated 4.4.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $sitedomain Optional. Site domain.
  * @param string $path Optional. Site path.
@@ -489,7 +491,7 @@ function get_admin_users_for_domain($sitedomain = '', $path = '')
  * @deprecated 4.6.0
  * @see get_sites()
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $args {
  *     Array of default arguments. Optional.

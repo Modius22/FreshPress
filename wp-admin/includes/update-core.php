@@ -7,6 +7,8 @@
  * @since 2.7.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Stores files to be deleted.
  *
@@ -794,7 +796,7 @@ $_new_bundled_files = array(
  * @global WP_Filesystem_Base $wp_filesystem
  * @global array $_old_files
  * @global array $_new_bundled_files
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global string $wp_version
  * @global string $required_php_version
  * @global string $required_mysql_version

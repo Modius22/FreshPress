@@ -8,6 +8,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /** Include user install customize script. */
 if (file_exists(WP_CONTENT_DIR . '/install.php')) {
     require(WP_CONTENT_DIR . '/install.php');
@@ -142,7 +144,7 @@ if (!function_exists('wp_install_defaults')) :
      *
      * @since 2.1.0
      *
-     * @global wpdb $wpdb
+     * @global WPDB $wpdb
      * @global WP_Rewrite $wp_rewrite
      * @global string $table_prefix
      *
@@ -491,7 +493,7 @@ if (!function_exists('wp_upgrade')) :
      *
      * @global int $wp_current_db_version
      * @global int $wp_db_version
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      */
     function wp_upgrade()
     {
@@ -694,7 +696,7 @@ function upgrade_all()
  * @ignore
  * @since 1.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_100()
 {
@@ -769,7 +771,7 @@ function upgrade_100()
  * @ignore
  * @since 1.0.1
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_101()
 {
@@ -791,7 +793,7 @@ function upgrade_101()
  * @ignore
  * @since 1.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_110()
 {
@@ -854,7 +856,7 @@ function upgrade_110()
  * @ignore
  * @since 1.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_130()
 {
@@ -954,7 +956,7 @@ function upgrade_130()
  * @ignore
  * @since 2.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global int $wp_current_db_version
  */
 function upgrade_160()
@@ -1092,7 +1094,7 @@ function upgrade_160()
  * @ignore
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global int $wp_current_db_version
  */
 function upgrade_210()
@@ -1154,7 +1156,7 @@ function upgrade_210()
  * @ignore
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global int $wp_current_db_version
  */
 function upgrade_230()
@@ -1391,7 +1393,7 @@ function upgrade_230()
  * @ignore
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_230_options_table()
 {
@@ -1417,7 +1419,7 @@ function upgrade_230_options_table()
  * @ignore
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_230_old_tables()
 {
@@ -1433,7 +1435,7 @@ function upgrade_230_old_tables()
  * @ignore
  * @since 2.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_old_slugs()
 {
@@ -1465,7 +1467,7 @@ function upgrade_250()
  * @ignore
  * @since 2.5.2
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_252()
 {
@@ -1497,7 +1499,7 @@ function upgrade_260()
  * @ignore
  * @since 2.7.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global int $wp_current_db_version
  */
 function upgrade_270()
@@ -1521,7 +1523,7 @@ function upgrade_270()
  * @since 2.8.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_280()
 {
@@ -1576,7 +1578,7 @@ function upgrade_290()
  * @since 3.0.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_300()
 {
@@ -1625,7 +1627,7 @@ function upgrade_300()
  * @since 3.3.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global array $wp_registered_widgets
  * @global array $sidebars_widgets
  */
@@ -1707,7 +1709,7 @@ function upgrade_330()
  * @since 3.4.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  */
 function upgrade_340()
 {
@@ -1745,7 +1747,7 @@ function upgrade_340()
  * @since 3.5.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  */
 function upgrade_350()
 {
@@ -1851,7 +1853,7 @@ function upgrade_400()
  * @since 4.2.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  */
 function upgrade_420()
 {
@@ -1864,7 +1866,7 @@ function upgrade_420()
  * @since 4.3.0
  *
  * @global int $wp_current_db_version Current version.
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_430()
 {
@@ -1904,7 +1906,7 @@ function upgrade_430()
  * @since 4.3.0
  *
  * @global int $wp_current_db_version Current version.
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_430_fix_comments()
 {
@@ -1971,7 +1973,7 @@ function upgrade_431()
  * @since 4.4.0
  *
  * @global int $wp_current_db_version Current version.
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_440()
 {
@@ -1997,7 +1999,7 @@ function upgrade_440()
  * @since 4.5.0
  *
  * @global int $wp_current_db_version Current database version.
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function upgrade_450()
 {
@@ -2055,7 +2057,7 @@ function upgrade_460()
  * @since 3.0.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  */
 function upgrade_network()
 {
@@ -2226,7 +2228,7 @@ function upgrade_network()
  *
  * @since 1.0.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string $table_name Database table name to create.
  * @param string $create_ddl SQL statement to create table.
@@ -2257,7 +2259,7 @@ function maybe_create_table($table_name, $create_ddl)
  *
  * @since 1.0.1
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string $table Database table name.
  * @param string $index Index name to drop.
@@ -2281,7 +2283,7 @@ function drop_index($table, $index)
  *
  * @since 1.0.1
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string $table Database table name.
  * @param string $index Database table index column.
@@ -2300,7 +2302,7 @@ function add_clean_index($table, $index)
  *
  * @since 1.3.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string $table_name The table name to modify.
  * @param string $column_name The column name to add to the table.
@@ -2333,7 +2335,7 @@ function maybe_add_column($table_name, $column_name, $create_ddl)
  *
  * @since 4.2.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string $table The table to convert.
  * @return bool true if the table was converted, false if it wasn't.
@@ -2377,7 +2379,7 @@ function maybe_convert_table_to_utf8mb4($table)
  *
  * @since 1.2.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @return stdClass List of options.
  */
@@ -2403,7 +2405,7 @@ function get_alloptions_110()
  * @since 1.5.1
  * @access private
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string $setting Option name.
  * @return mixed
@@ -2473,7 +2475,7 @@ function deslash($content)
  *
  * @since 1.5.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param string|array $queries Optional. The query to run. Can be multiple queries
  *                              in an array, or a string of queries separated by
@@ -3165,7 +3167,7 @@ function translate_level_to_role($level)
  *
  * @since 2.1.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  */
 function wp_check_mysql_version()
 {
@@ -3200,7 +3202,7 @@ function maybe_disable_automattic_widgets()
  * @since 3.5.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function maybe_disable_link_manager()
 {
@@ -3217,7 +3219,7 @@ function maybe_disable_link_manager()
  * @since 2.9.0
  *
  * @global int $wp_current_db_version
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function pre_schema_upgrade()
 {
@@ -3280,7 +3282,7 @@ if (!function_exists('install_global_terms')) :
      *
      * @since 3.0.0
      *
-     * @global wpdb $wpdb
+     * @global WPDB $wpdb
      * @global string $charset_collate
      */
     function install_global_terms()

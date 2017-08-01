@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used for querying comments.
  *
@@ -368,7 +370,7 @@ class WP_Comment_Query
      * @since 4.2.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @return int|array List of comments or number of found comments if `$count` argument is true.
      */
@@ -484,7 +486,7 @@ class WP_Comment_Query
      * @since 4.4.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      */
     protected function get_comment_ids()
     {
@@ -980,7 +982,7 @@ class WP_Comment_Query
      * @since 4.6.0
      * @access private
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      */
     private function set_found_comments()
     {
@@ -1122,7 +1124,7 @@ class WP_Comment_Query
      * @since 3.1.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $string
      * @param array $cols
@@ -1148,7 +1150,7 @@ class WP_Comment_Query
      * @since 4.2.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $orderby Alias for the field to order by.
      * @return string|false Value to used in the ORDER clause. False otherwise.

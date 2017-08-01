@@ -6,6 +6,8 @@
  * @subpackage Option
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Retrieves an option value based on an option name.
  *
@@ -21,7 +23,7 @@
  *
  * @since 1.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
  * @param mixed $default Optional. Default value to return if the option does not exist.
@@ -187,7 +189,7 @@ function form_option($option)
  *
  * @since 2.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @return array List of all options.
  */
@@ -224,7 +226,7 @@ function wp_load_alloptions()
  *
  * @since 3.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $site_id Optional site ID for which to query the options. Defaults to the current site.
  */
@@ -280,7 +282,7 @@ function wp_load_core_site_options($site_id = null)
  * @since 1.0.0
  * @since 4.2.0 The `$autoload` parameter was added.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $option Option name. Expected to not be SQL-escaped.
  * @param mixed $value Option value. Must be serializable if non-scalar. Expected to not be SQL-escaped.
@@ -439,7 +441,7 @@ function update_option($option, $value, $autoload = null)
  *
  * @since 1.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $option Name of option to add. Expected to not be SQL-escaped.
  * @param mixed $value Optional. Option value. Must be serializable if non-scalar. Expected to not be SQL-escaped.
@@ -547,7 +549,7 @@ function add_option($option, $value = '', $deprecated = '', $autoload = 'yes')
  *
  * @since 1.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $option Name of option to remove. Expected to not be SQL-escaped.
  * @return bool True, if option is successfully deleted. False on failure.
@@ -1156,7 +1158,7 @@ function update_site_option($option, $value)
  *
  * @see get_option()
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param int $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
@@ -1283,7 +1285,7 @@ function get_network_option($network_id, $option, $default = false)
  *
  * @see add_option()
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param int $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option Name of option to add. Expected to not be SQL-escaped.
@@ -1402,7 +1404,7 @@ function add_network_option($network_id, $option, $value)
  *
  * @see delete_option()
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param int $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option Name of option to remove. Expected to not be SQL-escaped.
@@ -1494,7 +1496,7 @@ function delete_network_option($network_id, $option)
  *
  * @see update_option()
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  *
  * @param int $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option Name of option. Expected to not be SQL-escaped.

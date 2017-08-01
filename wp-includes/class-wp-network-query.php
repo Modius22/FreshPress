@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used for querying networks.
  *
@@ -483,7 +485,7 @@ class WP_Network_Query
      * @since 4.6.0
      * @access private
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      */
     private function set_found_networks()
     {
@@ -510,7 +512,7 @@ class WP_Network_Query
      * @since 4.6.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $string Search string.
      * @param array $columns Columns to search.
@@ -537,7 +539,7 @@ class WP_Network_Query
      * @since 4.6.0
      * @access protected
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $orderby Alias for the field to order by.
      * @return string|false Value to used in the ORDER clause. False otherwise.

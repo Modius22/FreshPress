@@ -6,6 +6,8 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Load header template.
  *
@@ -1711,7 +1713,7 @@ function get_archives_link($url, $text, $format = 'html', $before = '', $after =
  *
  * @see get_archives_link()
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global WP_Locale $wp_locale
  *
  * @param string|array $args {
@@ -1959,7 +1961,7 @@ function calendar_week_mod($num)
  *
  * @since 1.0.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global int $m
  * @global int $monthnum
  * @global int $year

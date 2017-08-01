@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Defines the default media upload tabs
  *
@@ -37,7 +39,7 @@ function media_upload_tabs()
  *
  * @since 2.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $tabs
  * @return array $tabs with gallery if post has image attachment
@@ -2559,7 +2561,7 @@ function media_upload_gallery_form($errors)
  *
  * @since 2.5.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global WP_Query $wp_query
  * @global WP_Locale $wp_locale
  * @global string $type
@@ -3411,7 +3413,7 @@ function wp_read_audio_metadata($file)
  *
  * @since 4.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $parent_id Attachment parent ID.
  * @param string $action Optional. Attach/detach action. Accepts 'attach' or 'detach'.

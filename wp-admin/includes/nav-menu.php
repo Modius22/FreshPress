@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /** Walker_Nav_Menu_Edit class */
 require_once(ABSPATH . 'wp-admin/includes/class-walker-nav-menu-edit.php');
 
@@ -1119,7 +1121,7 @@ function wp_nav_menu_manage_columns()
  * @access private
  * @since 3.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function _wp_delete_orphaned_draft_menu_items()
 {

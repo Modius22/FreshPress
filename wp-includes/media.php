@@ -6,6 +6,8 @@
  * @subpackage Media
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Retrieve additional image sizes.
  *
@@ -3426,7 +3428,7 @@ function wp_prepare_attachment_for_js($attachment)
  * @since 3.5.0
  *
  * @global int $content_width
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global WP_Locale $wp_locale
  *
  * @param array $args {
@@ -4056,7 +4058,7 @@ function wp_maybe_generate_attachment_metadata($attachment)
  *
  * @since 4.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $url The URL to resolve.
  * @return int The found post ID, or 0 on failure.

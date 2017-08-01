@@ -1,5 +1,7 @@
 <?php
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * WP_Importer base class
  */
@@ -16,7 +18,7 @@ class WP_Importer
     /**
      * Returns array with imported permalinks from WordPress database
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $importer_name
      * @param string $bid
@@ -62,7 +64,7 @@ class WP_Importer
     /**
      * Return count of imported permalinks from WordPress database
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $importer_name
      * @param string $bid
@@ -93,7 +95,7 @@ class WP_Importer
     /**
      * Set array with imported comments from WordPress database
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param string $bid
      * @return array
@@ -273,7 +275,7 @@ class WP_Importer
     /**
      * Reset global variables that grow out of control during imports
      *
-     * @global wpdb $wpdb
+     * @global WPDB $wpdb
      * @global array $wp_actions
      */
     public function stop_the_insanity()

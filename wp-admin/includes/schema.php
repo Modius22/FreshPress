@@ -8,10 +8,12 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Declare these as global in case schema.php is included from a function.
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global array $wp_queries
  * @global string $charset_collate
  */
@@ -27,7 +29,7 @@ $charset_collate = $wpdb->get_charset_collate();
  *
  * @since 3.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $scope Optional. The tables for which to retrieve SQL. Can be all, global, ms_global, or blog tables. Defaults to all.
  * @param int $blog_id Optional. The site ID for which to retrieve SQL. Default is the current site ID.
@@ -349,7 +351,7 @@ $wp_queries = wp_get_db_schema('all');
  *
  * @since 1.5.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global int $wp_db_version
  * @global int $wp_current_db_version
  */
@@ -978,7 +980,7 @@ endif;
  *
  * @since 3.0.0
  *
- * @global wpdb $wpdb
+ * @global WPDB $wpdb
  * @global object $current_site
  * @global int $wp_db_version
  * @global WP_Rewrite $wp_rewrite

@@ -9,9 +9,16 @@
  * @since 0.71
  */
 
+namespace Devtronic\FreshPress\Core;
+
 /**
  * @since 0.71
  */
+
+use mysqli;
+use mysqli_result;
+use WP_Error;
+
 define('EZSQL_VERSION', 'WP1.25');
 
 /**
@@ -39,8 +46,8 @@ define('ARRAY_N', 'ARRAY_N');
  * WordPress Database Access Abstraction Object
  *
  * It is possible to replace this class with your own
- * by setting the $wpdb global variable in wp-content/db.php
- * file to your class. The wpdb class will still be included,
+ * by setting the $WPDB global variable in wp-content/db.php
+ * file to your class. The WPDB class will still be included,
  * so you can extend it or simply use your own.
  *
  * @link https://codex.wordpress.org/Function_Reference/wpdb_Class
@@ -49,7 +56,7 @@ define('ARRAY_N', 'ARRAY_N');
  * @subpackage Database
  * @since 0.71
  */
-class wpdb
+class WPDB
 {
 
     /**
@@ -151,7 +158,7 @@ class wpdb
      * @access protected
      * @var array
      */
-    protected $col_meta = array();
+    protected $col_meta = [];
 
     /**
      * Calculated character sets on tables
@@ -160,7 +167,7 @@ class wpdb
      * @access protected
      * @var array
      */
-    protected $table_charset = array();
+    protected $table_charset = [];
 
     /**
      * Whether text fields in the current query need to be sanity checked.
@@ -176,7 +183,7 @@ class wpdb
      *
      * @since 4.2.0
      * @access private
-     * @see wpdb::check_safe_collation()
+     * @see WPDB::check_safe_collation()
      * @var bool
      */
     private $checking_collation = false;
@@ -204,7 +211,7 @@ class wpdb
      *
      * @since 3.9.0
      * @access protected
-     * @see wpdb::check_connection()
+     * @see WPDB::check_connection()
      * @var int
      */
     protected $reconnect_retries = 5;
@@ -263,10 +270,10 @@ class wpdb
      *
      * @since 2.5.0
      * @access private
-     * @see wpdb::tables()
+     * @see WPDB::tables()
      * @var array
      */
-    public $tables = array(
+    public $tables = [
         'posts',
         'comments',
         'links',
@@ -277,7 +284,7 @@ class wpdb
         'term_relationships',
         'termmeta',
         'commentmeta'
-    );
+    ];
 
     /**
      * List of deprecated WordPress tables
@@ -286,30 +293,30 @@ class wpdb
      *
      * @since 2.9.0
      * @access private
-     * @see wpdb::tables()
+     * @see WPDB::tables()
      * @var array
      */
-    public $old_tables = array('categories', 'post2cat', 'link2cat');
+    public $old_tables = ['categories', 'post2cat', 'link2cat'];
 
     /**
      * List of WordPress global tables
      *
      * @since 3.0.0
      * @access private
-     * @see wpdb::tables()
+     * @see WPDB::tables()
      * @var array
      */
-    public $global_tables = array('users', 'usermeta');
+    public $global_tables = ['users', 'usermeta'];
 
     /**
      * List of Multisite global tables
      *
      * @since 3.0.0
      * @access private
-     * @see wpdb::tables()
+     * @see WPDB::tables()
      * @var array
      */
-    public $ms_global_tables = array(
+    public $ms_global_tables = [
         'blogs',
         'signups',
         'site',
@@ -317,7 +324,7 @@ class wpdb
         'sitecategories',
         'registration_log',
         'blog_versions'
-    );
+    ];
 
     /**
      * WordPress Comments table
@@ -500,15 +507,15 @@ class wpdb
      * Keys are column names, values are format types: 'ID' => '%d'
      *
      * @since 2.8.0
-     * @see wpdb::prepare()
-     * @see wpdb::insert()
-     * @see wpdb::update()
-     * @see wpdb::delete()
+     * @see WPDB::prepare()
+     * @see WPDB::insert()
+     * @see WPDB::update()
+     * @see WPDB::delete()
      * @see wp_set_wpdb_vars()
      * @access public
      * @var array
      */
-    public $field_types = array();
+    public $field_types = [];
 
     /**
      * Database table columns charset
@@ -603,13 +610,13 @@ class wpdb
      * @access protected
      * @var array
      */
-    protected $incompatible_modes = array(
+    protected $incompatible_modes = [
         'NO_ZERO_DATE',
         'ONLY_FULL_GROUP_BY',
         'STRICT_TRANS_TABLES',
         'STRICT_ALL_TABLES',
         'TRADITIONAL'
-    );
+    ];
 
     /**
      * Whether to use mysqli over mysql.
@@ -648,7 +655,7 @@ class wpdb
      */
     public function __construct($dbuser, $dbpassword, $dbname, $dbhost)
     {
-        register_shutdown_function(array($this, '__destruct'));
+        register_shutdown_function([$this, '__destruct']);
 
         if (WP_DEBUG && WP_DEBUG_DISPLAY) {
             $this->show_errors();
@@ -686,7 +693,7 @@ class wpdb
     /**
      * PHP5 style destructor and will run when database object is destroyed.
      *
-     * @see wpdb::__construct()
+     * @see WPDB::__construct()
      * @since 2.0.8
      * @return true
      */
@@ -722,11 +729,11 @@ class wpdb
      */
     public function __set($name, $value)
     {
-        $protected_members = array(
+        $protected_members = [
             'col_meta',
             'table_charset',
             'check_current_query',
-        );
+        ];
         if (in_array($name, $protected_members, true)) {
             return;
         }
@@ -891,7 +898,7 @@ class wpdb
      *
      * @param array $modes Optional. A list of SQL modes to set.
      */
-    public function set_sql_mode($modes = array())
+    public function set_sql_mode($modes = [])
     {
         if (empty($modes)) {
             if ($this->use_mysqli) {
@@ -953,7 +960,7 @@ class wpdb
      * @since 2.5.0
      *
      * @param string $prefix Alphanumeric name for the new prefix.
-     * @param bool $set_table_names Optional. Whether the table names, e.g. wpdb::$posts, should be updated or not.
+     * @param bool $set_table_names Optional. Whether the table names, e.g. WPDB::$posts, should be updated or not.
      * @return string|WP_Error Old prefix or WP_Error on error
      */
     public function set_prefix($prefix, $set_table_names = true)
@@ -1064,15 +1071,15 @@ class wpdb
      * 'old' - returns tables which are deprecated.
      *
      * @since 3.0.0
-     * @uses wpdb::$tables
-     * @uses wpdb::$old_tables
-     * @uses wpdb::$global_tables
-     * @uses wpdb::$ms_global_tables
+     * @uses WPDB::$tables
+     * @uses WPDB::$old_tables
+     * @uses WPDB::$global_tables
+     * @uses WPDB::$ms_global_tables
      *
      * @param string $scope Optional. Can be all, global, ms_global, blog, or old tables. Defaults to all.
      * @param bool $prefix Optional. Whether to include table prefixes. Default true. If blog
      *                        prefix is requested, then the custom users and usermeta tables will be mapped.
-     * @param int $blog_id Optional. The blog_id to prefix. Defaults to wpdb::$blogid. Used only when prefix is requested.
+     * @param int $blog_id Optional. The blog_id to prefix. Defaults to WPDB::$blogid. Used only when prefix is requested.
      * @return array Table names. When a prefix is requested, the key is the unprefixed table name.
      */
     public function tables($scope = 'all', $prefix = true, $blog_id = 0)
@@ -1100,7 +1107,7 @@ class wpdb
                 $tables = $this->old_tables;
                 break;
             default:
-                return array();
+                return [];
         }
 
         if ($prefix) {
@@ -1198,11 +1205,11 @@ class wpdb
     /**
      * Do not use, deprecated.
      *
-     * Use esc_sql() or wpdb::prepare() instead.
+     * Use esc_sql() or WPDB::prepare() instead.
      *
      * @since 2.8.0
-     * @deprecated 3.6.0 Use wpdb::prepare()
-     * @see wpdb::prepare
+     * @deprecated 3.6.0 Use WPDB::prepare()
+     * @see WPDB::prepare
      * @see esc_sql()
      * @access private
      *
@@ -1212,7 +1219,7 @@ class wpdb
     public function _weak_escape($string)
     {
         if (func_num_args() === 1 && function_exists('_deprecated_function')) {
-            _deprecated_function(__METHOD__, '3.6.0', 'wpdb::prepare() or esc_sql()');
+            _deprecated_function(__METHOD__, '3.6.0', 'WPDB::prepare() or esc_sql()');
         }
         return addslashes($string);
     }
@@ -1240,7 +1247,7 @@ class wpdb
 
         $class = get_class($this);
         if (function_exists('__')) {
-            /* translators: %s: database access abstraction class, usually wpdb or a class extending wpdb */
+            /* translators: %s: database access abstraction class, usually WPDB or a class extending WPDB */
             _doing_it_wrong(
                 $class,
                 sprintf(__('%s must set a database connection for use with escaping.'), $class),
@@ -1259,7 +1266,7 @@ class wpdb
     /**
      * Escape data. Works on arrays.
      *
-     * @uses wpdb::_real_escape()
+     * @uses WPDB::_real_escape()
      * @since  2.8.0
      * @access public
      *
@@ -1286,11 +1293,11 @@ class wpdb
     /**
      * Do not use, deprecated.
      *
-     * Use esc_sql() or wpdb::prepare() instead.
+     * Use esc_sql() or WPDB::prepare() instead.
      *
      * @since 0.71
-     * @deprecated 3.6.0 Use wpdb::prepare()
-     * @see wpdb::prepare()
+     * @deprecated 3.6.0 Use WPDB::prepare()
+     * @see WPDB::prepare()
      * @see esc_sql()
      *
      * @param mixed $data
@@ -1299,7 +1306,7 @@ class wpdb
     public function escape($data)
     {
         if (func_num_args() === 1 && function_exists('_deprecated_function')) {
-            _deprecated_function(__METHOD__, '3.6.0', 'wpdb::prepare() or esc_sql()');
+            _deprecated_function(__METHOD__, '3.6.0', 'WPDB::prepare() or esc_sql()');
         }
         if (is_array($data)) {
             foreach ($data as $k => $v) {
@@ -1319,7 +1326,7 @@ class wpdb
     /**
      * Escapes content by reference for insertion into the database, for security
      *
-     * @uses wpdb::_real_escape()
+     * @uses WPDB::_real_escape()
      *
      * @since 2.3.0
      *
@@ -1352,8 +1359,8 @@ class wpdb
      *
      * Both %d and %s should be left unquoted in the query string.
      *
-     *     $wpdb->prepare( "SELECT * FROM `table` WHERE `column` = %s AND `field` = %d", 'foo', 1337 );
-     *     $wpdb->prepare( "SELECT DATE_FORMAT(`field`, '%%c') FROM `table` WHERE `column` = %s", 'foo' );
+     *     $WPDB->prepare( "SELECT * FROM `table` WHERE `column` = %s AND `field` = %d", 'foo', 1337 );
+     *     $WPDB->prepare( "SELECT DATE_FORMAT(`field`, '%%c') FROM `table` WHERE `column` = %s", 'foo' );
      *
      * @link https://secure.php.net/sprintf Description of syntax.
      * @since 2.3.0
@@ -1375,8 +1382,11 @@ class wpdb
         // This is not meant to be foolproof -- but it will catch obviously incorrect usage.
         if (strpos($query, '%') === false) {
             _doing_it_wrong(
-                'wpdb::prepare',
-                sprintf(__('The query argument of %s must have a placeholder.'), 'wpdb::prepare()'),
+                'WPDB::prepare',
+                sprintf(
+                    __('The query argument of %s must have a placeholder.'),
+                    'WPDB::prepare()'
+                ),
                 '3.9.0'
             );
         }
@@ -1391,32 +1401,32 @@ class wpdb
         $query = str_replace('"%s"', '%s', $query); // doublequote unquoting
         $query = preg_replace('|(?<!%)%f|', '%F', $query); // Force floats to be locale unaware
         $query = preg_replace('|(?<!%)%s|', "'%s'", $query); // quote the strings, avoiding escaped strings like %%s
-        array_walk($args, array($this, 'escape_by_ref'));
+        array_walk($args, [$this, 'escape_by_ref']);
         return @vsprintf($query, $args);
     }
 
     /**
      * First half of escaping for LIKE special characters % and _ before preparing for MySQL.
      *
-     * Use this only before wpdb::prepare() or esc_sql().  Reversing the order is very bad for security.
+     * Use this only before WPDB::prepare() or esc_sql().  Reversing the order is very bad for security.
      *
      * Example Prepared Statement:
      *
      *     $wild = '%';
      *     $find = 'only 43% of planets';
-     *     $like = $wild . $wpdb->esc_like( $find ) . $wild;
-     *     $sql  = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_content LIKE '%s'", $like );
+     *     $like = $wild . $WPDB->esc_like( $find ) . $wild;
+     *     $sql  = $WPDB->prepare( "SELECT * FROM $WPDB->posts WHERE post_content LIKE '%s'", $like );
      *
      * Example Escape Chain:
      *
-     *     $sql  = esc_sql( $wpdb->esc_like( $input ) );
+     *     $sql  = esc_sql( $WPDB->esc_like( $input ) );
      *
      * @since 4.0.0
      * @access public
      *
      * @param string $text The raw text to be escaped. The input typed by the user should have no
      *                     extra or deleted slashes.
-     * @return string Text in the form of a LIKE phrase. The output is not SQL safe. Call $wpdb::prepare()
+     * @return string Text in the form of a LIKE phrase. The output is not SQL safe. Call $WPDB::prepare()
      *                or real_escape next.
      */
     public function esc_like($text)
@@ -1444,7 +1454,7 @@ class wpdb
                 $str = mysql_error($this->dbh);
             }
         }
-        $EZSQL_ERROR[] = array('query' => $this->last_query, 'error_str' => $str);
+        $EZSQL_ERROR[] = ['query' => $this->last_query, 'error_str' => $str];
 
         if ($this->suppress_errors) {
             return false;
@@ -1504,12 +1514,12 @@ class wpdb
      * Enables showing of database errors.
      *
      * This function should be used only to enable showing of errors.
-     * wpdb::hide_errors() should be used instead for hiding of errors. However,
+     * WPDB::hide_errors() should be used instead for hiding of errors. However,
      * this function can be used to enable and disable showing of database
      * errors.
      *
      * @since 0.71
-     * @see wpdb::hide_errors()
+     * @see WPDB::hide_errors()
      *
      * @param bool $show Whether to show or hide errors
      * @return bool Old value for showing errors.
@@ -1527,7 +1537,7 @@ class wpdb
      * By default database errors are not shown.
      *
      * @since 0.71
-     * @see wpdb::show_errors()
+     * @see WPDB::show_errors()
      *
      * @return bool Whether showing of errors was active
      */
@@ -1545,7 +1555,7 @@ class wpdb
      * call to this function they can be enabled.
      *
      * @since 2.5.0
-     * @see wpdb::hide_errors()
+     * @see WPDB::hide_errors()
      * @param bool $suppress Optional. New value. Defaults to true.
      * @return bool Old value
      */
@@ -1563,7 +1573,7 @@ class wpdb
      */
     public function flush()
     {
-        $this->last_result = array();
+        $this->last_result = [];
         $this->col_info = null;
         $this->last_query = null;
         $this->rows_affected = $this->num_rows = 0;
@@ -1984,7 +1994,7 @@ class wpdb
      * @since 3.9.0
      *
      * @access private
-     * @see wpdb::query()
+     * @see WPDB::query()
      *
      * @param string $query The query to run.
      */
@@ -2002,19 +2012,19 @@ class wpdb
         $this->num_queries++;
 
         if (defined('SAVEQUERIES') && SAVEQUERIES) {
-            $this->queries[] = array($query, $this->timer_stop(), $this->get_caller());
+            $this->queries[] = [$query, $this->timer_stop(), $this->get_caller()];
         }
     }
 
     /**
      * Insert a row into a table.
      *
-     *     wpdb::insert( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
-     *     wpdb::insert( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
+     *     WPDB::insert( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
+     *     WPDB::insert( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
      *
      * @since 2.5.0
-     * @see wpdb::prepare()
-     * @see wpdb::$field_types
+     * @see WPDB::prepare()
+     * @see WPDB::$field_types
      * @see wp_set_wpdb_vars()
      *
      * @param string $table Table name
@@ -2024,7 +2034,7 @@ class wpdb
      * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
      *                             If string, that format will be used for all of the values in $data.
      *                             A format is one of '%d', '%f', '%s' (integer, float, string).
-     *                             If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+     *                             If omitted, all values in $data will be treated as strings unless otherwise specified in WPDB::$field_types.
      * @return int|false The number of rows inserted, or false on error.
      */
     public function insert($table, $data, $format = null)
@@ -2035,12 +2045,12 @@ class wpdb
     /**
      * Replace a row into a table.
      *
-     *     wpdb::replace( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
-     *     wpdb::replace( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
+     *     WPDB::replace( 'table', array( 'column' => 'foo', 'field' => 'bar' ) )
+     *     WPDB::replace( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( '%s', '%d' ) )
      *
      * @since 3.0.0
-     * @see wpdb::prepare()
-     * @see wpdb::$field_types
+     * @see WPDB::prepare()
+     * @see WPDB::$field_types
      * @see wp_set_wpdb_vars()
      *
      * @param string $table Table name
@@ -2050,7 +2060,7 @@ class wpdb
      * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
      *                             If string, that format will be used for all of the values in $data.
      *                             A format is one of '%d', '%f', '%s' (integer, float, string).
-     *                             If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+     *                             If omitted, all values in $data will be treated as strings unless otherwise specified in WPDB::$field_types.
      * @return int|false The number of rows affected, or false on error.
      */
     public function replace($table, $data, $format = null)
@@ -2065,8 +2075,8 @@ class wpdb
      *
      * @access private
      * @since 3.0.0
-     * @see wpdb::prepare()
-     * @see wpdb::$field_types
+     * @see WPDB::prepare()
+     * @see WPDB::$field_types
      * @see wp_set_wpdb_vars()
      *
      * @param string $table Table name
@@ -2076,7 +2086,7 @@ class wpdb
      * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
      *                             If string, that format will be used for all of the values in $data.
      *                             A format is one of '%d', '%f', '%s' (integer, float, string).
-     *                             If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+     *                             If omitted, all values in $data will be treated as strings unless otherwise specified in WPDB::$field_types.
      * @param string $type Optional. What type of operation is this? INSERT or REPLACE. Defaults to INSERT.
      * @return int|false The number of rows affected, or false on error.
      */
@@ -2084,7 +2094,7 @@ class wpdb
     {
         $this->insert_id = 0;
 
-        if (!in_array(strtoupper($type), array('REPLACE', 'INSERT'))) {
+        if (!in_array(strtoupper($type), ['REPLACE', 'INSERT'])) {
             return false;
         }
 
@@ -2093,7 +2103,7 @@ class wpdb
             return false;
         }
 
-        $formats = $values = array();
+        $formats = $values = [];
         foreach ($data as $value) {
             if (is_null($value['value'])) {
                 $formats[] = 'NULL';
@@ -2116,12 +2126,12 @@ class wpdb
     /**
      * Update a row in the table
      *
-     *     wpdb::update( 'table', array( 'column' => 'foo', 'field' => 'bar' ), array( 'ID' => 1 ) )
-     *     wpdb::update( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( 'ID' => 1 ), array( '%s', '%d' ), array( '%d' ) )
+     *     WPDB::update( 'table', array( 'column' => 'foo', 'field' => 'bar' ), array( 'ID' => 1 ) )
+     *     WPDB::update( 'table', array( 'column' => 'foo', 'field' => 1337 ), array( 'ID' => 1 ), array( '%s', '%d' ), array( '%d' ) )
      *
      * @since 2.5.0
-     * @see wpdb::prepare()
-     * @see wpdb::$field_types
+     * @see WPDB::prepare()
+     * @see WPDB::$field_types
      * @see wp_set_wpdb_vars()
      *
      * @param string $table Table name
@@ -2136,7 +2146,7 @@ class wpdb
      * @param array|string $format Optional. An array of formats to be mapped to each of the values in $data.
      *                                   If string, that format will be used for all of the values in $data.
      *                                   A format is one of '%d', '%f', '%s' (integer, float, string).
-     *                                   If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+     *                                   If omitted, all values in $data will be treated as strings unless otherwise specified in WPDB::$field_types.
      * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where.
      *                                   If string, that format will be used for all of the items in $where.
      *                                   A format is one of '%d', '%f', '%s' (integer, float, string).
@@ -2158,7 +2168,7 @@ class wpdb
             return false;
         }
 
-        $fields = $conditions = $values = array();
+        $fields = $conditions = $values = [];
         foreach ($data as $field => $value) {
             if (is_null($value['value'])) {
                 $fields[] = "`$field` = NULL";
@@ -2190,12 +2200,12 @@ class wpdb
     /**
      * Delete a row in the table
      *
-     *     wpdb::delete( 'table', array( 'ID' => 1 ) )
-     *     wpdb::delete( 'table', array( 'ID' => 1 ), array( '%d' ) )
+     *     WPDB::delete( 'table', array( 'ID' => 1 ) )
+     *     WPDB::delete( 'table', array( 'ID' => 1 ), array( '%d' ) )
      *
      * @since 3.4.0
-     * @see wpdb::prepare()
-     * @see wpdb::$field_types
+     * @see WPDB::prepare()
+     * @see WPDB::$field_types
      * @see wp_set_wpdb_vars()
      *
      * @param string $table Table name
@@ -2206,7 +2216,7 @@ class wpdb
      * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where.
      *                                   If string, that format will be used for all of the items in $where.
      *                                   A format is one of '%d', '%f', '%s' (integer, float, string).
-     *                                   If omitted, all values in $where will be treated as strings unless otherwise specified in wpdb::$field_types.
+     *                                   If omitted, all values in $where will be treated as strings unless otherwise specified in WPDB::$field_types.
      * @return int|false The number of rows updated, or false on error.
      */
     public function delete($table, $where, $where_format = null)
@@ -2220,7 +2230,7 @@ class wpdb
             return false;
         }
 
-        $conditions = $values = array();
+        $conditions = $values = [];
         foreach ($where as $field => $value) {
             if (is_null($value['value'])) {
                 $conditions[] = "`$field` IS NULL";
@@ -2242,7 +2252,7 @@ class wpdb
     /**
      * Processes arrays of field/value pairs and field formats.
      *
-     * This is a helper method for wpdb's CRUD methods, which take field/value
+     * This is a helper method for WPDB's CRUD methods, which take field/value
      * pairs for inserts, updates, and where clauses. This method first pairs
      * each value with a format. Then it determines the charset of that field,
      * using that to determine if any invalid text would be stripped. If text is
@@ -2284,7 +2294,7 @@ class wpdb
     }
 
     /**
-     * Prepares arrays of value/format pairs as passed to wpdb CRUD methods.
+     * Prepares arrays of value/format pairs as passed to WPDB CRUD methods.
      *
      * @since 4.2.0
      * @access protected
@@ -2299,10 +2309,10 @@ class wpdb
         $formats = $original_formats = (array)$format;
 
         foreach ($data as $field => $value) {
-            $value = array(
+            $value = [
                 'value' => $value,
                 'format' => '%s',
-            );
+            ];
 
             if (!empty($format)) {
                 $value['format'] = array_shift($formats);
@@ -2321,12 +2331,12 @@ class wpdb
 
     /**
      * Adds field charsets to field/value/format arrays generated by
-     * the wpdb::process_field_formats() method.
+     * the WPDB::process_field_formats() method.
      *
      * @since 4.2.0
      * @access protected
      *
-     * @param array $data As it comes from the wpdb::process_field_formats() method.
+     * @param array $data As it comes from the WPDB::process_field_formats() method.
      * @param string $table Table name.
      * @return array|false The same array as $data with additional 'charset' keys.
      */
@@ -2358,7 +2368,7 @@ class wpdb
      * @since 4.2.1
      * @access protected
      *
-     * @param array $data As it comes from the wpdb::process_field_charsets() method.
+     * @param array $data As it comes from the WPDB::process_field_charsets() method.
      * @param string $table Table name.
      * @return array|false The same array as $data with additional 'length' keys, or false if
      *                     any of the values were too long for their corresponding field.
@@ -2488,7 +2498,7 @@ class wpdb
             $this->query($query);
         }
 
-        $new_array = array();
+        $new_array = [];
         // Extract the column values
         for ($i = 0, $j = count($this->last_result); $i < $j; $i++) {
             $new_array[$i] = $this->get_var(null, $x, $i);
@@ -2525,7 +2535,7 @@ class wpdb
             return null;
         }
 
-        $new_array = array();
+        $new_array = [];
         if ($output == OBJECT) {
             // Return an integer-keyed array of row objects
             return $this->last_result;
@@ -2594,7 +2604,7 @@ class wpdb
             return $this->table_charset[$tablekey];
         }
 
-        $charsets = $columns = array();
+        $charsets = $columns = [];
 
         $table_parts = explode('.', $table);
         $table = '`' . implode('`.`', $table_parts) . '`';
@@ -2626,7 +2636,7 @@ class wpdb
             // A binary/blob means the whole query gets treated like this.
             if (in_array(
                 strtoupper($type),
-                array('BINARY', 'VARBINARY', 'TINYBLOB', 'MEDIUMBLOB', 'BLOB', 'LONGBLOB')
+                ['BINARY', 'VARBINARY', 'TINYBLOB', 'MEDIUMBLOB', 'BLOB', 'LONGBLOB']
             )) {
                 $this->table_charset[$tablekey] = 'binary';
                 return 'binary';
@@ -2778,45 +2788,45 @@ class wpdb
         switch ($type) {
             case 'char':
             case 'varchar':
-                return array(
+                return [
                     'type' => 'char',
                     'length' => (int)$length,
-                );
+                ];
 
             case 'binary':
             case 'varbinary':
-                return array(
+                return [
                     'type' => 'byte',
                     'length' => (int)$length,
-                );
+                ];
 
             case 'tinyblob':
             case 'tinytext':
-                return array(
+                return [
                     'type' => 'byte',
                     'length' => 255,        // 2^8 - 1
-                );
+                ];
 
             case 'blob':
             case 'text':
-                return array(
+                return [
                     'type' => 'byte',
                     'length' => 65535,      // 2^16 - 1
-                );
+                ];
 
             case 'mediumblob':
             case 'mediumtext':
-                return array(
+                return [
                     'type' => 'byte',
                     'length' => 16777215,   // 2^24 - 1
-                );
+                ];
 
             case 'longblob':
             case 'longtext':
-                return array(
+                return [
                     'type' => 'byte',
                     'length' => 4294967295, // 2^32 - 1
-                );
+                ];
 
             default:
                 return false;
@@ -2901,9 +2911,10 @@ class wpdb
 
             if (!in_array(
                 $col->Collation,
-                array('utf8_general_ci', 'utf8_bin', 'utf8mb4_general_ci', 'utf8mb4_bin'),
+                ['utf8_general_ci', 'utf8_bin', 'utf8mb4_general_ci', 'utf8mb4_bin'],
                 true
-            )) {
+            )
+            ) {
                 return false;
             }
         }
@@ -3015,7 +3026,7 @@ class wpdb
         unset($value); // Remove by reference.
 
         if ($db_check_string) {
-            $queries = array();
+            $queries = [];
             foreach ($data as $col => $value) {
                 if (!empty($value['db'])) {
                     // We're going to need to truncate by characters or bytes, depending on the length value we have.
@@ -3056,7 +3067,7 @@ class wpdb
                 }
             }
 
-            $sql = array();
+            $sql = [];
             foreach ($queries as $column => $query) {
                 if (!$query) {
                     continue;
@@ -3113,14 +3124,14 @@ class wpdb
             $charset = $this->charset;
         }
 
-        $data = array(
+        $data = [
             'value' => $query,
             'charset' => $charset,
             'ascii' => false,
             'length' => false,
-        );
+        ];
 
-        $data = $this->strip_invalid_text(array($data));
+        $data = $this->strip_invalid_text([$data]);
         if (is_wp_error($data)) {
             return $data;
         }
@@ -3154,13 +3165,13 @@ class wpdb
             return $charset;
         }
 
-        $data = array(
-            $column => array(
+        $data = [
+            $column => [
                 'value' => $value,
                 'charset' => $charset,
                 'length' => $this->get_col_length($table, $column),
-            )
-        );
+            ]
+        ];
 
         $data = $this->strip_invalid_text($data);
         if (is_wp_error($data)) {
@@ -3287,7 +3298,7 @@ class wpdb
         if ($this->col_info) {
             if ($col_offset == -1) {
                 $i = 0;
-                $new_array = array();
+                $new_array = [];
                 foreach ((array)$this->col_info as $col) {
                     $new_array[$i] = $col->{$info_type};
                     $i++;
@@ -3327,7 +3338,7 @@ class wpdb
     /**
      * Wraps errors in a nice header and footer and dies.
      *
-     * Will not die if wpdb::$show_errors is false.
+     * Will not die if WPDB::$show_errors is false.
      *
      * @since 1.5.0
      *
@@ -3411,16 +3422,16 @@ class wpdb
      *
      * Called when WordPress is generating the table scheme.
      *
-     * Use `wpdb::has_cap( 'collation' )`.
+     * Use `WPDB::has_cap( 'collation' )`.
      *
      * @since 2.5.0
-     * @deprecated 3.5.0 Use wpdb::has_cap()
+     * @deprecated 3.5.0 Use WPDB::has_cap()
      *
      * @return bool True if collation is supported, false if version does not
      */
     public function supports_collation()
     {
-        _deprecated_function(__FUNCTION__, '3.5.0', 'wpdb::has_cap( \'collation\' )');
+        _deprecated_function(__FUNCTION__, '3.5.0', 'WPDB::has_cap( \'collation\' )');
         return $this->has_cap('collation');
     }
 
@@ -3452,7 +3463,7 @@ class wpdb
      * @since 4.1.0 Added support for the 'utf8mb4' feature.
      * @since 4.6.0 Added support for the 'utf8mb4_520' feature.
      *
-     * @see wpdb::db_version()
+     * @see WPDB::db_version()
      *
      * @param string $db_cap The feature to check for. Accepts 'collation',
      *                       'group_concat', 'subqueries', 'set_charset',
@@ -3490,7 +3501,7 @@ class wpdb
                 } else {
                     return version_compare($client_version, '5.5.3', '>=');
                 }
-                // no break
+            // no break
             case 'utf8mb4_520': // @since 4.6.0
                 return version_compare($version, '5.6', '>=');
         }
@@ -3499,7 +3510,7 @@ class wpdb
     }
 
     /**
-     * Retrieve the name of the function that called wpdb.
+     * Retrieve the name of the function that called WPDB.
      *
      * Searches up the list of functions until it reaches
      * the one that would most logically had called this method.

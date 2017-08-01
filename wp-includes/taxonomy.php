@@ -6,6 +6,8 @@
  * @subpackage Taxonomy
  */
 
+use Devtronic\FreshPress\Core\WPDB;
+
 //
 // Taxonomy Registration
 //
@@ -644,7 +646,7 @@ function unregister_taxonomy_for_object_type($taxonomy, $object_type)
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|array $term_ids Term id or array of term ids of terms that will be used.
  * @param string|array $taxonomies String of taxonomy name or Array of string values of taxonomy names.
@@ -735,7 +737,7 @@ function get_tax_sql($tax_query, $primary_table, $primary_id_column)
  * @since 4.4.0 Converted to return a WP_Term object if `$output` is `OBJECT`.
  *              The `$taxonomy` parameter was made optional.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @see sanitize_term_field() The $context param lists the available values for get_term_by() $filter param.
  *
  * @param int|WP_Term|object $term If integer, term data will be fetched from the database, or from the cache if
@@ -846,7 +848,7 @@ function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
  * @since 4.4.0 `$taxonomy` is optional if `$field` is 'term_taxonomy_id'. Converted to return
  *              a WP_Term object if `$output` is `OBJECT`.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @see sanitize_term_field() The $context param lists the available values for get_term_by() $filter param.
  *
  * @param string $field Either 'slug', 'name', 'id' (term_id), or 'term_taxonomy_id'
@@ -1067,7 +1069,7 @@ function get_term_to_edit($id, $taxonomy)
  *
  * @internal The `$deprecated` parameter is parsed for backward compatibility only.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global array $wp_filter
  *
  * @param string|array $args Optional. Array or string of arguments. See WP_Term_Query::__construct()
@@ -1308,7 +1310,7 @@ function update_termmeta_cache($term_ids)
  *
  * @since 3.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|string $term The term to check. Accepts term ID, slug, or name.
  * @param string $taxonomy The taxonomy name to use
@@ -1714,7 +1716,7 @@ function wp_delete_object_term_relationships($object_id, $taxonomies)
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $term Term ID.
  * @param string $taxonomy Taxonomy Name.
@@ -1936,7 +1938,7 @@ function wp_delete_category($cat_ID)
  *              'all_with_object_id', an array of `WP_Term` objects will be returned.
  * @since 4.7.0 Refactored to use WP_Term_Query, and to support any WP_Term_Query arguments.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|array $object_ids The ID(s) of the object(s) to retrieve.
  * @param string|array $taxonomies The taxonomies to retrieve terms from.
@@ -2052,7 +2054,7 @@ function wp_get_object_terms($object_ids, $taxonomies, $args = array())
  * If the term already exists on the same hierarchical level,
  * or the term slug and name are not unique, a WP_Error object will be returned.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @since 2.3.0
  *
@@ -2344,7 +2346,7 @@ function wp_insert_term($term, $taxonomy, $args = array())
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb The WordPress database abstraction object.
+ * @global WPDB $wpdb The WordPress database abstraction object.
  *
  * @param int $object_id The object to relate to.
  * @param string|int|array $terms A single term slug, single term id, or array of either term slugs or ids.
@@ -2517,7 +2519,7 @@ function wp_add_object_terms($object_id, $terms, $taxonomy)
  *
  * @since 3.6.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $object_id The ID of the object from which the terms will be removed.
  * @param string|int|array $terms The slug(s) or ID(s) of the term(s) to remove.
@@ -2618,7 +2620,7 @@ function wp_remove_object_terms($object_id, $terms, $taxonomy)
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $slug The string that will be tried for a unique slug.
  * @param object $term The term object that the `$slug` will belong to.
@@ -2735,7 +2737,7 @@ function wp_unique_term_slug($slug, $term)
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $term_id The ID of the term
  * @param string $taxonomy The context in which to relate the term to the object.
@@ -3154,7 +3156,7 @@ function clean_object_term_cache($object_ids, $object_type)
  *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  * @global bool $_wp_suspend_cache_invalidation
  *
  * @param int|array $ids Single or list of Term IDs.
@@ -3487,7 +3489,7 @@ function _get_term_children($term_id, $terms, $taxonomy, &$ancestors = array())
  * @access private
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $terms List of term objects, passed by reference.
  * @param string $taxonomy Term context.
@@ -3564,7 +3566,7 @@ function _pad_term_counts(&$terms, $taxonomy)
  * @since 4.6.0
  * @access private
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $term_ids Array of term IDs.
  * @param bool $update_meta_cache Optional. Whether to update the meta cache. Default true.
@@ -3601,7 +3603,7 @@ function _prime_term_caches($term_ids, $update_meta_cache = true)
  * @access private
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $terms List of Term taxonomy IDs.
  * @param object $taxonomy Current taxonomy object of terms.
@@ -3661,7 +3663,7 @@ function _update_post_term_count($terms, $taxonomy)
  *
  * @since 3.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $terms List of term taxonomy IDs.
  * @param object $taxonomy Current taxonomy object of terms.
@@ -3694,7 +3696,7 @@ function _update_generic_term_count($terms, $taxonomy)
  * @since 4.3.0 Introduced `$record` parameter. Also, `$term_id` and
  *              `$term_taxonomy_id` can now accept objects.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|object $term_id ID of the shared term, or the shared term object.
  * @param int|object $term_taxonomy_id ID of the term_taxonomy item to receive a new term, or the term_taxonomy object
@@ -3850,7 +3852,7 @@ function _split_shared_term($term_id, $term_taxonomy_id, $record = true)
  *
  * @since 4.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function _wp_batch_split_terms()
 {
@@ -3993,7 +3995,7 @@ function _wp_check_split_default_terms($term_id, $new_term_id, $term_taxonomy_id
  * @ignore
  * @since 4.2.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $term_id ID of the formerly shared term.
  * @param int $new_term_id ID of the new term created for the $term_taxonomy_id.
