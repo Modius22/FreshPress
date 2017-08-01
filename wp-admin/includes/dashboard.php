@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
+
 /**
  * Registers dashboard widgets.
  *
@@ -986,7 +988,7 @@ function wp_dashboard_recent_comments($total_items = 5)
 
         if (current_user_can('edit_posts')) {
             echo '<h3 class="screen-reader-text">' . __('View more comments') . '</h3>';
-            _get_list_table('WP_Comments_List_Table')->views();
+            _get_list_table(CommentsListTable::class)->views();
         }
 
         wp_comment_reply(-1, false, 'dashboard', false);

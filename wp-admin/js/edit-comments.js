@@ -529,7 +529,7 @@ setCommentsList = function() {
 
 		if (ev) {
 			theExtraList.empty();
-			args.number = Math.min(8, per_page); // see WP_Comments_List_Table::prepare_items() @ class-wp-comments-list-table.php
+			args.number = Math.min(8, per_page); // see Devtronic\FreshPress\Components\ListTables\CommentsListTable::prepare_items() @ src/Components/ListTables/CommentsListTable.php
 		} else {
 			args.number = 1;
 			args.offset = Math.min(8, per_page) - 1; // fetch only the next item on the extra list

@@ -7,6 +7,7 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
@@ -1243,7 +1244,7 @@ function wp_ajax_replyto_comment($action)
         if (isset($_REQUEST['mode']) && 'single' == $_REQUEST['mode']) {
             $wp_list_table = _get_list_table('WP_Post_Comments_List_Table', array('screen' => 'edit-comments'));
         } else {
-            $wp_list_table = _get_list_table('WP_Comments_List_Table', array('screen' => 'edit-comments'));
+            $wp_list_table = _get_list_table(CommentsListTable::class, array('screen' => 'edit-comments'));
         }
         $wp_list_table->single_row($comment);
     }
@@ -1304,8 +1305,7 @@ function wp_ajax_edit_comment()
 
     $position = (isset($_POST['position']) && (int)$_POST['position']) ? (int)$_POST['position'] : '-1';
     $checkbox = (isset($_POST['checkbox']) && true == $_POST['checkbox']) ? 1 : 0;
-    $wp_list_table = _get_list_table(
-        $checkbox ? 'WP_Comments_List_Table' : 'WP_Post_Comments_List_Table',
+    $wp_list_table = _get_list_table($checkbox ? CommentsListTable::class : '_Post_Comments_List_Table',
         array('screen' => 'edit-comments')
     );
 

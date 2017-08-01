@@ -1225,7 +1225,7 @@ final class WP_Screen
         if ('edit_comments_per_page' == $option) {
             $comment_status = isset($_REQUEST['comment_status']) ? $_REQUEST['comment_status'] : 'all';
 
-            /** This filter is documented in wp-admin/includes/class-wp-comments-list-table.php */
+            /** This filter is documented in src/Components/ListTables/CommentsListTable.php */
             $per_page = apply_filters('comments_per_page', $per_page, $comment_status);
         } elseif ('categories_per_page' == $option) {
             /** This filter is documented in src/Components/ListTables/TermsListTable.php */
