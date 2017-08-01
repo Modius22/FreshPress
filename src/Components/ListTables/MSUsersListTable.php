@@ -1,13 +1,16 @@
 <?php
 /**
- * List Table API: WP_MS_Users_List_Table class
+ * List Table API: MSUsersListTable class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 3.1.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
+
+use WP_User;
+use WP_User_Query;
 
 /**
  * Core class used to implement displaying users in a list table for the network admin.
@@ -17,7 +20,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  *
  * @see ListTable
  */
-class WP_MS_Users_List_Table extends ListTable
+class MSUsersListTable extends ListTable
 {
     /**
      *
@@ -47,13 +50,13 @@ class WP_MS_Users_List_Table extends ListTable
 
         $paged = $this->get_pagenum();
 
-        $args = array(
+        $args = [
             'number' => $users_per_page,
             'offset' => ($paged - 1) * $users_per_page,
             'search' => $usersearch,
             'blog_id' => 0,
             'fields' => 'all_with_meta'
-        );
+        ];
 
         if (wp_is_large_network('users')) {
             $args['search'] = ltrim($args['search'], '*');
@@ -107,10 +110,10 @@ class WP_MS_Users_List_Table extends ListTable
 
         $this->items = $wp_user_search->get_results();
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $wp_user_search->get_total(),
             'per_page' => $users_per_page,
-        ));
+        ]);
     }
 
     /**
@@ -119,7 +122,7 @@ class WP_MS_Users_List_Table extends ListTable
      */
     protected function get_bulk_actions()
     {
-        $actions = array();
+        $actions = [];
         if (current_user_can('delete_users')) {
             $actions['delete'] = __('Delete');
         }
@@ -151,25 +154,25 @@ class WP_MS_Users_List_Table extends ListTable
         $total_admins = count($super_admins);
 
         $class = $role != 'super' ? ' class="current"' : '';
-        $role_links = array();
+        $role_links = [];
         $role_links['all'] = "<a href='" . network_admin_url('users.php') . "'$class>" . sprintf(
-            _nx(
-            'All <span class="count">(%s)</span>',
-                'All <span class="count">(%s)</span>',
-            $total_users,
-            'users'
-        ),
+                _nx(
+                    'All <span class="count">(%s)</span>',
+                    'All <span class="count">(%s)</span>',
+                    $total_users,
+                    'users'
+                ),
                 number_format_i18n($total_users)
-        ) . '</a>';
+            ) . '</a>';
         $class = $role === 'super' ? ' class="current"' : '';
         $role_links['super'] = "<a href='" . network_admin_url('users.php?role=super') . "'$class>" . sprintf(
-            _n(
-            'Super Admin <span class="count">(%s)</span>',
-                'Super Admins <span class="count">(%s)</span>',
-            $total_admins
-        ),
+                _n(
+                    'Super Admin <span class="count">(%s)</span>',
+                    'Super Admins <span class="count">(%s)</span>',
+                    $total_admins
+                ),
                 number_format_i18n($total_admins)
-        ) . '</a>';
+            ) . '</a>';
 
         return $role_links;
     }
@@ -196,14 +199,14 @@ class WP_MS_Users_List_Table extends ListTable
      */
     public function get_columns()
     {
-        $users_columns = array(
+        $users_columns = [
             'cb' => '<input type="checkbox" />',
             'username' => __('Username'),
             'name' => __('Name'),
             'email' => __('Email'),
             'registered' => _x('Registered', 'user'),
             'blogs' => __('Sites')
-        );
+        ];
         /**
          * Filters the columns displayed in the Network Admin Users list table.
          *
@@ -221,12 +224,12 @@ class WP_MS_Users_List_Table extends ListTable
      */
     protected function get_sortable_columns()
     {
-        return array(
+        return [
             'username' => 'login',
             'name' => 'name',
             'email' => 'email',
             'registered' => 'id',
-        );
+        ];
     }
 
     /**
@@ -243,9 +246,9 @@ class WP_MS_Users_List_Table extends ListTable
             return;
         } ?>
         <label class="screen-reader-text" for="blog_<?php echo $user->ID; ?>"><?php echo sprintf(
-            __('Select %s'),
+                __('Select %s'),
                 $user->user_login
-        ); ?></label>
+            ); ?></label>
         <input type="checkbox" id="blog_<?php echo $user->ID ?>" name="allusers[]"
                value="<?php echo esc_attr($user->ID) ?>"/>
         <?php
@@ -282,7 +285,8 @@ class WP_MS_Users_List_Table extends ListTable
             get_edit_user_link($user->ID)
         ));
 
-        echo $avatar; ?><strong><a href="<?php echo $edit_link; ?>" class="edit"><?php echo $user->user_login; ?></a><?php
+        echo $avatar; ?><strong><a href="<?php echo $edit_link; ?>"
+                                   class="edit"><?php echo $user->user_login; ?></a><?php
         if (in_array($user->user_login, $super_admins)) {
             echo ' - ' . __('Super Admin');
         } ?></strong>
@@ -376,12 +380,12 @@ class WP_MS_Users_List_Table extends ListTable
             $path = ($val->path === '/') ? '' : $val->path;
             echo '<span class="site-' . $val->site_id . '" >';
             echo '<a href="' . esc_url(network_admin_url('site-info.php?id=' . $val->userblog_id)) . '">' . str_replace(
-                '.' . get_network()->domain,
+                    '.' . get_network()->domain,
                     '',
-                $val->domain . $path
-            ) . '</a>';
+                    $val->domain . $path
+                ) . '</a>';
             echo ' <small class="row-actions">';
-            $actions = array();
+            $actions = [];
             $actions['edit'] = '<a href="' . esc_url(network_admin_url('site-info.php?id=' . $val->userblog_id)) . '">' . __('Edit') . '</a>';
 
             $class = '';
@@ -443,7 +447,7 @@ class WP_MS_Users_List_Table extends ListTable
         foreach ($this->items as $user) {
             $class = '';
 
-            $status_list = array('spam' => 'site-spammed', 'deleted' => 'site-deleted');
+            $status_list = ['spam' => 'site-spammed', 'deleted' => 'site-deleted'];
 
             foreach ($status_list as $status => $col) {
                 if ($user->$status) {
@@ -494,18 +498,18 @@ class WP_MS_Users_List_Table extends ListTable
             get_edit_user_link($user->ID)
         ));
 
-        $actions = array();
+        $actions = [];
         $actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit') . '</a>';
 
         if (current_user_can('delete_user', $user->ID) && !in_array($user->user_login, $super_admins)) {
             $actions['delete'] = '<a href="' . $delete = esc_url(network_admin_url(add_query_arg(
-                '_wp_http_referer',
+                        '_wp_http_referer',
                         urlencode(wp_unslash($_SERVER['REQUEST_URI'])),
-                wp_nonce_url(
+                        wp_nonce_url(
                             'users.php',
                             'deleteuser'
                         ) . '&amp;action=deleteuser&amp;id=' . $user->ID
-            ))) . '" class="delete">' . __('Delete') . '</a>';
+                    ))) . '" class="delete">' . __('Delete') . '</a>';
         }
 
         /**

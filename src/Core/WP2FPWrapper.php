@@ -36,6 +36,7 @@ $classes = [
     'WP_Themes_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\ThemesListTable',
     'WP_Theme_Install_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\ThemeInstallListTable',
     'WP_MS_Sites_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\MSSitesListTable',
+    'WP_MS_Users_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\MSUsersListTable',
 ];
 
 $abstractClasses = [

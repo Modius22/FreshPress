@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\ListTables\MSUsersListTable;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -176,7 +178,7 @@ if (isset($_GET['action'])) {
     }
 }
 
-$wp_list_table = _get_list_table('WP_MS_Users_List_Table');
+$wp_list_table = _get_list_table(MSUsersListTable::class);
 $pagenum = $wp_list_table->get_pagenum();
 $wp_list_table->prepare_items();
 $total_pages = $wp_list_table->get_pagination_arg('total_pages');

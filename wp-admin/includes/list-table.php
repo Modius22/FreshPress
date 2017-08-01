@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
 use Devtronic\FreshPress\Components\ListTables\MediaListTable;
 use Devtronic\FreshPress\Components\ListTables\MSSitesListTable;
+use Devtronic\FreshPress\Components\ListTables\MSUsersListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
@@ -49,7 +50,7 @@ function _get_list_table($class, $args = array())
         PluginsListTable::class => 'plugins',
         // Network Admin
         MSSitesListTable::class => 'ms-sites',
-        'WP_MS_Users_List_Table' => 'ms-users',
+        MSUsersListTable::class => 'ms-users',
         'WP_MS_Themes_List_Table' => 'ms-themes',
     );
 
