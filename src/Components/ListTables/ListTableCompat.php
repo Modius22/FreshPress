@@ -7,19 +7,19 @@
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\ListTables\ListTable;
+namespace Devtronic\FreshPress\Components\ListTables;
 
 /**
  * Helper class to be used only by back compat functions
  *
  * @since 3.1.0
  */
-class _WP_List_Table_Compat extends ListTable
+class ListTableCompat extends ListTable
 {
     public $_screen;
     public $_columns;
 
-    public function __construct($screen, $columns = array())
+    public function __construct($screen, $columns = [])
     {
         if (is_string($screen)) {
             $screen = convert_to_screen($screen);
@@ -29,7 +29,7 @@ class _WP_List_Table_Compat extends ListTable
 
         if (!empty($columns)) {
             $this->_columns = $columns;
-            add_filter('manage_' . $screen->id . '_columns', array($this, 'get_columns'), 0);
+            add_filter('manage_' . $screen->id . '_columns', [$this, 'get_columns'], 0);
         }
     }
 
@@ -42,10 +42,10 @@ class _WP_List_Table_Compat extends ListTable
     {
         $columns = get_column_headers($this->_screen);
         $hidden = get_hidden_columns($this->_screen);
-        $sortable = array();
+        $sortable = [];
         $primary = $this->get_default_primary_column_name();
 
-        return array($columns, $hidden, $sortable, $primary);
+        return [$columns, $hidden, $sortable, $primary];
     }
 
     /**

@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
+use Devtronic\FreshPress\Components\ListTables\ListTableCompat;
 use Devtronic\FreshPress\Components\ListTables\MediaListTable;
 use Devtronic\FreshPress\Components\ListTables\MSSitesListTable;
 use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
@@ -81,7 +82,7 @@ function _get_list_table($class, $args = array())
  */
 function register_column_headers($screen, $columns)
 {
-    new _WP_List_Table_Compat($screen, $columns);
+    new ListTableCompat($screen, $columns);
 }
 
 /**
@@ -94,7 +95,7 @@ function register_column_headers($screen, $columns)
  */
 function print_column_headers($screen, $with_id = true)
 {
-    $wp_list_table = new _WP_List_Table_Compat($screen);
+    $wp_list_table = new ListTableCompat($screen);
 
     $wp_list_table->print_column_headers($with_id);
 }
