@@ -487,7 +487,7 @@ class BaseFilesystem
      * @since 2.5.0
      * @abstract
      *
-     * @return bool True on success or false on failure (always true for WP_Filesystem_Direct).
+     * @return bool True on success or false on failure (always true for Devtronic\FreshPress\Components\Filesystem\DirectFilesystem).
      */
     public function connect()
     {
