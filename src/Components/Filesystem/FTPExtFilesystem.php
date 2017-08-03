@@ -6,7 +6,9 @@
  * @subpackage Filesystem
  */
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+namespace Devtronic\FreshPress\Components\Filesystem;
+
+use WP_Error;
 
 /**
  * WordPress Filesystem Class for implementing FTP.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
  * @subpackage Filesystem
  * @uses BaseFilesystem Extends class
  */
-class WP_Filesystem_FTPext extends BaseFilesystem
+class FTPExtFilesystem extends BaseFilesystem
 {
     public $link;
 
@@ -531,11 +533,12 @@ class WP_Filesystem_FTPext extends BaseFilesystem
         }
 
         if ($is_windows && preg_match(
-            '/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/',
+                '/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/',
                 $line,
-            $lucifer
-        )) {
-            $b = array();
+                $lucifer
+            )
+        ) {
+            $b = [];
             if ($lucifer[3] < 70) {
                 $lucifer[3] += 2000;
             } else {
@@ -569,7 +572,7 @@ class WP_Filesystem_FTPext extends BaseFilesystem
             if ($lcount < 8) {
                 return '';
             }
-            $b = array();
+            $b = [];
             $b['isdir'] = $lucifer[0]{0} === 'd';
             $b['islink'] = $lucifer[0]{0} === 'l';
             if ($b['isdir']) {
@@ -650,7 +653,7 @@ class WP_Filesystem_FTPext extends BaseFilesystem
             return false;
         }
 
-        $dirlist = array();
+        $dirlist = [];
         foreach ($list as $k => $v) {
             $entry = $this->parselisting($v);
             if (empty($entry)) {
@@ -672,13 +675,13 @@ class WP_Filesystem_FTPext extends BaseFilesystem
             $dirlist[$entry['name']] = $entry;
         }
 
-        $ret = array();
+        $ret = [];
         foreach ((array)$dirlist as $struc) {
             if ('d' == $struc['type']) {
                 if ($recursive) {
                     $struc['files'] = $this->dirlist($path . '/' . $struc['name'], $include_hidden, $recursive);
                 } else {
-                    $struc['files'] = array();
+                    $struc['files'] = [];
                 }
             }
 

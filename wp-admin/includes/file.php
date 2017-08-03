@@ -979,30 +979,6 @@ function WP_Filesystem($args = false, $context = false, $allow_relaxed_file_owne
         return false;
     }
 
-    if (!class_exists("WP_Filesystem_$method")) {
-
-        /**
-         * Filters the path for a specific filesystem method class file.
-         *
-         * @since 2.6.0
-         *
-         * @see get_filesystem_method()
-         *
-         * @param string $path Path to the specific filesystem method class file.
-         * @param string $method The filesystem method to use.
-         */
-        $abstraction_file = apply_filters(
-            'filesystem_method_file',
-            ABSPATH . 'wp-admin/includes/class-wp-filesystem-' . $method . '.php',
-            $method
-        );
-
-        if (!file_exists($abstraction_file)) {
-            return;
-        }
-
-        require_once($abstraction_file);
-    }
     $method = "WP_Filesystem_$method";
 
     $wp_filesystem = new $method($args);
