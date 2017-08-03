@@ -1,6 +1,8 @@
 <?php
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+namespace Devtronic\FreshPress\Components\Filesystem;
+
+use WP_Error;
 
 /**
  * WordPress Filesystem Class for implementing SSH2
@@ -36,7 +38,7 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
  * @package WordPress
  * @subpackage Filesystem
  */
-class WP_Filesystem_SSH2 extends BaseFilesystem
+class SSH2Filesystem extends BaseFilesystem
 {
 
     /**
@@ -96,7 +98,7 @@ class WP_Filesystem_SSH2 extends BaseFilesystem
             $this->options['public_key'] = $opt['public_key'];
             $this->options['private_key'] = $opt['private_key'];
 
-            $this->options['hostkey'] = array('hostkey' => 'ssh-rsa');
+            $this->options['hostkey'] = ['hostkey' => 'ssh-rsa'];
 
             $this->keys = true;
         } elseif (empty($opt['username'])) {
@@ -161,7 +163,8 @@ class WP_Filesystem_SSH2 extends BaseFilesystem
                 $this->options['public_key'],
                 $this->options['private_key'],
                 $this->options['password']
-            )) {
+            )
+            ) {
                 $this->errors->add(
                     'auth',
                     /* translators: %s: username */
@@ -663,7 +666,7 @@ class WP_Filesystem_SSH2 extends BaseFilesystem
             return false;
         }
 
-        $ret = array();
+        $ret = [];
         $dir = @dir($this->sftp_path($path));
 
         if (!$dir) {
@@ -671,7 +674,7 @@ class WP_Filesystem_SSH2 extends BaseFilesystem
         }
 
         while (false !== ($entry = $dir->read())) {
-            $struc = array();
+            $struc = [];
             $struc['name'] = $entry;
 
             if ('.' == $struc['name'] || '..' == $struc['name']) {
@@ -701,7 +704,7 @@ class WP_Filesystem_SSH2 extends BaseFilesystem
                 if ($recursive) {
                     $struc['files'] = $this->dirlist($path . '/' . $struc['name'], $include_hidden, $recursive);
                 } else {
-                    $struc['files'] = array();
+                    $struc['files'] = [];
                 }
             }
 
