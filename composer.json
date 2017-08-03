@@ -2,6 +2,7 @@
     "name": "devtronic/freshpress",
     "description": "WordPress with an better ecosystem",
     "type": "project",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.6",
         "james-heinrich/getid3": "1.9.9",

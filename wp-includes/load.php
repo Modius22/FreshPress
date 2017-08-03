@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Core\WPDB;
 function wp_get_server_protocol()
 {
     $protocol = $_SERVER['SERVER_PROTOCOL'];
-    if (!in_array($protocol, array('HTTP/1.1', 'HTTP/2', 'HTTP/2.0'))) {
+    if (!in_array($protocol, ['HTTP/1.1', 'HTTP/2', 'HTTP/2.0'])) {
         $protocol = 'HTTP/1.0';
     }
     return $protocol;
@@ -40,7 +40,7 @@ function wp_unregister_GLOBALS()
     }
 
     // Variables that shouldn't be unset
-    $no_unset = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES', 'table_prefix');
+    $no_unset = ['GLOBALS', '_GET', '_POST', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES', 'table_prefix'];
 
     $input = array_merge(
         $_GET,
@@ -49,7 +49,7 @@ function wp_unregister_GLOBALS()
         $_SERVER,
         $_ENV,
         $_FILES,
-        isset($_SESSION) && is_array($_SESSION) ? $_SESSION : array()
+        isset($_SESSION) && is_array($_SESSION) ? $_SESSION : []
     );
     foreach ($input as $k => $v) {
         if (!in_array($k, $no_unset) && isset($GLOBALS[$k])) {
@@ -71,18 +71,17 @@ function wp_fix_server_vars()
 {
     global $PHP_SELF;
 
-    $default_server_values = array(
+    $default_server_values = [
         'SERVER_SOFTWARE' => '',
         'REQUEST_URI' => '',
-    );
+    ];
 
     $_SERVER = array_merge($default_server_values, $_SERVER);
 
     // Fix for IIS when running with PHP ISAPI
-    if (empty($_SERVER['REQUEST_URI']) || (PHP_SAPI != 'cgi-fcgi' && preg_match(
-        '/^Microsoft-IIS\//',
-                $_SERVER['SERVER_SOFTWARE']
-    ))) {
+    if (empty($_SERVER['REQUEST_URI']) ||
+        (PHP_SAPI != 'cgi-fcgi' && preg_match('/^Microsoft-IIS\//',$_SERVER['SERVER_SOFTWARE']))
+    ) {
 
         // IIS Mod-Rewrite
         if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) {
@@ -113,10 +112,9 @@ function wp_fix_server_vars()
     }
 
     // Fix for PHP as CGI hosts that set SCRIPT_FILENAME to something ending in php.cgi for all requests
-    if (isset($_SERVER['SCRIPT_FILENAME']) && (strpos(
-        $_SERVER['SCRIPT_FILENAME'],
-                'php.cgi'
-    ) == strlen($_SERVER['SCRIPT_FILENAME']) - 7)) {
+    if (isset($_SERVER['SCRIPT_FILENAME']) &&
+        (strpos($_SERVER['SCRIPT_FILENAME'],'php.cgi') == strlen($_SERVER['SCRIPT_FILENAME']) - 7)
+    ) {
         $_SERVER['SCRIPT_FILENAME'] = $_SERVER['PATH_TRANSLATED'];
     }
 
@@ -251,14 +249,14 @@ function wp_maintenance()
     <html xmlns="http://www.w3.org/1999/xhtml"<?php if (is_rtl()) {
         echo ' dir="rtl"';
     } ?>>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-            <title><?php _e('Maintenance'); ?></title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title><?php _e('Maintenance'); ?></title>
 
-        </head>
-        <body>
-            <h1><?php _e('Briefly unavailable for scheduled maintenance. Check back in a minute.'); ?></h1>
-        </body>
+    </head>
+    <body>
+    <h1><?php _e('Briefly unavailable for scheduled maintenance. Check back in a minute.'); ?></h1>
+    </body>
     </html>
     <?php
     die();
@@ -438,7 +436,7 @@ function wp_set_lang_dir()
  */
 function require_wp_db()
 {
-    global $wpdb;
+    global $wpdb, $serviceContainer;
 
     if (file_exists(WP_CONTENT_DIR . '/db.php')) {
         require_once(WP_CONTENT_DIR . '/db.php');
@@ -448,7 +446,13 @@ function require_wp_db()
         return;
     }
 
-    $wpdb = new WPDB(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
+    if (!$serviceContainer->hasParameter('database.host')) {
+        $serviceContainer->addParameter('database.host', DB_HOST);
+        $serviceContainer->addParameter('database.user', DB_USER);
+        $serviceContainer->addParameter('database.pass', DB_PASSWORD);
+        $serviceContainer->addParameter('database.name', DB_NAME);
+    }
+    $wpdb = $serviceContainer->get('database');
 }
 
 /**
@@ -470,7 +474,7 @@ function wp_set_wpdb_vars()
         dead_db();
     }
 
-    $wpdb->field_types = array(
+    $wpdb->field_types = [
         'post_author' => '%d',
         'post_parent' => '%d',
         'menu_order' => '%d',
@@ -506,7 +510,7 @@ function wp_set_wpdb_vars()
         'public' => '%d',
         'site_id' => '%d',
         'spam' => '%d',
-    );
+    ];
 
     $prefix = $wpdb->set_prefix($table_prefix);
 
@@ -598,7 +602,7 @@ function wp_start_object_cache()
     }
 
     if (function_exists('wp_cache_add_global_groups')) {
-        wp_cache_add_global_groups(array(
+        wp_cache_add_global_groups([
             'users',
             'userlogins',
             'usermeta',
@@ -615,8 +619,8 @@ function wp_start_object_cache()
             'blog-id-cache',
             'networks',
             'sites'
-        ));
-        wp_cache_add_non_persistent_groups(array('counts', 'plugins'));
+        ]);
+        wp_cache_add_non_persistent_groups(['counts', 'plugins']);
     }
 }
 
@@ -664,7 +668,7 @@ function wp_not_installed()
  */
 function wp_get_mu_plugins()
 {
-    $mu_plugins = array();
+    $mu_plugins = [];
     if (!is_dir(WPMU_PLUGIN_DIR)) {
         return $mu_plugins;
     }
@@ -698,8 +702,8 @@ function wp_get_mu_plugins()
  */
 function wp_get_active_and_valid_plugins()
 {
-    $plugins = array();
-    $active_plugins = (array)get_option('active_plugins', array());
+    $plugins = [];
+    $active_plugins = (array)get_option('active_plugins', []);
 
     // Check for hacks file if the option is enabled
     if (get_option('hack_file') && file_exists(ABSPATH . 'my-hacks.php')) {
@@ -1004,7 +1008,7 @@ function wp_load_translations_early()
     // General libraries
     require_once ABSPATH . WPINC . '/plugin.php';
 
-    $locales = $locations = array();
+    $locales = $locations = [];
 
     while (true) {
         if (defined('WPLANG')) {

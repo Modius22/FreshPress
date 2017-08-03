@@ -7,3 +7,4 @@ wp-config.php
 /wp-content/themes/*
 !/wp-content/themes/index.php
 !/wp-content/themes/twentyseventeen
+/app/config/parameters.yml

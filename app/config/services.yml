@@ -2,3 +2,6 @@ services:
     # app.my_service:
     #     class: FQCN\To\Service
     #     arguments: ['Some Arguments', '@service_container']
+    database:
+        class: Devtronic\FreshPress\Core\WPDB
+        arguments: ['%database.user%', '%database.pass%', '%database.name%', '%database.host%']

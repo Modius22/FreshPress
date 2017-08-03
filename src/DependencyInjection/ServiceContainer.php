@@ -77,6 +77,41 @@ class ServiceContainer extends \Devtronic\Injector\ServiceContainer
     }
 
     /**
+     * Load a parameters.yml to pass them to the services
+     *
+     * Example:
+     *
+     * parameters: # Root Node
+     *      database:
+     *          host: 'localhost' # can be accessed with '%database.host%'
+     *
+     * @param string $file The YAML file
+     * @param string $rootNode The root node
+     * @throws \Exception If the file does not exist
+     * @throws \Exception If the root node does not exist
+     * @throws \Exception If the service class not exist
+     */
+    public function loadParametersYAML($file, $rootNode = 'parameters')
+    {
+        if (!file_exists($file)) {
+            throw new \Exception(sprintf('File %s not found', $file));
+        }
+        $parameters = Yaml::parse(file_get_contents($file));
+
+        if ($rootNode != '') {
+            if (!in_array($rootNode, array_keys($parameters))) {
+                throw new \Exception(sprintf('Root node %s was not found in %s', $rootNode, $file));
+            }
+            $parameters = $parameters[$rootNode];
+        }
+        $parameters = $this->flattenArray((array)$parameters);
+
+        foreach ($parameters as $name => $value) {
+            $this->addParameter($name, $value);
+        }
+    }
+
+    /**
      * Returns a registered Service
      *
      * @param string $serviceName The name of the Service
@@ -85,5 +120,30 @@ class ServiceContainer extends \Devtronic\Injector\ServiceContainer
     public function get($serviceName)
     {
         return $this->loadService($serviceName);
+    }
+
+    /**
+     * Converts a multidimensional array to ['multi.dimensional.array' => value]
+     *
+     * @param array $array The Array
+     * @param array $result Used internal for keeping the result
+     * @param array $currentNodes Used internal to keep the node history
+     * @return array The flatten array
+     */
+    protected function flattenArray($array, $result = [], $currentNodes = [])
+    {
+        foreach ($array as $k => $v) {
+            $currentNodes[] = $k;
+            if (is_object($v)) {
+                $v = (array)$v;
+            }
+            if (is_array($v)) {
+                $result = $this->flattenArray($v, $result, $currentNodes);
+            } else {
+                $result[implode('.', $currentNodes)] = $v;
+            }
+            array_pop($currentNodes);
+        }
+        return $result;
     }
 }
