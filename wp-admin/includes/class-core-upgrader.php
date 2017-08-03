@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * Core class used for updating core.
  *
@@ -46,7 +48,7 @@ class Core_Upgrader extends WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      * @global callable $_wp_filesystem_direct_method
      *
      * @param object $current Response object for whether WordPress is current.

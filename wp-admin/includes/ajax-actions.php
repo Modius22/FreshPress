@@ -7,6 +7,7 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
@@ -3770,7 +3771,7 @@ function wp_ajax_install_theme()
         $status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
 
         // Pass through the error from WP_Filesystem if one was raised.
-        if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+        if ($wp_filesystem instanceof BaseFilesystem && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
             $status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
         }
 
@@ -3882,7 +3883,7 @@ function wp_ajax_update_theme()
         $status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
 
         // Pass through the error from WP_Filesystem if one was raised.
-        if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+        if ($wp_filesystem instanceof BaseFilesystem && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
             $status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
         }
 
@@ -3941,7 +3942,7 @@ function wp_ajax_delete_theme()
         $status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
 
         // Pass through the error from WP_Filesystem if one was raised.
-        if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+        if ($wp_filesystem instanceof BaseFilesystem && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
             $status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
         }
 
@@ -4035,7 +4036,7 @@ function wp_ajax_install_plugin()
         $status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
 
         // Pass through the error from WP_Filesystem if one was raised.
-        if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+        if ($wp_filesystem instanceof BaseFilesystem && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
             $status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
         }
 
@@ -4155,7 +4156,7 @@ function wp_ajax_update_plugin()
         $status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
 
         // Pass through the error from WP_Filesystem if one was raised.
-        if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+        if ($wp_filesystem instanceof BaseFilesystem && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
             $status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
         }
 
@@ -4219,7 +4220,7 @@ function wp_ajax_delete_plugin()
         $status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
 
         // Pass through the error from WP_Filesystem if one was raised.
-        if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+        if ($wp_filesystem instanceof BaseFilesystem && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
             $status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
         }
 

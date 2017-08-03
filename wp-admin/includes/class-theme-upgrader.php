@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * Core class used for upgrading/installing themes.
  *
@@ -452,7 +454,7 @@ class Theme_Upgrader extends WP_Upgrader
      * @since 3.3.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param string $source The full path to the package source.
      * @return string|WP_Error The source or a WP_Error.
@@ -597,7 +599,7 @@ class Theme_Upgrader extends WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param bool $removed
      * @param string $local_destination

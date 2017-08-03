@@ -9,6 +9,8 @@
  * @since 2.8.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /** WP_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader-skin.php';
 
@@ -186,7 +188,7 @@ class WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param array $directories Optional. A list of directories. If any of these do
      *                                            not exist, a WP_Error object will be returned.
@@ -318,7 +320,7 @@ class WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param string $package Full path to the package file.
      * @param bool $delete_package Optional. Whether to delete the package file after attempting
@@ -378,7 +380,7 @@ class WP_Upgrader
      * @since 4.3.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param string $remote_destination The location on the remote filesystem to be cleared
      * @return bool|WP_Error True upon success, WP_Error on failure.
@@ -450,7 +452,7 @@ class WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      * @global array $wp_theme_directories
      *
      * @param array|string $args {
@@ -873,7 +875,7 @@ class WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param bool $enable True to enable maintenance mode, false to disable.
      */

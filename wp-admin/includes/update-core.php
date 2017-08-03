@@ -7,6 +7,7 @@
  * @since 2.7.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -793,7 +794,7 @@ $_new_bundled_files = array(
  *
  * @since 2.7.0
  *
- * @global WP_Filesystem_Base $wp_filesystem
+ * @global BaseFilesystem $wp_filesystem
  * @global array $_old_files
  * @global array $_new_bundled_files
  * @global WPDB $wpdb
@@ -1248,7 +1249,7 @@ function update_core($from, $to)
  * @since 3.7.0 Updated not to use a regular expression for the skip list
  * @see copy_dir()
  *
- * @global WP_Filesystem_Base $wp_filesystem
+ * @global BaseFilesystem $wp_filesystem
  *
  * @param string $from source directory
  * @param string $to destination directory
@@ -1368,7 +1369,7 @@ function _redirect_to_about_wordpress($new_version)
  * @since 4.2.2
  *
  * @global array $wp_theme_directories
- * @global WP_Filesystem_Base $wp_filesystem
+ * @global BaseFilesystem $wp_filesystem
  */
 function _upgrade_422_remove_genericons()
 {

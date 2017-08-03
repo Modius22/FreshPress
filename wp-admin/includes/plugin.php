@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * Parses the plugin contents to retrieve plugin's metadata.
  *
@@ -845,7 +847,7 @@ function activate_plugins($plugins, $redirect = '', $network_wide = false, $sile
  *
  * @since 2.6.0
  *
- * @global WP_Filesystem_Base $wp_filesystem
+ * @global BaseFilesystem $wp_filesystem
  *
  * @param array $plugins List of plugins to delete.
  * @param string $deprecated Deprecated.

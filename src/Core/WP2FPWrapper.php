@@ -40,6 +40,7 @@ $classes = [
     'WP_MS_Themes_List_Table' => 'Devtronic\\FreshPress\\Components\\ListTables\\MSThemesListTable',
     '_WP_List_Table_Compat' => 'Devtronic\\FreshPress\\Components\\ListTables\\ListTableCompat',
     'wpdb' => 'Devtronic\\FreshPress\\Core\\WPDB',
+    'WP_Filesystem_Base' => 'Devtronic\\FreshPress\\Components\\Filesystem\\BaseFilesystem',
 ];
 
 $abstractClasses = [

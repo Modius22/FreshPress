@@ -11,6 +11,8 @@
  * @since 2.3.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /** The descriptions for theme files. */
 $wp_file_descriptions = array(
     'functions.php' => __('Theme Functions'),
@@ -589,7 +591,7 @@ function verify_file_md5($filename, $expected_md5)
  *
  * @since 2.5.0
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param string $file Full path and filename of zip archive
  * @param string $to Full path on the filesystem to extract archive to
@@ -659,7 +661,7 @@ function unzip_file($file, $to)
  * @see unzip_file
  * @access private
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param string $file Full path and filename of zip archive
  * @param string $to Full path on the filesystem to extract archive to
@@ -785,7 +787,7 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
  * @see unzip_file
  * @access private
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param string $file Full path and filename of zip archive
  * @param string $to Full path on the filesystem to extract archive to
@@ -897,7 +899,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
  *
  * @since 2.5.0
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param string $from source directory
  * @param string $to destination directory
@@ -959,7 +961,7 @@ function copy_dir($from, $to, $skip_list = array())
  *
  * @since 2.5.0
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param array|false $args Optional. Connection args, These are passed directly to
  *                                                   the `WP_Filesystem_*()` classes. Default false.
@@ -970,8 +972,6 @@ function copy_dir($from, $to, $skip_list = array())
 function WP_Filesystem($args = false, $context = false, $allow_relaxed_file_ownership = false)
 {
     global $wp_filesystem;
-
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
 
     $method = get_filesystem_method($args, $context, $allow_relaxed_file_ownership);
 

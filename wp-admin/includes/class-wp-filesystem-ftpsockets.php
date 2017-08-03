@@ -6,15 +6,17 @@
  * @subpackage Filesystem
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * WordPress Filesystem Class for implementing FTP Sockets.
  *
  * @since 2.5.0
  * @package WordPress
  * @subpackage Filesystem
- * @uses WP_Filesystem_Base Extends class
+ * @uses BaseFilesystem Extends class
  */
-class WP_Filesystem_ftpsockets extends WP_Filesystem_Base
+class WP_Filesystem_ftpsockets extends BaseFilesystem
 {
     /**
      * @access public

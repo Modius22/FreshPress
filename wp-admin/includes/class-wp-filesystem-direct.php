@@ -6,15 +6,17 @@
  * @subpackage Filesystem
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * WordPress Filesystem Class for direct PHP file and folder manipulation.
  *
  * @since 2.5.0
  * @package WordPress
  * @subpackage Filesystem
- * @uses WP_Filesystem_Base Extends class
+ * @uses BaseFilesystem Extends class
  */
-class WP_Filesystem_Direct extends WP_Filesystem_Base
+class WP_Filesystem_Direct extends BaseFilesystem
 {
 
     /**

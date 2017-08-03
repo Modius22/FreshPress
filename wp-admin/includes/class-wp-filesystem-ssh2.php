@@ -1,5 +1,7 @@
 <?php
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * WordPress Filesystem Class for implementing SSH2
  *
@@ -34,7 +36,7 @@
  * @package WordPress
  * @subpackage Filesystem
  */
-class WP_Filesystem_SSH2 extends WP_Filesystem_Base
+class WP_Filesystem_SSH2 extends BaseFilesystem
 {
 
     /**

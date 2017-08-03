@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -518,7 +520,7 @@ function list_translation_updates()
  *
  * @since 2.7.0
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param bool $reinstall
  */

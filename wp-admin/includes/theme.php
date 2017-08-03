@@ -6,12 +6,14 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * Remove a theme
  *
  * @since 2.8.0
  *
- * @global WP_Filesystem_Base $wp_filesystem Subclass
+ * @global BaseFilesystem $wp_filesystem Subclass
  *
  * @param string $stylesheet Stylesheet of the theme to delete
  * @param string $redirect Redirect to page when complete.

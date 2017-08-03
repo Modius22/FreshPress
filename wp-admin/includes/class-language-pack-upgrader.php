@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+
 /**
  * Core class used for updating/installing language packs (translations)
  * for plugins, themes, and core.
@@ -157,7 +159,7 @@ class Language_Pack_Upgrader extends WP_Upgrader
      * @since 3.7.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param array $language_updates Optional. Language pack updates. Default empty array.
      * @param array $args {
@@ -318,7 +320,7 @@ class Language_Pack_Upgrader extends WP_Upgrader
      * @since 3.7.0
      * @access public
      *
-     * @global WP_Filesystem_Base $wp_filesystem Subclass
+     * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param string|WP_Error $source
      * @param string $remote_source
