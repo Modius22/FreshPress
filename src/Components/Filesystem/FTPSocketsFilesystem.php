@@ -6,7 +6,9 @@
  * @subpackage Filesystem
  */
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+namespace Devtronic\FreshPress\Components\Filesystem;
+
+use WP_Error;
 
 /**
  * WordPress Filesystem Class for implementing FTP Sockets.
@@ -16,11 +18,11 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
  * @subpackage Filesystem
  * @uses BaseFilesystem Extends class
  */
-class WP_Filesystem_ftpsockets extends BaseFilesystem
+class FTPSocketsFilesystem extends BaseFilesystem
 {
     /**
      * @access public
-     * @var ftp
+     * @var \ftp
      */
     public $ftp;
 
@@ -38,7 +40,7 @@ class WP_Filesystem_ftpsockets extends BaseFilesystem
         if (!@include_once(ABSPATH . 'wp-admin/includes/class-ftp.php')) {
             return;
         }
-        $this->ftp = new ftp();
+        $this->ftp = new \ftp();
 
         if (empty($opt['port'])) {
             $this->options['port'] = 21;
@@ -556,7 +558,7 @@ class WP_Filesystem_ftpsockets extends BaseFilesystem
             return false;
         }
 
-        $ret = array();
+        $ret = [];
         foreach ($list as $struc) {
             if ('.' == $struc['name'] || '..' == $struc['name']) {
                 continue;
@@ -574,7 +576,7 @@ class WP_Filesystem_ftpsockets extends BaseFilesystem
                 if ($recursive) {
                     $struc['files'] = $this->dirlist($path . '/' . $struc['name'], $include_hidden, $recursive);
                 } else {
-                    $struc['files'] = array();
+                    $struc['files'] = [];
                 }
             }
 

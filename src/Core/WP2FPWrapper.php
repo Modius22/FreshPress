@@ -42,6 +42,7 @@ $classes = [
     'wpdb' => 'Devtronic\\FreshPress\\Core\\WPDB',
     'WP_Filesystem_Base' => 'Devtronic\\FreshPress\\Components\\Filesystem\\BaseFilesystem',
     'WP_Filesystem_Direct' => 'Devtronic\\FreshPress\\Components\\Filesystem\\DirectFilesystem',
+    'WP_Filesystem_ftpsockets' => 'Devtronic\\FreshPress\\Components\\Filesystem\\FTPSocketsFilesystem',
 ];
 
 $abstractClasses = [
