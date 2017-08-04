@@ -7,6 +7,8 @@
  * @since 1.2.0
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
+
 /**
  * Retrieve category link URL.
  *

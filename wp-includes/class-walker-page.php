@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
+
 /**
  * Core walker class used to create an HTML list of pages.
  *

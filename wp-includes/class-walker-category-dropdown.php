@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
+
 /**
  * Core class used to create an HTML dropdown list of Categories.
  *

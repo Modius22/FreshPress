@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
+
 /**
  * Core class used to implement an HTML list of nav menu items.
  *

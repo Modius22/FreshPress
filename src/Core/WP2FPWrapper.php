@@ -45,6 +45,7 @@ $classes = [
     'WP_Filesystem_ftpsockets' => 'Devtronic\\FreshPress\\Components\\Filesystem\\FTPSocketsFilesystem',
     'WP_Filesystem_SSH2' => 'Devtronic\\FreshPress\\Components\\Filesystem\\SSH2FileSystem',
     'WP_Filesystem_FTPext' => 'Devtronic\\FreshPress\\Components\\Filesystem\\FTPExtFileSystem',
+    'Walker' => 'Devtronic\\FreshPress\\Components\\Walker\\Walker',
 ];
 
 $abstractClasses = [

@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
+
 /**
  * Core walker class to output an unordered list of category checkbox input elements.
  *

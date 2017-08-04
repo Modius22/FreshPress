@@ -40,7 +40,6 @@
             "wp-includes/class-wp-network-query.php",
             "wp-includes/class-wp-locale.php",
             "wp-includes/class-wp-locale-switcher.php",
-            "wp-includes/class-wp-walker.php",
             "wp-includes/class-wp-ajax-response.php",
             "wp-includes/class-wp-roles.php",
             "wp-includes/class-wp-role.php",

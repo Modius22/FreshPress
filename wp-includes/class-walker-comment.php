@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
+
 /**
  * Core walker class used to create an HTML list of comments.
  *
@@ -104,7 +106,7 @@ class Walker_Comment extends Walker
     /**
      * Traverses elements to create list from elements.
      *
-     * This function is designed to enhance Walker::display_element() to
+     * This function is designed to enhance Devtronic\FreshPress\Components\Walker\Walker::display_element() to
      * display children of higher nesting levels than selected inline on
      * the highest depth level displayed. This prevents them being orphaned
      * at the end of the comment list.

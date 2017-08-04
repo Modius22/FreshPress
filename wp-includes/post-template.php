@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Walker\Walker;
 use Hautelook\Phpass\PasswordHash;
 
 /**
