@@ -1,13 +1,13 @@
 <?php
 /**
- * Navigation Menu API: Walker_Nav_Menu_Checklist class
+ * Navigation Menu API: NavMenuChecklistWalker class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
+namespace Devtronic\FreshPress\Components\Walker;
 
 /**
  * Create HTML list of nav menu input items.
@@ -15,7 +15,7 @@ use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
  * @since 3.0.0
  * @uses NavMenuWalker
  */
-class Walker_Nav_Menu_Checklist extends NavMenuWalker
+class NavMenuChecklistWalker extends NavMenuWalker
 {
     /**
      *
@@ -39,7 +39,7 @@ class Walker_Nav_Menu_Checklist extends NavMenuWalker
      * @param int $depth Depth of page. Used for padding.
      * @param array $args Not used.
      */
-    public function start_lvl(&$output, $depth = 0, $args = array())
+    public function start_lvl(&$output, $depth = 0, $args = [])
     {
         $indent = str_repeat("\t", $depth);
         $output .= "\n$indent<ul class='children'>\n";
@@ -56,7 +56,7 @@ class Walker_Nav_Menu_Checklist extends NavMenuWalker
      * @param int $depth Depth of page. Used for padding.
      * @param array $args Not used.
      */
-    public function end_lvl(&$output, $depth = 0, $args = array())
+    public function end_lvl(&$output, $depth = 0, $args = [])
     {
         $indent = str_repeat("\t", $depth);
         $output .= "\n$indent</ul>";
@@ -77,7 +77,7 @@ class Walker_Nav_Menu_Checklist extends NavMenuWalker
      * @param array $args Not used.
      * @param int $id Not used.
      */
-    public function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0)
+    public function start_el(&$output, $item, $depth = 0, $args = [], $id = 0)
     {
         global $_nav_menu_placeholder;
 
@@ -120,9 +120,9 @@ class Walker_Nav_Menu_Checklist extends NavMenuWalker
         $output .= '<input type="hidden" class="menu-item-target" name="menu-item[' . $possible_object_id . '][menu-item-target]" value="' . esc_attr($item->target) . '" />';
         $output .= '<input type="hidden" class="menu-item-attr_title" name="menu-item[' . $possible_object_id . '][menu-item-attr_title]" value="' . esc_attr($item->attr_title) . '" />';
         $output .= '<input type="hidden" class="menu-item-classes" name="menu-item[' . $possible_object_id . '][menu-item-classes]" value="' . esc_attr(implode(
-            ' ',
+                ' ',
                 $item->classes
-        )) . '" />';
+            )) . '" />';
         $output .= '<input type="hidden" class="menu-item-xfn" name="menu-item[' . $possible_object_id . '][menu-item-xfn]" value="' . esc_attr($item->xfn) . '" />';
     }
-} // Walker_Nav_Menu_Checklist
+} // Devtronic\FreshPress\Components\Walker\NavMenuChecklistWalker

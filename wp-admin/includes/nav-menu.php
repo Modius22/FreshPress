@@ -7,11 +7,9 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Walker\NavMenuChecklistWalker;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
 use Devtronic\FreshPress\Core\WPDB;
-
-/** Walker_Nav_Menu_Checklist class */
-require_once(ABSPATH . 'wp-admin/includes/class-walker-nav-menu-checklist.php');
 
 /**
  * Prints the appropriate response to a menu quick search.
@@ -32,7 +30,7 @@ function _wp_ajax_menu_quick_search($request = array())
     ) ? $request['response-format'] : 'json';
 
     if ('markup' == $response_format) {
-        $args['walker'] = new Walker_Nav_Menu_Checklist;
+        $args['walker'] = new NavMenuChecklistWalker();
     }
 
     if ('get-post-item' == $type) {
@@ -424,7 +422,7 @@ function wp_nav_menu_item_post_type_meta_box($object, $box)
         $db_fields = array('parent' => 'post_parent', 'id' => 'ID');
     }
 
-    $walker = new Walker_Nav_Menu_Checklist($db_fields);
+    $walker = new NavMenuChecklistWalker($db_fields);
 
     $current_tab = 'most-recent';
     if (isset($_REQUEST[$post_type_name . '-tab']) && in_array(
@@ -746,7 +744,7 @@ function wp_nav_menu_item_taxonomy_meta_box($object, $box)
         $db_fields = array('parent' => 'parent', 'id' => 'term_id');
     }
 
-    $walker = new Walker_Nav_Menu_Checklist($db_fields);
+    $walker = new NavMenuChecklistWalker($db_fields);
 
     $current_tab = 'most-used';
     if (isset($_REQUEST[$taxonomy_name . '-tab']) && in_array(
