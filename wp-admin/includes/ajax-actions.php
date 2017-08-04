@@ -15,6 +15,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
 
 //
 // No-privilege Ajax handlers.
@@ -1399,7 +1400,7 @@ function wp_ajax_add_menu_item()
     }
 
     /** This filter is documented in wp-admin/includes/nav-menu.php */
-    $walker_class_name = apply_filters('wp_edit_nav_menu_walker', 'Walker_Nav_Menu_Edit', $_POST['menu']);
+    $walker_class_name = apply_filters('wp_edit_nav_menu_walker', NavMenuEditWalker::class, $_POST['menu']);
 
     if (!class_exists($walker_class_name)) {
         wp_die(0);

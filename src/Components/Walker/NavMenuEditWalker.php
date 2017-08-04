@@ -1,13 +1,13 @@
 <?php
 /**
- * Navigation Menu API: Walker_Nav_Menu_Edit class
+ * Navigation Menu API: NavMenuEditWalker class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
+namespace Devtronic\FreshPress\Components\Walker;
 
 /**
  * Create HTML list of nav menu input items.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
  * @since 3.0.0
  * @uses NavMenuWalker
  */
-class Walker_Nav_Menu_Edit extends NavMenuWalker
+class NavMenuEditWalker extends NavMenuWalker
 {
     /**
      * Starts the list before the elements are added.
@@ -29,7 +29,7 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
      * @param int $depth Depth of menu item. Used for padding.
      * @param array $args Not used.
      */
-    public function start_lvl(&$output, $depth = 0, $args = array())
+    public function start_lvl(&$output, $depth = 0, $args = [])
     {
     }
 
@@ -44,7 +44,7 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
      * @param int $depth Depth of menu item. Used for padding.
      * @param array $args Not used.
      */
-    public function end_lvl(&$output, $depth = 0, $args = array())
+    public function end_lvl(&$output, $depth = 0, $args = [])
     {
     }
 
@@ -62,21 +62,21 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
      * @param array $args Not used.
      * @param int $id Not used.
      */
-    public function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0)
+    public function start_el(&$output, $item, $depth = 0, $args = [], $id = 0)
     {
         global $_wp_nav_menu_max_depth;
         $_wp_nav_menu_max_depth = $depth > $_wp_nav_menu_max_depth ? $depth : $_wp_nav_menu_max_depth;
 
         ob_start();
         $item_id = esc_attr($item->ID);
-        $removed_args = array(
+        $removed_args = [
             'action',
             'customlink-tab',
             'edit-menu-item',
             'menu-item',
             'page-tab',
             '_wpnonce',
-        );
+        ];
 
         $original_title = false;
         if ('taxonomy' == $item->type) {
@@ -94,11 +94,11 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
             }
         }
 
-        $classes = array(
+        $classes = [
             'menu-item menu-item-depth-' . $depth,
             'menu-item-' . esc_attr($item->object),
             'menu-item-edit-' . ((isset($_GET['edit-menu-item']) && $item_id == $_GET['edit-menu-item']) ? 'active' : 'inactive'),
-        );
+        ];
 
         $title = $item->title;
 
@@ -129,10 +129,10 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
 							<a href="<?php
                             echo wp_nonce_url(
                                 add_query_arg(
-                                    array(
+                                    [
                                         'action' => 'move-up-menu-item',
                                         'menu-item' => $item_id,
-                                    ),
+                                    ],
                                     remove_query_arg($removed_args, admin_url('nav-menus.php'))
                                 ),
                                 'move-menu_item'
@@ -141,10 +141,10 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
 							<a href="<?php
                             echo wp_nonce_url(
                                 add_query_arg(
-                                    array(
+                                    [
                                         'action' => 'move-down-menu-item',
                                         'menu-item' => $item_id,
-                                    ),
+                                    ],
                                     remove_query_arg($removed_args, admin_url('nav-menus.php'))
                                 ),
                                 'move-menu_item'
@@ -152,10 +152,10 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
 						</span>
 						<a class="item-edit" id="edit-<?php echo $item_id; ?>" href="<?php
                         echo (isset($_GET['edit-menu-item']) && $item_id == $_GET['edit-menu-item']) ? admin_url('nav-menus.php') : add_query_arg(
-                                'edit-menu-item',
+                            'edit-menu-item',
                             $item_id,
                             remove_query_arg($removed_args, admin_url('nav-menus.php#menu-item-settings-' . $item_id))
-                            ); ?>" aria-label="<?php esc_attr_e('Edit menu item'); ?>"><?php _e('Edit'); ?></a>
+                        ); ?>" aria-label="<?php esc_attr_e('Edit menu item'); ?>"><?php _e('Edit'); ?></a>
 					</span>
             </div>
         </div>
@@ -245,19 +245,19 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
                 <a class="item-delete submitdelete deletion" id="delete-<?php echo $item_id; ?>" href="<?php
                 echo wp_nonce_url(
                     add_query_arg(
-                        array(
+                        [
                             'action' => 'delete-menu-item',
                             'menu-item' => $item_id,
-                        ),
+                        ],
                         admin_url('nav-menus.php')
                     ),
                     'delete-menu_item_' . $item_id
                 ); ?>"><?php _e('Remove'); ?></a> <span class="meta-sep hide-if-no-js"> | </span> <a
                         class="item-cancel submitcancel hide-if-no-js" id="cancel-<?php echo $item_id; ?>"
                         href="<?php echo esc_url(add_query_arg(
-                    array('edit-menu-item' => $item_id, 'cancel' => time()),
+                            ['edit-menu-item' => $item_id, 'cancel' => time()],
                             admin_url('nav-menus.php')
-                )); ?>#menu-item-settings-<?php echo $item_id; ?>"><?php _e('Cancel'); ?></a>
+                        )); ?>#menu-item-settings-<?php echo $item_id; ?>"><?php _e('Cancel'); ?></a>
             </div>
 
             <input class="menu-item-data-db-id" type="hidden" name="menu-item-db-id[<?php echo $item_id; ?>]"
@@ -277,4 +277,4 @@ class Walker_Nav_Menu_Edit extends NavMenuWalker
         <?php
         $output .= ob_get_clean();
     }
-} // Walker_Nav_Menu_Edit
+} // Devtronic\FreshPress\Components\Walker\NavMenuEditWalker

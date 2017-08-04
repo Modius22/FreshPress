@@ -53,6 +53,7 @@ $classes = [
     'Walker_PageDropdown' => 'Devtronic\\FreshPress\\Components\\Walker\\PageDropdownWalker',
     'Walker_CategoryDropdown' => 'Devtronic\\FreshPress\\Components\\Walker\\CategoryDropdownWalker',
     'Walker_Nav_Menu' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuWalker',
+    'Walker_Nav_Menu_Edit' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuEditWalker',
 ];
 
 $abstractClasses = [
