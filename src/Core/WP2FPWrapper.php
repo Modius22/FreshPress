@@ -3,7 +3,7 @@
  * Wrapper to keep back compatibility to WordPress
  */
 
-$classes = [
+$classes = array_change_key_case([
     'WP_Widget' => 'Devtronic\\FreshPress\\Components\\Widgets\\Widget',
     'WP_Nav_Menu_Widget' => 'Devtronic\\FreshPress\\Components\\Widgets\\NavMenuWidget',
     'WP_Widget_Archives' => 'Devtronic\\FreshPress\\Components\\Widgets\\ArchivesWidget',
@@ -55,14 +55,15 @@ $classes = [
     'Walker_Nav_Menu' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuWalker',
     'Walker_Nav_Menu_Edit' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuEditWalker',
     'Walker_Nav_Menu_Checklist' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuChecklistWalker',
-];
+]);
 
-$abstractClasses = [
+$abstractClasses = array_change_key_case([
     'WP_Widget_Media' => 'Devtronic\\FreshPress\\Components\\Widgets\\MediaWidget',
-];
+]);
 
 // Classes
 spl_autoload_register(function ($oldClass) use ($classes) {
+    $oldClass = strtolower($oldClass);
     if (isset($classes[$oldClass])) {
         eval(sprintf('class %s extends %s {}', $oldClass, $classes[$oldClass]));
     }
@@ -70,6 +71,7 @@ spl_autoload_register(function ($oldClass) use ($classes) {
 
 // Abstract Classes
 spl_autoload_register(function ($oldClass) use ($abstractClasses) {
+    $oldClass = strtolower($oldClass);
     if (isset($classes[$oldClass])) {
         eval(sprintf('abstract class %s extends %s {}', $oldClass, $abstractClasses[$oldClass]));
     }
