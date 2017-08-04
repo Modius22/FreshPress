@@ -7,19 +7,21 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
+
 /**
  * Create HTML list of nav menu input items.
  *
  * @package WordPress
  * @since 3.0.0
- * @uses Walker_Nav_Menu
+ * @uses NavMenuWalker
  */
-class Walker_Nav_Menu_Edit extends Walker_Nav_Menu
+class Walker_Nav_Menu_Edit extends NavMenuWalker
 {
     /**
      * Starts the list before the elements are added.
      *
-     * @see Walker_Nav_Menu::start_lvl()
+     * @see NavMenuWalker::start_lvl()
      *
      * @since 3.0.0
      *
@@ -34,7 +36,7 @@ class Walker_Nav_Menu_Edit extends Walker_Nav_Menu
     /**
      * Ends the list of after the elements are added.
      *
-     * @see Walker_Nav_Menu::end_lvl()
+     * @see NavMenuWalker::end_lvl()
      *
      * @since 3.0.0
      *
@@ -49,7 +51,7 @@ class Walker_Nav_Menu_Edit extends Walker_Nav_Menu
     /**
      * Start the element output.
      *
-     * @see Walker_Nav_Menu::start_el()
+     * @see NavMenuWalker::start_el()
      * @since 3.0.0
      *
      * @global int $_wp_nav_menu_max_depth

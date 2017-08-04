@@ -7,8 +7,7 @@
  * @since 3.0.0
  */
 
-/** Walker_Nav_Menu class */
-require_once ABSPATH . WPINC . '/class-walker-nav-menu.php';
+use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
 
 /**
  * Displays a navigation menu.
@@ -556,7 +555,7 @@ function _wp_menu_item_classes_by_context(&$menu_items)
 /**
  * Retrieve the HTML list content for nav menu items.
  *
- * @uses Walker_Nav_Menu to create HTML list content.
+ * @uses NavMenuWalker to create HTML list content.
  * @since 3.0.0
  *
  * @param array $items The menu items, sorted by each menu item's menu order.
@@ -566,7 +565,7 @@ function _wp_menu_item_classes_by_context(&$menu_items)
  */
 function walk_nav_menu_tree($items, $depth, $r)
 {
-    $walker = (empty($r->walker)) ? new Walker_Nav_Menu : $r->walker;
+    $walker = (empty($r->walker)) ? new NavMenuWalker() : $r->walker;
     $args = array($items, $depth, $r);
 
     return call_user_func_array(array($walker, 'walk'), $args);
