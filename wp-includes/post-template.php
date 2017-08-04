@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Walker\PageDropdownWalker;
 use Devtronic\FreshPress\Components\Walker\PageWalker;
 use Devtronic\FreshPress\Components\Walker\Walker;
 use Hautelook\Phpass\PasswordHash;
@@ -1516,9 +1517,9 @@ function walk_page_tree($pages, $depth, $current_page, $r)
 /**
  * Retrieve HTML dropdown (select) content for page list.
  *
- * @uses Walker_PageDropdown to create HTML dropdown content.
+ * @uses PageDropdownWalker to create HTML dropdown content.
  * @since 2.1.0
- * @see  Walker_PageDropdown::walk() for parameters and return description.
+ * @see  PageDropdownWalker::walk() for parameters and return description.
  *
  * @return string
  */
@@ -1526,7 +1527,7 @@ function walk_page_dropdown_tree()
 {
     $args = func_get_args();
     if (empty($args[2]['walker'])) { // the user's options are the third parameter
-        $walker = new Walker_PageDropdown;
+        $walker = new PageDropdownWalker();
     } else {
         $walker = $args[2]['walker'];
     }
