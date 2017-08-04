@@ -1,13 +1,15 @@
 <?php
 /**
- * Post API: Walker_Page class
+ * Post API: PageWalker class
  *
  * @package WordPress
  * @subpackage Template
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\Walker;
+namespace Devtronic\FreshPress\Components\Walker;
+
+use WP_Post;
 
 /**
  * Core walker class used to create an HTML list of pages.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Components\Walker\Walker;
  *
  * @see Walker
  */
-class Walker_Page extends Walker
+class PageWalker extends Walker
 {
 
     /**
@@ -40,7 +42,7 @@ class Walker_Page extends Walker
      * @see Walker::$db_fields
      * @todo Decouple this.
      */
-    public $db_fields = array('parent' => 'post_parent', 'id' => 'ID');
+    public $db_fields = ['parent' => 'post_parent', 'id' => 'ID'];
 
     /**
      * Outputs the beginning of the current level in the tree before elements are output.
@@ -55,7 +57,7 @@ class Walker_Page extends Walker
      * @param array $args Optional. Arguments for outputting the next level.
      *                       Default empty array.
      */
-    public function start_lvl(&$output, $depth = 0, $args = array())
+    public function start_lvl(&$output, $depth = 0, $args = [])
     {
         if (isset($args['item_spacing']) && 'preserve' === $args['item_spacing']) {
             $t = "\t";
@@ -81,7 +83,7 @@ class Walker_Page extends Walker
      * @param array $args Optional. Arguments for outputting the end of the current level.
      *                       Default empty array.
      */
-    public function end_lvl(&$output, $depth = 0, $args = array())
+    public function end_lvl(&$output, $depth = 0, $args = [])
     {
         if (isset($args['item_spacing']) && 'preserve' === $args['item_spacing']) {
             $t = "\t";
@@ -107,7 +109,7 @@ class Walker_Page extends Walker
      * @param array $args Optional. Array of arguments. Default empty array.
      * @param int $current_page Optional. Page ID. Default 0.
      */
-    public function start_el(&$output, $page, $depth = 0, $args = array(), $current_page = 0)
+    public function start_el(&$output, $page, $depth = 0, $args = [], $current_page = 0)
     {
         if (isset($args['item_spacing']) && 'preserve' === $args['item_spacing']) {
             $t = "\t";
@@ -122,7 +124,7 @@ class Walker_Page extends Walker
             $indent = '';
         }
 
-        $css_class = array('page_item', 'page-item-' . $page->ID);
+        $css_class = ['page_item', 'page-item-' . $page->ID];
 
         if (isset($args['pages_with_children'][$page->ID])) {
             $css_class[] = 'page_item_has_children';
@@ -166,7 +168,7 @@ class Walker_Page extends Walker
         $args['link_before'] = empty($args['link_before']) ? '' : $args['link_before'];
         $args['link_after'] = empty($args['link_after']) ? '' : $args['link_after'];
 
-        $atts = array();
+        $atts = [];
         $atts['href'] = get_permalink($page->ID);
 
         /**
@@ -229,7 +231,7 @@ class Walker_Page extends Walker
      * @param int $depth Optional. Depth of page. Default 0 (unused).
      * @param array $args Optional. Array of arguments. Default empty array.
      */
-    public function end_el(&$output, $page, $depth = 0, $args = array())
+    public function end_el(&$output, $page, $depth = 0, $args = [])
     {
         if (isset($args['item_spacing']) && 'preserve' === $args['item_spacing']) {
             $t = "\t";

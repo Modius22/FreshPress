@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Walker\PageWalker;
 use Devtronic\FreshPress\Components\Walker\Walker;
 use Hautelook\Phpass\PasswordHash;
 
@@ -1233,7 +1234,7 @@ function wp_dropdown_pages($args = '')
  *                                      will not be wrapped with unordered list `<ul>` tags. Default 'Pages'.
  * @type string $item_spacing Whether to preserve whitespace within the menu's HTML. Accepts 'preserve' or 'discard'.
  *                                      Default 'preserve'.
- * @type Walker $walker Walker instance to use for listing pages. Default empty (Walker_Page).
+ * @type Walker $walker Walker instance to use for listing pages. Default empty (PageWalker).
  * }
  * @return string|void HTML list of pages.
  */
@@ -1353,7 +1354,7 @@ function wp_list_pages($args = '')
  * @type string $before The HTML or text to prepend to the menu. Default is '<ul>'.
  * @type string $after The HTML or text to append to the menu. Default is '</ul>'.
  * @type string $item_spacing Whether to preserve whitespace within the menu's HTML. Accepts 'preserve' or 'discard'. Default 'discard'.
- * @type Walker $walker Walker instance to use for listing pages. Default empty (Walker_Page).
+ * @type Walker $walker Walker instance to use for listing pages. Default empty (PageWalker).
  * }
  * @return string|void HTML menu
  */
@@ -1485,7 +1486,7 @@ function wp_page_menu($args = array())
 /**
  * Retrieve HTML list content for page list.
  *
- * @uses Walker_Page to create HTML list content.
+ * @uses PageWalker to create HTML list content.
  * @since 2.1.0
  *
  * @param array $pages
@@ -1497,7 +1498,7 @@ function wp_page_menu($args = array())
 function walk_page_tree($pages, $depth, $current_page, $r)
 {
     if (empty($r['walker'])) {
-        $walker = new Walker_Page;
+        $walker = new PageWalker();
     } else {
         $walker = $r['walker'];
     }
