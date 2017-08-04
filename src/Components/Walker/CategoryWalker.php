@@ -1,13 +1,13 @@
 <?php
 /**
- * Taxonomy API: Walker_Category class
+ * Taxonomy API: CategoryWalker class
  *
  * @package WordPress
  * @subpackage Template
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\Walker;
+namespace Devtronic\FreshPress\Components\Walker;
 
 /**
  * Core class used to create an HTML list of categories.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Walker\Walker;
  *
  * @see Walker
  */
-class Walker_Category extends Walker
+class CategoryWalker extends Walker
 {
 
     /**
@@ -40,7 +40,7 @@ class Walker_Category extends Walker
      * @see Walker::$db_fields
      * @todo Decouple this
      */
-    public $db_fields = array('parent' => 'parent', 'id' => 'term_id');
+    public $db_fields = ['parent' => 'parent', 'id' => 'term_id'];
 
     /**
      * Starts the list before the elements are added.
@@ -55,7 +55,7 @@ class Walker_Category extends Walker
      * @param array $args Optional. An array of arguments. Will only append content if style argument
      *                       value is 'list'. See wp_list_categories(). Default empty array.
      */
-    public function start_lvl(&$output, $depth = 0, $args = array())
+    public function start_lvl(&$output, $depth = 0, $args = [])
     {
         if ('list' != $args['style']) {
             return;
@@ -78,7 +78,7 @@ class Walker_Category extends Walker
      * @param array $args Optional. An array of arguments. Will only append content if style argument
      *                       value is 'list'. See wp_list_categories(). Default empty array.
      */
-    public function end_lvl(&$output, $depth = 0, $args = array())
+    public function end_lvl(&$output, $depth = 0, $args = [])
     {
         if ('list' != $args['style']) {
             return;
@@ -102,7 +102,7 @@ class Walker_Category extends Walker
      * @param array $args Optional. An array of arguments. See wp_list_categories(). Default empty array.
      * @param int $id Optional. ID of the current category. Default 0.
      */
-    public function start_el(&$output, $category, $depth = 0, $args = array(), $id = 0)
+    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0)
     {
         /** This filter is documented in wp-includes/category-template.php */
         $cat_name = apply_filters(
@@ -127,10 +127,10 @@ class Walker_Category extends Walker
              * @param object $category Category object.
              */
             $link .= 'title="' . esc_attr(strip_tags(apply_filters(
-                'category_description',
-                $category->description,
+                    'category_description',
+                    $category->description,
                     $category
-            ))) . '"';
+                ))) . '"';
         }
 
         $link .= '>';
@@ -144,10 +144,10 @@ class Walker_Category extends Walker
             }
 
             $link .= '<a href="' . esc_url(get_term_feed_link(
-                $category->term_id,
-                $category->taxonomy,
+                    $category->term_id,
+                    $category->taxonomy,
                     $args['feed_type']
-            )) . '"';
+                    )) . '"';
 
             if (empty($args['feed'])) {
                 $alt = ' alt="' . sprintf(__('Feed for all posts filed under %s'), $cat_name) . '"';
@@ -176,17 +176,17 @@ class Walker_Category extends Walker
         }
         if ('list' == $args['style']) {
             $output .= "\t<li";
-            $css_classes = array(
+            $css_classes = [
                 'cat-item',
                 'cat-item-' . $category->term_id,
-            );
+            ];
 
             if (!empty($args['current_category'])) {
                 // 'current_category' can be an array, so we use `get_terms()`.
-                $_current_terms = get_terms($category->taxonomy, array(
+                $_current_terms = get_terms($category->taxonomy, [
                     'include' => $args['current_category'],
                     'hide_empty' => false,
-                ));
+                ]);
 
                 foreach ($_current_terms as $_current_term) {
                     if ($category->term_id == $_current_term->term_id) {
@@ -241,7 +241,7 @@ class Walker_Category extends Walker
      * @param array $args Optional. An array of arguments. Only uses 'list' for whether should append
      *                       to output. See wp_list_categories(). Default empty array.
      */
-    public function end_el(&$output, $page, $depth = 0, $args = array())
+    public function end_el(&$output, $page, $depth = 0, $args = [])
     {
         if ('list' != $args['style']) {
             return;
