@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Walker\CommentWalker;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -980,7 +981,7 @@ function get_comments_number_text($zero = false, $one = false, $more = false)
  * @since 1.5.0
  * @since 4.4.0 Added the ability for `$comment_ID` to also accept a WP_Comment object.
  *
- * @see Walker_Comment::comment()
+ * @see CommentWalker::comment()
  *
  * @param int|WP_Comment $comment_ID WP_Comment or ID of the comment for which to get the text.
  *                                    Default current comment.
@@ -996,7 +997,7 @@ function get_comment_text($comment_ID = 0, $args = array())
      *
      * @since 1.5.0
      *
-     * @see Walker_Comment::comment()
+     * @see CommentWalker::comment()
      *
      * @param string $comment_content Text of the comment.
      * @param WP_Comment $comment The comment object.
@@ -1011,7 +1012,7 @@ function get_comment_text($comment_ID = 0, $args = array())
  * @since 0.71
  * @since 4.4.0 Added the ability for `$comment_ID` to also accept a WP_Comment object.
  *
- * @see Walker_Comment::comment()
+ * @see CommentWalker::comment()
  *
  * @param int|WP_Comment $comment_ID WP_Comment or ID of the comment for which to print the text.
  *                                    Default current comment.
@@ -1027,7 +1028,7 @@ function comment_text($comment_ID = 0, $args = array())
      *
      * @since 1.2.0
      *
-     * @see Walker_Comment::comment()
+     * @see CommentWalker::comment()
      *
      * @param string $comment_text Text of the current comment.
      * @param WP_Comment|null $comment The comment object.
@@ -2080,7 +2081,7 @@ function wp_list_comments($args = array(), $comments = null)
     } else {
         /*
          * If 'page' or 'per_page' has been passed, and does not match what's in $wp_query,
-         * perform a separate comment query and allow Walker_Comment to paginate.
+         * perform a separate comment query and allow Devtronic\FreshPress\Components\Walker\CommentWalker to paginate.
          */
         if ($r['page'] || $r['per_page']) {
             $current_cpage = get_query_var('cpage');
@@ -2201,10 +2202,9 @@ function wp_list_comments($args = array(), $comments = null)
 
     wp_queue_comments_for_comment_meta_lazyload($_comments);
 
+    $walker = $r['walker'];
     if (empty($r['walker'])) {
-        $walker = new Walker_Comment;
-    } else {
-        $walker = $r['walker'];
+        $walker = new CommentWalker();
     }
 
     $output = $walker->paged_walk($_comments, $r['max_depth'], $r['page'], $r['per_page'], $r);

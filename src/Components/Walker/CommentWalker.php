@@ -1,13 +1,15 @@
 <?php
 /**
- * Comment API: Walker_Comment class
+ * Comment API: CommentWalker class
  *
  * @package WordPress
  * @subpackage Comments
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\Walker;
+namespace Devtronic\FreshPress\Components\Walker;
+
+use WP_Comment;
 
 /**
  * Core walker class used to create an HTML list of comments.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Components\Walker\Walker;
  *
  * @see Walker
  */
-class Walker_Comment extends Walker
+class CommentWalker extends Walker
 {
 
     /**
@@ -40,7 +42,7 @@ class Walker_Comment extends Walker
      * @see Walker::$db_fields
      * @todo Decouple this
      */
-    public $db_fields = array('parent' => 'comment_parent', 'id' => 'comment_ID');
+    public $db_fields = ['parent' => 'comment_parent', 'id' => 'comment_ID'];
 
     /**
      * Starts the list before the elements are added.
@@ -55,7 +57,7 @@ class Walker_Comment extends Walker
      * @param int $depth Optional. Depth of the current comment. Default 0.
      * @param array $args Optional. Uses 'style' argument for type of HTML list. Default empty array.
      */
-    public function start_lvl(&$output, $depth = 0, $args = array())
+    public function start_lvl(&$output, $depth = 0, $args = [])
     {
         $GLOBALS['comment_depth'] = $depth + 1;
 
@@ -86,7 +88,7 @@ class Walker_Comment extends Walker
      * @param array $args Optional. Will only append content if style argument value is 'ol' or 'ul'.
      *                       Default empty array.
      */
-    public function end_lvl(&$output, $depth = 0, $args = array())
+    public function end_lvl(&$output, $depth = 0, $args = [])
     {
         $GLOBALS['comment_depth'] = $depth + 1;
 
@@ -177,7 +179,7 @@ class Walker_Comment extends Walker
      * @param array $args Optional. An array of arguments. Default empty array.
      * @param int $id Optional. ID of the current comment. Default 0 (unused).
      */
-    public function start_el(&$output, $comment, $depth = 0, $args = array(), $id = 0)
+    public function start_el(&$output, $comment, $depth = 0, $args = [], $id = 0)
     {
         $depth++;
         $GLOBALS['comment_depth'] = $depth;
@@ -219,7 +221,7 @@ class Walker_Comment extends Walker
      * @param int $depth Optional. Depth of the current comment. Default 0.
      * @param array $args Optional. An array of arguments. Default empty array.
      */
-    public function end_el(&$output, $comment, $depth = 0, $args = array())
+    public function end_el(&$output, $comment, $depth = 0, $args = [])
     {
         if (!empty($args['end-callback'])) {
             ob_start();
@@ -248,16 +250,14 @@ class Walker_Comment extends Walker
      */
     protected function ping($comment, $depth, $args)
     {
-        $tag = ('div' == $args['style']) ? 'div' : 'li'; ?>
-        <<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class('', $comment); ?>>
-        <div class="comment-body">
-            <?php _e('Pingback:'); ?><?php comment_author_link($comment); ?><?php edit_comment_link(
-            __('Edit'),
-                '<span class="edit-link">',
-            '</span>'
-        ); ?>
-        </div>
-        <?php
+        $tag = ('div' == $args['style']) ? 'div' : 'li';
+
+        echo sprintf('<%s id="comment-%s" %s>', $tag, comment_ID(), comment_class('', $comment));
+        echo '<div class="comment-body">';
+        _e('Pingback:');
+        comment_author_link($comment);
+        edit_comment_link(__('Edit'), '<span class="edit-link">', '</span>');
+        echo '</div>';
     }
 
     /**

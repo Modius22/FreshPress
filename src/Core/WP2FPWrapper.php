@@ -47,6 +47,7 @@ $classes = [
     'WP_Filesystem_FTPext' => 'Devtronic\\FreshPress\\Components\\Filesystem\\FTPExtFileSystem',
     'Walker' => 'Devtronic\\FreshPress\\Components\\Walker\\Walker',
     'Walker_Page' => 'Devtronic\\FreshPress\\Components\\Walker\\PageWalker',
+    'Walker_Comment' => 'Devtronic\\FreshPress\\Components\\Walker\\CommentWalker',
 ];
 
 $abstractClasses = [

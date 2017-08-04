@@ -971,7 +971,7 @@ function separate_comments(&$comments)
  *
  * @since 2.7.0
  *
- * @uses Walker_Comment
+ * @uses CommentWalker
  *
  * @global WP_Query $wp_query
  *
@@ -1015,7 +1015,7 @@ function get_comment_pages_count($comments = null, $per_page = null, $threaded =
     }
 
     if ($threaded) {
-        $walker = new Walker_Comment;
+        $walker = new CommentWalker();
         $count = ceil($walker->get_number_of_root_elements($comments) / $per_page);
     } else {
         $count = ceil(count($comments) / $per_page);
