@@ -1,13 +1,13 @@
 <?php
 /**
- * Taxonomy API: Walker_Category_Checklist class
+ * Taxonomy API: CategoryChecklistWalker class
  *
  * @package WordPress
  * @subpackage Administration
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\Walker;
+namespace Devtronic\FreshPress\Components\Walker;
 
 /**
  * Core walker class to output an unordered list of category checkbox input elements.
@@ -18,10 +18,10 @@ use Devtronic\FreshPress\Components\Walker\Walker;
  * @see wp_category_checklist()
  * @see wp_terms_checklist()
  */
-class Walker_Category_Checklist extends Walker
+class CategoryChecklistWalker extends Walker
 {
     public $tree_type = 'category';
-    public $db_fields = array('parent' => 'parent', 'id' => 'term_id'); //TODO: decouple this
+    public $db_fields = ['parent' => 'parent', 'id' => 'term_id']; //TODO: decouple this
 
     /**
      * Starts the list before the elements are added.
@@ -34,7 +34,7 @@ class Walker_Category_Checklist extends Walker
      * @param int $depth Depth of category. Used for tab indentation.
      * @param array $args An array of arguments. @see wp_terms_checklist()
      */
-    public function start_lvl(&$output, $depth = 0, $args = array())
+    public function start_lvl(&$output, $depth = 0, $args = [])
     {
         $indent = str_repeat("\t", $depth);
         $output .= "$indent<ul class='children'>\n";
@@ -51,7 +51,7 @@ class Walker_Category_Checklist extends Walker
      * @param int $depth Depth of category. Used for tab indentation.
      * @param array $args An array of arguments. @see wp_terms_checklist()
      */
-    public function end_lvl(&$output, $depth = 0, $args = array())
+    public function end_lvl(&$output, $depth = 0, $args = [])
     {
         $indent = str_repeat("\t", $depth);
         $output .= "$indent</ul>\n";
@@ -70,7 +70,7 @@ class Walker_Category_Checklist extends Walker
      * @param array $args An array of arguments. @see wp_terms_checklist()
      * @param int $id ID of the current term.
      */
-    public function start_el(&$output, $category, $depth = 0, $args = array(), $id = 0)
+    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0)
     {
         if (empty($args['taxonomy'])) {
             $taxonomy = 'category';
@@ -84,10 +84,10 @@ class Walker_Category_Checklist extends Walker
             $name = 'tax_input[' . $taxonomy . ']';
         }
 
-        $args['popular_cats'] = empty($args['popular_cats']) ? array() : $args['popular_cats'];
+        $args['popular_cats'] = empty($args['popular_cats']) ? [] : $args['popular_cats'];
         $class = in_array($category->term_id, $args['popular_cats']) ? ' class="popular-category"' : '';
 
-        $args['selected_cats'] = empty($args['selected_cats']) ? array() : $args['selected_cats'];
+        $args['selected_cats'] = empty($args['selected_cats']) ? [] : $args['selected_cats'];
 
         if (!empty($args['list_only'])) {
             $aria_checked = 'false';
@@ -125,7 +125,7 @@ class Walker_Category_Checklist extends Walker
      * @param int $depth Depth of the term in reference to parents. Default 0.
      * @param array $args An array of arguments. @see wp_terms_checklist()
      */
-    public function end_el(&$output, $category, $depth = 0, $args = array())
+    public function end_el(&$output, $category, $depth = 0, $args = [])
     {
         $output .= "</li>\n";
     }

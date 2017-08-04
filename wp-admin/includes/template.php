@@ -11,10 +11,8 @@
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\ListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
+use Devtronic\FreshPress\Components\Walker\CategoryChecklistWalker;
 use Devtronic\FreshPress\Core\WPDB;
-
-/** Walker_Category_Checklist class */
-require_once(ABSPATH . 'wp-admin/includes/class-walker-category-checklist.php');
 
 /** WP_Internal_Pointers class */
 require_once(ABSPATH . 'wp-admin/includes/class-wp-internal-pointers.php');
@@ -38,7 +36,7 @@ require_once(ABSPATH . 'wp-admin/includes/class-wp-internal-pointers.php');
  * @param array  $popular_cats         Optional. List of categories to receive the "popular-category" class.
  *                                     Default false.
  * @param object $walker               Optional. Walker object to use to build the output.
- *                                     Default is a Walker_Category_Checklist instance.
+ *                                     Default is a Devtronic\FreshPress\Components\Walker\CategoryChecklistWalker instance.
  * @param bool   $checked_ontop        Optional. Whether to move checked items out of the hierarchy and to
  *                                     the top of the list. Default true.
  */
@@ -72,7 +70,7 @@ function wp_category_checklist($post_id = 0, $descendants_and_self = 0, $selecte
  *     @type array  $popular_cats         List of categories to receive the "popular-category" class.
  *                                        Default false.
  *     @type object $walker               Walker object to use to build the output.
- *                                        Default is a Walker_Category_Checklist instance.
+ *                                        Default is a Devtronic\FreshPress\Components\Walker\CategoryChecklistWalker instance.
  *     @type string $taxonomy             Taxonomy to generate the checklist for. Default 'category'.
  *     @type bool   $checked_ontop        Whether to move checked items out of the hierarchy and to
  *                                        the top of the list. Default true.
@@ -107,7 +105,7 @@ function wp_terms_checklist($post_id = 0, $args = array())
     $r = wp_parse_args($params, $defaults);
 
     if (empty($r['walker']) || ! ($r['walker'] instanceof Walker)) {
-        $walker = new Walker_Category_Checklist;
+        $walker = new CategoryChecklistWalker();
     } else {
         $walker = $r['walker'];
     }
