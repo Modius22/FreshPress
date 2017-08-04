@@ -7,6 +7,7 @@
  * @since 1.2.0
  */
 
+use Devtronic\FreshPress\Components\Walker\CategoryDropdownWalker;
 use Devtronic\FreshPress\Components\Walker\CategoryWalker;
 use Devtronic\FreshPress\Components\Walker\Walker;
 
@@ -1106,9 +1107,9 @@ function walk_category_tree()
 /**
  * Retrieve HTML dropdown (select) content for category list.
  *
- * @uses Walker_CategoryDropdown to create HTML dropdown content.
+ * @uses CategoryDropdownWalker to create HTML dropdown content.
  * @since 2.1.0
- * @see  Walker_CategoryDropdown::walk() for parameters and return description.
+ * @see  CategoryDropdownWalker::walk() for parameters and return description.
  * @return string
  */
 function walk_category_dropdown_tree()
@@ -1116,7 +1117,7 @@ function walk_category_dropdown_tree()
     $args = func_get_args();
     // the user's options are the third parameter
     if (empty($args[2]['walker']) || !($args[2]['walker'] instanceof Walker)) {
-        $walker = new Walker_CategoryDropdown;
+        $walker = new CategoryDropdownWalker();
     } else {
         $walker = $args[2]['walker'];
     }

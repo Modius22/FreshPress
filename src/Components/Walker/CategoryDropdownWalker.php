@@ -1,13 +1,13 @@
 <?php
 /**
- * Taxonomy API: Walker_CategoryDropdown class
+ * Taxonomy API: CategoryDropdownWalker class
  *
  * @package WordPress
  * @subpackage Template
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Walker\Walker;
+namespace Devtronic\FreshPress\Components\Walker;
 
 /**
  * Core class used to create an HTML dropdown list of Categories.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Walker\Walker;
  *
  * @see Walker
  */
-class Walker_CategoryDropdown extends Walker
+class CategoryDropdownWalker extends Walker
 {
 
     /**
@@ -40,7 +40,7 @@ class Walker_CategoryDropdown extends Walker
      *
      * @see Walker::$db_fields
      */
-    public $db_fields = array('parent' => 'parent', 'id' => 'term_id');
+    public $db_fields = ['parent' => 'parent', 'id' => 'term_id'];
 
     /**
      * Starts the element output.
@@ -57,7 +57,7 @@ class Walker_CategoryDropdown extends Walker
      *                         See wp_dropdown_categories().
      * @param int $id Optional. ID of the current category. Default 0 (unused).
      */
-    public function start_el(&$output, $category, $depth = 0, $args = array(), $id = 0)
+    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0)
     {
         $pad = str_repeat('&nbsp;', $depth * 3);
 
