@@ -5,3 +5,11 @@ services:
     database:
         class: Devtronic\FreshPress\Core\WPDB
         arguments: ['%database.user%', '%database.pass%', '%database.name%', '%database.host%']
+
+    twig_loader:
+        class: Twig_Loader_Filesystem
+        arguments: ['wp-content/themes/', ~]
+
+    twig:
+        class: Twig_Environment
+        arguments: ['@twig_loader']

@@ -32,7 +32,10 @@ Currently there are 2 branches: dev and master. The `dev` branch is updated dail
 
 ## Updating
 FreshPress actually does not support auto updating.  
-*NEVER START ANY UPDATE FROM THE ADMIN! THE UPDATER WILL OVERWRITE THE FRESHPRESS SOURCE PERMANENTLY**
+**NEVER START ANY UPDATE FROM THE ADMIN! THE UPDATER WILL OVERWRITE THE FRESHPRESS SOURCE PERMANENTLY**
+
+## Tips & Tricks
+Look in the `docs/` Folder 🙂
 
 ## System Requirements
 - [PHP](https://secure.php.net/) version **5.6** or higher.
@@ -45,4 +48,4 @@ FreshPress actually does not support auto updating.
 4. [HTTPS](https://wordpress.org/news/2016/12/moving-toward-ssl/) support.
 
 ## License
-WordPress is free software, and is released under the terms of the GPL version 2 or (at your option) any later version. See [LICENSE.md](LICENSE.md).
+FreshPress is free software, and is released under the terms of the GPL version 2 or (at your option) any later version. See [LICENSE.md](LICENSE.md).
