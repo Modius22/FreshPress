@@ -80,7 +80,7 @@ function wp_fix_server_vars()
 
     // Fix for IIS when running with PHP ISAPI
     if (empty($_SERVER['REQUEST_URI']) ||
-        (PHP_SAPI != 'cgi-fcgi' && preg_match('/^Microsoft-IIS\//',$_SERVER['SERVER_SOFTWARE']))
+        (PHP_SAPI != 'cgi-fcgi' && preg_match('/^Microsoft-IIS\//', $_SERVER['SERVER_SOFTWARE']))
     ) {
 
         // IIS Mod-Rewrite
@@ -113,7 +113,7 @@ function wp_fix_server_vars()
 
     // Fix for PHP as CGI hosts that set SCRIPT_FILENAME to something ending in php.cgi for all requests
     if (isset($_SERVER['SCRIPT_FILENAME']) &&
-        (strpos($_SERVER['SCRIPT_FILENAME'],'php.cgi') == strlen($_SERVER['SCRIPT_FILENAME']) - 7)
+        (strpos($_SERVER['SCRIPT_FILENAME'], 'php.cgi') == strlen($_SERVER['SCRIPT_FILENAME']) - 7)
     ) {
         $_SERVER['SCRIPT_FILENAME'] = $_SERVER['PATH_TRANSLATED'];
     }
@@ -442,17 +442,19 @@ function require_wp_db()
         require_once(WP_CONTENT_DIR . '/db.php');
     }
 
-    if (isset($wpdb)) {
-        return;
+    if (!$serviceContainer->hasParameter('database.host') && defined('DB_HOST')) {
+        $serviceContainer->setParameter('database.host', DB_HOST);
+        $serviceContainer->setParameter('database.user', DB_USER);
+        $serviceContainer->setParameter('database.pass', DB_PASSWORD);
+        $serviceContainer->setParameter('database.name', DB_NAME);
+        $wpdb = $serviceContainer->get('database');
+    } else {
+        /**
+         * For installation only
+         * @deprecated
+         */
+        $wpdb = new WPDB(null, null, null, null);
     }
-
-    if (!$serviceContainer->hasParameter('database.host')) {
-        $serviceContainer->addParameter('database.host', DB_HOST);
-        $serviceContainer->addParameter('database.user', DB_USER);
-        $serviceContainer->addParameter('database.pass', DB_PASSWORD);
-        $serviceContainer->addParameter('database.name', DB_NAME);
-    }
-    $wpdb = $serviceContainer->get('database');
 }
 
 /**
