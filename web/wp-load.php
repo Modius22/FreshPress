@@ -17,7 +17,7 @@
  */
 
 /** Include FreshPress Bootstrap */
-require_once(__DIR__ . '/src/Bootstrap.php');
+require_once(__DIR__ . '/../src/Bootstrap.php');
 
 /** Define ABSPATH as this file's directory */
 if (!defined('ABSPATH')) {

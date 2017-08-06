@@ -10,7 +10,7 @@
  */
 
 /** Include FreshPress Bootstrap */
-require_once(__DIR__ . '/../src/Bootstrap.php');
+require_once(__DIR__ . '/../../src/Bootstrap.php');
 
 /**
  * We are installing.
