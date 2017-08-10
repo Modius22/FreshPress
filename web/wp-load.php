@@ -16,6 +16,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\DependencyInjection\ServiceContainer;
+
 /** Include FreshPress Bootstrap */
 require_once(__DIR__ . '/../src/Bootstrap.php');
 
@@ -38,6 +40,11 @@ if (file_exists(ABSPATH . 'wp-config.php')) {
 
     /** The config file resides in ABSPATH */
     require_once(ABSPATH . 'wp-config.php');
+
+
+    /** @var Twig_Loader_Filesystem $loader */
+    $loader = ServiceContainer::getInstance()->get('twig_loader');
+    $loader->addPath(get_template_directory(), 'Theme');
 } elseif (@file_exists(dirname(ABSPATH) . '/wp-config.php') && !@file_exists(dirname(ABSPATH) . '/wp-settings.php')) {
 
     /** The config file resides one level above ABSPATH but is not part of another install */
