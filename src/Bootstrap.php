@@ -5,6 +5,7 @@
  * FreshPress Bootstrapper
  */
 
+use Devtronic\FreshPress\Core\Twig\CoreExtension;
 use Devtronic\FreshPress\DependencyInjection\ServiceContainer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -20,3 +21,7 @@ if (is_file(__DIR__ . '/../app/config/parameters.yml')) {
 }
 
 $serviceContainer->loadYAML(__DIR__ . '/../app/config/services.yml');
+/** @var Twig_Environment $twig */
+$twig = $serviceContainer->get('twig');
+
+$twig->addExtension(new CoreExtension());
