@@ -15,6 +15,7 @@ require_once(__DIR__ . '/Core/WP2FPWrapper.php');
 
 // Setup ServiceContainer
 $serviceContainer = ServiceContainer::getInstance();
+$serviceContainer->addParameter('core.install_path', dirname(__DIR__));
 
 if (is_file(__DIR__ . '/../app/config/parameters.yml')) {
     $serviceContainer->loadParametersYAML(__DIR__ . '/../app/config/parameters.yml');

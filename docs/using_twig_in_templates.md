@@ -20,3 +20,10 @@ $twig = ServiceContainer::getInstance()->get('twig');
 $view = $twig->load('twentyseventeen/views/index.html.twig');
 echo $view->render([]);
 ```
+
+### Translations
+You can use the twig filter `trans` for translating strings. The filter accepts the domain as an argument 
+For example:
+```twig
+{{ 'Skip to content' | trans('twentyseventeen') }}
+```
