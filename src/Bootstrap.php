@@ -6,6 +6,7 @@
  */
 
 use Devtronic\FreshPress\Core\Twig\CoreExtension;
+use Devtronic\FreshPress\Core\Util\ConfigMapper;
 use Devtronic\FreshPress\DependencyInjection\ServiceContainer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -21,9 +22,9 @@ if (is_file(__DIR__ . '/../app/config/parameters.yml')) {
     $serviceContainer->loadParametersYAML(__DIR__ . '/../app/config/parameters.yml');
 
     $table_prefix = ServiceContainer::getInstance()->getParameter('database.prefix');
-    define('WP_DEBUG', false);
-    define('WP_AUTO_UPDATE_CORE', false);
 }
+$mapper = new ConfigMapper();
+$mapper->mapConfiguration(__DIR__ . '/../app/config/config.yml');
 
 $serviceContainer->loadYAML(__DIR__ . '/../app/config/services.yml');
 /** @var Twig_Environment $twig */

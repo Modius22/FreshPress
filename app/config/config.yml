@@ -1,6 +1,6 @@
 # Work in progress
 core:
-    debug: false # WP_DEBUG
+    debug: 'null' # WP_DEBUG
     debug_display: true # WP_DEBUG_DISPLAY
     debug_log: false # WP_DEBUG_LOG
     debug_scripts: false # WP_SCRIPT_DEBUG
@@ -15,9 +15,9 @@ core:
         bypass_hosts: ~ # WP_PROXY_BYPASS_HOSTS
         block_external: false # WP_HTTP_BLOCK_EXTERNAL
 
-    filesystem_method: ~
+    filesystem_method: ~ # FS_METHOD
     directories:
-        # languages: null # WP_LANG_DIR
+        # languages: 'null' # WP_LANG_DIR
         # plugins: ~ # WP_PLUGIN_DIR
     # plugin_url: ~ # WP_PLUGIN_URL
 
@@ -25,5 +25,5 @@ multisite:
     no_blog_redirect: ~ # NOBLOGREDIRECT
     subdomain_install: ~ # SUBDOMAIN_INSTALL
     directories:
-        # plugins: null # WPMU_PLUGIN_DIR
+        # plugins: 'null' # WPMU_PLUGIN_DIR
     # plugin_url: ~ # WPMU_PLUGIN_URL
