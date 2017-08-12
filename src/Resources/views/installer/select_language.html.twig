@@ -1,0 +1,8 @@
+{% extends 'installer/base.html.twig' %}
+
+{% block content %}
+    <h1 class="screen-reader-text">Select a default language</h1>
+    <form id="setup" method="post" action="?step={{ next_step }}">
+        {{ language_form | raw }}
+    </form>
+{% endblock %}

@@ -19,6 +19,10 @@ $serviceContainer->addParameter('core.install_path', dirname(__DIR__));
 
 if (is_file(__DIR__ . '/../app/config/parameters.yml')) {
     $serviceContainer->loadParametersYAML(__DIR__ . '/../app/config/parameters.yml');
+
+    $table_prefix = ServiceContainer::getInstance()->getParameter('database.prefix');
+    define('WP_DEBUG', false);
+    define('WP_AUTO_UPDATE_CORE', false);
 }
 
 $serviceContainer->loadYAML(__DIR__ . '/../app/config/services.yml');

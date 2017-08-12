@@ -1,17 +1,10 @@
 <?php
 /**
- * Bootstrap file for setting the ABSPATH constant
- * and loading the wp-config.php file. The wp-config.php
- * file will then load the wp-settings.php file, which
- * will then set up the WordPress environment.
+ * Bootstrap file for setting the ABSPATH constant.
  *
- * If the wp-config.php file is not found then an error
+ * If the app/config/parameters.yml file is not found then an error
  * will be displayed asking the visitor to set up the
- * wp-config.php file.
- *
- * Will also search for wp-config.php in WordPress' parent
- * directory to allow the WordPress directory to remain
- * untouched.
+ * app/config/parameters.yml file.
  *
  * @package WordPress
  */
@@ -29,30 +22,19 @@ if (!defined('ABSPATH')) {
 error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
 
 /*
- * If wp-config.php exists in the WordPress root, or if it exists in the root and wp-settings.php
- * doesn't, load wp-config.php. The secondary check for wp-settings.php has the added benefit
- * of avoiding cases where the current directory is a nested installation, e.g. / is WordPress(a)
- * and /blog/ is WordPress(b).
- *
- * If neither set of conditions is true, initiate loading the setup process.
+ * If the app/config/parameters.yml does not exist, initiate loading the setup process.
  */
-if (file_exists(ABSPATH . 'wp-config.php')) {
-
-    /** The config file resides in ABSPATH */
-    require_once(ABSPATH . 'wp-config.php');
+if (file_exists(ABSPATH . '../app/config/parameters.yml')) {
 
 
+    /** Sets up WordPress vars and included files. */
+    require_once(__DIR__ . '/wp-settings.php');
     /** @var Twig_Loader_Filesystem $loader */
     $loader = ServiceContainer::getInstance()->get('twig_loader');
     $loader->addPath(get_template_directory(), 'Theme');
-} elseif (@file_exists(dirname(ABSPATH) . '/wp-config.php') && !@file_exists(dirname(ABSPATH) . '/wp-settings.php')) {
-
-    /** The config file resides one level above ABSPATH but is not part of another install */
-    require_once(dirname(ABSPATH) . '/wp-config.php');
 } else {
 
     // A config file doesn't exist
-
     define('WPINC', 'wp-includes');
     require_once(ABSPATH . WPINC . '/load.php');
 
@@ -81,19 +63,14 @@ if (file_exists(ABSPATH . 'wp-config.php')) {
 
     // Die with an error message
     $die = sprintf(
-        /* translators: %s: wp-config.php */
+        /* translators: %s: app/config/parameters.yml */
             __("There doesn't seem to be a %s file. I need this before we can get started."),
-            '<code>wp-config.php</code>'
+            '<code>app/config/parameters.yml</code>'
         ) . '</p>';
     $die .= '<p>' . sprintf(
-        /* translators: %s: Codex URL */
-            __("Need more help? <a href='%s'>We got it</a>."),
-            __('https://codex.wordpress.org/Editing_wp-config.php')
-        ) . '</p>';
-    $die .= '<p>' . sprintf(
-        /* translators: %s: wp-config.php */
+        /* translators: %s: app/config/parameters.yml */
             __("You can create a %s file through a web interface, but this doesn't work for all server setups. The safest way is to manually create the file."),
-            '<code>wp-config.php</code>'
+            '<code>app/config/parameters.yml</code>'
         ) . '</p>';
     $die .= '<p><a href="' . $path . '" class="button button-large">' . __("Create a Configuration File") . '</a>';
 

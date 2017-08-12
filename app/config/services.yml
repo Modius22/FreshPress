@@ -5,7 +5,7 @@ services:
 
     twig_loader:
         class: Devtronic\FreshPress\Core\Twig\Loader
-        arguments: ['web/wp-content/themes/', '%core.install_path%']
+        arguments: [['src/Resources/views/', 'web/wp-content/themes/'], '%core.install_path%']
 
     twig:
         class: Twig_Environment

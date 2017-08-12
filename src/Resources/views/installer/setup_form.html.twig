@@ -1,0 +1,117 @@
+{% if error is defined and error | length > 0 %}
+    <h1>{{ 'Welcome' | transx('Howdy') | raw }}</h1>
+    <p class="message">{{ error | trans | raw }}</p>
+{% endif %}
+
+<form id="setup" method="post" action="install.php?step=2" novalidate="novalidate">
+    <table class="form-table">
+        <tr>
+            <th scope="row">
+                <label for="weblog_title">{{ 'Site Title' | trans | raw }}</label>
+            </th>
+            <td>
+                <input name="weblog_title" type="text" id="weblog_title" size="25" value="{{ blog_title }}"/>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="user_login">{{ 'Username' | trans | raw }}</label></th>
+            <td>
+                {% if user_exists %}
+                    {{ 'User(s) already exists.' | trans | raw }}
+                    <input name="user_name" type="hidden" value="admin"/>
+                {% else %}
+                    <input name="user_name" type="text" id="user_login" size="25" value="{{ username }}"/>
+                    <p>{{ 'Usernames can have only alphanumeric characters, spaces, underscores, hyphens, periods, and the @ symbol.' | trans | raw }}</p>
+                {% endif %}
+            </td>
+        </tr>
+        {% if user_exists == false %}
+            <tr class="form-field form-required user-pass1-wrap">
+                <th scope="row">
+                    <label for="pass1">{{ 'Password' | trans | raw }}</label>
+                </th>
+                <td>
+                    <div class="">
+                        <input type="password" name="admin_password" id="pass1" class="regular-text" autocomplete="off"
+                               data-reveal="1" data-pw="{{ password }}" aria-describedby="pass-strength-result"/>
+                        <button type="button" class="button wp-hide-pw hide-if-no-js" data-toggle="0"
+                                data-start-masked="{{ password_masked }}" aria-label="{{ 'Hide password' | trans }}">
+                            <span class="dashicons dashicons-hidden"></span>
+                            <span class="text">{{ 'Hide' | trans | raw }}</span>
+                        </button>
+                        <div id="pass-strength-result" aria-live="polite"></div>
+                    </div>
+                    <p><span class="description important hide-if-no-js">
+				<strong>{{ 'Important:' | trans | raw }}</strong>
+                            {{ 'You will need this password to log&nbsp;in. Please store it in a secure location.' | trans | raw }}</span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="form-field form-required user-pass2-wrap hide-if-js">
+                <th scope="row">
+                    <label for="pass2">{{ 'Repeat Password' | trans | raw }}
+                        <span class="description">{{ '(required)' | trans | raw }}</span>
+                    </label>
+                </th>
+                <td>
+                    <input name="admin_password2" type="password" id="pass2" autocomplete="off"/>
+                </td>
+            </tr>
+            <tr class="pw-weak">
+                <th scope="row">{{ 'Confirm Password' | trans | raw }}</th>
+                <td>
+                    <label>
+                        <input type="checkbox" name="pw_weak" class="pw-checkbox"/>
+                        {{ 'Confirm use of weak password' | trans | raw }}
+                    </label>
+                </td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <th scope="row"><label for="admin_email">{{ 'Your Email' | trans | raw }}</label></th>
+            <td>
+                <input name="admin_email" type="email" id="admin_email" size="25" value="{{ admin_email }}"/>
+                <p>{{ 'Double-check your email address before continuing.' | trans | raw }}</p>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                {{ (has_privacy_selector ? 'Site Visibility' : 'Search Engine Visibility') | trans | raw }}
+            </th>
+            <td>
+                <fieldset>
+                    <legend class="screen-reader-text">
+                        <span>{{ (has_privacy_selector ? 'Site Visibility' : 'Search Engine Visibility') | trans | raw }}</span>
+                    </legend>
+                    {% if has_privacy_selector %}
+
+                        <input id="blog-public" type="radio" name="blog_public" value="1"
+                                {{ blog_public ? 'checked' }} />
+                        <label for="blog-public">{{ 'Allow search engines to index this site' | trans | raw }}</label>
+                        <br/>
+                        <input id="blog-norobots" type="radio" name="blog_public" value="0"
+                                {{ blog_public ?: 'checked' }} />
+                        <label for="blog-norobots">{{ 'Discourage search engines from indexing this site' | trans | raw }}</label>
+                    <p class="description">{{ 'Note: Neither of these options blocks access to your site &mdash; it is up to search engines to honor your request.' | trans | raw }}</p>
+                        {{ privacy_selector }}
+                    {% else %}
+
+                        <label for="blog_public">
+                            <input name="blog_public" type="checkbox" id="blog_public"
+                                   value="0" {{ blog_public ?: 'checked' }} />
+                            {{ 'Discourage search engines from indexing this site' | trans | raw }}
+                        </label>
+                        <p class="description">{{ 'It is up to search engines to honor this request.' | trans | raw }}</p>
+                    {% endif %}
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+    <p class="step">
+        <input type="submit" value="{{ 'Install WordPress' | trans | raw }}" class="button button-large" name="Submit"
+               id="submit">
+    </p>
+    <input type="hidden" name="language" value="{{ language }}"/>
+</form>

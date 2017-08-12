@@ -30,7 +30,7 @@ function is_subdomain_install()
  * Returns array of network plugin files to be included in global scope.
  *
  * The default directory is wp-content/plugins. To change the default directory
- * manually, define `WP_PLUGIN_DIR` and `WP_PLUGIN_URL` in `wp-config.php`.
+ * manually, define core.directories.plugins and core.plugin_url in app/config/config.yml.
  *
  * @access private
  * @since 3.1.0
@@ -299,7 +299,7 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
 {
     global $wpdb, $current_site, $current_blog;
 
-    // If the network is defined in wp-config.php, we can simply use that.
+    // If the network is defined in app/config/config.yml, we can simply use that.
     if (defined('DOMAIN_CURRENT_SITE') && defined('PATH_CURRENT_SITE')) {
         $current_site = new stdClass;
         $current_site->id = defined('SITE_ID_CURRENT_SITE') ? SITE_ID_CURRENT_SITE : 1;

@@ -3,7 +3,7 @@
  * Used to set up and fix common variables and include
  * the WordPress procedural and class library.
  *
- * Allows for some configuration in wp-config.php (see default-constants.php)
+ * Allows for some configuration in app/config/config.yml (see default-constants.php)
  *
  * @package WordPress
  */

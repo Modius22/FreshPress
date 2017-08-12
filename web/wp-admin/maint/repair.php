@@ -33,9 +33,9 @@ header('Content-Type: text/html; charset=utf-8');
 
             echo '<p>';
             printf(
-            /* translators: %s: wp-config.php */
+            /* translators: %s: app/config/parameters.yml */
                 __('To allow use of this page to automatically repair database problems, please add the following line to your %s file. Once this line is added to your config, reload this page.'),
-                '<code>wp-config.php</code>'
+                '<code>app/config/parameters.yml</code>'
             );
             echo "</p><p><code>define('WP_ALLOW_REPAIR', true);</code></p>";
 
@@ -73,10 +73,10 @@ header('Content-Type: text/html; charset=utf-8');
             if ($duplicated_keys || $missing_key) {
                 echo '<h2 class="screen-reader-text">' . __('Check secret keys') . '</h2>';
 
-                // Translators: 1: wp-config.php; 2: Secret key service URL.
+                // Translators: 1: app/config/parameters.yml; 2: Secret key service URL.
                 echo '<p>' . sprintf(
                     __('While you are editing your %1$s file, take a moment to make sure you have all 8 keys and that they are unique. You can generate these using the <a href="%2$s">WordPress.org secret key service</a>.'),
-                        '<code>wp-config.php</code>',
+                        '<code>app/config/parameters.yml</code>',
                     'https://api.wordpress.org/secret-key/1.1/salt/'
                 ) . '</p>';
             }
@@ -176,7 +176,7 @@ header('Content-Type: text/html; charset=utf-8');
                 }
                 echo '<p><textarea name="errors" id="errors" rows="20" cols="60">' . esc_textarea($problem_output) . '</textarea></p>';
             } else {
-                echo '<p>' . __('Repairs complete. Please remove the following line from wp-config.php to prevent this page from being used by unauthorized users.') . "</p><p><code>define('WP_ALLOW_REPAIR', true);</code></p>";
+                echo '<p>' . __('Repairs complete. Please set the following line to false in app/config/config.yml to prevent this page from being used by unauthorized users.') . "</p><p><code>allow_repair: true</code></p>";
             }
         } else {
             echo '<h1 class="screen-reader-text">' . __('WordPress database repair') . '</h1>';

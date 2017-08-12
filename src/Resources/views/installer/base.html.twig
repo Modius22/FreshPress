@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" {{ direction is defined ? direction }}>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="robots" content="noindex,nofollow"/>
+        <title>{{ 'WordPress &rsaquo; Installation' | trans | raw }}</title>
+        {{ styles | raw }}
+    </head>
+    <body class="{{ body_classes | join(' ') }}">
+        <p id="logo"><a href="{{ project_url }}" tabindex="-1">{{ 'FreshPress' | trans }}</a></p>
+        {% block content %}
+        {% endblock %}
+
+        {{ scripts | raw }}
+        <script type="text/javascript">
+            jQuery(function ($) {
+                $('.hide-if-no-js').removeClass('hide-if-no-js');
+            });
+        </script>
+
+        {% if is_mobile is defined and is_mobile == false %}
+            <script type="text/javascript">
+                if (t = document.getElementById('weblog_title')) {
+                    t.focus();
+                }
+            </script>
+        {% endif %}
+    </body>
+</html>

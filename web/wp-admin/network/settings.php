@@ -180,11 +180,11 @@ if (isset($_GET['updated'])) {
                                 ) ?> /> <?php _e('Both sites and user accounts can be registered.'); ?></label>
                         <?php if (is_subdomain_install()) {
                                     echo '<p class="description">';
-                                    /* translators: 1: NOBLOGREDIRECT 2: wp-config.php */
+                                    /* translators: 1: multisite.no_blog_redirect 2: app/config/config.yml */
                                     printf(
                                 __('If registration is disabled, please set %1$s in %2$s to a URL you will redirect visitors to if they visit a non-existent site.'),
-                                '<code>NOBLOGREDIRECT</code>',
-                                '<code>wp-config.php</code>'
+                                '<code>multisite.no_blog_redirect</code>',
+                                '<code>app/config/config.yml</code>'
                             );
                                     echo '</p>';
                                 } ?>
