@@ -2,6 +2,7 @@
 
 namespace Devtronic\FreshPress\Core\Util;
 
+use Devtronic\FreshPress\DependencyInjection\ServiceContainer;
 use Symfony\Component\Yaml\Yaml;
 
 class ConfigMapper
@@ -34,13 +35,25 @@ class ConfigMapper
     {
         $data = Yaml::parse(file_get_contents($yamlFile));
 
+        $serviceContainer = ServiceContainer::getInstance();
         $flatten = $this->flattenArray($data);
         foreach ($flatten as $parameter => $value) {
             if ($value === null) {
                 continue;
             }
-            if (isset($this->constantMap[$parameter]) && !defined($this->constantMap[$parameter])){
-                if ($value === 'null'){
+            if (is_string($value)) {
+                $matches = [];
+                preg_match_all('~%([^%]+.?)%~', $value, $matches);
+                if (count($matches) > 0) {
+                    foreach ($matches[1] as $index => $name) {
+                        if ($serviceContainer->hasParameter($name)) {
+                            $value = str_replace($matches[0][$index], $serviceContainer->getParameter($name), $value);
+                        }
+                    }
+                }
+            }
+            if (isset($this->constantMap[$parameter]) && !defined($this->constantMap[$parameter])) {
+                if ($value === 'null') {
                     $value = null;
                 }
                 define($this->constantMap[$parameter], $value);
