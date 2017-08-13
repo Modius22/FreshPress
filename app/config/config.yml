@@ -17,8 +17,8 @@ core:
 
     filesystem_method: ~ # FS_METHOD
     directories:
-        # languages: 'null' # WP_LANG_DIR
-        # plugins: ~ # WP_PLUGIN_DIR
+        # languages: '%core.install_path%/web/wp-content/languages/' # WP_LANG_DIR
+        # plugins: '%core.install_path%/web/wp-content/legacy-plugins/' # WP_PLUGIN_DIR
     # plugin_url: ~ # WP_PLUGIN_URL
 
 multisite:

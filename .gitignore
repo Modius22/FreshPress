@@ -1,8 +1,8 @@
 /vendor/
 /web/wp-config.php
 /web/wp-content
-!/web/wp-content/plugins/hello.php
-!/web/wp-content/plugins/index.php
+!/web/wp-content/legacy-plugins/hello.php
+!/web/wp-content/legacy-plugins/index.php
 !/web/wp-content/themes/index.php
 !/web/wp-content/themes/twentyseventeen
 /app/config/parameters.yml

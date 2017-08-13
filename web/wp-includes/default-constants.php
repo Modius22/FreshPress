@@ -153,7 +153,7 @@ function wp_plugin_directory_constants()
      * @since 2.6.0
      */
     if (!defined('WP_PLUGIN_DIR')) {
-        define('WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins');
+        define('WP_PLUGIN_DIR', WP_CONTENT_DIR . '/legacy-plugins');
     } // full path, no trailing slash
 
     /**
@@ -162,7 +162,7 @@ function wp_plugin_directory_constants()
      * @since 2.6.0
      */
     if (!defined('WP_PLUGIN_URL')) {
-        define('WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins');
+        define('WP_PLUGIN_URL', WP_CONTENT_URL . '/legacy-plugins');
     } // full url, no trailing slash
 
     /**
@@ -172,7 +172,7 @@ function wp_plugin_directory_constants()
      * @deprecated
      */
     if (!defined('PLUGINDIR')) {
-        define('PLUGINDIR', 'wp-content/plugins');
+        define('PLUGINDIR', 'wp-content/legacy-plugins');
     } // Relative to ABSPATH. For back compat.
 
     /**
