@@ -1,0 +1,49 @@
+{% extends 'installer/base.html.twig' %}
+
+{% block content %}
+    <h1 class="screen-reader-text">{{ 'Set up your database connection' | trans | raw }}</h1>
+
+    <form method="post" action="setup-config.php?step=2">
+        <p>{{ 'Below you should enter your database connection details. If you&#8217;re not sure about these, contact your host.' | trans | raw }}</p>
+        <table class="form-table">
+            <tr>
+                <th><label for="dbname">{{ 'Database Name' | trans | raw }}</label></th>
+                <td><input name="dbname" id="dbname" type="text" size="25" value="freshpress"/></td>
+                <td>{{ 'The name of the database you want to use with FreshPress.' | trans | raw }}</td>
+            </tr>
+            <tr>
+                <th><label for="uname">{{ 'Username' | trans | raw }}</label></th>
+                <td>
+                    <input name="uname" id="uname" type="text" size="25"
+                           value="{{ 'username' | transx('example username') }}"/>
+                </td>
+                <td>{{ 'Your database username.' | trans | raw }}</td>
+            </tr>
+            <tr>
+                <th><label for="pwd">{{ 'Password' | trans | raw }}</label></th>
+                <td>
+                    <input name="pwd" id="pwd" type="text" size="25" autocomplete="off"
+                           value="{{ 'password' | transx('example password') }}"/>
+                </td>
+                <td>{{ 'Your database password.' | trans | raw }}</td>
+            </tr>
+            <tr>
+                <th><label for="dbhost">{{ 'Database Host' | trans | raw }}</label></th>
+                <td><input name="dbhost" id="dbhost" type="text" size="25" value="localhost"/></td>
+                <td>{{ 'You should be able to get this info from your web host, if %s doesn&#8217;t work.' | trans | format('<code>localhost</code>') | raw }}</td>
+            </tr>
+            <tr>
+                <th><label for="prefix">{{ 'Table Prefix' | trans | raw }}</label></th>
+                <td><input name="prefix" id="prefix" type="text" value="fp_" size="25"/></td>
+                <td>{{ 'If you want to run multiple WordPress installations in a single database, change this.' | trans | raw }}</td>
+            </tr>
+        </table>
+        {% if noapi == true %}
+            <input name="noapi" type="hidden" value="1"/>
+        {% endif %}
+        <input type="hidden" name="language" value="{{ language }}"/>
+        <p class="step">
+            <input name="submit" type="submit" value="{{ 'Submit' | trans }}" class="button button-large"/>
+        </p>
+    </form>
+{% endblock %}

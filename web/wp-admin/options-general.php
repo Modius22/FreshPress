@@ -193,7 +193,7 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                     <strong><?php _e('Note:'); ?></strong> <?php printf(
                                     __('The %s constant in your %s file is no longer needed.'),
                                         '<code>WPLANG</code>',
-                                    '<code>wp-config.php</code>'
+                                    '<code>app/config/parameters.yml</code>'
                                 ); ?>
                                 </p>
                                 <?php
@@ -204,7 +204,7 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                                 sprintf(
                                     __('The %s constant in your %s file is no longer needed.'),
                                     'WPLANG',
-                                    'wp-config.php'
+                                    'app/config/config.yml'
                                 )
                             );
                 } ?>

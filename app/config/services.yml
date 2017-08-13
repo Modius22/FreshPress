@@ -1,14 +1,11 @@
 services:
-    # app.my_service:
-    #     class: FQCN\To\Service
-    #     arguments: ['Some Arguments', '@service_container']
     database:
         class: Devtronic\FreshPress\Core\WPDB
         arguments: ['%database.user%', '%database.pass%', '%database.name%', '%database.host%']
 
     twig_loader:
-        class: Twig_Loader_Filesystem
-        arguments: ['wp-content/themes/', ~]
+        class: Devtronic\FreshPress\Core\Twig\Loader
+        arguments: [['src/Resources/views/', 'web/wp-content/themes/'], '%core.install_path%']
 
     twig:
         class: Twig_Environment

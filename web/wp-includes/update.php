@@ -126,7 +126,7 @@ function wp_version_check($extra_stats = array(), $force_check = false)
         'body' => $post_body,
     );
 
-    $response = wp_remote_post($url, $options);
+    $response = null; # wp_remote_post($url, $options);
     if ($ssl && is_wp_error($response)) {
         trigger_error(
             sprintf(

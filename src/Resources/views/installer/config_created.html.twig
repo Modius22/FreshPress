@@ -1,0 +1,14 @@
+{% extends 'installer/base.html.twig' %}
+
+{% block content %}
+    <h1 class="screen-reader-text">{{ 'Successful database connection' | trans | raw }}</h1>
+    <p>
+        {{ 'All right, sparky! You&#8217;ve made it through this part of the installation. WordPress can now communicate with your database. If you are ready, time now to&hellip;' | trans | raw }}
+    </p>
+
+    <p class="step">
+        <a href="{{ install_link }}" class="button button-large">
+            {{ 'Run the install' | trans | raw }}
+        </a>
+    </p>
+{% endblock %}

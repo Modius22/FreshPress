@@ -1,0 +1,40 @@
+{% extends 'installer/base.html.twig' %}
+
+{% block content %}
+
+    <h1>{{ 'Welcome' | transx('Howdy') | raw }}</h1>
+    <p>{{ 'Welcome to the famous five-minute WordPress installation process! Just fill in the information below and you&#8217;ll be on your way to using the most extendable and powerful personal publishing platform in the world.' | trans |raw }}</p>
+
+    <h2>{{ 'Information needed' | trans | raw }}</h2>
+    <p>{{ 'Please provide the following information. Don&#8217;t worry, you can always change these settings later.' | trans | raw }}</p>
+
+    {% if setup_form is defined %}
+        {% include 'installer/setup_form.html.twig' %}
+    {% else %}
+
+        {{ setup_result }}
+        <h1>{{ 'Success!' | trans | raw }}</h1>
+
+        <p>{{ 'WordPress has been installed. Thank you, and enjoy!' | trans | raw }}</p>
+
+        <table class="form-table install-success">
+            <tr>
+                <th>{{ 'Username' | trans | raw }}</th>
+                <td>{{ username }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Password' | trans | raw }}</th>
+                <td>
+                    {% if generated_password | length > 0 %}
+                        <code>{{ generated_password }}</code><br/>
+                    {% endif %}
+                    <p>{{ password_message | raw }}</p>
+                </td>
+            </tr>
+        </table>
+
+        <p class="step">
+            <a href="{{ login_url }}" class="button button-large">{{ 'Log In' | trans | raw }}</a>
+        </p>
+    {% endif %}
+{% endblock %}

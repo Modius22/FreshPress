@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines constants and global variables that can be overridden, generally in wp-config.php.
+ * Defines constants and global variables that can be overridden, generally in app/config/config.yml.
  *
  * @package WordPress
  */
@@ -67,18 +67,18 @@ function wp_initial_constants()
         define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
     } // no trailing slash, full paths only - WP_CONTENT_URL is defined further down
 
-    // Add define('WP_DEBUG', true); to wp-config.php to enable display of notices during development.
+    // Add core.debug = true to app/config/config.yml to enable display of notices during development.
     if (!defined('WP_DEBUG')) {
         define('WP_DEBUG', false);
     }
 
-    // Add define('WP_DEBUG_DISPLAY', null); to wp-config.php use the globally configured setting for
+    // Add core.debug_display = null to app/config/config.yml use the globally configured setting for
     // display_errors and not force errors to be displayed. Use false to force display_errors off.
     if (!defined('WP_DEBUG_DISPLAY')) {
         define('WP_DEBUG_DISPLAY', true);
     }
 
-    // Add define('WP_DEBUG_LOG', true); to enable error logging to wp-content/debug.log.
+    // Add core.debug_log to enable error logging to wp-content/debug.log.
     if (!defined('WP_DEBUG_LOG')) {
         define('WP_DEBUG_LOG', false);
     }
@@ -87,13 +87,12 @@ function wp_initial_constants()
         define('WP_CACHE', false);
     }
 
-    // Add define('SCRIPT_DEBUG', true); to wp-config.php to enable loading of non-minified,
+    // Add core.debug_script to app/config/config.yml to enable loading of non-minified,
     // non-concatenated scripts and stylesheets.
     if (!defined('SCRIPT_DEBUG')) {
+        $develop_src = false;
         if (!empty($GLOBALS['wp_version'])) {
             $develop_src = false !== strpos($GLOBALS['wp_version'], '-src');
-        } else {
-            $develop_src = false;
         }
 
         define('SCRIPT_DEBUG', $develop_src);
@@ -154,7 +153,7 @@ function wp_plugin_directory_constants()
      * @since 2.6.0
      */
     if (!defined('WP_PLUGIN_DIR')) {
-        define('WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins');
+        define('WP_PLUGIN_DIR', WP_CONTENT_DIR . '/legacy-plugins');
     } // full path, no trailing slash
 
     /**
@@ -163,7 +162,7 @@ function wp_plugin_directory_constants()
      * @since 2.6.0
      */
     if (!defined('WP_PLUGIN_URL')) {
-        define('WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins');
+        define('WP_PLUGIN_URL', WP_CONTENT_URL . '/legacy-plugins');
     } // full url, no trailing slash
 
     /**
@@ -173,7 +172,7 @@ function wp_plugin_directory_constants()
      * @deprecated
      */
     if (!defined('PLUGINDIR')) {
-        define('PLUGINDIR', 'wp-content/plugins');
+        define('PLUGINDIR', 'wp-content/legacy-plugins');
     } // Relative to ABSPATH. For back compat.
 
     /**

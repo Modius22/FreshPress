@@ -1,0 +1,9 @@
+{% extends 'installer/base.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'Already Installed' | trans }}</h1>
+    <p>{{ 'You appear to have already installed WordPress. To reinstall please clear your old database tables first.' | trans }}</p>
+    <p class="step">
+        <a href="{{ login_url }}" class="button button-large">{{ 'Log In' | trans }}</a>
+    </p>
+{% endblock %}

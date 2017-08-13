@@ -1,0 +1,20 @@
+{% extends 'installer/base.html.twig' %}
+
+{% block content %}
+    <h1 class="screen-reader-text">{{ 'Before getting started' | trans }}</h1>
+    <p>{{ 'Welcome to WordPress. Before getting started, we need some information on the database. You will need to know the following items before proceeding.' | trans }}</p>
+
+    <ol>
+        <li>{{ 'Database name' | trans }}</li>
+        <li>{{ 'Database username' | trans }}</li>
+        <li>{{ 'Database password' | trans }}</li>
+        <li>{{ 'Database host' | trans }}</li>
+        <li>{{ 'Table prefix (if you want to run more than one WordPress in a single database)' | trans }}</li>
+    </ol>
+    <p>{{ 'We&#8217;re going to use this information to create a %s file.' | trans | format('<code>' ~ config_file ~ '</code>') | raw }}</p>
+    <p>{{ 'In all likelihood, these items were supplied to you by your Web Host. If you don&#8217;t have this information, then you will need to contact them before you can continue. If you&#8217;re all ready&hellip;' | trans | raw }}</p>
+
+    <p class="step">
+        <a href="{{ next_step | raw }}" class="button button-large">{{ 'Let&#8217;s go!' | trans | raw }}</a>
+    </p>
+{% endblock %}

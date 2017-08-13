@@ -249,14 +249,14 @@ function wp_maintenance()
     <html xmlns="http://www.w3.org/1999/xhtml"<?php if (is_rtl()) {
         echo ' dir="rtl"';
     } ?>>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title><?php _e('Maintenance'); ?></title>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+            <title><?php _e('Maintenance'); ?></title>
 
-    </head>
-    <body>
-    <h1><?php _e('Briefly unavailable for scheduled maintenance. Check back in a minute.'); ?></h1>
-    </body>
+        </head>
+        <body>
+            <h1><?php _e('Briefly unavailable for scheduled maintenance. Check back in a minute.'); ?></h1>
+        </body>
     </html>
     <?php
     die();
@@ -314,7 +314,7 @@ function timer_stop($display = 0, $precision = 3)
  * Set PHP error reporting based on WordPress debug settings.
  *
  * Uses three constants: `WP_DEBUG`, `WP_DEBUG_DISPLAY`, and `WP_DEBUG_LOG`.
- * All three can be defined in wp-config.php. By default, `WP_DEBUG` and
+ * All three can be defined in app/config/config.yml. By default, `WP_DEBUG` and
  * `WP_DEBUG_LOG` are set to false, and `WP_DEBUG_DISPLAY` is set to true.
  *
  * When `WP_DEBUG` is true, all PHP notices are reported. WordPress will also
@@ -384,8 +384,8 @@ function wp_debug_mode()
 /**
  * Set the location of the language directory.
  *
- * To set directory manually, define the `WP_LANG_DIR` constant
- * in wp-config.php.
+ * To set directory manually, set core.directories.languages
+ * in app/config/config.yml.
  *
  * If the language directory exists within `WP_CONTENT_DIR`, it
  * is used. Otherwise the language directory is assumed to live
@@ -442,19 +442,13 @@ function require_wp_db()
         require_once(WP_CONTENT_DIR . '/db.php');
     }
 
-    if (!$serviceContainer->hasParameter('database.host') && defined('DB_HOST')) {
+    if (!$serviceContainer->hasParameter('database.host')) {
         $serviceContainer->setParameter('database.host', DB_HOST);
         $serviceContainer->setParameter('database.user', DB_USER);
         $serviceContainer->setParameter('database.pass', DB_PASSWORD);
         $serviceContainer->setParameter('database.name', DB_NAME);
-        $wpdb = $serviceContainer->get('database');
-    } else {
-        /**
-         * For installation only
-         * @deprecated
-         */
-        $wpdb = new WPDB(null, null, null, null);
     }
+    $wpdb = $serviceContainer->get('database');
 }
 
 /**
@@ -519,11 +513,11 @@ function wp_set_wpdb_vars()
     if (is_wp_error($prefix)) {
         wp_load_translations_early();
         wp_die(
-        /* translators: 1: $table_prefix 2: wp-config.php */
+        /* translators: 1: parameters.database.prefix 2: app/config/parameters.yml */
             sprintf(
                 __('<strong>ERROR</strong>: %1$s in %2$s can only contain numbers, letters, and underscores.'),
-                '<code>$table_prefix</code>',
-                '<code>wp-config.php</code>'
+                '<code>parameters.database.prefix</code>',
+                '<code>app/config/parameters.yml</code>'
             )
         );
     }
@@ -660,8 +654,8 @@ function wp_not_installed()
  * Retrieve an array of must-use plugin files.
  *
  * The default directory is wp-content/mu-plugins. To change the default
- * directory manually, define `WPMU_PLUGIN_DIR` and `WPMU_PLUGIN_URL`
- * in wp-config.php.
+ * directory manually, set multisite.directories.plugins and multisite.plugin_url
+ * in app/config/config.yml.
  *
  * @since 3.0.0
  * @access private
@@ -694,8 +688,8 @@ function wp_get_mu_plugins()
  * While upgrading or installing WordPress, no plugins are returned.
  *
  * The default directory is wp-content/plugins. To change the default
- * directory manually, define `WP_PLUGIN_DIR` and `WP_PLUGIN_URL`
- * in wp-config.php.
+ * directory manually, set core.directories.plugins and core.plugin_url
+ * in app/config/config.yml.
  *
  * @since 3.0.0
  * @access private

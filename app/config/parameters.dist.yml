@@ -4,3 +4,16 @@ parameters:
         user: ~
         pass: ~
         name: ~
+        prefix: 'fp_'
+        charset: 'utf8'
+        collate: ''
+
+    security:
+        auth_key: 'put your unique phrase here'
+        auth_salt: 'put your unique phrase here'
+        secure_auth_key: 'put your unique phrase here'
+        secure_auth_salt: 'put your unique phrase here'
+        logged_in_key: 'put your unique phrase here'
+        logged_in_salt: 'put your unique phrase here'
+        nonce_key: 'put your unique phrase here'
+        nonce_salt: 'put your unique phrase here'

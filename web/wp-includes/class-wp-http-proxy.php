@@ -10,7 +10,7 @@
 /**
  * Core class used to implement HTTP API proxy support.
  *
- * There are caveats to proxy support. It requires that defines be made in the wp-config.php file to
+ * There are caveats to proxy support. It requires that defines be made in the app/config/config.yml file to
  * enable proxy support. There are also a few filters that plugins can hook into for some of the
  * constants.
  *
@@ -19,20 +19,22 @@
  *
  * The constants are as follows:
  * <ol>
- * <li>WP_PROXY_HOST - Enable proxy support and host for connecting.</li>
- * <li>WP_PROXY_PORT - Proxy port for connection. No default, must be defined.</li>
- * <li>WP_PROXY_USERNAME - Proxy username, if it requires authentication.</li>
- * <li>WP_PROXY_PASSWORD - Proxy password, if it requires authentication.</li>
- * <li>WP_PROXY_BYPASS_HOSTS - Will prevent the hosts in this list from going through the proxy.
+ * <li>core.proxy.host - Enable proxy support and host for connecting.</li>
+ * <li>core.proxy.port - Proxy port for connection. No default, must be defined.</li>
+ * <li>core.proxy.user - Proxy username, if it requires authentication.</li>
+ * <li>core.proxy.pass - Proxy password, if it requires authentication.</li>
+ * <li>core.proxy.bypass_hosts - Will prevent the hosts in this list from going through the proxy.
  * You do not need to have localhost and the site host in this list, because they will not be passed
  * through the proxy. The list should be presented in a comma separated list, wildcards using * are supported, eg. *.wordpress.org</li>
  * </ol>
  *
  * An example can be as seen below.
  *
- *     define('WP_PROXY_HOST', '192.168.84.101');
- *     define('WP_PROXY_PORT', '8080');
- *     define('WP_PROXY_BYPASS_HOSTS', 'localhost, www.example.com, *.wordpress.org');
+ * core:
+ *     proxy:
+ *         host: '192.168.84.101'
+ *         port: '8080'
+ *         bypass_hosts: 'localhost, www.example.com'
  *
  * @link https://core.trac.wordpress.org/ticket/4011 Proxy support ticket in WordPress.
  * @link https://core.trac.wordpress.org/ticket/14636 Allow wildcard domains in WP_PROXY_BYPASS_HOSTS

@@ -666,11 +666,10 @@ class PluginsListTable extends ListTable
             } else {
                 $is_active = false;
                 $description = '<p><strong>' . $dropins[$plugin_file][0] . ' <span class="error-message">' . __('Inactive:') . '</span></strong> ' .
-                    /* translators: 1: drop-in constant name, 2: wp-config.php */
                     sprintf(
                         __('Requires %1$s in %2$s file.'),
                         "<code>define('" . $dropins[$plugin_file][1] . "', true);</code>",
-                        '<code>wp-config.php</code>'
+                        '<code>app/config/parameters.yml</code>'
                     ) . '</p>';
             }
             if ($plugin_data['Description']) {
