@@ -10,3 +10,7 @@ services:
     twig:
         class: Twig_Environment
         arguments: ['@twig_loader']
+
+    dispatcher:
+        class: \Symfony\Component\EventDispatcher\EventDispatcher
+        arguments: []
