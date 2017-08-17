@@ -7,6 +7,8 @@
  * @since 3.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Manager class.
  *
@@ -122,7 +124,7 @@ final class WP_Customize_Manager
     protected $sections = array();
 
     /**
-     * Registered instances of WP_Customize_Control.
+     * Registered instances of Devtronic\FreshPress\Components\Customize\Control.
      *
      * @since 3.4.0
      * @access protected
@@ -273,7 +275,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-setting.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
-        require_once(ABSPATH . WPINC . '/class-wp-customize-control.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-color-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-media-control.php');
@@ -3253,10 +3254,10 @@ final class WP_Customize_Manager
      * Add a customize control.
      *
      * @since 3.4.0
-     * @since 4.5.0 Return added WP_Customize_Control instance.
+     * @since 4.5.0 Return added Control instance.
      * @access public
      *
-     * @param WP_Customize_Control|string $id Customize Control object, or ID.
+     * @param Control|string $id Customize Control object, or ID.
      * @param array $args {
      *  Optional. Array of properties for the new Control object. Default empty array.
      *
@@ -3277,14 +3278,14 @@ final class WP_Customize_Manager
      * @type string $type The type of the control. Default 'text'.
      * @type callback $active_callback Active callback.
      * }
-     * @return WP_Customize_Control             The instance of the control that was added.
+     * @return Control             The instance of the control that was added.
      */
     public function add_control($id, $args = array())
     {
-        if ($id instanceof WP_Customize_Control) {
+        if ($id instanceof Control) {
             $control = $id;
         } else {
-            $control = new WP_Customize_Control($this, $id, $args);
+            $control = new Control($this, $id, $args);
         }
 
         $this->controls[$control->id] = $control;
@@ -3297,7 +3298,7 @@ final class WP_Customize_Manager
      * @since 3.4.0
      *
      * @param string $id ID of the control.
-     * @return WP_Customize_Control|void The control object, if set.
+     * @return Control|void The control object, if set.
      */
     public function get_control($id)
     {
@@ -3326,8 +3327,7 @@ final class WP_Customize_Manager
      * @since 4.1.0
      * @access public
      *
-     * @param string $control Name of a custom control which is a subclass of
-     *                        WP_Customize_Control.
+     * @param string $control Name of a custom control which is a subclass of Control.
      */
     public function register_control_type($control)
     {
@@ -3367,8 +3367,8 @@ final class WP_Customize_Manager
      * @since 3.4.0
      * @deprecated 4.7.0 Use wp_list_sort()
      *
-     * @param WP_Customize_Panel|WP_Customize_Section|WP_Customize_Control $a Object A.
-     * @param WP_Customize_Panel|WP_Customize_Section|WP_Customize_Control $b Object B.
+     * @param WP_Customize_Panel|WP_Customize_Section|Control $a Object A.
+     * @param WP_Customize_Panel|WP_Customize_Section|Control $b Object B.
      * @return int
      */
     protected function _cmp_priority($a, $b)

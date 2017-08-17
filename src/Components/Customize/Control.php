@@ -7,12 +7,16 @@
  * @since 3.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+
 /**
  * Customize Control class.
  *
  * @since 3.4.0
  */
-class WP_Customize_Control
+class Control
 {
 
     /**
@@ -128,7 +132,7 @@ class WP_Customize_Control
      * @access public
      * @var array
      */
-    public $choices = array();
+    public $choices = [];
 
     /**
      * List of custom input attributes for control output, where attribute names are the keys and values are the values.
@@ -139,7 +143,7 @@ class WP_Customize_Control
      * @access public
      * @var array
      */
-    public $input_attrs = array();
+    public $input_attrs = [];
 
     /**
      * Show UI for adding new content, currently only used for the dropdown-pages control.
@@ -156,7 +160,7 @@ class WP_Customize_Control
      * @access public
      * @var array
      */
-    public $json = array();
+    public $json = [];
 
     /**
      * Control's Type.
@@ -173,10 +177,9 @@ class WP_Customize_Control
      * @since 4.0.0
      * @access public
      *
-     * @see WP_Customize_Control::active()
+     * @see Control::active()
      *
-     * @var callable Callback is called with one argument, the instance of
-     *               WP_Customize_Control, and returns bool to indicate whether
+     * @var callable Callback is called with one argument, the instance of Control, and returns bool to indicate whether
      *               the control is active (such as it relates to the URL
      *               currently being previewed).
      */
@@ -215,14 +218,14 @@ class WP_Customize_Control
      *                                                 attribute names are the keys and values are the values. Not
      *                                                 used for 'checkbox', 'radio', 'select', 'textarea', or
      *                                                 'dropdown-pages' control types. Default empty array.
-     * @type array $json Deprecated. Use WP_Customize_Control::json() instead.
+     * @type array $json Deprecated. Use Control::json() instead.
      * @type string $type Control type. Core controls include 'text', 'checkbox',
      *                                                 'textarea', 'radio', 'select', and 'dropdown-pages'. Additional
      *                                                 input types such as 'email', 'url', 'number', 'hidden', and
      *                                                 'date' are supported implicitly. Default 'text'.
      * }
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         $keys = array_keys(get_object_vars($this));
         foreach ($keys as $key) {
@@ -234,7 +237,7 @@ class WP_Customize_Control
         $this->manager = $manager;
         $this->id = $id;
         if (empty($this->active_callback)) {
-            $this->active_callback = array($this, 'active_callback');
+            $this->active_callback = [$this, 'active_callback'];
         }
         self::$instance_count += 1;
         $this->instance_number = self::$instance_count;
@@ -244,7 +247,7 @@ class WP_Customize_Control
             $this->settings = $id;
         }
 
-        $settings = array();
+        $settings = [];
         if (is_array($this->settings)) {
             foreach ($this->settings as $key => $setting) {
                 $settings[$key] = $this->manager->get_setting($setting);
@@ -280,12 +283,12 @@ class WP_Customize_Control
         $active = call_user_func($this->active_callback, $this);
 
         /**
-         * Filters response of WP_Customize_Control::active().
+         * Filters response of Control::active().
          *
          * @since 4.0.0
          *
          * @param bool $active Whether the Customizer control is active.
-         * @param WP_Customize_Control $control WP_Customize_Control instance.
+         * @param Control $control Control instance.
          */
         $active = apply_filters('customize_control_active', $active, $control);
 
@@ -293,7 +296,7 @@ class WP_Customize_Control
     }
 
     /**
-     * Default callback used when invoking WP_Customize_Control::active().
+     * Default callback used when invoking Control::active().
      *
      * Subclasses can override this with their specific logic, or they may
      * provide an 'active_callback' argument to the constructor.
@@ -330,7 +333,7 @@ class WP_Customize_Control
      */
     public function to_json()
     {
-        $this->json['settings'] = array();
+        $this->json['settings'] = [];
         foreach ($this->settings as $key => $setting) {
             $this->json['settings'][$key] = $setting->id;
         }
@@ -412,7 +415,7 @@ class WP_Customize_Control
      * Check capabilities and render the control.
      *
      * @since 3.4.0
-     * @uses WP_Customize_Control::render()
+     * @uses Control::render()
      */
     final public function maybe_render()
     {
@@ -425,7 +428,7 @@ class WP_Customize_Control
          *
          * @since 3.4.0
          *
-         * @param WP_Customize_Control $this WP_Customize_Control instance.
+         * @param Control $this Control instance.
          */
         do_action('customize_render_control', $this);
 
@@ -437,7 +440,7 @@ class WP_Customize_Control
          *
          * @since 3.4.0
          *
-         * @param WP_Customize_Control $this WP_Customize_Control instance.
+         * @param Control $this Control instance.
          */
         do_action("customize_render_control_{$this->id}", $this);
 
@@ -451,9 +454,9 @@ class WP_Customize_Control
      */
     protected function render()
     {
-        $id = 'customize-control-' . str_replace(array('[', ']'), array('-', ''), $this->id);
+        $id = 'customize-control-' . str_replace(['[', ']'], ['-', ''], $this->id);
         $class = 'customize-control customize-control-' . $this->type; ?>
-        <li id="<?php echo esc_attr($id); ?>" class="<?php echo esc_attr($class); ?>">
+    <li id="<?php echo esc_attr($id); ?>" class="<?php echo esc_attr($class); ?>">
         <?php $this->render_content(); ?>
         </li><?php
     }
@@ -479,7 +482,7 @@ class WP_Customize_Control
      * Render the data link attribute for the control's input element.
      *
      * @since 3.4.0
-     * @uses WP_Customize_Control::get_link()
+     * @uses Control::get_link()
      *
      * @param string $setting_key
      */
@@ -508,7 +511,7 @@ class WP_Customize_Control
      * Supports basic input types `text`, `checkbox`, `textarea`, `radio`, `select` and `dropdown-pages`.
      * Additional input types such as `email`, `url`, `number`, `hidden` and `date` are supported implicitly.
      *
-     * Control content can alternately be rendered in JS. See WP_Customize_Control::print_template().
+     * Control content can alternately be rendered in JS. See Control::print_template().
      *
      * @since 3.4.0
      */
@@ -570,10 +573,10 @@ class WP_Customize_Control
                         <?php
                         foreach ($this->choices as $value => $label) {
                             echo '<option value="' . esc_attr($value) . '"' . selected(
-                                $this->value(),
-                                $value,
+                                    $this->value(),
+                                    $value,
                                     false
-                            ) . '>' . $label . '</option>';
+                                ) . '>' . $label . '</option>';
                         }
                         ?>
                     </select>
@@ -609,13 +612,13 @@ class WP_Customize_Control
                     $show_option_none = __('&mdash; Select &mdash;');
                     $option_none_value = '0';
                     $dropdown = wp_dropdown_pages(
-                        array(
+                        [
                             'name' => $dropdown_name,
                             'echo' => 0,
                             'show_option_none' => $show_option_none,
                             'option_none_value' => $option_none_value,
                             'selected' => $this->value(),
-                        )
+                        ]
                     );
                     if (empty($dropdown)) {
                         $dropdown = sprintf('<select id="%1$s" name="%1$s">', esc_attr($dropdown_name));
@@ -708,9 +711,9 @@ class WP_Customize_Control
      * An Underscore (JS) template for this control's content (but not its container).
      *
      * Class variables for this control class are available in the `data` JS object;
-     * export custom variables by overriding WP_Customize_Control::to_json().
+     * export custom variables by overriding Control::to_json().
      *
-     * @see WP_Customize_Control::print_template()
+     * @see Control::print_template()
      *
      * @since 4.1.0
      */

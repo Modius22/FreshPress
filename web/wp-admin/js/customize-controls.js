@@ -1834,7 +1834,7 @@
 	 *
 	 * A control provides a UI element that allows a user to modify a Customizer Setting.
 	 *
-	 * @see PHP class WP_Customize_Control.
+	 * @see PHP class Devtronic\FreshPress\Components\Customize\Control.
 	 *
 	 * @class
 	 * @augments wp.customize.Class

@@ -7,14 +7,16 @@
  * @since 3.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Widget Area Customize Control class.
  *
  * @since 3.9.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Widget_Area_Customize_Control extends WP_Customize_Control
+class WP_Widget_Area_Customize_Control extends Control
 {
 
     /**

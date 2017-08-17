@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Menu Location Control Class.
  *
@@ -14,9 +16,9 @@
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Customize_Nav_Menu_Location_Control extends WP_Customize_Control
+class WP_Customize_Nav_Menu_Location_Control extends Control
 {
 
     /**
@@ -43,7 +45,7 @@ class WP_Customize_Nav_Menu_Location_Control extends WP_Customize_Control
      * @since 4.3.0
      * @access public
      *
-     * @see WP_Customize_Control::to_json()
+     * @see Control::to_json()
      */
     public function to_json()
     {

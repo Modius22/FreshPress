@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Widget Form Customize Control class.
  *
  * @since 3.9.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Widget_Form_Customize_Control extends WP_Customize_Control
+class WP_Widget_Form_Customize_Control extends Control
 {
     public $type = 'widget_form';
     public $widget_id;

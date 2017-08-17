@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Color Control class.
  *
  * @since 3.4.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Customize_Color_Control extends WP_Customize_Control
+class WP_Customize_Color_Control extends Control
 {
     /**
      * Type.
@@ -45,7 +47,7 @@ class WP_Customize_Color_Control extends WP_Customize_Control
      * Constructor.
      *
      * @since 3.4.0
-     * @uses WP_Customize_Control::__construct()
+     * @uses Control::__construct()
      *
      * @param WP_Customize_Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
@@ -72,7 +74,7 @@ class WP_Customize_Color_Control extends WP_Customize_Control
      * Refresh the parameters passed to the JavaScript via JSON.
      *
      * @since 3.4.0
-     * @uses WP_Customize_Control::to_json()
+     * @uses Control::to_json()
      */
     public function to_json()
     {

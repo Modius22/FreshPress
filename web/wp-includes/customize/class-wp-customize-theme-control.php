@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Theme Control class.
  *
  * @since 4.2.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Customize_Theme_Control extends WP_Customize_Control
+class WP_Customize_Theme_Control extends Control
 {
 
     /**
@@ -41,7 +43,7 @@ class WP_Customize_Theme_Control extends WP_Customize_Control
      * @since 4.2.0
      * @access public
      *
-     * @see WP_Customize_Control::to_json()
+     * @see Control::to_json()
      */
     public function to_json()
     {

@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Cropped Image Control class.
  *
@@ -81,7 +83,7 @@ class WP_Customize_Cropped_Image_Control extends WP_Customize_Image_Control
      * @since 4.3.0
      * @access public
      *
-     * @see WP_Customize_Control::to_json()
+     * @see Control::to_json()
      */
     public function to_json()
     {

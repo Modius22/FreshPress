@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize control to represent the auto_add field for a given menu.
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Customize_Nav_Menu_Auto_Add_Control extends WP_Customize_Control
+class WP_Customize_Nav_Menu_Auto_Add_Control extends Control
 {
 
     /**

@@ -12,7 +12,7 @@
  *
  * Representation of a rendered region in the previewed page that gets
  * selectively refreshed when an associated setting is changed.
- * This class is analogous of WP_Customize_Control.
+ * This class is analogous of FreshPress\Components\Customize\Control.
  *
  * @since 4.5.0
  */
@@ -268,7 +268,7 @@ class WP_Customize_Partial
     }
 
     /**
-     * Default callback used when invoking WP_Customize_Control::render().
+     * Default callback used when invoking FreshPress\Components\Customize\Control::render().
      *
      * Note that this method may echo the partial *or* return the partial as
      * a string or array, but not both. Output buffering is performed when this

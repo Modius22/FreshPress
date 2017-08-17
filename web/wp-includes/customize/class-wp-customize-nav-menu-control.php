@@ -7,12 +7,14 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Nav Menu Control Class.
  *
  * @since 4.3.0
  */
-class WP_Customize_Nav_Menu_Control extends WP_Customize_Control
+class WP_Customize_Nav_Menu_Control extends Control
 {
 
     /**

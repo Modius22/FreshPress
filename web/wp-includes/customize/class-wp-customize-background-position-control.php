@@ -7,14 +7,16 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize Background Position Control class.
  *
  * @since 4.7.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Customize_Background_Position_Control extends WP_Customize_Control
+class WP_Customize_Background_Position_Control extends Control
 {
 
     /**

@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Control;
+
 /**
  * Customize control class for new menus.
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Control
+ * @see Control
  */
-class WP_Customize_New_Menu_Control extends WP_Customize_Control
+class WP_Customize_New_Menu_Control extends Control
 {
 
     /**
