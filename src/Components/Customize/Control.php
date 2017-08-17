@@ -721,12 +721,6 @@ class Control
     {
     }
 }
-
-/**
- * WP_Customize_Color_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-color-control.php');
-
 /**
  * WP_Customize_Media_Control class.
  */

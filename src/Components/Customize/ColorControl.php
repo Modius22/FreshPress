@@ -1,13 +1,15 @@
 <?php
 /**
- * Customize API: WP_Customize_Color_Control class
+ * Customize API: ColorControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
 
 /**
  * Customize Color Control class.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_Color_Control extends Control
+class ColorControl extends Control
 {
     /**
      * Type.
@@ -53,9 +55,9 @@ class WP_Customize_Color_Control extends Control
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
-        $this->statuses = array('' => __('Default'));
+        $this->statuses = ['' => __('Default')];
         parent::__construct($manager, $id, $args);
     }
 

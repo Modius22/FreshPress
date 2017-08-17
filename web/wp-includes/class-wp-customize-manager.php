@@ -7,6 +7,7 @@
  * @since 3.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
 
 /**
@@ -276,7 +277,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-color-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-media-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-upload-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-image-control.php');
@@ -3891,7 +3891,7 @@ final class WP_Customize_Manager
         $this->register_panel_type('WP_Customize_Panel');
         $this->register_section_type('WP_Customize_Section');
         $this->register_section_type('WP_Customize_Sidebar_Section');
-        $this->register_control_type('WP_Customize_Color_Control');
+        $this->register_control_type(ColorControl::class);
         $this->register_control_type('WP_Customize_Media_Control');
         $this->register_control_type('WP_Customize_Upload_Control');
         $this->register_control_type('WP_Customize_Image_Control');
@@ -4066,7 +4066,7 @@ final class WP_Customize_Manager
             'priority' => 40,
         ));
 
-        $this->add_control(new WP_Customize_Color_Control($this, 'header_textcolor', array(
+        $this->add_control(new ColorControl($this, 'header_textcolor', array(
             'label' => __('Header Text Color'),
             'section' => 'colors',
         )));
@@ -4081,7 +4081,7 @@ final class WP_Customize_Manager
             'sanitize_js_callback' => 'maybe_hash_hex_color',
         ));
 
-        $this->add_control(new WP_Customize_Color_Control($this, 'background_color', array(
+        $this->add_control(new ColorControl($this, 'background_color', array(
             'label' => __('Background Color'),
             'section' => 'colors',
         )));

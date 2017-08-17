@@ -7,6 +7,8 @@
  * @since 1.0
  */
 
+use Devtronic\FreshPress\Components\Customize\ColorControl;
+
 /**
  * Add postMessage support for site title and description for the Theme Customizer.
  *
@@ -54,7 +56,7 @@ function twentyseventeen_customize_register($wp_customize)
         'priority' => 5,
     ));
 
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'colorscheme_hue', array(
+    $wp_customize->add_control(new ColorControl($wp_customize, 'colorscheme_hue', array(
         'mode' => 'hue',
         'section' => 'colors',
         'priority' => 6,

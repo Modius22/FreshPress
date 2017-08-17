@@ -56,6 +56,7 @@ $classes = array_change_key_case([
     'Walker_Nav_Menu_Edit' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuEditWalker',
     'Walker_Nav_Menu_Checklist' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuChecklistWalker',
     'WP_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\Control',
+    'WP_Customize_Color_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\ColorControl',
 ]);
 
 $abstractClasses = array_change_key_case([
