@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
 use Devtronic\FreshPress\Components\Customize\SiteIconControl;
+use Devtronic\FreshPress\Components\Customize\ThemeControl;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
 
 /**
@@ -285,7 +286,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');
@@ -3892,7 +3892,7 @@ final class WP_Customize_Manager
         $this->register_control_type(BackgroundPositionControl::class);
         $this->register_control_type(CroppedImageControl::class);
         $this->register_control_type(SiteIconControl::class);
-        $this->register_control_type('WP_Customize_Theme_Control');
+        $this->register_control_type(ThemeControl::class);
 
         /* Themes */
 
@@ -3916,7 +3916,7 @@ final class WP_Customize_Manager
             $themes = wp_prepare_themes_for_js(array(wp_get_theme($this->original_stylesheet)));
             $active_theme = current($themes);
             $active_theme['isActiveTheme'] = true;
-            $this->add_control(new WP_Customize_Theme_Control($this, $active_theme['id'], array(
+            $this->add_control(new ThemeControl($this, $active_theme['id'], array(
                 'theme' => $active_theme,
                 'section' => 'themes',
                 'settings' => 'active_theme',
@@ -3931,7 +3931,7 @@ final class WP_Customize_Manager
 
             $theme_id = 'theme_' . $theme['id'];
             $theme['isActiveTheme'] = false;
-            $this->add_control(new WP_Customize_Theme_Control($this, $theme_id, array(
+            $this->add_control(new ThemeControl($this, $theme_id, array(
                 'theme' => $theme,
                 'section' => 'themes',
                 'settings' => 'active_theme',

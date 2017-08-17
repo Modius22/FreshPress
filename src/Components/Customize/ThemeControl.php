@@ -1,13 +1,15 @@
 <?php
 /**
- * Customize API: WP_Customize_Theme_Control class
+ * Customize API: ThemeControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Theme;
 
 /**
  * Customize Theme Control class.
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_Theme_Control extends Control
+class ThemeControl extends Control
 {
 
     /**
