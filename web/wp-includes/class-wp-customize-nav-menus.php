@@ -14,6 +14,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuItemSetting;
 use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
+use Devtronic\FreshPress\Components\Customize\NavMenuSection;
 use Devtronic\FreshPress\Components\Customize\NavMenuSetting;
 use Devtronic\FreshPress\Components\Customize\NewMenuControl;
 use Devtronic\FreshPress\Components\Customize\Setting;
@@ -667,7 +668,7 @@ final class WP_Customize_Nav_Menus
 
             // Create a section for each menu.
             $section_id = 'nav_menu[' . $menu_id . ']';
-            $this->manager->add_section(new WP_Customize_Nav_Menu_Section($this->manager, $section_id, array(
+            $this->manager->add_section(new NavMenuSection($this->manager, $section_id, array(
                 'title' => html_entity_decode($menu->name, ENT_QUOTES, get_bloginfo('charset')),
                 'priority' => 10,
                 'panel' => 'nav_menus',

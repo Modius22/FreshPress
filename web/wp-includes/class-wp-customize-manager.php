@@ -294,7 +294,6 @@ final class WP_Customize_Manager
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php');
 
         /**
