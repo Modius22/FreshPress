@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Nav_Menu_Name_Control class
+ * Customize API: NavMenuNameControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize control to represent the name field for a given menu.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_Nav_Menu_Name_Control extends Control
+class NavMenuNameControl extends Control
 {
 
     /**

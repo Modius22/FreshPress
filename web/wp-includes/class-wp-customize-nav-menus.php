@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuAutoAddControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
+use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
 
 /**
  * Customize Nav Menus class.
@@ -570,7 +571,7 @@ final class WP_Customize_Nav_Menus
         // Require JS-rendered control types.
         $this->manager->register_panel_type('WP_Customize_Nav_Menus_Panel');
         $this->manager->register_control_type(NavMenuControl::class);
-        $this->manager->register_control_type('WP_Customize_Nav_Menu_Name_Control');
+        $this->manager->register_control_type(NavMenuNameControl::class);
         $this->manager->register_control_type(NavMenuAutoAddControl::class);
         $this->manager->register_control_type(NavMenuItemControl::class);
 
