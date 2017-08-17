@@ -288,7 +288,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-location-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-name-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-control.php');

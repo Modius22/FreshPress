@@ -1,20 +1,23 @@
 <?php
 /**
- * Customize API: WP_Customize_Nav_Menu_Item_Control class
+ * Customize API: NavMenuItemControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+use WP_Customize_Nav_Menu_Item_Setting;
 
 /**
  * Customize control to represent the name field for a given menu.
  *
  * @since 4.3.0
  */
-class WP_Customize_Nav_Menu_Item_Control extends Control
+class NavMenuItemControl extends Control
 {
 
     /**
@@ -47,7 +50,7 @@ class WP_Customize_Nav_Menu_Item_Control extends Control
      * @param string $id The control ID.
      * @param array $args Optional. Overrides class property defaults.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         parent::__construct($manager, $id, $args);
     }

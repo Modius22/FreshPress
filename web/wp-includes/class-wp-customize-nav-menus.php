@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Customize\NavMenuAutoAddControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuControl;
+use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
 
 /**
  * Customize Nav Menus class.
@@ -570,7 +571,7 @@ final class WP_Customize_Nav_Menus
         $this->manager->register_control_type(NavMenuControl::class);
         $this->manager->register_control_type('WP_Customize_Nav_Menu_Name_Control');
         $this->manager->register_control_type(NavMenuAutoAddControl::class);
-        $this->manager->register_control_type('WP_Customize_Nav_Menu_Item_Control');
+        $this->manager->register_control_type(NavMenuItemControl::class);
 
         // Create a panel for Menus.
         $description = '<p>' . __('This panel is used for managing navigation menus for content you have already published on your site. You can create menus and add items for existing content such as pages, posts, categories, tags, formats, or custom links.') . '</p>';
@@ -694,7 +695,7 @@ final class WP_Customize_Nav_Menus
                 ));
 
                 // Create a control for each menu item.
-                $this->manager->add_control(new WP_Customize_Nav_Menu_Item_Control(
+                $this->manager->add_control(new NavMenuItemControl(
                     $this->manager,
                     $menu_item_setting_id,
                     array(
