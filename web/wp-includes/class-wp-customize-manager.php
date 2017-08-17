@@ -294,7 +294,6 @@ final class WP_Customize_Manager
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php');
 
         /**
          * Filters the core Customizer components to load.

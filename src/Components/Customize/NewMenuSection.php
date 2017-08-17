@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_New_Menu_Section class
+ * Customize API: NewMenuSection class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Section;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize Menu Section Class
@@ -18,7 +18,7 @@ use Devtronic\FreshPress\Components\Customize\Section;
  *
  * @see Section
  */
-class WP_Customize_New_Menu_Section extends Section
+class NewMenuSection extends Section
 {
 
     /**

@@ -17,6 +17,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuSection;
 use Devtronic\FreshPress\Components\Customize\NavMenuSetting;
 use Devtronic\FreshPress\Components\Customize\NewMenuControl;
+use Devtronic\FreshPress\Components\Customize\NewMenuSection;
 use Devtronic\FreshPress\Components\Customize\Setting;
 
 /**
@@ -718,7 +719,7 @@ final class WP_Customize_Nav_Menus
         }
 
         // Add the add-new-menu section and controls.
-        $this->manager->add_section(new WP_Customize_New_Menu_Section($this->manager, 'add_menu', array(
+        $this->manager->add_section(new NewMenuSection($this->manager, 'add_menu', array(
             'title' => __('Add a Menu'),
             'panel' => 'nav_menus',
             'priority' => 999,

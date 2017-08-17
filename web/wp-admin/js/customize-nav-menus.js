@@ -1094,7 +1094,7 @@
 	 * wp.customize.Menus.NewMenuSection
 	 *
 	 * Customizer section for new menus.
-	 * Note that 'new_menu' must match the WP_Customize_New_Menu_Section::$type.
+	 * Note that 'new_menu' must match the Devtronic\FreshPress\Components\Customize\NewMenuSection::$type.
 	 *
 	 * @constructor
 	 * @augments wp.customize.Section
