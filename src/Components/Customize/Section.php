@@ -417,6 +417,3 @@ class Section
         <?php
     }
 }
-
-/** WP_Customize_Themes_Section class */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php');

@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Themes_Section class
+ * Customize API: ThemesSection class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Section;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize Themes Section class.
@@ -18,7 +18,7 @@ use Devtronic\FreshPress\Components\Customize\Section;
  *
  * @see Section
  */
-class WP_Customize_Themes_Section extends Section
+class ThemesSection extends Section
 {
 
     /**
@@ -50,9 +50,9 @@ class WP_Customize_Themes_Section extends Section
 
                 <?php if (count($this->controls) > 0) : ?>
                     <button type="button" class="button change-theme" tabindex="0"><?php _ex(
-                    'Change',
+                            'Change',
                             'theme'
-                ); ?></button>
+                        ); ?></button>
                 <?php endif; ?>
             </h3>
             <div class="customize-themes-panel control-panel-content themes-php">
@@ -89,6 +89,6 @@ class WP_Customize_Themes_Section extends Section
                 </div>
             </div>
         </li>
-    <?php
+        <?php
     }
 }

@@ -24,6 +24,7 @@ use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SidebarSection;
 use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
+use Devtronic\FreshPress\Components\Customize\ThemesSection;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
 
 /**
@@ -292,8 +293,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');
-
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php');
 
         /**
          * Filters the core Customizer components to load.
@@ -3889,7 +3888,7 @@ final class WP_Customize_Manager
 
         /* Themes */
 
-        $this->add_section(new WP_Customize_Themes_Section($this, 'themes', array(
+        $this->add_section(new ThemesSection($this, 'themes', array(
             'title' => $this->theme()->display('Name'),
             'capability' => 'switch_themes',
             'priority' => 0,
