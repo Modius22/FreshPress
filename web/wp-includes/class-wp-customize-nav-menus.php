@@ -7,6 +7,7 @@
  * @since 4.3.0
  */
 
+use Devtronic\FreshPress\Components\Customize\FilterSetting;
 use Devtronic\FreshPress\Components\Customize\NavMenuAutoAddControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
@@ -736,7 +737,7 @@ final class WP_Customize_Nav_Menus
             'settings' => array(),
         )));
 
-        $this->manager->add_setting(new WP_Customize_Filter_Setting($this->manager, 'nav_menus_created_posts', array(
+        $this->manager->add_setting(new FilterSetting($this->manager, 'nav_menus_created_posts', array(
             'transport' => 'postMessage',
             'type' => 'option', // To prevent theme prefix in changeset.
             'default' => array(),

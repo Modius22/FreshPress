@@ -14,6 +14,7 @@ use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
 use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
 use Devtronic\FreshPress\Components\Customize\CustomCssSetting;
+use Devtronic\FreshPress\Components\Customize\FilterSetting;
 use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
@@ -295,7 +296,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-filter-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-setting.php');
@@ -3901,7 +3901,7 @@ final class WP_Customize_Manager
         )));
 
         // Themes Setting (unused - the theme is considerably more fundamental to the Customizer experience).
-        $this->add_setting(new WP_Customize_Filter_Setting($this, 'active_theme', array(
+        $this->add_setting(new FilterSetting($this, 'active_theme', array(
             'capability' => 'switch_themes',
         )));
 
@@ -4138,7 +4138,7 @@ final class WP_Customize_Manager
             'validate_callback' => array($this, '_validate_external_header_video'),
         ));
 
-        $this->add_setting(new WP_Customize_Filter_Setting($this, 'header_image', array(
+        $this->add_setting(new FilterSetting($this, 'header_image', array(
             'default' => sprintf(
                 get_theme_support('custom-header', 'default-image'),
                 get_template_directory_uri(),

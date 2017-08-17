@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Filter_Setting class
+ * Customize API: FilterSetting class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Setting;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * A setting that is used to filter a value, but will not save the results.
@@ -18,7 +18,7 @@ use Devtronic\FreshPress\Components\Customize\Setting;
  *
  * @see Setting
  */
-class WP_Customize_Filter_Setting extends Setting
+class FilterSetting extends Setting
 {
 
     /**

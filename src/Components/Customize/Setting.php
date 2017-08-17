@@ -1000,11 +1000,6 @@ class Setting
 }
 
 /**
- * WP_Customize_Filter_Setting class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-filter-setting.php');
-
-/**
  * WP_Customize_Header_Image_Setting class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-setting.php');
