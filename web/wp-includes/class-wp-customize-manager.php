@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
+use Devtronic\FreshPress\Components\Customize\MediaControl;
 
 /**
  * Customize Manager class.
@@ -277,7 +278,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-media-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-upload-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-image-control.php');
@@ -3892,7 +3892,7 @@ final class WP_Customize_Manager
         $this->register_section_type('WP_Customize_Section');
         $this->register_section_type('WP_Customize_Sidebar_Section');
         $this->register_control_type(ColorControl::class);
-        $this->register_control_type('WP_Customize_Media_Control');
+        $this->register_control_type(MediaControl::class);
         $this->register_control_type('WP_Customize_Upload_Control');
         $this->register_control_type('WP_Customize_Image_Control');
         $this->register_control_type('WP_Customize_Background_Image_Control');
@@ -4170,13 +4170,13 @@ final class WP_Customize_Manager
             $this->get_setting('header_image_data')->transport = 'postMessage';
         }
 
-        $this->add_control(new WP_Customize_Media_Control($this, 'header_video', array(
+        $this->add_control(new MediaControl($this, 'header_video', array(
             'theme_supports' => array('custom-header', 'video'),
             'label' => __('Header Video'),
             'description' => $control_description,
             'section' => 'header_image',
             'mime_type' => 'video',
-            // @todo These button_labels can be removed once WP_Customize_Media_Control provides mime_type-specific labels automatically. See <https://core.trac.wordpress.org/ticket/38796>.
+            // @todo These button_labels can be removed once Devtronic\FreshPress\Components\Customize\MediaControl provides mime_type-specific labels automatically. See <https://core.trac.wordpress.org/ticket/38796>.
             'button_labels' => array(
                 'select' => __('Select Video'),
                 'change' => __('Change Video'),

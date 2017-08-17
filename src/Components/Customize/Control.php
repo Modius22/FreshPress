@@ -721,10 +721,6 @@ class Control
     {
     }
 }
-/**
- * WP_Customize_Media_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-media-control.php');
 
 /**
  * WP_Customize_Upload_Control class.

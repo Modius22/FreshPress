@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\MediaControl;
+
 /**
  * Customize Upload Control Class.
  *
  * @since 3.4.0
  *
- * @see WP_Customize_Media_Control
+ * @see MediaControl
  */
-class WP_Customize_Upload_Control extends WP_Customize_Media_Control
+class WP_Customize_Upload_Control extends MediaControl
 {
     public $type = 'upload';
     public $mime_type = '';
@@ -28,7 +30,7 @@ class WP_Customize_Upload_Control extends WP_Customize_Media_Control
      *
      * @since 3.4.0
      *
-     * @uses WP_Customize_Media_Control::to_json()
+     * @uses MediaControl::to_json()
      */
     public function to_json()
     {

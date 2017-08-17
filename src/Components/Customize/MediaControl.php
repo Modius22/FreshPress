@@ -1,13 +1,16 @@
 <?php
 /**
- * Customize API: WP_Customize_Media_Control class
+ * Customize API: MediaControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Image_Control;
+use WP_Customize_Manager;
 
 /**
  * Customize Media Control class.
@@ -16,7 +19,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_Media_Control extends Control
+class MediaControl extends Control
 {
     /**
      * Control type.
@@ -43,7 +46,7 @@ class WP_Customize_Media_Control extends Control
      * @access public
      * @var array
      */
-    public $button_labels = array();
+    public $button_labels = [];
 
     /**
      * Constructor.
@@ -55,12 +58,12 @@ class WP_Customize_Media_Control extends Control
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         parent::__construct($manager, $id, $args);
 
         if (!($this instanceof WP_Customize_Image_Control)) {
-            $this->button_labels = wp_parse_args($this->button_labels, array(
+            $this->button_labels = wp_parse_args($this->button_labels, [
                 'select' => __('Select File'),
                 'change' => __('Change File'),
                 'default' => __('Default'),
@@ -68,7 +71,7 @@ class WP_Customize_Media_Control extends Control
                 'placeholder' => __('No file selected'),
                 'frame_title' => __('Select File'),
                 'frame_button' => __('Choose File'),
-            ));
+            ]);
         }
     }
 
@@ -107,20 +110,20 @@ class WP_Customize_Media_Control extends Control
                 // Note that the default value must be a URL, NOT an attachment ID.
                 $type = in_array(
                     substr($this->setting->default, -3),
-                    array('jpg', 'png', 'gif', 'bmp')
+                    ['jpg', 'png', 'gif', 'bmp']
                 ) ? 'image' : 'document';
-                $default_attachment = array(
+                $default_attachment = [
                     'id' => 1,
                     'url' => $this->setting->default,
                     'type' => $type,
                     'icon' => wp_mime_type_icon($type),
                     'title' => basename($this->setting->default),
-                );
+                ];
 
                 if ('image' === $type) {
-                    $default_attachment['sizes'] = array(
-                        'full' => array('url' => $this->setting->default),
-                    );
+                    $default_attachment['sizes'] = [
+                        'full' => ['url' => $this->setting->default],
+                    ];
                 }
 
                 $this->json['defaultAttachment'] = $default_attachment;
@@ -141,7 +144,7 @@ class WP_Customize_Media_Control extends Control
      * @since 3.4.0
      * @since 4.2.0 Moved from WP_Customize_Upload_Control.
      *
-     * @see WP_Customize_Media_Control::content_template()
+     * @see MediaControl::content_template()
      */
     public function render_content()
     {
