@@ -721,8 +721,3 @@ class Control
     {
     }
 }
-
-/**
- * WP_Widget_Form_Customize_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');

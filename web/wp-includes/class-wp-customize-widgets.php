@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\WidgetAreaControl;
+use Devtronic\FreshPress\Components\Customize\WidgetFormControl;
 
 /**
  * Customize Widgets class.
@@ -531,7 +532,7 @@ final class WP_Customize_Widgets
                 $setting_id = $this->get_setting_id($widget_id);
                 $id_base = $wp_registered_widget_controls[$widget_id]['id_base'];
 
-                $control = new WP_Widget_Form_Customize_Control($this->manager, $setting_id, array(
+                $control = new WidgetFormControl($this->manager, $setting_id, array(
                     'label' => $registered_widget['name'],
                     'section' => $section_id,
                     'sidebar_id' => $sidebar_id,

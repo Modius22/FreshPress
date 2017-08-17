@@ -446,7 +446,7 @@
 	 * wp.customize.Widgets.WidgetControl
 	 *
 	 * Customizer control for widgets.
-	 * Note that 'widget_form' must match the WP_Widget_Form_Customize_Control::$type
+	 * Note that 'widget_form' must match the Devtronic\FreshPress\Components\Customize\WWidgetFormControl::$type
 	 *
 	 * @constructor
 	 * @augments wp.customize.Control

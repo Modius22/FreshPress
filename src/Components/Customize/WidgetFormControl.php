@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Widget_Form_Customize_Control class
+ * Customize API: WidgetFormControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Widget Form Customize Control class.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Widget_Form_Customize_Control extends Control
+class WidgetFormControl extends Control
 {
     public $type = 'widget_form';
     public $widget_id;
@@ -40,7 +40,7 @@ class WP_Widget_Form_Customize_Control extends Control
         global $wp_registered_widgets;
 
         parent::to_json();
-        $exported_properties = array('widget_id', 'widget_id_base', 'sidebar_id', 'width', 'height', 'is_wide');
+        $exported_properties = ['widget_id', 'widget_id_base', 'sidebar_id', 'width', 'height', 'is_wide'];
         foreach ($exported_properties as $key) {
             $this->json[$key] = $this->$key;
         }
@@ -50,15 +50,15 @@ class WP_Widget_Form_Customize_Control extends Control
 
         $widget = $wp_registered_widgets[$this->widget_id];
         if (!isset($widget['params'][0])) {
-            $widget['params'][0] = array();
+            $widget['params'][0] = [];
         }
 
-        $args = array(
+        $args = [
             'widget_id' => $widget['id'],
             'widget_name' => $widget['name'],
-        );
+        ];
 
-        $args = wp_list_widget_controls_dynamic_sidebar(array(0 => $args, 1 => $widget['params'][0]));
+        $args = wp_list_widget_controls_dynamic_sidebar([0 => $args, 1 => $widget['params'][0]]);
         $widget_control_parts = $this->manager->widgets->get_widget_control_parts($args);
 
         $this->json['widget_control'] = $widget_control_parts['control'];
