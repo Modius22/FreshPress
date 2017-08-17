@@ -1,13 +1,15 @@
 <?php
 /**
- * Customize API: WP_Customize_Header_Image_Setting class
+ * Customize API: HeaderImageSetting class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Setting;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use Custom_Image_Header;
 
 /**
  * A setting that is used to filter a value, but will not save the results.
@@ -18,7 +20,7 @@ use Devtronic\FreshPress\Components\Customize\Setting;
  *
  * @see Setting
  */
-final class WP_Customize_Header_Image_Setting extends Setting
+class HeaderImageSetting extends Setting
 {
     public $id = 'header_image_data';
 

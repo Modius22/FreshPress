@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
 use Devtronic\FreshPress\Components\Customize\CustomCssSetting;
 use Devtronic\FreshPress\Components\Customize\FilterSetting;
 use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
+use Devtronic\FreshPress\Components\Customize\HeaderImageSetting;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
 use Devtronic\FreshPress\Components\Customize\Setting;
@@ -296,7 +297,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-setting.php');
 
@@ -4147,7 +4147,7 @@ final class WP_Customize_Manager
             'theme_supports' => 'custom-header',
         )));
 
-        $this->add_setting(new WP_Customize_Header_Image_Setting($this, 'header_image_data', array(
+        $this->add_setting(new HeaderImageSetting($this, 'header_image_data', array(
             'theme_supports' => 'custom-header',
         )));
 
