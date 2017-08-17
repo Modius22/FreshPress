@@ -44,7 +44,7 @@
 	/**
 	 * wp.customize.Menus.AvailableItemModel
 	 *
-	 * A single available menu item model. See PHP's WP_Customize_Nav_Menu_Item_Setting class.
+	 * A single available menu item model. See PHP's Devtronic\FreshPress\Components\Customize\NavMenuItemSetting class.
 	 *
 	 * @constructor
 	 * @augments Backbone.Model

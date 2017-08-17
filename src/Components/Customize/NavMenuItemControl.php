@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use WP_Customize_Manager;
-use WP_Customize_Nav_Menu_Item_Setting;
 
 /**
  * Customize control to represent the name field for a given menu.
@@ -34,7 +33,7 @@ class NavMenuItemControl extends Control
      *
      * @since 4.3.0
      * @access public
-     * @var WP_Customize_Nav_Menu_Item_Setting
+     * @var NavMenuItemSetting
      */
     public $setting;
 

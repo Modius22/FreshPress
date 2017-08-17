@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\Customize\FilterSetting;
 use Devtronic\FreshPress\Components\Customize\NavMenuAutoAddControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
+use Devtronic\FreshPress\Components\Customize\NavMenuItemSetting;
 use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
 use Devtronic\FreshPress\Components\Customize\NewMenuControl;
@@ -419,7 +420,7 @@ final class WP_Customize_Nav_Menus
         wp_enqueue_script('customize-nav-menus');
 
         $temp_nav_menu_setting = new WP_Customize_Nav_Menu_Setting($this->manager, 'nav_menu[-1]');
-        $temp_nav_menu_item_setting = new WP_Customize_Nav_Menu_Item_Setting($this->manager, 'nav_menu_item[-1]');
+        $temp_nav_menu_item_setting = new NavMenuItemSetting($this->manager, 'nav_menu_item[-1]');
 
         // Pass data to JS.
         $settings = array(
@@ -513,9 +514,9 @@ final class WP_Customize_Nav_Menus
                 'type' => WP_Customize_Nav_Menu_Setting::TYPE,
                 'transport' => 'postMessage',
             );
-        } elseif (preg_match(WP_Customize_Nav_Menu_Item_Setting::ID_PATTERN, $setting_id)) {
+        } elseif (preg_match(NavMenuItemSetting::ID_PATTERN, $setting_id)) {
             $setting_args = array(
-                'type' => WP_Customize_Nav_Menu_Item_Setting::TYPE,
+                'type' => NavMenuItemSetting::TYPE,
                 'transport' => 'postMessage',
             );
         }
@@ -539,8 +540,8 @@ final class WP_Customize_Nav_Menus
 
         if (!empty($setting_args['type']) && WP_Customize_Nav_Menu_Setting::TYPE === $setting_args['type']) {
             $setting_class = 'WP_Customize_Nav_Menu_Setting';
-        } elseif (!empty($setting_args['type']) && WP_Customize_Nav_Menu_Item_Setting::TYPE === $setting_args['type']) {
-            $setting_class = 'WP_Customize_Nav_Menu_Item_Setting';
+        } elseif (!empty($setting_args['type']) && NavMenuItemSetting::TYPE === $setting_args['type']) {
+            $setting_class = NavMenuItemSetting::class;
         }
         return $setting_class;
     }
@@ -690,7 +691,7 @@ final class WP_Customize_Nav_Menus
                 }
 
                 $value['nav_menu_term_id'] = $menu_id;
-                $this->manager->add_setting(new WP_Customize_Nav_Menu_Item_Setting(
+                $this->manager->add_setting(new NavMenuItemSetting(
                     $this->manager,
                     $menu_item_setting_id,
                     array(

@@ -1000,11 +1000,6 @@ class Setting
 }
 
 /**
- * WP_Customize_Nav_Menu_Item_Setting class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php');
-
-/**
  * WP_Customize_Nav_Menu_Setting class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-setting.php');
