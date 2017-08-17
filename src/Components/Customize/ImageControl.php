@@ -1,11 +1,16 @@
 <?php
 /**
- * Customize API: WP_Customize_Image_Control class
+ * Customize API: Devtronic\FreshPress\Components\Customize\ImageControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
+
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+use WP_Customize_Upload_Control;
 
 /**
  * Customize Image Control class.
@@ -14,7 +19,7 @@
  *
  * @see WP_Customize_Upload_Control
  */
-class WP_Customize_Image_Control extends WP_Customize_Upload_Control
+class ImageControl extends WP_Customize_Upload_Control
 {
     public $type = 'image';
     public $mime_type = 'image';
@@ -29,11 +34,11 @@ class WP_Customize_Image_Control extends WP_Customize_Upload_Control
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         parent::__construct($manager, $id, $args);
 
-        $this->button_labels = wp_parse_args($this->button_labels, array(
+        $this->button_labels = wp_parse_args($this->button_labels, [
             'select' => __('Select Image'),
             'change' => __('Change Image'),
             'remove' => __('Remove'),
@@ -41,7 +46,7 @@ class WP_Customize_Image_Control extends WP_Customize_Upload_Control
             'placeholder' => __('No image selected'),
             'frame_title' => __('Select Image'),
             'frame_button' => __('Choose Image'),
-        ));
+        ]);
     }
 
     /**

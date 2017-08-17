@@ -8,15 +8,16 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Control;
+use Devtronic\FreshPress\Components\Customize\ImageControl;
 
 /**
  * Customize Cropped Image Control class.
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Image_Control
+ * @see ImageControl
  */
-class WP_Customize_Cropped_Image_Control extends WP_Customize_Image_Control
+class WP_Customize_Cropped_Image_Control extends ImageControl
 {
 
     /**

@@ -9,7 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Image_Control;
 use WP_Customize_Manager;
 
 /**
@@ -62,7 +61,7 @@ class MediaControl extends Control
     {
         parent::__construct($manager, $id, $args);
 
-        if (!($this instanceof WP_Customize_Image_Control)) {
+        if (!($this instanceof ImageControl)) {
             $this->button_labels = wp_parse_args($this->button_labels, [
                 'select' => __('Select File'),
                 'change' => __('Change File'),

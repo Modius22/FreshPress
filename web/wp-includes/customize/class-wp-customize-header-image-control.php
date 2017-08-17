@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\ImageControl;
+
 /**
  * Customize Header Image Control class.
  *
  * @since 3.4.0
  *
- * @see WP_Customize_Image_Control
+ * @see ImageControl
  */
-class WP_Customize_Header_Image_Control extends WP_Customize_Image_Control
+class WP_Customize_Header_Image_Control extends ImageControl
 {
     public $type = 'header';
     public $uploaded_headers;
