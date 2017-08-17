@@ -7,6 +7,11 @@
  * @since 3.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+use WP_Error;
+
 /**
  * Customize Setting class.
  *
@@ -16,7 +21,7 @@
  *
  * @see WP_Customize_Manager
  */
-class WP_Customize_Setting
+class Setting
 {
     /**
      * Customizer bootstrap instance.
@@ -134,7 +139,7 @@ class WP_Customize_Setting
      * @access protected
      * @var array
      */
-    protected $id_data = array();
+    protected $id_data = [];
 
     /**
      * Whether or not preview() was called.
@@ -153,7 +158,7 @@ class WP_Customize_Setting
      * @access protected
      * @var array
      */
-    protected static $aggregated_multidimensionals = array();
+    protected static $aggregated_multidimensionals = [];
 
     /**
      * Whether the multidimensional setting is aggregated.
@@ -176,7 +181,7 @@ class WP_Customize_Setting
      *                                      theme mod or option name.
      * @param array $args Setting arguments.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         $keys = array_keys(get_object_vars($this));
         foreach ($keys as $key) {
@@ -248,24 +253,24 @@ class WP_Customize_Setting
     {
         $id_base = $this->id_data['base'];
         if (!isset(self::$aggregated_multidimensionals[$this->type])) {
-            self::$aggregated_multidimensionals[$this->type] = array();
+            self::$aggregated_multidimensionals[$this->type] = [];
         }
         if (!isset(self::$aggregated_multidimensionals[$this->type][$id_base])) {
-            self::$aggregated_multidimensionals[$this->type][$id_base] = array(
-                'previewed_instances' => array(),
+            self::$aggregated_multidimensionals[$this->type][$id_base] = [
+                'previewed_instances' => [],
                 // Calling preview() will add the $setting to the array.
-                'preview_applied_instances' => array(),
+                'preview_applied_instances' => [],
                 // Flags for which settings have had their values applied.
-                'root_value' => $this->get_root_value(array()),
+                'root_value' => $this->get_root_value([]),
                 // Root value for initial state, manipulated by preview and update calls.
-            );
+            ];
         }
 
         if (!empty($this->id_data['keys'])) {
             // Note the preview-applied flag is cleared at priority 9 to ensure it is cleared before a deferred-preview runs.
             add_action(
                 "customize_post_value_set_{$this->id}",
-                array($this, '_clear_aggregated_multidimensional_preview_applied_flag'),
+                [$this, '_clear_aggregated_multidimensional_preview_applied_flag'],
                 9
             );
             $this->is_multidimensional_aggregated = true;
@@ -282,7 +287,7 @@ class WP_Customize_Setting
      */
     public static function reset_aggregated_multidimensionals()
     {
-        self::$aggregated_multidimensionals = array();
+        self::$aggregated_multidimensionals = [];
     }
 
     /**
@@ -312,7 +317,7 @@ class WP_Customize_Setting
     /**
      * Original non-previewed value stored by the preview method.
      *
-     * @see WP_Customize_Setting::preview()
+     * @see Setting::preview()
      * @since 4.1.1
      * @access protected
      * @var mixed
@@ -344,7 +349,7 @@ class WP_Customize_Setting
 
         $id_base = $this->id_data['base'];
         $is_multidimensional = !empty($this->id_data['keys']);
-        $multidimensional_filter = array($this, '_multidimensional_preview_filter');
+        $multidimensional_filter = [$this, '_multidimensional_preview_filter'];
 
         /*
          * Check if the setting has a pre-existing value (an isset check),
@@ -352,7 +357,7 @@ class WP_Customize_Setting
          * then the preview short-circuits because there is nothing that needs
          * to be previewed.
          */
-        $undefined = new stdClass();
+        $undefined = new \stdClass();
         $needs_preview = ($undefined !== $this->post_value($undefined));
         $value = null;
 
@@ -372,8 +377,8 @@ class WP_Customize_Setting
 
         // If the setting does not need previewing now, defer to when it has a value to preview.
         if (!$needs_preview) {
-            if (!has_action("customize_post_value_set_{$this->id}", array($this, 'preview'))) {
-                add_action("customize_post_value_set_{$this->id}", array($this, 'preview'));
+            if (!has_action("customize_post_value_set_{$this->id}", [$this, 'preview'])) {
+                add_action("customize_post_value_set_{$this->id}", [$this, 'preview']);
             }
             return false;
         }
@@ -381,7 +386,7 @@ class WP_Customize_Setting
         switch ($this->type) {
             case 'theme_mod':
                 if (!$is_multidimensional) {
-                    add_filter("theme_mod_{$id_base}", array($this, '_preview_filter'));
+                    add_filter("theme_mod_{$id_base}", [$this, '_preview_filter']);
                 } else {
                     if (empty(self::$aggregated_multidimensionals[$this->type][$id_base]['previewed_instances'])) {
                         // Only add this filter once for this ID base.
@@ -392,7 +397,7 @@ class WP_Customize_Setting
                 break;
             case 'option':
                 if (!$is_multidimensional) {
-                    add_filter("pre_option_{$id_base}", array($this, '_preview_filter'));
+                    add_filter("pre_option_{$id_base}", [$this, '_preview_filter']);
                 } else {
                     if (empty(self::$aggregated_multidimensionals[$this->type][$id_base]['previewed_instances'])) {
                         // Only add these filters once for this ID base.
@@ -405,26 +410,26 @@ class WP_Customize_Setting
             default:
 
                 /**
-                 * Fires when the WP_Customize_Setting::preview() method is called for settings
+                 * Fires when the Setting::preview() method is called for settings
                  * not handled as theme_mods or options.
                  *
                  * The dynamic portion of the hook name, `$this->id`, refers to the setting ID.
                  *
                  * @since 3.4.0
                  *
-                 * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+                 * @param Setting $this Setting instance.
                  */
                 do_action("customize_preview_{$this->id}", $this);
 
                 /**
-                 * Fires when the WP_Customize_Setting::preview() method is called for settings
+                 * Fires when the Setting::preview() method is called for settings
                  * not handled as theme_mods or options.
                  *
                  * The dynamic portion of the hook name, `$this->type`, refers to the setting type.
                  *
                  * @since 4.1.0
                  *
-                 * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+                 * @param Setting $this Setting instance.
                  */
                 do_action("customize_preview_{$this->type}", $this);
         }
@@ -438,13 +443,13 @@ class WP_Customize_Setting
      * Clear out the previewed-applied flag for a multidimensional-aggregated value whenever its post value is updated.
      *
      * This ensures that the new value will get sanitized and used the next time
-     * that `WP_Customize_Setting::_multidimensional_preview_filter()`
+     * that `Setting::_multidimensional_preview_filter()`
      * is called for this setting.
      *
      * @since 4.4.0
      *
      * @see WP_Customize_Manager::set_post_value()
-     * @see WP_Customize_Setting::_multidimensional_preview_filter()
+     * @see Setting::_multidimensional_preview_filter()
      */
     final public function _clear_aggregated_multidimensional_preview_applied_flag()
     {
@@ -469,7 +474,7 @@ class WP_Customize_Setting
             return $original;
         }
 
-        $undefined = new stdClass(); // Symbol hack.
+        $undefined = new \stdClass(); // Symbol hack.
         $post_value = $this->post_value($undefined);
         if ($undefined !== $post_value) {
             $value = $post_value;
@@ -492,7 +497,7 @@ class WP_Customize_Setting
      *
      * @since 4.4.0
      *
-     * @see WP_Customize_Setting::$aggregated_multidimensionals
+     * @see Setting::$aggregated_multidimensionals
      * @param mixed $original Original root value.
      * @return mixed New or old value.
      */
@@ -547,14 +552,14 @@ class WP_Customize_Setting
         $id_base = $this->id_data['base'];
 
         /**
-         * Fires when the WP_Customize_Setting::save() method is called.
+         * Fires when the Setting::save() method is called.
          *
          * The dynamic portion of the hook name, `$id_base` refers to
          * the base slug of the setting name.
          *
          * @since 3.4.0
          *
-         * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+         * @param Setting $this Setting instance.
          */
         do_action("customize_save_{$id_base}", $this);
 
@@ -593,7 +598,7 @@ class WP_Customize_Setting
          * @since 3.4.0
          *
          * @param mixed $value Value of the setting.
-         * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+         * @param Setting $this Setting instance.
          */
         return apply_filters("customize_sanitize_{$this->id}", $value, $this);
     }
@@ -630,7 +635,7 @@ class WP_Customize_Setting
          *
          * @param WP_Error $validity Filtered from `true` to `WP_Error` when invalid.
          * @param mixed $value Value of the setting.
-         * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+         * @param Setting $this Setting instance.
          */
         $validity = apply_filters("customize_validate_{$this->id}", $validity, $value, $this);
 
@@ -657,7 +662,7 @@ class WP_Customize_Setting
             return get_theme_mod($id_base, $default);
         } else {
             /*
-             * Any WP_Customize_Setting subclass implementing aggregate multidimensional
+             * Any Setting subclass implementing aggregate multidimensional
              * will need to override this method to obtain the data from the appropriate
              * location.
              */
@@ -687,7 +692,7 @@ class WP_Customize_Setting
             return true;
         } else {
             /*
-             * Any WP_Customize_Setting subclass implementing aggregate multidimensional
+             * Any Setting subclass implementing aggregate multidimensional
              * will need to override this method to obtain the data from the appropriate
              * location.
              */
@@ -717,7 +722,7 @@ class WP_Customize_Setting
             }
         } else {
             /**
-             * Fires when the WP_Customize_Setting::update() method is called for settings
+             * Fires when the Setting::update() method is called for settings
              * not handled as theme_mods or options.
              *
              * The dynamic portion of the hook name, `$this->type`, refers to the type of setting.
@@ -725,7 +730,7 @@ class WP_Customize_Setting
              * @since 3.4.0
              *
              * @param mixed $value Value of the setting.
-             * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+             * @param Setting $this Setting instance.
              */
             do_action("customize_update_{$this->type}", $value, $this);
 
@@ -792,7 +797,7 @@ class WP_Customize_Setting
              * @since 4.6.0 Added the `$this` setting instance as the second parameter.
              *
              * @param mixed $default The setting default value. Default empty.
-             * @param WP_Customize_Setting $this The setting instance.
+             * @param Setting $this The setting instance.
              */
             $value = apply_filters("customize_value_{$id_base}", $value, $this);
         } elseif ($this->is_multidimensional_aggregated) {
@@ -827,7 +832,7 @@ class WP_Customize_Setting
          * @since 3.4.0
          *
          * @param mixed $value The setting value.
-         * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+         * @param Setting $this Setting instance.
          */
         $value = apply_filters("customize_sanitize_js_{$this->id}", $this->value(), $this);
 
@@ -847,12 +852,12 @@ class WP_Customize_Setting
      */
     public function json()
     {
-        return array(
+        return [
             'value' => $this->js_value(),
             'transport' => $this->transport,
             'dirty' => $this->dirty,
             'type' => $this->type,
-        );
+        ];
     }
 
     /**
@@ -888,7 +893,7 @@ class WP_Customize_Setting
     final protected function multidimensional(&$root, $keys, $create = false)
     {
         if ($create && empty($root)) {
-            $root = array();
+            $root = [];
         }
 
         if (!isset($root) || empty($keys)) {
@@ -900,7 +905,7 @@ class WP_Customize_Setting
 
         foreach ($keys as $key) {
             if ($create && !isset($node[$key])) {
-                $node[$key] = array();
+                $node[$key] = [];
             }
 
             if (!is_array($node) || !isset($node[$key])) {
@@ -913,10 +918,10 @@ class WP_Customize_Setting
         if ($create) {
             if (!is_array($node)) {
                 // account for an array overriding a string or object value
-                $node = array();
+                $node = [];
             }
             if (!isset($node[$last])) {
-                $node[$last] = array();
+                $node[$last] = [];
             }
         }
 
@@ -924,11 +929,11 @@ class WP_Customize_Setting
             return;
         }
 
-        return array(
+        return [
             'root' => &$root,
             'node' => &$node,
             'key' => $last,
-        );
+        ];
     }
 
     /**

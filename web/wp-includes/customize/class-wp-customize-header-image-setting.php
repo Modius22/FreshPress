@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Setting;
+
 /**
  * A setting that is used to filter a value, but will not save the results.
  *
@@ -14,9 +16,9 @@
  *
  * @since 3.4.0
  *
- * @see WP_Customize_Setting
+ * @see Setting
  */
-final class WP_Customize_Header_Image_Setting extends WP_Customize_Setting
+final class WP_Customize_Header_Image_Setting extends Setting
 {
     public $id = 'header_image_data';
 

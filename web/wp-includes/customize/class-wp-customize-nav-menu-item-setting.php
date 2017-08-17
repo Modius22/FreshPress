@@ -7,17 +7,19 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Setting;
+
 /**
  * Customize Setting to represent a nav_menu.
  *
- * Subclass of WP_Customize_Setting to represent a nav_menu taxonomy term, and
+ * Subclass of Setting to represent a nav_menu taxonomy term, and
  * the IDs for the nav_menu_items associated with the nav menu.
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Setting
+ * @see Setting
  */
-class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting
+class WP_Customize_Nav_Menu_Item_Setting extends Setting
 {
     const ID_PATTERN = '/^nav_menu_item\[(?P<id>-?\d+)\]$/';
 

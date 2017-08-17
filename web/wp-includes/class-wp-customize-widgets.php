@@ -7,6 +7,7 @@
  * @since 3.9.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\WidgetAreaControl;
 use Devtronic\FreshPress\Components\Customize\WidgetFormControl;
 
@@ -244,7 +245,7 @@ final class WP_Customize_Widgets
      * @since 4.2.0
      * @access public
      *
-     * @param false|array $args The arguments to the WP_Customize_Setting constructor.
+     * @param false|array $args The arguments to the Setting constructor.
      * @param string $setting_id ID for dynamic setting, usually coming from `$_POST['customized']`.
      * @return false|array Setting arguments, false otherwise.
      */
@@ -951,7 +952,7 @@ final class WP_Customize_Widgets
          *
          * @since 3.9.0
          *
-         * @see WP_Customize_Setting
+         * @see Setting
          *
          * @param array $args Array of Customizer setting arguments.
          * @param string $id Widget setting ID.
@@ -1571,7 +1572,7 @@ final class WP_Customize_Widgets
         /*
          * Override the incoming $_POST['customized'] for a newly-created widget's
          * setting with the new $instance so that the preview filter currently
-         * in place from WP_Customize_Setting::preview() will use this value
+         * in place from Setting::preview() will use this value
          * instead of the default widget instance value (an empty array).
          */
         $this->manager->set_post_value($setting_id, $this->sanitize_widget_js_instance($instance));

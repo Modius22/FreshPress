@@ -13,6 +13,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
 use Devtronic\FreshPress\Components\Customize\NewMenuControl;
+use Devtronic\FreshPress\Components\Customize\Setting;
 
 /**
  * Customize Nav Menus class.
@@ -495,12 +496,12 @@ final class WP_Customize_Nav_Menus
      *
      * For a dynamic setting to be registered, this filter must be employed
      * to override the default false value with an array of args to pass to
-     * the WP_Customize_Setting constructor.
+     * the Setting constructor.
      *
      * @since 4.3.0
      * @access public
      *
-     * @param false|array $setting_args The arguments to the WP_Customize_Setting constructor.
+     * @param false|array $setting_args The arguments to the Setting constructor.
      * @param string $setting_id ID for dynamic setting, usually coming from `$_POST['customized']`.
      * @return array|false
      */
@@ -521,14 +522,14 @@ final class WP_Customize_Nav_Menus
     }
 
     /**
-     * Allow non-statically created settings to be constructed with custom WP_Customize_Setting subclass.
+     * Allow non-statically created settings to be constructed with custom Setting subclass.
      *
      * @since 4.3.0
      * @access public
      *
-     * @param string $setting_class WP_Customize_Setting or a subclass.
+     * @param string $setting_class Setting or a subclass.
      * @param string $setting_id ID for dynamic setting, usually coming from `$_POST['customized']`.
-     * @param array $setting_args WP_Customize_Setting or a subclass.
+     * @param array $setting_args Setting or a subclass.
      * @return string
      */
     public function filter_dynamic_setting_class($setting_class, $setting_id, $setting_args)
@@ -1259,7 +1260,7 @@ final class WP_Customize_Nav_Menus
      * @since 4.7.0
      * @access public
      *
-     * @param WP_Customize_Setting $setting Customizer setting object.
+     * @param Setting $setting Customizer setting object.
      */
     public function save_nav_menus_created_posts($setting)
     {

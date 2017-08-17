@@ -15,6 +15,7 @@ use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
 use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
+use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
@@ -89,7 +90,7 @@ final class WP_Customize_Manager
     public $selective_refresh;
 
     /**
-     * Registered instances of WP_Customize_Setting.
+     * Registered instances of Setting.
      *
      * @since 3.4.0
      * @access protected
@@ -282,7 +283,6 @@ final class WP_Customize_Manager
         $this->messenger_channel = $args['messenger_channel'];
         $this->_changeset_uuid = $args['changeset_uuid'];
 
-        require_once(ABSPATH . WPINC . '/class-wp-customize-setting.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
@@ -1531,7 +1531,7 @@ final class WP_Customize_Manager
      * @see WP_Rest_Request::sanitize_params()
      * @see WP_Rest_Request::has_valid_params()
      *
-     * @param WP_Customize_Setting $setting A WP_Customize_Setting derived object.
+     * @param Setting $setting A Setting derived object.
      * @param mixed $default Value returned $setting has no post value (added in 4.2.0)
      *                                      or the post value is invalid (added in 4.6.0).
      * @return string|mixed $post_value Sanitized value or the $default provided.
@@ -1563,7 +1563,7 @@ final class WP_Customize_Manager
      * @since 4.2.0
      * @access public
      *
-     * @param string $setting_id ID for the WP_Customize_Setting instance.
+     * @param string $setting_id ID for the Setting instance.
      * @param mixed $value Post value.
      */
     public function set_post_value($setting_id, $value)
@@ -1590,7 +1590,7 @@ final class WP_Customize_Manager
          *
          * Fires when the WP_Customize_Manager::set_post_value() method is called.
          *
-         * This is useful for `WP_Customize_Setting` instances to watch
+         * This is useful for `Setting` instances to watch
          * in order to update a cached previewed value.
          *
          * @since 4.4.0
@@ -2059,7 +2059,7 @@ final class WP_Customize_Manager
      * @access public
      *
      * @see WP_REST_Request::has_valid_params()
-     * @see WP_Customize_Setting::validate()
+     * @see Setting::validate()
      *
      * @param array $setting_values Mapping of setting IDs to values to validate and sanitize.
      * @param array $options {
@@ -2620,7 +2620,7 @@ final class WP_Customize_Manager
         $this->store_changeset_revision = $allow_revision;
         add_filter('wp_save_post_revision_post_has_changed', array($this, '_filter_revision_post_has_changed'), 5, 3);
 
-        // Update the changeset post. The publish_customize_changeset action will cause the settings in the changeset to be saved via WP_Customize_Setting::save().
+        // Update the changeset post. The publish_customize_changeset action will cause the settings in the changeset to be saved via Setting::save().
         $has_kses = (false !== has_filter('content_save_pre', 'wp_filter_post_kses'));
         if ($has_kses) {
             kses_remove_filters(); // Prevent KSES from corrupting JSON in post_content.
@@ -2906,11 +2906,11 @@ final class WP_Customize_Manager
      * Add a customize setting.
      *
      * @since 3.4.0
-     * @since 4.5.0 Return added WP_Customize_Setting instance.
+     * @since 4.5.0 Return added Setting instance.
      *
-     * @param WP_Customize_Setting|string $id Customize Setting object, or ID.
+     * @param Setting|string $id Customize Setting object, or ID.
      * @param array $args {
-     *  Optional. Array of properties for the new WP_Customize_Setting. Default empty array.
+     *  Optional. Array of properties for the new Setting. Default empty array.
      *
      * @type string $type Type of the setting. Default 'theme_mod'.
      *                                            Default 160.
@@ -2928,14 +2928,14 @@ final class WP_Customize_Manager
      *                                            JSON serializable.
      * @type bool $dirty Whether or not the setting is initially dirty when created.
      * }
-     * @return WP_Customize_Setting             The instance of the setting that was added.
+     * @return Setting             The instance of the setting that was added.
      */
     public function add_setting($id, $args = array())
     {
-        if ($id instanceof WP_Customize_Setting) {
+        if ($id instanceof Setting) {
             $setting = $id;
         } else {
-            $class = 'WP_Customize_Setting';
+            $class = Setting::class;
 
             /** This filter is documented in wp-includes/class-wp-customize-manager.php */
             $args = apply_filters('customize_dynamic_setting_args', $args, $id);
@@ -2963,7 +2963,7 @@ final class WP_Customize_Manager
      * @access public
      *
      * @param array $setting_ids The setting IDs to add.
-     * @return array The WP_Customize_Setting objects added.
+     * @return array The Setting objects added.
      */
     public function add_dynamic_settings($setting_ids)
     {
@@ -2975,18 +2975,18 @@ final class WP_Customize_Manager
             }
 
             $setting_args = false;
-            $setting_class = 'WP_Customize_Setting';
+            $setting_class = Setting::class;
 
             /**
              * Filters a dynamic setting's constructor args.
              *
              * For a dynamic setting to be registered, this filter must be employed
              * to override the default false value with an array of args to pass to
-             * the WP_Customize_Setting constructor.
+             * the Setting constructor.
              *
              * @since 4.2.0
              *
-             * @param false|array $setting_args The arguments to the WP_Customize_Setting constructor.
+             * @param false|array $setting_args The arguments to the Setting constructor.
              * @param string $setting_id ID for dynamic setting, usually coming from `$_POST['customized']`.
              */
             $setting_args = apply_filters('customize_dynamic_setting_args', $setting_args, $setting_id);
@@ -2995,13 +2995,13 @@ final class WP_Customize_Manager
             }
 
             /**
-             * Allow non-statically created settings to be constructed with custom WP_Customize_Setting subclass.
+             * Allow non-statically created settings to be constructed with custom Setting subclass.
              *
              * @since 4.2.0
              *
-             * @param string $setting_class WP_Customize_Setting or a subclass.
+             * @param string $setting_class Setting or a subclass.
              * @param string $setting_id ID for dynamic setting, usually coming from `$_POST['customized']`.
-             * @param array $setting_args WP_Customize_Setting or a subclass.
+             * @param array $setting_args Setting or a subclass.
              */
             $setting_class = apply_filters(
                 'customize_dynamic_setting_class',
@@ -3024,7 +3024,7 @@ final class WP_Customize_Manager
      * @since 3.4.0
      *
      * @param string $id Customize Setting ID.
-     * @return WP_Customize_Setting|void The setting, if set.
+     * @return Setting|void The setting, if set.
      */
     public function get_setting($id)
     {
@@ -3253,7 +3253,7 @@ final class WP_Customize_Manager
      *  Optional. Array of properties for the new Control object. Default empty array.
      *
      * @type array $settings All settings tied to the control. If undefined, defaults to `$setting`.
-     *                                            IDs in the array correspond to the ID of a registered `WP_Customize_Setting`.
+     *                                            IDs in the array correspond to the ID of a registered `Setting`.
      * @type string $setting The primary setting for the control (if there is one). Default is 'default'.
      * @type string $capability Capability required to use this control. Normally derived from `$settings`.
      * @type int $priority Order priority to load the control. Default 10.
@@ -4474,7 +4474,7 @@ final class WP_Customize_Manager
      * @since 4.7.0
      *
      * @param string $value Repeat value.
-     * @param WP_Customize_Setting $setting Setting.
+     * @param Setting $setting Setting.
      * @return string|WP_Error Background value or validation error.
      */
     public function _sanitize_background_setting($value, $setting)

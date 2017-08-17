@@ -9,14 +9,16 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Setting;
+
 /**
  * Custom Setting to handle WP Custom CSS.
  *
  * @since 4.7.0
  *
- * @see WP_Customize_Setting
+ * @see Setting
  */
-final class WP_Customize_Custom_CSS_Setting extends WP_Customize_Setting
+final class WP_Customize_Custom_CSS_Setting extends Setting
 {
 
     /**
@@ -127,7 +129,7 @@ final class WP_Customize_Custom_CSS_Setting extends WP_Customize_Setting
      *
      * @since 4.7.0
      * @access public
-     * @see WP_Customize_Setting::value()
+     * @see Setting::value()
      *
      * @return string
      */

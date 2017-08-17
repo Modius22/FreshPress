@@ -74,6 +74,7 @@ $classes = array_change_key_case([
     'WP_Customize_Theme_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\ThemeControl',
     'WP_Widget_Area_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\WidgetAreaControl',
     'WP_Widget_Form_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\WidgetFormControl',
+    'WP_Customize_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\Setting',
 ]);
 
 $abstractClasses = array_change_key_case([

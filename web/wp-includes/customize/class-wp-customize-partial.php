@@ -244,7 +244,7 @@ class WP_Customize_Partial
          * @since 4.5.0
          *
          * @param string|array|false $rendered The partial value. Default false.
-         * @param WP_Customize_Partial $partial WP_Customize_Setting instance.
+         * @param WP_Customize_Partial $partial Devtronic\FreshPress\Components\Customize\Setting instance.
          * @param array $container_context Optional array of context data associated with
          *                                                the target container.
          */
@@ -258,7 +258,7 @@ class WP_Customize_Partial
          * @since 4.5.0
          *
          * @param string|array|false $rendered The partial value. Default false.
-         * @param WP_Customize_Partial $partial WP_Customize_Setting instance.
+         * @param WP_Customize_Partial $partial Devtronic\FreshPress\Components\Customize\Setting instance.
          * @param array $container_context Optional array of context data associated with
          *                                                the target container.
          */
