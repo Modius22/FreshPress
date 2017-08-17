@@ -13,6 +13,7 @@ use Devtronic\FreshPress\Components\Customize\BackgroundPositionControl;
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
 use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
+use Devtronic\FreshPress\Components\Customize\CustomCssSetting;
 use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
@@ -294,7 +295,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-section.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-custom-css-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-filter-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php');
@@ -4384,7 +4384,7 @@ final class WP_Customize_Manager
             ),
         ));
 
-        $custom_css_setting = new WP_Customize_Custom_CSS_Setting(
+        $custom_css_setting = new CustomCssSetting(
             $this,
             sprintf('custom_css[%s]', get_stylesheet()),
             array(

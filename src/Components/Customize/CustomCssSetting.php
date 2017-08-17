@@ -1,6 +1,6 @@
 <?php
 /**
- * Customize API: WP_Customize_Custom_CSS_Setting class
+ * Customize API: CustomCSSSetting class
  *
  * This handles validation, sanitization and saving of the value.
  *
@@ -9,7 +9,10 @@
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Setting;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+use WP_Error;
 
 /**
  * Custom Setting to handle WP Custom CSS.
@@ -18,7 +21,7 @@ use Devtronic\FreshPress\Components\Customize\Setting;
  *
  * @see Setting
  */
-final class WP_Customize_Custom_CSS_Setting extends Setting
+class CustomCssSetting extends Setting
 {
 
     /**
@@ -58,26 +61,26 @@ final class WP_Customize_Custom_CSS_Setting extends Setting
     public $stylesheet = '';
 
     /**
-     * WP_Customize_Custom_CSS_Setting constructor.
+     * CustomCssSetting constructor.
      *
      * @since 4.7.0
      * @access public
      *
-     * @throws Exception If the setting ID does not match the pattern `custom_css[$stylesheet]`.
+     * @throws \Exception If the setting ID does not match the pattern `custom_css[$stylesheet]`.
      *
      * @param WP_Customize_Manager $manager The Customize Manager class.
      * @param string $id An specific ID of the setting. Can be a
      *                                      theme mod or option name.
      * @param array $args Setting arguments.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         parent::__construct($manager, $id, $args);
         if ('custom_css' !== $this->id_data['base']) {
-            throw new Exception('Expected custom_css id_base.');
+            throw new \Exception('Expected custom_css id_base.');
         }
         if (1 !== count($this->id_data['keys']) || empty($this->id_data['keys'][0])) {
-            throw new Exception('Expected single stylesheet key.');
+            throw new \Exception('Expected single stylesheet key.');
         }
         $this->stylesheet = $this->id_data['keys'][0];
     }
@@ -96,7 +99,7 @@ final class WP_Customize_Custom_CSS_Setting extends Setting
             return false;
         }
         $this->is_previewed = true;
-        add_filter('wp_get_custom_css', array($this, 'filter_previewed_wp_get_custom_css'), 9, 2);
+        add_filter('wp_get_custom_css', [$this, 'filter_previewed_wp_get_custom_css'], 9, 2);
         return true;
     }
 
@@ -288,9 +291,9 @@ final class WP_Customize_Custom_CSS_Setting extends Setting
             $css = '';
         }
 
-        $r = wp_update_custom_css_post($css, array(
+        $r = wp_update_custom_css_post($css, [
             'stylesheet' => $this->stylesheet,
-        ));
+        ]);
 
         if ($r instanceof WP_Error) {
             return false;
