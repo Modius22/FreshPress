@@ -1,13 +1,15 @@
 <?php
 /**
- * Customize API: WP_Customize_Nav_Menus_Panel class
+ * Customize API: NavMenusPanel class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Panel;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Screen;
 
 /**
  * Customize Nav Menus Panel Class
@@ -18,7 +20,7 @@ use Devtronic\FreshPress\Components\Customize\Panel;
  *
  * @see Panel
  */
-class WP_Customize_Nav_Menus_Panel extends Panel
+class NavMenusPanel extends Panel
 {
 
     /**
@@ -44,7 +46,7 @@ class WP_Customize_Nav_Menus_Panel extends Panel
 
         // Display screen options.
         $screen = WP_Screen::get('nav-menus.php');
-        $screen->render_screen_options(array('wrap' => false));
+        $screen->render_screen_options(['wrap' => false]);
     }
 
     /**

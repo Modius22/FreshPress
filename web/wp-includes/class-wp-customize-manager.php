@@ -291,8 +291,6 @@ final class WP_Customize_Manager
         $this->messenger_channel = $args['messenger_channel'];
         $this->_changeset_uuid = $args['changeset_uuid'];
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');
-
         /**
          * Filters the core Customizer components to load.
          *

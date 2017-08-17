@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuSection;
 use Devtronic\FreshPress\Components\Customize\NavMenuSetting;
+use Devtronic\FreshPress\Components\Customize\NavMenusPanel;
 use Devtronic\FreshPress\Components\Customize\NewMenuControl;
 use Devtronic\FreshPress\Components\Customize\NewMenuSection;
 use Devtronic\FreshPress\Components\Customize\Setting;
@@ -576,7 +577,7 @@ final class WP_Customize_Nav_Menus
         }
 
         // Require JS-rendered control types.
-        $this->manager->register_panel_type('WP_Customize_Nav_Menus_Panel');
+        $this->manager->register_panel_type(NavMenusPanel::class);
         $this->manager->register_control_type(NavMenuControl::class);
         $this->manager->register_control_type(NavMenuNameControl::class);
         $this->manager->register_control_type(NavMenuAutoAddControl::class);
@@ -593,7 +594,7 @@ final class WP_Customize_Nav_Menus
         } else {
             $description .= '<p>' . __('Menus can be displayed in locations defined by your theme.') . '</p>';
         }
-        $this->manager->add_panel(new WP_Customize_Nav_Menus_Panel($this->manager, 'nav_menus', array(
+        $this->manager->add_panel(new NavMenusPanel($this->manager, 'nav_menus', array(
             'title' => __('Menus'),
             'description' => $description,
             'priority' => 100,
