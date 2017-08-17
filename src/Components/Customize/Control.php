@@ -722,10 +722,6 @@ class Control
     }
 }
 
-/**
- * WP_Customize_Cropped_Image_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-cropped-image-control.php');
 
 /**
  * WP_Customize_Site_Icon_Control class.

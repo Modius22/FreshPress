@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\Customize\BackgroundImageControl;
 use Devtronic\FreshPress\Components\Customize\BackgroundPositionControl;
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
+use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
@@ -282,7 +283,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-cropped-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
@@ -3895,9 +3895,9 @@ final class WP_Customize_Manager
         $this->register_control_type(MediaControl::class);
         $this->register_control_type(UploadControl::class);
         $this->register_control_type(ImageControl::class);
-        $this->register_control_type('Devtronic\FreshPress\Components\Customize\BackgroundImageControl');
-        $this->register_control_type('Devtronic\FreshPress\Components\Customize\BackgroundPositionControl');
-        $this->register_control_type('WP_Customize_Cropped_Image_Control');
+        $this->register_control_type(BackgroundImageControl::class);
+        $this->register_control_type(BackgroundPositionControl::class);
+        $this->register_control_type(CroppedImageControl::class);
         $this->register_control_type('WP_Customize_Site_Icon_Control');
         $this->register_control_type('WP_Customize_Theme_Control');
 
@@ -4015,7 +4015,7 @@ final class WP_Customize_Manager
         ));
 
         $custom_logo_args = get_theme_support('custom-logo');
-        $this->add_control(new WP_Customize_Cropped_Image_Control($this, 'custom_logo', array(
+        $this->add_control(new CroppedImageControl($this, 'custom_logo', array(
             'label' => __('Logo'),
             'section' => 'title_tagline',
             'priority' => 8,

@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
+
 /**
  * Customize Site Icon control class.
  *
@@ -14,9 +16,9 @@
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Cropped_Image_Control
+ * @see CroppedImageControl
  */
-class WP_Customize_Site_Icon_Control extends WP_Customize_Cropped_Image_Control
+class WP_Customize_Site_Icon_Control extends CroppedImageControl
 {
 
     /**

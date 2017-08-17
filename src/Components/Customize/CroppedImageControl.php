@@ -1,14 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Cropped_Image_Control class
+ * Customize API: CroppedImageControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
-use Devtronic\FreshPress\Components\Customize\ImageControl;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize Cropped Image Control class.
@@ -17,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\ImageControl;
  *
  * @see ImageControl
  */
-class WP_Customize_Cropped_Image_Control extends ImageControl
+class CroppedImageControl extends ImageControl
 {
 
     /**
