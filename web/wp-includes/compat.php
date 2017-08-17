@@ -325,24 +325,6 @@ if (!defined('JSON_PRETTY_PRINT')) {
     define('JSON_PRETTY_PRINT', 128);
 }
 
-if (!interface_exists('JsonSerializable')) {
-    define('WP_JSON_SERIALIZE_COMPATIBLE', true);
-
-    /**
-     * JsonSerializable interface.
-     *
-     * Compatibility shim for PHP <5.4
-     *
-     * @link https://secure.php.net/jsonserializable
-     *
-     * @since 4.4.0
-     */
-    interface JsonSerializable
-    {
-        public function jsonSerialize();
-    }
-}
-
 // SPL can be disabled on PHP 5.2
 if (!function_exists('spl_autoload_register')):
     $_wp_spl_autoloaders = array();
