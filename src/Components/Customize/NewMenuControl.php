@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_New_Menu_Control class
+ * Customize API: NewMenuControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize control class for new menus.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_New_Menu_Control extends Control
+class NewMenuControl extends Control
 {
 
     /**

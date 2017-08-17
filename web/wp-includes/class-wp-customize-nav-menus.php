@@ -12,6 +12,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuNameControl;
+use Devtronic\FreshPress\Components\Customize\NewMenuControl;
 
 /**
  * Customize Nav Menus class.
@@ -729,7 +730,7 @@ final class WP_Customize_Nav_Menus
             ),
         ));
 
-        $this->manager->add_control(new WP_Customize_New_Menu_Control($this->manager, 'create_new_menu', array(
+        $this->manager->add_control(new NewMenuControl($this->manager, 'create_new_menu', array(
             'section' => 'add_menu',
             'settings' => array(),
         )));

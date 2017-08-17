@@ -742,8 +742,3 @@ require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-contro
  * WP_Widget_Form_Customize_Control class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
-
-/**
- * WP_Customize_New_Menu_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-new-menu-control.php');

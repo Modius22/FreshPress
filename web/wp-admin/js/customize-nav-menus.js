@@ -2687,7 +2687,7 @@
 	 * wp.customize.Menus.NewMenuControl
 	 *
 	 * Customizer control for creating new menus and handling deletion of existing menus.
-	 * Note that 'new_menu' must match the WP_Customize_New_Menu_Control::$type.
+	 * Note that 'new_menu' must match the Devtronic\FreshPress\Components\Customize\NewMenuControl::$type.
 	 *
 	 * @constructor
 	 * @augments wp.customize.Control
