@@ -286,7 +286,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');

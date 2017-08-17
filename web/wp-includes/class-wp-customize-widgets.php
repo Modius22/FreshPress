@@ -7,6 +7,8 @@
  * @since 3.9.0
  */
 
+use Devtronic\FreshPress\Components\Customize\WidgetAreaControl;
+
 /**
  * Customize Widgets class.
  *
@@ -506,7 +508,7 @@ final class WP_Customize_Widgets
                     $section = new WP_Customize_Sidebar_Section($this->manager, $section_id, $section_args);
                     $this->manager->add_section($section);
 
-                    $control = new WP_Widget_Area_Customize_Control($this->manager, $setting_id, array(
+                    $control = new WidgetAreaControl($this->manager, $setting_id, array(
                         'section' => $section_id,
                         'sidebar_id' => $sidebar_id,
                         'priority' => count($sidebar_widget_ids), // place 'Add Widget' and 'Reorder' buttons at end.

@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Widget_Area_Customize_Control class
+ * Customize API: WidgetAreaControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 3.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Widget Area Customize Control class.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Widget_Area_Customize_Control extends Control
+class WidgetAreaControl extends Control
 {
 
     /**
@@ -46,7 +46,7 @@ class WP_Widget_Area_Customize_Control extends Control
     public function to_json()
     {
         parent::to_json();
-        $exported_properties = array('sidebar_id');
+        $exported_properties = ['sidebar_id'];
         foreach ($exported_properties as $key) {
             $this->json[$key] = $this->$key;
         }
@@ -60,7 +60,7 @@ class WP_Widget_Area_Customize_Control extends Control
      */
     public function render_content()
     {
-        $id = 'reorder-widgets-desc-' . str_replace(array('[', ']'), array('-', ''), $this->id); ?>
+        $id = 'reorder-widgets-desc-' . str_replace(['[', ']'], ['-', ''], $this->id); ?>
         <button type="button" class="button add-new-widget" aria-expanded="false" aria-controls="available-widgets">
             <?php _e('Add a Widget'); ?>
         </button>

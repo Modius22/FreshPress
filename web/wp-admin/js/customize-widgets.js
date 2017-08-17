@@ -1708,7 +1708,7 @@
 	 * wp.customize.Widgets.SidebarControl
 	 *
 	 * Customizer control for widgets.
-	 * Note that 'sidebar_widgets' must match the WP_Widget_Area_Customize_Control::$type
+	 * Note that 'sidebar_widgets' must match the Devtronic\FreshPress\Components\Customize\WWidgetAreaControl::$type
 	 *
 	 * @since 3.9.0
 	 *

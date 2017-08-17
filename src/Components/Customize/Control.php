@@ -728,11 +728,6 @@ class Control
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
 
 /**
- * WP_Widget_Area_Customize_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-control.php');
-
-/**
  * WP_Widget_Form_Customize_Control class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
