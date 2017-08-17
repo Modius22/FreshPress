@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use WP_Customize_Manager;
-use WP_Customize_Nav_Menu_Setting;
 use WP_Error;
 use WP_Post;
 
@@ -380,7 +379,7 @@ class NavMenuItemSetting extends Setting
         }
 
         if (!isset($this->value['nav_menu_term_id']) && $this->post_id > 0) {
-            $menus = wp_get_post_terms($this->post_id, WP_Customize_Nav_Menu_Setting::TAXONOMY, [
+            $menus = wp_get_post_terms($this->post_id, NavMenuSetting::TAXONOMY, [
                 'fields' => 'ids',
             ]);
             if (!empty($menus)) {
@@ -812,7 +811,7 @@ class NavMenuItemSetting extends Setting
                 $nav_menu_setting_id = sprintf('nav_menu[%s]', $value['nav_menu_term_id']);
                 $nav_menu_setting = $this->manager->get_setting($nav_menu_setting_id);
 
-                if (!$nav_menu_setting || !($nav_menu_setting instanceof WP_Customize_Nav_Menu_Setting)) {
+                if (!$nav_menu_setting || !($nav_menu_setting instanceof NavMenuSetting)) {
                     $this->update_status = 'error';
                     $this->update_error = new WP_Error('unexpected_nav_menu_setting');
                     return;

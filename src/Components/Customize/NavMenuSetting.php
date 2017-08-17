@@ -1,13 +1,16 @@
 <?php
 /**
- * Customize API: WP_Customize_Nav_Menu_Setting class
+ * Customize API: NavMenuSetting class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Setting;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+use WP_Error;
 
 /**
  * Customize Setting to represent a nav_menu.
@@ -20,7 +23,7 @@ use Devtronic\FreshPress\Components\Customize\Setting;
  * @see wp_get_nav_menu_object()
  * @see Setting
  */
-class WP_Customize_Nav_Menu_Setting extends Setting
+class NavMenuSetting extends Setting
 {
     const ID_PATTERN = '/^nav_menu\[(?P<id>-?\d+)\]$/';
 
@@ -46,12 +49,12 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      *
      * @see wp_get_nav_menu_object()
      */
-    public $default = array(
+    public $default = [
         'name' => '',
         'description' => '',
         'parent' => 0,
         'auto_add' => false,
-    );
+    ];
 
     /**
      * Default transport.
@@ -85,8 +88,8 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @access public
      * @var int
      *
-     * @see WP_Customize_Nav_Menu_Setting::update()
-     * @see WP_Customize_Nav_Menu_Setting::amend_customize_save_response()
+     * @see NavMenuSetting::update()
+     * @see NavMenuSetting::amend_customize_save_response()
      */
     public $previous_term_id;
 
@@ -111,8 +114,8 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @access public
      * @var string updated|inserted|deleted|error
      *
-     * @see WP_Customize_Nav_Menu_Setting::update()
-     * @see WP_Customize_Nav_Menu_Setting::amend_customize_save_response()
+     * @see NavMenuSetting::update()
+     * @see NavMenuSetting::amend_customize_save_response()
      */
     public $update_status;
 
@@ -123,8 +126,8 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @access public
      * @var WP_Error
      *
-     * @see WP_Customize_Nav_Menu_Setting::update()
-     * @see WP_Customize_Nav_Menu_Setting::amend_customize_save_response()
+     * @see NavMenuSetting::update()
+     * @see NavMenuSetting::amend_customize_save_response()
      */
     public $update_error;
 
@@ -141,16 +144,16 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      *                                      theme mod or option name.
      * @param array $args Optional. Setting arguments.
      *
-     * @throws Exception If $id is not valid for this setting type.
+     * @throws \Exception If $id is not valid for this setting type.
      */
-    public function __construct(WP_Customize_Manager $manager, $id, array $args = array())
+    public function __construct(WP_Customize_Manager $manager, $id, array $args = [])
     {
         if (empty($manager->nav_menus)) {
-            throw new Exception('Expected WP_Customize_Manager::$nav_menus to be set.');
+            throw new \Exception('Expected WP_Customize_Manager::$nav_menus to be set.');
         }
 
         if (!preg_match(self::ID_PATTERN, $id, $matches)) {
-            throw new Exception("Illegal widget setting ID: $id");
+            throw new \Exception("Illegal widget setting ID: $id");
         }
 
         $this->term_id = intval($matches['id']);
@@ -171,7 +174,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
     public function value()
     {
         if ($this->is_previewed && $this->_previewed_blog_id === get_current_blog_id()) {
-            $undefined = new stdClass(); // Symbol.
+            $undefined = new \stdClass(); // Symbol.
             $post_value = $this->post_value($undefined);
 
             if ($undefined === $post_value) {
@@ -189,7 +192,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
                 if ($term) {
                     $value = wp_array_slice_assoc((array)$term, array_keys($this->default));
 
-                    $nav_menu_options = (array)get_option('nav_menu_options', array());
+                    $nav_menu_options = (array)get_option('nav_menu_options', []);
                     $value['auto_add'] = false;
 
                     if (isset($nav_menu_options['auto_add']) && is_array($nav_menu_options['auto_add'])) {
@@ -222,7 +225,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
             return false;
         }
 
-        $undefined = new stdClass();
+        $undefined = new \stdClass();
         $is_placeholder = ($this->term_id < 0);
         $is_dirty = ($undefined !== $this->post_value($undefined));
         if (!$is_placeholder && !$is_dirty) {
@@ -233,10 +236,10 @@ class WP_Customize_Nav_Menu_Setting extends Setting
         $this->_original_value = $this->value();
         $this->_previewed_blog_id = get_current_blog_id();
 
-        add_filter('wp_get_nav_menus', array($this, 'filter_wp_get_nav_menus'), 10, 2);
-        add_filter('wp_get_nav_menu_object', array($this, 'filter_wp_get_nav_menu_object'), 10, 2);
-        add_filter('default_option_nav_menu_options', array($this, 'filter_nav_menu_options'));
-        add_filter('option_nav_menu_options', array($this, 'filter_nav_menu_options'));
+        add_filter('wp_get_nav_menus', [$this, 'filter_wp_get_nav_menus'], 10, 2);
+        add_filter('wp_get_nav_menu_object', [$this, 'filter_wp_get_nav_menu_object'], 10, 2);
+        add_filter('default_option_nav_menu_options', [$this, 'filter_nav_menu_options']);
+        add_filter('option_nav_menu_options', [$this, 'filter_nav_menu_options']);
 
         return true;
     }
@@ -278,7 +281,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
             }
         } else {
             // Handle menus being updated or inserted.
-            $menu_obj = (object)array_merge(array(
+            $menu_obj = (object)array_merge([
                 'term_id' => $this->term_id,
                 'term_taxonomy_id' => $this->term_id,
                 'slug' => sanitize_title($setting_value['name']),
@@ -286,16 +289,16 @@ class WP_Customize_Nav_Menu_Setting extends Setting
                 'term_group' => 0,
                 'taxonomy' => self::TAXONOMY,
                 'filter' => 'raw',
-            ), $setting_value);
+            ], $setting_value);
 
-            array_splice($menus, $index, (-1 === $index ? 0 : 1), array($menu_obj));
+            array_splice($menus, $index, (-1 === $index ? 0 : 1), [$menu_obj]);
         }
 
         // Make sure the menu objects get re-sorted after an update/insert.
         if (!$is_delete && !empty($args['orderby'])) {
-            $menus = wp_list_sort($menus, array(
+            $menus = wp_list_sort($menus, [
                 $args['orderby'] => 'ASC',
-            ));
+            ]);
         }
         // @todo add support for $args['hide_empty'] === true
 
@@ -309,8 +312,8 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @access protected
      * @var string
      *
-     * @see WP_Customize_Nav_Menu_Setting::filter_wp_get_nav_menus()
-     * @see WP_Customize_Nav_Menu_Setting::_sort_menus_by_orderby()
+     * @see NavMenuSetting::filter_wp_get_nav_menus()
+     * @see NavMenuSetting::_sort_menus_by_orderby()
      */
     protected $_current_menus_sort_orderby;
 
@@ -327,7 +330,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @param object $menu2
      * @return int
      *
-     * @see WP_Customize_Nav_Menu_Setting::filter_wp_get_nav_menus()
+     * @see NavMenuSetting::filter_wp_get_nav_menus()
      */
     protected function _sort_menus_by_orderby($menu1, $menu2)
     {
@@ -376,7 +379,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
             return $menu_obj;
         }
 
-        $menu_obj = (object)array_merge(array(
+        $menu_obj = (object)array_merge([
             'term_id' => $this->term_id,
             'term_taxonomy_id' => $this->term_id,
             'slug' => sanitize_title($setting_value['name']),
@@ -384,7 +387,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
             'term_group' => 0,
             'taxonomy' => self::TAXONOMY,
             'filter' => 'raw',
-        ), $setting_value);
+        ], $setting_value);
 
         return $menu_obj;
     }
@@ -439,12 +442,12 @@ class WP_Customize_Nav_Menu_Setting extends Setting
             return null;
         }
 
-        $default = array(
+        $default = [
             'name' => '',
             'description' => '',
             'parent' => 0,
             'auto_add' => false,
-        );
+        ];
         $value = array_merge($default, $value);
         $value = wp_array_slice_assoc($value, array_keys($default));
 
@@ -470,9 +473,9 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @since 4.3.0
      * @var array
      *
-     * @see WP_Customize_Nav_Menu_Setting::amend_customize_save_response()
+     * @see NavMenuSetting::amend_customize_save_response()
      */
-    protected $_widget_nav_menu_updates = array();
+    protected $_widget_nav_menu_updates = [];
 
     /**
      * Create/update the nav_menu term for this setting.
@@ -509,7 +512,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
         $is_placeholder = ($this->term_id < 0);
         $is_delete = (false === $value);
 
-        add_filter('customize_save_response', array($this, 'amend_customize_save_response'));
+        add_filter('customize_save_response', [$this, 'amend_customize_save_response']);
 
         $auto_add = null;
         if ($is_delete) {
@@ -529,7 +532,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
             }
         } else {
             // Insert or update menu.
-            $menu_data = wp_array_slice_assoc($value, array('description', 'parent'));
+            $menu_data = wp_array_slice_assoc($value, ['description', 'parent']);
             $menu_data['menu-name'] = $value['name'];
 
             $menu_id = $is_placeholder ? 0 : $this->term_id;
@@ -561,7 +564,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
 
         if (null !== $auto_add) {
             $nav_menu_options = $this->filter_nav_menu_options_value(
-                (array)get_option('nav_menu_options', array()),
+                (array)get_option('nav_menu_options', []),
                 $this->term_id,
                 $auto_add
             );
@@ -610,8 +613,8 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @since 4.3.0
      * @access protected
      *
-     * @see WP_Customize_Nav_Menu_Setting::filter_nav_menu_options()
-     * @see WP_Customize_Nav_Menu_Setting::update()
+     * @see NavMenuSetting::filter_nav_menu_options()
+     * @see NavMenuSetting::update()
      *
      * @param array $nav_menu_options Array as returned by get_option( 'nav_menu_options' ).
      * @param int $menu_id The term ID for the given menu.
@@ -622,7 +625,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
     {
         $nav_menu_options = (array)$nav_menu_options;
         if (!isset($nav_menu_options['auto_add'])) {
-            $nav_menu_options['auto_add'] = array();
+            $nav_menu_options['auto_add'] = [];
         }
 
         $i = array_search($menu_id, $nav_menu_options['auto_add']);
@@ -641,7 +644,7 @@ class WP_Customize_Nav_Menu_Setting extends Setting
      * @since 4.3.0
      * @access public
      *
-     * @see WP_Customize_Nav_Menu_Setting::update()
+     * @see NavMenuSetting::update()
      *
      * @param array $data Additional information passed back to the 'saved' event on `wp.customize`.
      * @return array Export data.
@@ -649,25 +652,25 @@ class WP_Customize_Nav_Menu_Setting extends Setting
     public function amend_customize_save_response($data)
     {
         if (!isset($data['nav_menu_updates'])) {
-            $data['nav_menu_updates'] = array();
+            $data['nav_menu_updates'] = [];
         }
         if (!isset($data['widget_nav_menu_updates'])) {
-            $data['widget_nav_menu_updates'] = array();
+            $data['widget_nav_menu_updates'] = [];
         }
 
-        $data['nav_menu_updates'][] = array(
+        $data['nav_menu_updates'][] = [
             'term_id' => $this->term_id,
             'previous_term_id' => $this->previous_term_id,
             'error' => $this->update_error ? $this->update_error->get_error_code() : null,
             'status' => $this->update_status,
             'saved_value' => 'deleted' === $this->update_status ? null : $this->value(),
-        );
+        ];
 
         $data['widget_nav_menu_updates'] = array_merge(
             $data['widget_nav_menu_updates'],
             $this->_widget_nav_menu_updates
         );
-        $this->_widget_nav_menu_updates = array();
+        $this->_widget_nav_menu_updates = [];
 
         return $data;
     }

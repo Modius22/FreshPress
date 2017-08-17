@@ -2953,7 +2953,7 @@
 					var wasSaved = api.state( 'saved' ).get();
 					if ( /^nav_menu_locations\[/.test( setting.id ) && setting.get() === update.previous_term_id ) {
 						setting.set( update.term_id );
-						setting._dirty = false; // Not dirty because this is has also just been done on server in WP_Customize_Nav_Menu_Setting::update().
+						setting._dirty = false; // Not dirty because this is has also just been done on server in Devtronic\FreshPress\Components\Customize\NavMenuSetting::update().
 						api.state( 'saved' ).set( wasSaved );
 						setting.preview();
 					}

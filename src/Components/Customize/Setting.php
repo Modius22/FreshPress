@@ -998,8 +998,3 @@ class Setting
         return isset($result);
     }
 }
-
-/**
- * WP_Customize_Nav_Menu_Setting class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-setting.php');

@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Nav_Menu_Setting;
-
 /**
  * Customize Nav Menu Control Class.
  *
@@ -33,7 +31,7 @@ class NavMenuControl extends Control
      *
      * @since 4.3.0
      * @access public
-     * @var WP_Customize_Nav_Menu_Setting
+     * @var NavMenuSetting
      */
     public $setting;
 
