@@ -744,11 +744,6 @@ require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-contro
 require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
 
 /**
- * WP_Customize_Nav_Menu_Location_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-location-control.php');
-
-/**
  * WP_Customize_Nav_Menu_Name_Control class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-name-control.php');

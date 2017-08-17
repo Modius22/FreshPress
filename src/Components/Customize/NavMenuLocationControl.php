@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Nav_Menu_Location_Control class
+ * Customize API: NavMenuLocationControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize Menu Location Control Class.
@@ -18,7 +18,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_Nav_Menu_Location_Control extends Control
+class NavMenuLocationControl extends Control
 {
 
     /**
@@ -76,11 +76,8 @@ class WP_Customize_Nav_Menu_Location_Control extends Control
             <select <?php $this->link(); ?>>
                 <?php
                 foreach ($this->choices as $value => $label) :
-                    echo '<option value="' . esc_attr($value) . '"' . selected(
-                        $this->value(),
-                        $value,
-                            false
-                    ) . '>' . $label . '</option>';
+                    echo '<option value="' . esc_attr($value) . '"' .
+                        selected($this->value(), $value, false) . '>' . $label . '</option>';
         endforeach; ?>
             </select>
         </label>

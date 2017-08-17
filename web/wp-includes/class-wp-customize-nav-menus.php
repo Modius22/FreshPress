@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\Customize\NavMenuAutoAddControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuControl;
 use Devtronic\FreshPress\Components\Customize\NavMenuItemControl;
+use Devtronic\FreshPress\Components\Customize\NavMenuLocationControl;
 
 /**
  * Customize Nav Menus class.
@@ -646,7 +647,7 @@ final class WP_Customize_Nav_Menus
                 ));
             }
 
-            $this->manager->add_control(new WP_Customize_Nav_Menu_Location_Control($this->manager, $setting_id, array(
+            $this->manager->add_control(new NavMenuLocationControl($this->manager, $setting_id, array(
                 'label' => $description,
                 'location_id' => $location,
                 'section' => 'menu_locations',

@@ -1159,7 +1159,7 @@
 	 * wp.customize.Menus.MenuLocationControl
 	 *
 	 * Customizer control for menu locations (rendered as a <select>).
-	 * Note that 'nav_menu_location' must match the WP_Customize_Nav_Menu_Location_Control::$type.
+	 * Note that 'nav_menu_location' must match the Devtronic\FreshPress\Components\Customize\NavMenuLocationControl::$type.
 	 *
 	 * @constructor
 	 * @augments wp.customize.Control
