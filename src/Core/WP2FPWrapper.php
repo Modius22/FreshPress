@@ -58,6 +58,7 @@ $classes = array_change_key_case([
     'WP_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\Control',
     'WP_Customize_Color_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\ColorControl',
     'WP_Customize_Media_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\MediaControl',
+    'WP_Customize_Background_Image_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\BackgroundImageControl',
 ]);
 
 $abstractClasses = array_change_key_case([

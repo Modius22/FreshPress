@@ -7,6 +7,7 @@
  * @since 3.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\BackgroundImageControl;
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
@@ -280,7 +281,6 @@ final class WP_Customize_Manager
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-upload-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-image-control.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-position-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-cropped-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
@@ -3895,7 +3895,7 @@ final class WP_Customize_Manager
         $this->register_control_type(MediaControl::class);
         $this->register_control_type('WP_Customize_Upload_Control');
         $this->register_control_type('WP_Customize_Image_Control');
-        $this->register_control_type('WP_Customize_Background_Image_Control');
+        $this->register_control_type('Devtronic\FreshPress\Components\Customize\BackgroundImageControl');
         $this->register_control_type('WP_Customize_Background_Position_Control');
         $this->register_control_type('WP_Customize_Cropped_Image_Control');
         $this->register_control_type('WP_Customize_Site_Icon_Control');
@@ -4224,7 +4224,7 @@ final class WP_Customize_Manager
             'sanitize_callback' => array($this, '_sanitize_background_setting'),
         )));
 
-        $this->add_control(new WP_Customize_Background_Image_Control($this));
+        $this->add_control(new BackgroundImageControl($this));
 
         $this->add_setting('background_preset', array(
             'default' => get_theme_support('custom-background', 'default-preset'),
