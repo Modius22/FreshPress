@@ -78,6 +78,7 @@ $classes = array_change_key_case([
     'WP_Customize_Filter_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\FilterSetting',
     'WP_Customize_Nav_Menu_Item_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuItemSetting',
     'WP_Customize_Nav_Menu_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuSetting',
+    'WP_Customize_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\Section',
 ]);
 
 $abstractClasses = array_change_key_case([

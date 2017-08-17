@@ -7,6 +7,8 @@
  * @since 4.0.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Section;
+
 /**
  * Customize Panel class.
  *
@@ -137,10 +139,10 @@ class WP_Customize_Panel
      * @since 4.1.0
      * @access public
      *
-     * @see WP_Customize_Section::active()
+     * @see Section::active()
      *
      * @var callable Callback is called with one argument, the instance of
-     *               WP_Customize_Section, and returns bool to indicate whether
+     *               Section, and returns bool to indicate whether
      *               the section is active (such as it relates to the URL currently
      *               being previewed).
      */

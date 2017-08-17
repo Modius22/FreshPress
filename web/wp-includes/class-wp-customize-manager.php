@@ -19,6 +19,7 @@ use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\HeaderImageSetting;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
+use Devtronic\FreshPress\Components\Customize\Section;
 use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
@@ -103,7 +104,7 @@ final class WP_Customize_Manager
     protected $settings = array();
 
     /**
-     * Sorted top-level instances of WP_Customize_Panel and WP_Customize_Section.
+     * Sorted top-level instances of WP_Customize_Panel and Section.
      *
      * @since 4.0.0
      * @access protected
@@ -130,7 +131,7 @@ final class WP_Customize_Manager
     protected $components = array('widgets', 'nav_menus');
 
     /**
-     * Registered instances of WP_Customize_Section.
+     * Registered instances of Section.
      *
      * @since 3.4.0
      * @access protected
@@ -288,7 +289,6 @@ final class WP_Customize_Manager
         $this->_changeset_uuid = $args['changeset_uuid'];
 
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
-        require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');
 
@@ -3149,10 +3149,10 @@ final class WP_Customize_Manager
      * Add a customize section.
      *
      * @since 3.4.0
-     * @since 4.5.0 Return added WP_Customize_Section instance.
+     * @since 4.5.0 Return added Section instance.
      * @access public
      *
-     * @param WP_Customize_Section|string $id Customize Section object, or Section ID.
+     * @param Section|string $id Customize Section object, or Section ID.
      * @param array $args {
      *  Optional. Array of properties for the new Panel object. Default empty array.
      * @type int $priority Priority of the panel, defining the display order of panels and sections.
@@ -3166,14 +3166,14 @@ final class WP_Customize_Manager
      * @type callable $active_callback Active callback.
      * @type bool $description_hidden Hide the description behind a help icon, instead of . Default false.
      * }
-     * @return WP_Customize_Section             The instance of the section that was added.
+     * @return Section             The instance of the section that was added.
      */
     public function add_section($id, $args = array())
     {
-        if ($id instanceof WP_Customize_Section) {
+        if ($id instanceof Section) {
             $section = $id;
         } else {
-            $section = new WP_Customize_Section($this, $id, $args);
+            $section = new Section($this, $id, $args);
         }
 
         $this->sections[$section->id] = $section;
@@ -3186,7 +3186,7 @@ final class WP_Customize_Manager
      * @since 3.4.0
      *
      * @param string $id Section ID.
-     * @return WP_Customize_Section|void The section, if set.
+     * @return Section|void The section, if set.
      */
     public function get_section($id)
     {
@@ -3215,9 +3215,9 @@ final class WP_Customize_Manager
      * @since 4.3.0
      * @access public
      *
-     * @see WP_Customize_Section
+     * @see Section
      *
-     * @param string $section Name of a custom section which is a subclass of WP_Customize_Section.
+     * @param string $section Name of a custom section which is a subclass of Section.
      */
     public function register_section_type($section)
     {
@@ -3355,8 +3355,8 @@ final class WP_Customize_Manager
      * @since 3.4.0
      * @deprecated 4.7.0 Use wp_list_sort()
      *
-     * @param WP_Customize_Panel|WP_Customize_Section|Control $a Object A.
-     * @param WP_Customize_Panel|WP_Customize_Section|Control $b Object B.
+     * @param WP_Customize_Panel|Section|Control $a Object A.
+     * @param WP_Customize_Panel|Section|Control $b Object B.
      * @return int
      */
     protected function _cmp_priority($a, $b)
@@ -3877,7 +3877,7 @@ final class WP_Customize_Manager
 
         /* Panel, Section, and Control Types */
         $this->register_panel_type('WP_Customize_Panel');
-        $this->register_section_type('WP_Customize_Section');
+        $this->register_section_type(Section::class);
         $this->register_section_type('WP_Customize_Sidebar_Section');
         $this->register_control_type(ColorControl::class);
         $this->register_control_type(MediaControl::class);

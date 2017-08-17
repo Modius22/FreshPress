@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Section;
+
 /**
  * Customize Menu Section Class
  *
@@ -14,9 +16,9 @@
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Section
+ * @see Section
  */
-class WP_Customize_Nav_Menu_Section extends WP_Customize_Section
+class WP_Customize_Nav_Menu_Section extends Section
 {
 
     /**

@@ -7,14 +7,16 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Section;
+
 /**
  * Customizer section representing widget area (sidebar).
  *
  * @since 4.1.0
  *
- * @see WP_Customize_Section
+ * @see Section
  */
-class WP_Customize_Sidebar_Section extends WP_Customize_Section
+class WP_Customize_Sidebar_Section extends Section
 {
 
     /**

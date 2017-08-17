@@ -7,6 +7,10 @@
  * @since 3.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
+
 /**
  * Customize Section class.
  *
@@ -16,7 +20,7 @@
  *
  * @see WP_Customize_Manager
  */
-class WP_Customize_Section
+class Section
 {
 
     /**
@@ -137,10 +141,10 @@ class WP_Customize_Section
      * @since 4.1.0
      * @access public
      *
-     * @see WP_Customize_Section::active()
+     * @see Section::active()
      *
      * @var callable Callback is called with one argument, the instance of
-     *               WP_Customize_Section, and returns bool to indicate whether
+     *               Section, and returns bool to indicate whether
      *               the section is active (such as it relates to the URL currently
      *               being previewed).
      */
@@ -169,7 +173,7 @@ class WP_Customize_Section
      * @param string $id An specific ID of the section.
      * @param array $args Section arguments.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         $keys = array_keys(get_object_vars($this));
         foreach ($keys as $key) {
@@ -181,12 +185,12 @@ class WP_Customize_Section
         $this->manager = $manager;
         $this->id = $id;
         if (empty($this->active_callback)) {
-            $this->active_callback = array($this, 'active_callback');
+            $this->active_callback = [$this, 'active_callback'];
         }
         self::$instance_count += 1;
         $this->instance_number = self::$instance_count;
 
-        $this->controls = array(); // Users cannot customize the $controls array.
+        $this->controls = []; // Users cannot customize the $controls array.
     }
 
     /**
@@ -203,12 +207,12 @@ class WP_Customize_Section
         $active = call_user_func($this->active_callback, $this);
 
         /**
-         * Filters response of WP_Customize_Section::active().
+         * Filters response of Section::active().
          *
          * @since 4.1.0
          *
          * @param bool $active Whether the Customizer section is active.
-         * @param WP_Customize_Section $section WP_Customize_Section instance.
+         * @param Section $section Section instance.
          */
         $active = apply_filters('customize_section_active', $active, $section);
 
@@ -216,7 +220,7 @@ class WP_Customize_Section
     }
 
     /**
-     * Default callback used when invoking WP_Customize_Section::active().
+     * Default callback used when invoking Section::active().
      *
      * Subclasses can override this with their specific logic, or they may provide
      * an 'active_callback' argument to the constructor.
@@ -242,7 +246,7 @@ class WP_Customize_Section
     {
         $array = wp_array_slice_assoc(
             (array)$this,
-            array('id', 'description', 'priority', 'panel', 'type', 'description_hidden')
+            ['id', 'description', 'priority', 'panel', 'type', 'description_hidden']
         );
         $array['title'] = html_entity_decode($this->title, ENT_QUOTES, get_bloginfo('charset'));
         $array['content'] = $this->get_content();
@@ -313,7 +317,7 @@ class WP_Customize_Section
          *
          * @since 3.4.0
          *
-         * @param WP_Customize_Section $this WP_Customize_Section instance.
+         * @param Section $this Section instance.
          */
         do_action('customize_render_section', $this);
         /**
@@ -332,7 +336,7 @@ class WP_Customize_Section
     /**
      * Render the section UI in a subclass.
      *
-     * Sections are now rendered in JS by default, see WP_Customize_Section::print_template().
+     * Sections are now rendered in JS by default, see Section::print_template().
      *
      * @since 3.4.0
      */
@@ -364,12 +368,12 @@ class WP_Customize_Section
      * An Underscore (JS) template for rendering this section.
      *
      * Class variables for this section class are available in the `data` JS object;
-     * export custom variables by overriding WP_Customize_Section::json().
+     * export custom variables by overriding Section::json().
      *
      * @since 4.3.0
      * @access protected
      *
-     * @see WP_Customize_Section::print_template()
+     * @see Section::print_template()
      */
     protected function render_template()
     {

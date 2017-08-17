@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Section;
+
 /**
  * Customize Themes Section class.
  *
@@ -14,9 +16,9 @@
  *
  * @since 4.2.0
  *
- * @see WP_Customize_Section
+ * @see Section
  */
-class WP_Customize_Themes_Section extends WP_Customize_Section
+class WP_Customize_Themes_Section extends Section
 {
 
     /**
