@@ -7,6 +7,7 @@
  * @since 3.9.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Panel;
 use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SidebarSection;
 use Devtronic\FreshPress\Components\Customize\WidgetAreaControl;
@@ -562,7 +563,7 @@ final class WP_Customize_Widgets
      * @since 4.4.0
      * @access public
      *
-     * @see WP_Customize_Panel::$active_callback
+     * @see Panel::$active_callback
      *
      * @global array $wp_registered_sidebars
      * @return bool Active.

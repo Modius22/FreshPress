@@ -19,6 +19,7 @@ use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\HeaderImageSetting;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
+use Devtronic\FreshPress\Components\Customize\Panel;
 use Devtronic\FreshPress\Components\Customize\Section;
 use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SidebarSection;
@@ -106,7 +107,7 @@ final class WP_Customize_Manager
     protected $settings = array();
 
     /**
-     * Sorted top-level instances of WP_Customize_Panel and Section.
+     * Sorted top-level instances of Panel and Section.
      *
      * @since 4.0.0
      * @access protected
@@ -115,7 +116,7 @@ final class WP_Customize_Manager
     protected $containers = array();
 
     /**
-     * Registered instances of WP_Customize_Panel.
+     * Registered instances of Panel.
      *
      * @since 4.0.0
      * @access protected
@@ -289,8 +290,6 @@ final class WP_Customize_Manager
         $this->theme = wp_get_theme($args['theme']);
         $this->messenger_channel = $args['messenger_channel'];
         $this->_changeset_uuid = $args['changeset_uuid'];
-
-        require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');
 
@@ -3043,9 +3042,9 @@ final class WP_Customize_Manager
      * Add a customize panel.
      *
      * @since 4.0.0
-     * @since 4.5.0 Return added WP_Customize_Panel instance.
+     * @since 4.5.0 Return added Panel instance.
      *
-     * @param WP_Customize_Panel|string $id Customize Panel object, or Panel ID.
+     * @param Panel|string $id Customize Panel object, or Panel ID.
      * @param array $args {
      *  Optional. Array of properties for the new Panel object. Default empty array.
      * @type int $priority Priority of the panel, defining the display order of panels and sections.
@@ -3057,14 +3056,14 @@ final class WP_Customize_Manager
      * @type string $type Type of the panel.
      * @type callable $active_callback Active callback.
      * }
-     * @return WP_Customize_Panel             The instance of the panel that was added.
+     * @return Panel             The instance of the panel that was added.
      */
     public function add_panel($id, $args = array())
     {
-        if ($id instanceof WP_Customize_Panel) {
+        if ($id instanceof Panel) {
             $panel = $id;
         } else {
-            $panel = new WP_Customize_Panel($this, $id, $args);
+            $panel = new Panel($this, $id, $args);
         }
 
         $this->panels[$panel->id] = $panel;
@@ -3078,7 +3077,7 @@ final class WP_Customize_Manager
      * @access public
      *
      * @param string $id Panel ID to get.
-     * @return WP_Customize_Panel|void Requested panel instance, if set.
+     * @return Panel|void Requested panel instance, if set.
      */
     public function get_panel($id)
     {
@@ -3119,9 +3118,9 @@ final class WP_Customize_Manager
      * @since 4.3.0
      * @access public
      *
-     * @see WP_Customize_Panel
+     * @see Panel
      *
-     * @param string $panel Name of a custom panel which is a subclass of WP_Customize_Panel.
+     * @param string $panel Name of a custom panel which is a subclass of Panel.
      */
     public function register_panel_type($panel)
     {
@@ -3352,8 +3351,8 @@ final class WP_Customize_Manager
      * @since 3.4.0
      * @deprecated 4.7.0 Use wp_list_sort()
      *
-     * @param WP_Customize_Panel|Section|Control $a Object A.
-     * @param WP_Customize_Panel|Section|Control $b Object B.
+     * @param Panel|Section|Control $a Object A.
+     * @param Panel|Section|Control $b Object B.
      * @return int
      */
     protected function _cmp_priority($a, $b)
@@ -3873,7 +3872,7 @@ final class WP_Customize_Manager
     {
 
         /* Panel, Section, and Control Types */
-        $this->register_panel_type('WP_Customize_Panel');
+        $this->register_panel_type(Panel::class);
         $this->register_section_type(Section::class);
         $this->register_section_type(SidebarSection::class);
         $this->register_control_type(ColorControl::class);

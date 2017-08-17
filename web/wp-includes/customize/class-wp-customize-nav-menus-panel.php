@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Panel;
+
 /**
  * Customize Nav Menus Panel Class
  *
@@ -14,9 +16,9 @@
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Panel
+ * @see Panel
  */
-class WP_Customize_Nav_Menus_Panel extends WP_Customize_Panel
+class WP_Customize_Nav_Menus_Panel extends Panel
 {
 
     /**
@@ -64,12 +66,12 @@ class WP_Customize_Nav_Menus_Panel extends WP_Customize_Panel
      * An Underscore (JS) template for this panel's content (but not its container).
      *
      * Class variables for this panel class are available in the `data` JS object;
-     * export custom variables by overriding WP_Customize_Panel::json().
+     * export custom variables by overriding Panel::json().
      *
      * @since 4.3.0
      * @access protected
      *
-     * @see WP_Customize_Panel::print_template()
+     * @see Panel::print_template()
      */
     protected function content_template()
     {

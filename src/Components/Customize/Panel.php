@@ -7,7 +7,9 @@
  * @since 4.0.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Section;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
 
 /**
  * Customize Panel class.
@@ -18,7 +20,7 @@ use Devtronic\FreshPress\Components\Customize\Section;
  *
  * @see WP_Customize_Manager
  */
-class WP_Customize_Panel
+class Panel
 {
 
     /**
@@ -159,7 +161,7 @@ class WP_Customize_Panel
      * @param string $id An specific ID for the panel.
      * @param array $args Panel arguments.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         $keys = array_keys(get_object_vars($this));
         foreach ($keys as $key) {
@@ -171,12 +173,12 @@ class WP_Customize_Panel
         $this->manager = $manager;
         $this->id = $id;
         if (empty($this->active_callback)) {
-            $this->active_callback = array($this, 'active_callback');
+            $this->active_callback = [$this, 'active_callback'];
         }
         self::$instance_count += 1;
         $this->instance_number = self::$instance_count;
 
-        $this->sections = array(); // Users cannot customize the $sections array.
+        $this->sections = []; // Users cannot customize the $sections array.
     }
 
     /**
@@ -193,12 +195,12 @@ class WP_Customize_Panel
         $active = call_user_func($this->active_callback, $this);
 
         /**
-         * Filters response of WP_Customize_Panel::active().
+         * Filters response of Panel::active().
          *
          * @since 4.1.0
          *
          * @param bool $active Whether the Customizer panel is active.
-         * @param WP_Customize_Panel $panel WP_Customize_Panel instance.
+         * @param Panel $panel Panel instance.
          */
         $active = apply_filters('customize_panel_active', $active, $panel);
 
@@ -206,7 +208,7 @@ class WP_Customize_Panel
     }
 
     /**
-     * Default callback used when invoking WP_Customize_Panel::active().
+     * Default callback used when invoking Panel::active().
      *
      * Subclasses can override this with their specific logic, or they may
      * provide an 'active_callback' argument to the constructor.
@@ -230,7 +232,7 @@ class WP_Customize_Panel
      */
     public function json()
     {
-        $array = wp_array_slice_assoc((array)$this, array('id', 'description', 'priority', 'type'));
+        $array = wp_array_slice_assoc((array)$this, ['id', 'description', 'priority', 'type']);
         $array['title'] = html_entity_decode($this->title, ENT_QUOTES, get_bloginfo('charset'));
         $array['content'] = $this->get_content();
         $array['active'] = $this->active();
@@ -290,7 +292,7 @@ class WP_Customize_Panel
          *
          * @since 4.0.0
          *
-         * @param WP_Customize_Panel $this WP_Customize_Panel instance.
+         * @param Panel $this Panel instance.
          */
         do_action('customize_render_panel', $this);
 
@@ -310,7 +312,7 @@ class WP_Customize_Panel
     /**
      * Render the panel container, and then its contents (via `this->render_content()`) in a subclass.
      *
-     * Panel containers are now rendered in JS by default, see WP_Customize_Panel::print_template().
+     * Panel containers are now rendered in JS by default, see Panel::print_template().
      *
      * @since 4.0.0
      * @access protected
@@ -322,7 +324,7 @@ class WP_Customize_Panel
     /**
      * Render the panel UI in a subclass.
      *
-     * Panel contents are now rendered in JS by default, see WP_Customize_Panel::print_template().
+     * Panel contents are now rendered in JS by default, see Panel::print_template().
      *
      * @since 4.1.0
      * @access protected
@@ -357,9 +359,9 @@ class WP_Customize_Panel
      * An Underscore (JS) template for rendering this panel's container.
      *
      * Class variables for this panel class are available in the `data` JS object;
-     * export custom variables by overriding WP_Customize_Panel::json().
+     * export custom variables by overriding Panel::json().
      *
-     * @see WP_Customize_Panel::print_template()
+     * @see Panel::print_template()
      *
      * @since 4.3.0
      * @access protected
@@ -382,9 +384,9 @@ class WP_Customize_Panel
      * An Underscore (JS) template for this panel's content (but not its container).
      *
      * Class variables for this panel class are available in the `data` JS object;
-     * export custom variables by overriding WP_Customize_Panel::json().
+     * export custom variables by overriding Panel::json().
      *
-     * @see WP_Customize_Panel::print_template()
+     * @see Panel::print_template()
      *
      * @since 4.3.0
      * @access protected
@@ -398,7 +400,10 @@ class WP_Customize_Panel
             <div class="accordion-section-title">
 				<span class="preview-notice"><?php
                     /* translators: %s: the site/panel title in the Customizer */
-                    echo sprintf(__('You are customizing %s'), '<strong class="panel-title">{{ data.title }}</strong>'); ?></span>
+                    echo sprintf(
+                        __('You are customizing %s'),
+                        '<strong class="panel-title">{{ data.title }}</strong>'
+                    ); ?></span>
                 <# if ( data.description ) { #>
                     <button class="customize-help-toggle dashicons dashicons-editor-help" tabindex="0"
                             aria-expanded="false"><span class="screen-reader-text"><?php _e('Help'); ?></span></button>
