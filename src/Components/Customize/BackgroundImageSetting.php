@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Background_Image_Setting class
+ * Customize API: BackgroundImageSetting class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Setting;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customizer Background Image Setting class.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\Setting;
  *
  * @see Setting
  */
-final class WP_Customize_Background_Image_Setting extends Setting
+class BackgroundImageSetting extends Setting
 {
     public $id = 'background_image_thumb';
 

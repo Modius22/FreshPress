@@ -1010,11 +1010,6 @@ require_once(ABSPATH . WPINC . '/customize/class-wp-customize-filter-setting.php
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-setting.php');
 
 /**
- * WP_Customize_Background_Image_Setting class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-image-setting.php');
-
-/**
  * WP_Customize_Nav_Menu_Item_Setting class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php');

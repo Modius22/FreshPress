@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\BackgroundImageControl;
+use Devtronic\FreshPress\Components\Customize\BackgroundImageSetting;
 use Devtronic\FreshPress\Components\Customize\BackgroundPositionControl;
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
@@ -296,7 +297,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-custom-css-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-filter-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-setting.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-image-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menu-setting.php');
 
@@ -4210,7 +4210,7 @@ final class WP_Customize_Manager
             'sanitize_callback' => array($this, '_sanitize_background_setting'),
         ));
 
-        $this->add_setting(new WP_Customize_Background_Image_Setting($this, 'background_image_thumb', array(
+        $this->add_setting(new BackgroundImageSetting($this, 'background_image_thumb', array(
             'theme_supports' => 'custom-background',
             'sanitize_callback' => array($this, '_sanitize_background_setting'),
         )));

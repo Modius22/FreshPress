@@ -81,6 +81,10 @@ $abstractClasses = array_change_key_case([
     'WP_Widget_Media' => 'Devtronic\\FreshPress\\Components\\Widgets\\MediaWidget',
 ]);
 
+$finalClasses = array_change_key_case([
+    'WP_Customize_Background_Image_Setting' => 'Devtronic\\FreshPress\\Components\\Widgets\\BackgroundImageSetting',
+]);
+
 // Classes
 spl_autoload_register(function ($oldClass) use ($classes) {
     $oldClass = strtolower($oldClass);
@@ -94,5 +98,13 @@ spl_autoload_register(function ($oldClass) use ($abstractClasses) {
     $oldClass = strtolower($oldClass);
     if (isset($classes[$oldClass])) {
         eval(sprintf('abstract class %s extends %s {}', $oldClass, $abstractClasses[$oldClass]));
+    }
+});
+
+// Final Classes
+spl_autoload_register(function ($oldClass) use ($finalClasses) {
+    $oldClass = strtolower($oldClass);
+    if (isset($classes[$oldClass])) {
+        eval(sprintf('abstract class %s extends %s {}', $oldClass, $finalClasses[$oldClass]));
     }
 });
