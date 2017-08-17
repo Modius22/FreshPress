@@ -10,16 +10,15 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use WP_Customize_Manager;
-use WP_Customize_Upload_Control;
 
 /**
  * Customize Image Control class.
  *
  * @since 3.4.0
  *
- * @see WP_Customize_Upload_Control
+ * @see UploadControl
  */
-class ImageControl extends WP_Customize_Upload_Control
+class ImageControl extends UploadControl
 {
     public $type = 'image';
     public $mime_type = 'image';
@@ -28,7 +27,7 @@ class ImageControl extends WP_Customize_Upload_Control
      * Constructor.
      *
      * @since 3.4.0
-     * @uses WP_Customize_Upload_Control::__construct()
+     * @uses UploadControl::__construct()
      *
      * @param WP_Customize_Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.

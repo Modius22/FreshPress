@@ -723,11 +723,6 @@ class Control
 }
 
 /**
- * WP_Customize_Upload_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-upload-control.php');
-
-/**
  * WP_Customize_Background_Position_Control class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-position-control.php');

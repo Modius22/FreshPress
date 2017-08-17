@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Upload_Control class
+ * Customize API: UploadControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\MediaControl;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize Upload Control Class.
@@ -16,14 +16,14 @@ use Devtronic\FreshPress\Components\Customize\MediaControl;
  *
  * @see MediaControl
  */
-class WP_Customize_Upload_Control extends MediaControl
+class UploadControl extends MediaControl
 {
     public $type = 'upload';
     public $mime_type = '';
-    public $button_labels = array();
+    public $button_labels = [];
     public $removed = ''; // unused
     public $context; // unused
-    public $extensions = array(); // unused
+    public $extensions = []; // unused
 
     /**
      * Refresh the parameters passed to the JavaScript via JSON.

@@ -51,7 +51,7 @@ class MediaControl extends Control
      * Constructor.
      *
      * @since 4.1.0
-     * @since 4.2.0 Moved from WP_Customize_Upload_Control.
+     * @since 4.2.0 Moved from UploadControl.
      *
      * @param WP_Customize_Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
@@ -78,7 +78,7 @@ class MediaControl extends Control
      * Enqueue control related scripts/styles.
      *
      * @since 3.4.0
-     * @since 4.2.0 Moved from WP_Customize_Upload_Control.
+     * @since 4.2.0 Moved from UploadControl.
      */
     public function enqueue()
     {
@@ -89,7 +89,7 @@ class MediaControl extends Control
      * Refresh the parameters passed to the JavaScript via JSON.
      *
      * @since 3.4.0
-     * @since 4.2.0 Moved from WP_Customize_Upload_Control.
+     * @since 4.2.0 Moved from UploadControl.
      *
      * @see Control::to_json()
      */
@@ -141,7 +141,7 @@ class MediaControl extends Control
      * Don't render any content for this control from PHP.
      *
      * @since 3.4.0
-     * @since 4.2.0 Moved from WP_Customize_Upload_Control.
+     * @since 4.2.0 Moved from UploadControl.
      *
      * @see MediaControl::content_template()
      */
@@ -153,7 +153,7 @@ class MediaControl extends Control
      * Render a JS template for the content of the media control.
      *
      * @since 4.1.0
-     * @since 4.2.0 Moved from WP_Customize_Upload_Control.
+     * @since 4.2.0 Moved from UploadControl.
      */
     public function content_template()
     {
