@@ -729,11 +729,6 @@ class Control
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
 
 /**
- * WP_Customize_Header_Image_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-control.php');
-
-/**
  * WP_Customize_Theme_Control class.
  */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');

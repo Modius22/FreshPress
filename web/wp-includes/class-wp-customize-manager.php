@@ -12,6 +12,7 @@ use Devtronic\FreshPress\Components\Customize\BackgroundPositionControl;
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
 use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
+use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
@@ -284,7 +285,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
@@ -4195,7 +4195,7 @@ final class WP_Customize_Manager
             'active_callback' => 'is_header_video_active',
         ));
 
-        $this->add_control(new WP_Customize_Header_Image_Control($this));
+        $this->add_control(new HeaderImageControl($this));
 
         $this->selective_refresh->add_partial('custom_header', array(
             'selector' => '#wp-custom-header',
