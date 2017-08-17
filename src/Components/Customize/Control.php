@@ -722,12 +722,6 @@ class Control
     }
 }
 
-
-/**
- * WP_Customize_Site_Icon_Control class.
- */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
-
 /**
  * WP_Customize_Theme_Control class.
  */

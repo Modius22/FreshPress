@@ -1,13 +1,15 @@
 <?php
 /**
- * Customize API: WP_Customize_Site_Icon_Control class
+ * Customize API: SiteIconControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Manager;
 
 /**
  * Customize Site Icon control class.
@@ -18,7 +20,7 @@ use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
  *
  * @see CroppedImageControl
  */
-class WP_Customize_Site_Icon_Control extends CroppedImageControl
+class SiteIconControl extends CroppedImageControl
 {
 
     /**
@@ -40,7 +42,7 @@ class WP_Customize_Site_Icon_Control extends CroppedImageControl
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */
-    public function __construct($manager, $id, $args = array())
+    public function __construct($manager, $id, $args = [])
     {
         parent::__construct($manager, $id, $args);
         add_action('customize_controls_print_styles', 'wp_site_icon', 99);

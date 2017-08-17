@@ -70,6 +70,7 @@ $classes = array_change_key_case([
     'WP_Customize_Nav_Menu_Location_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuLocationControl',
     'WP_Customize_Nav_Menu_Name_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuNameControl',
     'WP_Customize_New_Menu_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NewMenuControl',
+    'WP_Customize_Site_Icon_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\SiteIconControl',
 ]);
 
 $abstractClasses = array_change_key_case([

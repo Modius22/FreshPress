@@ -15,6 +15,7 @@ use Devtronic\FreshPress\Components\Customize\CroppedImageControl;
 use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
+use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
 
 /**
@@ -284,7 +285,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-theme-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-area-customize-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-widget-form-customize-control.php');
@@ -3892,7 +3892,7 @@ final class WP_Customize_Manager
         $this->register_control_type(BackgroundImageControl::class);
         $this->register_control_type(BackgroundPositionControl::class);
         $this->register_control_type(CroppedImageControl::class);
-        $this->register_control_type('WP_Customize_Site_Icon_Control');
+        $this->register_control_type(SiteIconControl::class);
         $this->register_control_type('WP_Customize_Theme_Control');
 
         /* Themes */
@@ -3990,7 +3990,7 @@ final class WP_Customize_Manager
             'transport' => 'postMessage', // Previewed with JS in the Customizer controls window.
         ));
 
-        $this->add_control(new WP_Customize_Site_Icon_Control($this, 'site_icon', array(
+        $this->add_control(new SiteIconControl($this, 'site_icon', array(
             'label' => __('Site Icon'),
             'description' => sprintf(
             /* translators: %s: site icon size in pixels */
