@@ -420,6 +420,3 @@ class Section
 
 /** WP_Customize_Themes_Section class */
 require_once(ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php');
-
-/** WP_Customize_Sidebar_Section class */
-require_once(ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php');

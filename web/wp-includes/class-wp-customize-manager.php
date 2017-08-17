@@ -21,6 +21,7 @@ use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
 use Devtronic\FreshPress\Components\Customize\Section;
 use Devtronic\FreshPress\Components\Customize\Setting;
+use Devtronic\FreshPress\Components\Customize\SidebarSection;
 use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
@@ -293,7 +294,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-nav-menus-panel.php');
 
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-themes-section.php');
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-sidebar-section.php');
 
         /**
          * Filters the core Customizer components to load.
@@ -3876,7 +3876,7 @@ final class WP_Customize_Manager
         /* Panel, Section, and Control Types */
         $this->register_panel_type('WP_Customize_Panel');
         $this->register_section_type(Section::class);
-        $this->register_section_type('WP_Customize_Sidebar_Section');
+        $this->register_section_type(SidebarSection::class);
         $this->register_control_type(ColorControl::class);
         $this->register_control_type(MediaControl::class);
         $this->register_control_type(UploadControl::class);

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Setting;
+use Devtronic\FreshPress\Components\Customize\SidebarSection;
 use Devtronic\FreshPress\Components\Customize\WidgetAreaControl;
 use Devtronic\FreshPress\Components\Customize\WidgetFormControl;
 
@@ -507,7 +508,7 @@ final class WP_Customize_Widgets
                         $sidebar_id
                     );
 
-                    $section = new WP_Customize_Sidebar_Section($this->manager, $section_id, $section_args);
+                    $section = new SidebarSection($this->manager, $section_id, $section_args);
                     $this->manager->add_section($section);
 
                     $control = new WidgetAreaControl($this->manager, $setting_id, array(

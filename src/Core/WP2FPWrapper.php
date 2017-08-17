@@ -81,6 +81,7 @@ $classes = array_change_key_case([
     'WP_Customize_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\Section',
     'WP_Customize_Nav_Menu_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuSection',
     'WP_Customize_New_Menu_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\NewMenuSection',
+    'WP_Customize_Sidebar_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\SidebarSection',
 ]);
 
 $abstractClasses = array_change_key_case([
