@@ -1,20 +1,22 @@
 <?php
 /**
- * Customize API: WP_Customize_Nav_Menu_Control class
+ * Customize API: NavMenuControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Nav_Menu_Setting;
 
 /**
  * Customize Nav Menu Control Class.
  *
  * @since 4.3.0
  */
-class WP_Customize_Nav_Menu_Control extends Control
+class NavMenuControl extends Control
 {
 
     /**
