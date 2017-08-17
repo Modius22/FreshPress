@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\BackgroundImageControl;
+use Devtronic\FreshPress\Components\Customize\BackgroundPositionControl;
 use Devtronic\FreshPress\Components\Customize\ColorControl;
 use Devtronic\FreshPress\Components\Customize\Control;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
@@ -281,7 +282,6 @@ final class WP_Customize_Manager
         require_once(ABSPATH . WPINC . '/class-wp-customize-panel.php');
         require_once(ABSPATH . WPINC . '/class-wp-customize-section.php');
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-background-position-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-cropped-image-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-site-icon-control.php');
         require_once(ABSPATH . WPINC . '/customize/class-wp-customize-header-image-control.php');
@@ -3896,7 +3896,7 @@ final class WP_Customize_Manager
         $this->register_control_type(UploadControl::class);
         $this->register_control_type(ImageControl::class);
         $this->register_control_type('Devtronic\FreshPress\Components\Customize\BackgroundImageControl');
-        $this->register_control_type('WP_Customize_Background_Position_Control');
+        $this->register_control_type('Devtronic\FreshPress\Components\Customize\BackgroundPositionControl');
         $this->register_control_type('WP_Customize_Cropped_Image_Control');
         $this->register_control_type('WP_Customize_Site_Icon_Control');
         $this->register_control_type('WP_Customize_Theme_Control');
@@ -4257,7 +4257,7 @@ final class WP_Customize_Manager
             'sanitize_callback' => array($this, '_sanitize_background_setting'),
         ));
 
-        $this->add_control(new WP_Customize_Background_Position_Control($this, 'background_position', array(
+        $this->add_control(new BackgroundPositionControl($this, 'background_position', array(
             'label' => __('Image Position'),
             'section' => 'background_image',
             'settings' => array(

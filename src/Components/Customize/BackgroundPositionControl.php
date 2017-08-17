@@ -1,13 +1,13 @@
 <?php
 /**
- * Customize API: WP_Customize_Background_Position_Control class
+ * Customize API: BackgroundPositionControl class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Customize\Control;
+namespace Devtronic\FreshPress\Components\Customize;
 
 /**
  * Customize Background Position Control class.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Customize\Control;
  *
  * @see Control
  */
-class WP_Customize_Background_Position_Control extends Control
+class BackgroundPositionControl extends Control
 {
 
     /**
@@ -46,23 +46,23 @@ class WP_Customize_Background_Position_Control extends Control
      */
     public function content_template()
     {
-        $options = array(
-            array(
-                'left top' => array('label' => __('Top Left'), 'icon' => 'dashicons dashicons-arrow-left-alt'),
-                'center top' => array('label' => __('Top'), 'icon' => 'dashicons dashicons-arrow-up-alt'),
-                'right top' => array('label' => __('Top Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'),
-            ),
-            array(
-                'left center' => array('label' => __('Left'), 'icon' => 'dashicons dashicons-arrow-left-alt'),
-                'center center' => array('label' => __('Center'), 'icon' => 'background-position-center-icon'),
-                'right center' => array('label' => __('Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'),
-            ),
-            array(
-                'left bottom' => array('label' => __('Bottom Left'), 'icon' => 'dashicons dashicons-arrow-left-alt'),
-                'center bottom' => array('label' => __('Bottom'), 'icon' => 'dashicons dashicons-arrow-down-alt'),
-                'right bottom' => array('label' => __('Bottom Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'),
-            ),
-        ); ?>
+        $options = [
+            [
+                'left top' => ['label' => __('Top Left'), 'icon' => 'dashicons dashicons-arrow-left-alt'],
+                'center top' => ['label' => __('Top'), 'icon' => 'dashicons dashicons-arrow-up-alt'],
+                'right top' => ['label' => __('Top Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'],
+            ],
+            [
+                'left center' => ['label' => __('Left'), 'icon' => 'dashicons dashicons-arrow-left-alt'],
+                'center center' => ['label' => __('Center'), 'icon' => 'background-position-center-icon'],
+                'right center' => ['label' => __('Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'],
+            ],
+            [
+                'left bottom' => ['label' => __('Bottom Left'), 'icon' => 'dashicons dashicons-arrow-left-alt'],
+                'center bottom' => ['label' => __('Bottom'), 'icon' => 'dashicons dashicons-arrow-down-alt'],
+                'right bottom' => ['label' => __('Bottom Right'), 'icon' => 'dashicons dashicons-arrow-right-alt'],
+            ],
+        ]; ?>
         <# if ( data.label ) { #>
         <span class="customize-control-title">{{{ data.label }}}</span>
         <# } #>
