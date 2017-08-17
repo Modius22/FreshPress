@@ -319,12 +319,6 @@ if (!function_exists('hash_equals')) :
     }
 endif;
 
-// JSON_PRETTY_PRINT was introduced in PHP 5.4
-// Defined here to prevent a notice when using it with wp_json_encode()
-if (!defined('JSON_PRETTY_PRINT')) {
-    define('JSON_PRETTY_PRINT', 128);
-}
-
 // SPL can be disabled on PHP 5.2
 if (!function_exists('spl_autoload_register')):
     $_wp_spl_autoloaders = array();
