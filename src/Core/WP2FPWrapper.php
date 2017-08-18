@@ -90,6 +90,7 @@ $classes = array_change_key_case([
     'WP_REST_Request' => 'Devtronic\\FreshPress\\Components\\Rest\\Request',
     'WP_REST_Response' => 'Devtronic\\FreshPress\\Components\\Rest\\Response',
     'WP_REST_Attachments_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\AttachmentsController',
+    'WP_REST_Comments_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\CommentsController',
 ]);
 
 $abstractClasses = array_change_key_case([
