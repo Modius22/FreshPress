@@ -1,11 +1,15 @@
 <?php
 /**
- * REST API: WP_REST_Comment_Meta_Fields class
+ * REST API: CommentMetaFields class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
+
+namespace Devtronic\FreshPress\Components\Rest\Fields;
+
+use WP_REST_Meta_Fields;
 
 /**
  * Core class to manage comment meta via the REST API.
@@ -14,7 +18,7 @@
  *
  * @see WP_REST_Meta_Fields
  */
-class WP_REST_Comment_Meta_Fields extends WP_REST_Meta_Fields
+class CommentMetaFields extends WP_REST_Meta_Fields
 {
 
     /**

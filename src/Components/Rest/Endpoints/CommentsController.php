@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Rest\Fields\CommentMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -16,7 +17,6 @@ use WP_Comment;
 use WP_Comment_Query;
 use WP_Error;
 use WP_Post;
-use WP_REST_Comment_Meta_Fields;
 use WP_User;
 
 /**
@@ -34,7 +34,7 @@ class CommentsController extends Controller
      *
      * @since 4.7.0
      * @access protected
-     * @var WP_REST_Comment_Meta_Fields
+     * @var CommentMetaFields
      */
     protected $meta;
 
@@ -49,7 +49,7 @@ class CommentsController extends Controller
         $this->namespace = 'wp/v2';
         $this->rest_base = 'comments';
 
-        $this->meta = new WP_REST_Comment_Meta_Fields();
+        $this->meta = new CommentMetaFields();
     }
 
     /**

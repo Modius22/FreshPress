@@ -99,6 +99,7 @@ $classes = array_change_key_case([
     'WP_REST_Taxonomies_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\TaxonomiesController',
     'WP_REST_Terms_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\TermsController',
     'WP_REST_Users_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\UsersController',
+    'WP_REST_Comment_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\CommentMetaFields',
 ]);
 
 $abstractClasses = array_change_key_case([
