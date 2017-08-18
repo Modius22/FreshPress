@@ -9,11 +9,11 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Rest\Fields\TermMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 use WP_Error;
-use WP_REST_Term_Meta_Fields;
 use WP_Taxonomy;
 use WP_Term;
 
@@ -41,7 +41,7 @@ class TermsController extends Controller
      *
      * @since 4.7.0
      * @access protected
-     * @var WP_REST_Term_Meta_Fields
+     * @var TermMetaFields
      */
     protected $meta;
 
@@ -78,7 +78,7 @@ class TermsController extends Controller
         $tax_obj = get_taxonomy($taxonomy);
         $this->rest_base = !empty($tax_obj->rest_base) ? $tax_obj->rest_base : $tax_obj->name;
 
-        $this->meta = new WP_REST_Term_Meta_Fields($taxonomy);
+        $this->meta = new TermMetaFields($taxonomy);
     }
 
     /**
