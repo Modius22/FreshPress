@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Registers an embed handler.
  *
@@ -672,9 +674,9 @@ function wp_oembed_ensure_format($format)
  * @since 4.4.0
  *
  * @param bool $served Whether the request has already been served.
- * @param WP_HTTP_ResponseInterface $result Result to send to the client. Usually a WP_REST_Response.
+ * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
  * @param WP_REST_Request $request Request used to generate the response.
- * @param WP_REST_Server $server Server instance.
+ * @param Server $server Server instance.
  * @return true
  */
 function _oembed_rest_pre_serve_request($served, $result, $request, $server)

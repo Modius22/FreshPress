@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * oEmbed API endpoint controller.
  *
@@ -36,7 +38,7 @@ final class WP_oEmbed_Controller
 
         register_rest_route('oembed/1.0', '/embed', array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_item'),
                 'args' => array(
                     'url' => array(
@@ -57,7 +59,7 @@ final class WP_oEmbed_Controller
 
         register_rest_route('oembed/1.0', '/proxy', array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_proxy_item'),
                 'permission_callback' => array($this, 'get_proxy_item_permissions_check'),
                 'args' => array(

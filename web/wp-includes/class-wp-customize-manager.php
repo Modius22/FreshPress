@@ -28,6 +28,7 @@ use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
 use Devtronic\FreshPress\Components\Customize\ThemesSection;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
+use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
  * Customize Manager class.
@@ -1518,7 +1519,7 @@ final class WP_Customize_Manager
      * @since 4.6.0 `$default` is now returned early when the setting post value is invalid.
      * @access public
      *
-     * @see WP_REST_Server::dispatch()
+     * @see Server::dispatch()
      * @see WP_Rest_Request::sanitize_params()
      * @see WP_Rest_Request::has_valid_params()
      *

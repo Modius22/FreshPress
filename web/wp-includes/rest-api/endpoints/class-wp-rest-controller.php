@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Core base controller for managing and interacting with REST API items.
  *
@@ -611,10 +613,10 @@ abstract class WP_REST_Controller
      *
      * @param string $method Optional. HTTP method of the request. The arguments for `CREATABLE` requests are
      *                       checked for required values and may fall-back to a given default, this is not done
-     *                       on `EDITABLE` requests. Default WP_REST_Server::CREATABLE.
+     *                       on `EDITABLE` requests. Default Devtronic\FreshPress\Components\Rest\Server::CREATABLE.
      * @return array Endpoint arguments.
      */
-    public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE)
+    public function get_endpoint_args_for_item_schema($method = Server::CREATABLE)
     {
         $schema = $this->get_item_schema();
         $schema_properties = !empty($schema['properties']) ? $schema['properties'] : array();
@@ -636,11 +638,11 @@ abstract class WP_REST_Controller
                 $endpoint_args[$field_id]['description'] = $params['description'];
             }
 
-            if (WP_REST_Server::CREATABLE === $method && isset($params['default'])) {
+            if (Server::CREATABLE === $method && isset($params['default'])) {
                 $endpoint_args[$field_id]['default'] = $params['default'];
             }
 
-            if (WP_REST_Server::CREATABLE === $method && !empty($params['required'])) {
+            if (Server::CREATABLE === $method && !empty($params['required'])) {
                 $endpoint_args[$field_id]['required'] = true;
             }
 
@@ -654,7 +656,7 @@ abstract class WP_REST_Controller
             if (isset($params['arg_options'])) {
 
                 // Only use required / default from arg_options on CREATABLE endpoints.
-                if (WP_REST_Server::CREATABLE !== $method) {
+                if (Server::CREATABLE !== $method) {
                     $params['arg_options'] = array_diff_key(
                         $params['arg_options'],
                         array('required' => '', 'default' => '')

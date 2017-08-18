@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Core class to access post types via the REST API.
  *
@@ -41,7 +43,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
     {
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_items'),
                 'permission_callback' => array($this, 'get_items_permissions_check'),
                 'args' => $this->get_collection_params(),
@@ -57,7 +59,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
                 ),
             ),
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_item'),
                 'args' => array(
                     'context' => $this->get_context_param(array('default' => 'view')),

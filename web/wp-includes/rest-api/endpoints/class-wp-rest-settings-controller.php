@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Core class used to manage a site's settings via the REST API.
  *
@@ -41,15 +43,15 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
     {
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_item'),
                 'args' => array(),
                 'permission_callback' => array($this, 'get_item_permissions_check'),
             ),
             array(
-                'methods' => WP_REST_Server::EDITABLE,
+                'methods' => Server::EDITABLE,
                 'callback' => array($this, 'update_item'),
-                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
+                'args' => $this->get_endpoint_args_for_item_schema(Server::EDITABLE),
                 'permission_callback' => array($this, 'get_item_permissions_check'),
             ),
             'schema' => array($this, 'get_public_item_schema'),

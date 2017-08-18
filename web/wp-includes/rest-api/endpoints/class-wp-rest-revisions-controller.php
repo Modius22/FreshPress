@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Core class used to access revisions via the REST API.
  *
@@ -83,7 +85,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
                     ),
                 ),
                 array(
-                    'methods' => WP_REST_Server::READABLE,
+                    'methods' => Server::READABLE,
                     'callback' => array($this, 'get_items'),
                     'permission_callback' => array($this, 'get_items_permissions_check'),
                     'args' => $this->get_collection_params(),
@@ -107,7 +109,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
                     ),
                 ),
                 array(
-                    'methods' => WP_REST_Server::READABLE,
+                    'methods' => Server::READABLE,
                     'callback' => array($this, 'get_item'),
                     'permission_callback' => array($this, 'get_item_permissions_check'),
                     'args' => array(
@@ -115,7 +117,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
                     ),
                 ),
                 array(
-                    'methods' => WP_REST_Server::DELETABLE,
+                    'methods' => Server::DELETABLE,
                     'callback' => array($this, 'delete_item'),
                     'permission_callback' => array($this, 'delete_item_permissions_check'),
                     'args' => array(

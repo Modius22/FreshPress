@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Core class used to manage users via the REST API.
  *
@@ -52,16 +54,16 @@ class WP_REST_Users_Controller extends WP_REST_Controller
     {
         register_rest_route($this->namespace, '/' . $this->rest_base, array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_items'),
                 'permission_callback' => array($this, 'get_items_permissions_check'),
                 'args' => $this->get_collection_params(),
             ),
             array(
-                'methods' => WP_REST_Server::CREATABLE,
+                'methods' => Server::CREATABLE,
                 'callback' => array($this, 'create_item'),
                 'permission_callback' => array($this, 'create_item_permissions_check'),
-                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
+                'args' => $this->get_endpoint_args_for_item_schema(Server::CREATABLE),
             ),
             'schema' => array($this, 'get_public_item_schema'),
         ));
@@ -74,7 +76,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
                 ),
             ),
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_item'),
                 'permission_callback' => array($this, 'get_item_permissions_check'),
                 'args' => array(
@@ -82,13 +84,13 @@ class WP_REST_Users_Controller extends WP_REST_Controller
                 ),
             ),
             array(
-                'methods' => WP_REST_Server::EDITABLE,
+                'methods' => Server::EDITABLE,
                 'callback' => array($this, 'update_item'),
                 'permission_callback' => array($this, 'update_item_permissions_check'),
-                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
+                'args' => $this->get_endpoint_args_for_item_schema(Server::EDITABLE),
             ),
             array(
-                'methods' => WP_REST_Server::DELETABLE,
+                'methods' => Server::DELETABLE,
                 'callback' => array($this, 'delete_item'),
                 'permission_callback' => array($this, 'delete_item_permissions_check'),
                 'args' => array(
@@ -110,20 +112,20 @@ class WP_REST_Users_Controller extends WP_REST_Controller
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/me', array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_current_item'),
                 'args' => array(
                     'context' => $this->get_context_param(array('default' => 'view')),
                 ),
             ),
             array(
-                'methods' => WP_REST_Server::EDITABLE,
+                'methods' => Server::EDITABLE,
                 'callback' => array($this, 'update_current_item'),
                 'permission_callback' => array($this, 'update_current_item_permissions_check'),
-                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
+                'args' => $this->get_endpoint_args_for_item_schema(Server::EDITABLE),
             ),
             array(
-                'methods' => WP_REST_Server::DELETABLE,
+                'methods' => Server::DELETABLE,
                 'callback' => array($this, 'delete_current_item'),
                 'permission_callback' => array($this, 'delete_current_item_permissions_check'),
                 'args' => array(

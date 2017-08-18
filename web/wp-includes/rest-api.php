@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Version number for our API.
  *
@@ -19,7 +21,7 @@ define('REST_API_VERSION', '2.0');
  *
  * @since 4.4.0
  *
- * @global WP_REST_Server $wp_rest_server ResponseHandler instance (usually WP_REST_Server).
+ * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  *
  * @param string $namespace The first URL segment after core prefix. Should be unique to your package/plugin.
  * @param string $route The base URL for route you are adding.
@@ -31,14 +33,14 @@ define('REST_API_VERSION', '2.0');
  */
 function register_rest_route($namespace, $route, $args = array(), $override = false)
 {
-    /** @var WP_REST_Server $wp_rest_server */
+    /** @var Server $wp_rest_server */
     global $wp_rest_server;
 
     if (empty($namespace)) {
         /*
          * Non-namespaced routes are not allowed, with the exception of the main
          * and namespace indexes. If you really need to register a
-         * non-namespaced route, call `WP_REST_Server::register_route` directly.
+         * non-namespaced route, call `Devtronic\FreshPress\Components\Rest\Server::register_route` directly.
          */
         _doing_it_wrong(
             'register_rest_route',
@@ -261,7 +263,7 @@ function create_initial_rest_routes()
  * @since 4.4.0
  *
  * @global WP $wp Current WordPress environment instance.
- * @global WP_REST_Server $wp_rest_server ResponseHandler instance (usually WP_REST_Server).
+ * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  */
 function rest_api_loaded()
 {
@@ -398,11 +400,11 @@ function rest_url($path = '', $scheme = 'json')
 /**
  * Do a REST request.
  *
- * Used primarily to route internal requests through WP_REST_Server.
+ * Used primarily to route internal requests through Devtronic\FreshPress\Components\Rest\Server.
  *
  * @since 4.4.0
  *
- * @global WP_REST_Server $wp_rest_server ResponseHandler instance (usually WP_REST_Server).
+ * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  *
  * @param WP_REST_Request|string $request Request.
  * @return WP_REST_Response REST response.
@@ -420,13 +422,13 @@ function rest_do_request($request)
  *
  * @since 4.5.0
  *
- * @global WP_REST_Server $wp_rest_server REST server instance.
+ * @global Server $wp_rest_server REST server instance.
  *
- * @return WP_REST_Server REST server instance.
+ * @return Server REST server instance.
  */
 function rest_get_server()
 {
-    /* @var WP_REST_Server $wp_rest_server */
+    /* @var Server $wp_rest_server */
     global $wp_rest_server;
 
     if (empty($wp_rest_server)) {
@@ -438,9 +440,9 @@ function rest_get_server()
          *
          * @since 4.4.0
          *
-         * @param string $class_name The name of the server class. Default 'WP_REST_Server'.
+         * @param string $class_name The name of the server class. Default 'Server'.
          */
-        $wp_rest_server_class = apply_filters('wp_rest_server_class', 'WP_REST_Server');
+        $wp_rest_server_class = apply_filters('wp_rest_server_class', Server::class);
         $wp_rest_server = new $wp_rest_server_class;
 
         /**
@@ -451,7 +453,7 @@ function rest_get_server()
          *
          * @since 4.4.0
          *
-         * @param WP_REST_Server $wp_rest_server Server object.
+         * @param Server $wp_rest_server Server object.
          */
         do_action('rest_api_init', $wp_rest_server);
     }
@@ -588,7 +590,7 @@ function rest_send_cors_headers($value)
  * @since 4.4.0
  *
  * @param mixed $response Current response, either response or `null` to indicate pass-through.
- * @param WP_REST_Server $handler ResponseHandler instance (usually WP_REST_Server).
+ * @param Server $handler ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  * @param WP_REST_Request $request The request that was used to make current response.
  * @return WP_REST_Response Modified response, either response or `null` to indicate pass-through.
  */
@@ -623,7 +625,7 @@ function rest_handle_options_request($response, $handler, $request)
  * @since 4.4.0
  *
  * @param WP_REST_Response $response Current response being served.
- * @param WP_REST_Server $server ResponseHandler instance (usually WP_REST_Server).
+ * @param Server $server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  * @param WP_REST_Request $request The request that was used to make current response.
  * @return WP_REST_Response Response to be served, with "Allow" header if route has allowed methods.
  */
@@ -728,7 +730,7 @@ function rest_output_link_header()
  * @since 4.4.0
  *
  * @global mixed $wp_rest_auth_cookie
- * @global WP_REST_Server $wp_rest_server REST server instance.
+ * @global Server $wp_rest_server REST server instance.
  *
  * @param WP_Error|mixed $result Error from another authentication handler,
  *                               null if we should handle it, or another value
