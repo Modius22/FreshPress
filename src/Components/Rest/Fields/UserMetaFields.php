@@ -1,13 +1,13 @@
 <?php
 /**
- * REST API: WP_REST_User_Meta_Fields class
+ * REST API: UserMetaFields class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Rest\Fields\MetaFields;
+namespace Devtronic\FreshPress\Components\Rest\Fields;
 
 /**
  * Core class used to manage meta values for users via the REST API.
@@ -16,7 +16,7 @@ use Devtronic\FreshPress\Components\Rest\Fields\MetaFields;
  *
  * @see MetaFields
  */
-class WP_REST_User_Meta_Fields extends MetaFields
+class UserMetaFields extends MetaFields
 {
 
     /**

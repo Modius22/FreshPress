@@ -102,6 +102,7 @@ $classes = array_change_key_case([
     'WP_REST_Comment_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\CommentMetaFields',
     'WP_REST_Post_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\PostMetaFields',
     'WP_REST_Term_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\TermMetaFields',
+    'WP_REST_User_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\UserMetaFields',
 ]);
 
 $abstractClasses = array_change_key_case([

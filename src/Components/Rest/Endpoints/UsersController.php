@@ -9,12 +9,12 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Rest\Fields\UserMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 use WP_Error;
 use WP_Post;
-use WP_REST_User_Meta_Fields;
 use WP_User;
 use WP_User_Query;
 
@@ -33,7 +33,7 @@ class UsersController extends Controller
      *
      * @since 4.7.0
      * @access protected
-     * @var WP_REST_User_Meta_Fields
+     * @var UserMetaFields
      */
     protected $meta;
 
@@ -48,7 +48,7 @@ class UsersController extends Controller
         $this->namespace = 'wp/v2';
         $this->rest_base = 'users';
 
-        $this->meta = new WP_REST_User_Meta_Fields();
+        $this->meta = new UserMetaFields();
     }
 
     /**
