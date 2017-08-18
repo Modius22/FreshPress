@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
+
 /**
  * Core class to manage meta values for an object via the REST API.
  *
@@ -60,7 +62,7 @@ abstract class WP_REST_Meta_Fields
      * @access public
      *
      * @param int $object_id Object ID to fetch meta for.
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|object Object containing the meta values by name, otherwise WP_Error object.
      */
     public function get_value($object_id, $request)
@@ -102,7 +104,7 @@ abstract class WP_REST_Meta_Fields
      * @access protected
      *
      * @param mixed $value Meta value to prepare.
-     * @param WP_REST_Request $request Current request object.
+     * @param Request $request Current request object.
      * @param array $args Options for the field.
      * @return mixed Prepared value.
      */
@@ -424,7 +426,7 @@ abstract class WP_REST_Meta_Fields
      * @access public
      *
      * @param mixed $value Meta value from the database.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @param array $args REST-specific options for the meta key.
      * @return mixed Value prepared for output. If a non-JsonSerializable object, null.
      */
@@ -467,7 +469,7 @@ abstract class WP_REST_Meta_Fields
      * @access public
      *
      * @param  mixed $value The meta value submitted in the request.
-     * @param  WP_REST_Request $request Full details about the request.
+     * @param  Request $request Full details about the request.
      * @param  string $param The parameter name.
      * @return WP_Error|string The meta array, if valid, otherwise an error.
      */

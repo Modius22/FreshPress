@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -406,7 +407,7 @@ function rest_url($path = '', $scheme = 'json')
  *
  * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  *
- * @param WP_REST_Request|string $request Request.
+ * @param Request|string $request Request.
  * @return WP_REST_Response REST response.
  */
 function rest_do_request($request)
@@ -466,16 +467,16 @@ function rest_get_server()
  *
  * @since 4.4.0
  *
- * @param array|WP_REST_Request $request Request to check.
- * @return WP_REST_Request REST request instance.
+ * @param array|Request $request Request to check.
+ * @return Request REST request instance.
  */
 function rest_ensure_request($request)
 {
-    if ($request instanceof WP_REST_Request) {
+    if ($request instanceof Request) {
         return $request;
     }
 
-    return new WP_REST_Request('GET', '', $request);
+    return new Request('GET', '', $request);
 }
 
 /**
@@ -591,7 +592,7 @@ function rest_send_cors_headers($value)
  *
  * @param mixed $response Current response, either response or `null` to indicate pass-through.
  * @param Server $handler ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
- * @param WP_REST_Request $request The request that was used to make current response.
+ * @param Request $request The request that was used to make current response.
  * @return WP_REST_Response Modified response, either response or `null` to indicate pass-through.
  */
 function rest_handle_options_request($response, $handler, $request)
@@ -626,7 +627,7 @@ function rest_handle_options_request($response, $handler, $request)
  *
  * @param WP_REST_Response $response Current response being served.
  * @param Server $server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
- * @param WP_REST_Request $request The request that was used to make current response.
+ * @param Request $request The request that was used to make current response.
  * @return WP_REST_Response Response to be served, with "Allow" header if route has allowed methods.
  */
 function rest_send_allow_header($response, $server, $request)
@@ -889,7 +890,7 @@ function rest_authorization_required_code()
  * @since 4.7.0
  *
  * @param  mixed $value
- * @param  WP_REST_Request $request
+ * @param  Request $request
  * @param  string $param
  * @return WP_Error|boolean
  */
@@ -910,7 +911,7 @@ function rest_validate_request_arg($value, $request, $param)
  * @since 4.7.0
  *
  * @param  mixed $value
- * @param  WP_REST_Request $request
+ * @param  Request $request
  * @param  string $param
  * @return mixed
  */
@@ -934,7 +935,7 @@ function rest_sanitize_request_arg($value, $request, $param)
  * @since 4.7.0
  *
  * @param  mixed $value
- * @param  WP_REST_Request $request
+ * @param  Request $request
  * @param  string $param
  * @return mixed
  */

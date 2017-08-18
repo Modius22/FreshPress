@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Widgets;
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use WP_Post;
 
 /**
@@ -252,8 +253,8 @@ abstract class MediaWidget extends Widget
      * @access public
      *
      * @see Widget::update()
-     * @see WP_REST_Request::has_valid_params()
-     * @see WP_REST_Request::sanitize_params()
+     * @see Request::has_valid_params()
+     * @see Request::sanitize_params()
      *
      * @param array $new_instance Values just sent to be saved.
      * @param array $instance Previously saved values from database.

@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -56,7 +57,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|bool True if the request has read access, WP_Error object otherwise.
      */
     public function get_items_permissions_check($request)
@@ -74,7 +75,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
@@ -92,7 +93,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|bool True if the request has read access for the item, WP_Error object otherwise.
      */
     public function get_item_permissions_check($request)
@@ -110,7 +111,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
@@ -128,7 +129,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|bool True if the request has access to create items, WP_Error object otherwise.
      */
     public function create_item_permissions_check($request)
@@ -146,7 +147,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function create_item($request)
@@ -164,7 +165,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|bool True if the request has access to update the item, WP_Error object otherwise.
      */
     public function update_item_permissions_check($request)
@@ -182,7 +183,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function update_item($request)
@@ -200,7 +201,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|bool True if the request has access to delete the item, WP_Error object otherwise.
      */
     public function delete_item_permissions_check($request)
@@ -218,7 +219,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function delete_item($request)
@@ -236,7 +237,7 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_Error|object The prepared item, or WP_Error object on failure.
      */
     protected function prepare_item_for_database($request)
@@ -255,7 +256,7 @@ abstract class WP_REST_Controller
      * @access public
      *
      * @param mixed $item WordPress representation of the item.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function prepare_item_for_response($item, $request)
@@ -459,7 +460,7 @@ abstract class WP_REST_Controller
      * @access protected
      *
      * @param array $object Data object.
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return array Modified data object with additional fields.
      */
     protected function add_additional_fields_to_object($object, $request)
@@ -490,7 +491,7 @@ abstract class WP_REST_Controller
      * @access protected
      *
      * @param array $object Data Object.
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return bool|WP_Error True on success, WP_Error object if a field cannot be updated.
      */
     protected function update_additional_fields_for_object($object, $request)

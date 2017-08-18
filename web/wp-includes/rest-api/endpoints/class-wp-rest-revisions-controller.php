@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -162,7 +163,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
      */
     public function get_items_permissions_check($request)
@@ -213,7 +214,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
@@ -239,7 +240,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return bool|WP_Error True if the request has read access for the item, WP_Error object otherwise.
      */
     public function get_item_permissions_check($request)
@@ -253,7 +254,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
@@ -278,7 +279,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param  WP_REST_Request $request Full details about the request.
+     * @param  Request $request Full details about the request.
      * @return bool|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
      */
     public function delete_item_permissions_check($request)
@@ -308,7 +309,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True on success, or WP_Error object on failure.
      */
     public function delete_item($request)
@@ -341,7 +342,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
          * @param (mixed) $result The revision object (if it was deleted or moved to the trash successfully)
          *                        or false (failure). If the revision was moved to to the trash, $result represents
          *                        its new state; if it was deleted, $result represents its state before deletion.
-         * @param WP_REST_Request $request The request sent to the API.
+         * @param Request $request The request sent to the API.
          */
         do_action('rest_delete_revision', $result, $request);
 
@@ -361,7 +362,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @access public
      *
      * @param WP_Post $post Post revision object.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_REST_Response Response object.
      */
     public function prepare_item_for_response($post, $request)
@@ -457,7 +458,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
          *
          * @param WP_REST_Response $response The response object.
          * @param WP_Post $post The original revision object.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_revision', $response, $post, $request);
     }

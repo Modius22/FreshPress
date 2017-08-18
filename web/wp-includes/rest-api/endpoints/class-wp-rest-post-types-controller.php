@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -75,7 +76,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|true True if the request has read access, WP_Error object otherwise.
      */
     public function get_items_permissions_check($request)
@@ -103,7 +104,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
@@ -128,7 +129,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
@@ -167,7 +168,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      * @access public
      *
      * @param stdClass $post_type Post type data.
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response Response object.
      */
     public function prepare_item_for_response($post_type, $request)
@@ -213,7 +214,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
          *
          * @param WP_REST_Response $response The response object.
          * @param object $item The original post type object.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_post_type', $response, $post_type, $request);
     }

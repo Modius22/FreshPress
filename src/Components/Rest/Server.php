@@ -11,7 +11,6 @@ namespace Devtronic\FreshPress\Components\Rest;
 
 use WP_Error;
 use WP_HTTP_Response;
-use WP_REST_Request;
 use WP_REST_Response;
 
 /**
@@ -321,7 +320,7 @@ class Server
             }
         }
 
-        $request = new WP_REST_Request($_SERVER['REQUEST_METHOD'], $path);
+        $request = new Request($_SERVER['REQUEST_METHOD'], $path);
 
         $request->set_query_params(wp_unslash($_GET));
         $request->set_body_params(wp_unslash($_POST));
@@ -364,7 +363,7 @@ class Server
          *
          * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
          * @param Server $this Server instance.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          */
         $result = apply_filters('rest_post_dispatch', rest_ensure_response($result), $this, $request);
 
@@ -391,7 +390,7 @@ class Server
          * @param bool $served Whether the request has already been served.
          *                                           Default false.
          * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          * @param Server $this Server instance.
          */
         $served = apply_filters('rest_pre_serve_request', false, $result, $request, $this);
@@ -588,7 +587,7 @@ class Server
                 }
 
                 // Run through our internal routing and serve.
-                $request = WP_REST_Request::from_url($item['href']);
+                $request = Request::from_url($item['href']);
                 if (!$request) {
                     $embeds[] = [];
                     continue;
@@ -825,7 +824,7 @@ class Server
      * @since 4.4.0
      * @access public
      *
-     * @param WP_REST_Request $request Request to attempt dispatching.
+     * @param Request $request Request to attempt dispatching.
      * @return WP_REST_Response Response returned by the callback.
      */
     public function dispatch($request)
@@ -841,7 +840,7 @@ class Server
          * @param mixed $result Response to replace the requested version with. Can be anything
          *                                 a normal endpoint can return, or null to not hijack the request.
          * @param Server $this Server instance.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          */
         $result = apply_filters('rest_pre_dispatch', null, $this, $request);
 
@@ -922,7 +921,7 @@ class Server
                  *
                  * @param WP_HTTP_Response $response Result to send to the client. Usually a WP_REST_Response.
                  * @param Server $handler ResponseHandler instance (usually Server).
-                 * @param WP_REST_Request $request Request used to generate the response.
+                 * @param Request $request Request used to generate the response.
                  */
                 $response = apply_filters('rest_request_before_callbacks', $response, $handler, $request);
 
@@ -953,7 +952,7 @@ class Server
                      * @since 4.5.0 Added `$route` and `$handler` parameters.
                      *
                      * @param bool $dispatch_result Dispatch result, will be used if not empty.
-                     * @param WP_REST_Request $request Request used to generate the response.
+                     * @param Request $request Request used to generate the response.
                      * @param string $route Route matched for the request.
                      * @param array $handler Route handler used for the request.
                      */
@@ -985,7 +984,7 @@ class Server
                  *
                  * @param WP_HTTP_Response $response Result to send to the client. Usually a WP_REST_Response.
                  * @param Server $handler ResponseHandler instance (usually Server).
-                 * @param WP_REST_Request $request Request used to generate the response.
+                 * @param Request $request Request used to generate the response.
                  */
                 $response = apply_filters('rest_request_after_callbacks', $response, $handler, $request);
 
@@ -1090,7 +1089,7 @@ class Server
      * @since 4.4.0
      * @access public
      *
-     * @param WP_REST_Request $request REST request instance.
+     * @param Request $request REST request instance.
      * @return WP_REST_Response|WP_Error WP_REST_Response instance if the index was found,
      *                                   WP_Error if the namespace isn't set.
      */
@@ -1127,7 +1126,7 @@ class Server
          * @since 4.4.0
          *
          * @param WP_REST_Response $response Response data.
-         * @param WP_REST_Request $request Request data. The namespace is passed as the 'namespace' parameter.
+         * @param Request $request Request data. The namespace is passed as the 'namespace' parameter.
          */
         return apply_filters('rest_namespace_index', $response, $request);
     }
@@ -1158,7 +1157,7 @@ class Server
              *
              * @since 4.4.0
              *
-             * @param WP_REST_Request $request Request data. The namespace is passed as the 'namespace' parameter.
+             * @param Request $request Request data. The namespace is passed as the 'namespace' parameter.
              */
             $available[$route] = apply_filters('rest_endpoints_description', $data);
         }

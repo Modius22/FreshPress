@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -107,7 +108,7 @@ final class WP_oEmbed_Controller
      * @since 4.4.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|array oEmbed response data or WP_Error on failure.
      */
     public function get_item($request)
@@ -162,7 +163,7 @@ final class WP_oEmbed_Controller
      * @access public
      *
      * @see WP_oEmbed::get_html()
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|array oEmbed response data or WP_Error on failure.
      */
     public function get_proxy_item($request)

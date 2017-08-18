@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -132,7 +133,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param  WP_REST_Request $request Full details about the request.
+     * @param  Request $request Full details about the request.
      * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
      */
     public function get_items_permissions_check($request)
@@ -156,7 +157,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
@@ -282,7 +283,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
          * @link https://developer.wordpress.org/reference/classes/wp_query/
          *
          * @param array $args Key value array of query var to query value.
-         * @param WP_REST_Request $request The request used.
+         * @param Request $request The request used.
          */
         $args = apply_filters("rest_{$this->post_type}_query", $args, $request);
         $query_args = $this->prepare_items_query($args, $request);
@@ -416,7 +417,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return bool|WP_Error True if the request has read access for the item, WP_Error object otherwise.
      */
     public function get_item_permissions_check($request)
@@ -467,7 +468,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @access public
      *
      * @param WP_Post $post Post to check against.
-     * @param WP_REST_Request $request Request data to check.
+     * @param Request $request Request data to check.
      * @return bool True if the user can access password-protected content, otherwise false.
      */
     public function can_access_password_content($post, $request)
@@ -497,7 +498,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
@@ -523,7 +524,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to create items, WP_Error object otherwise.
      */
     public function create_item_permissions_check($request)
@@ -575,7 +576,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function create_item($request)
@@ -614,7 +615,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param WP_Post $post Inserted or updated post object.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          * @param bool $creating True when creating a post, false when updating.
          */
         do_action("rest_insert_{$this->post_type}", $post, $request, true);
@@ -679,7 +680,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to update the item, WP_Error object otherwise.
      */
     public function update_item_permissions_check($request)
@@ -732,7 +733,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function update_item($request)
@@ -821,7 +822,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
      */
     public function delete_item_permissions_check($request)
@@ -848,7 +849,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function delete_item($request)
@@ -937,7 +938,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
          *
          * @param object $post The deleted or trashed post.
          * @param WP_REST_Response $response The response data.
-         * @param WP_REST_Request $request The request sent to the API.
+         * @param Request $request The request sent to the API.
          */
         do_action("rest_delete_{$this->post_type}", $post, $response, $request);
 
@@ -952,7 +953,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @access protected
      *
      * @param array $prepared_args Optional. Prepared WP_Query arguments. Default empty array.
-     * @param WP_REST_Request $request Optional. Full details about the request.
+     * @param Request $request Optional. Full details about the request.
      * @return array Items query arguments.
      */
     protected function prepare_items_query($prepared_args = array(), $request = null)
@@ -1025,7 +1026,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return stdClass|WP_Error Post object or WP_Error.
      */
     protected function prepare_item_for_database($request)
@@ -1200,7 +1201,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
          *
          * @param stdClass $prepared_post An object representing a single post prepared
          *                                       for inserting or updating the database.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          */
         return apply_filters("rest_pre_insert_{$this->post_type}", $prepared_post, $request);
     }
@@ -1304,7 +1305,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @access protected
      *
      * @param int $post_id The post ID to update the terms form.
-     * @param WP_REST_Request $request The request object with post and terms data.
+     * @param Request $request The request object with post and terms data.
      * @return null|WP_Error WP_Error on an error assigning any of the terms, otherwise null.
      */
     protected function handle_terms($post_id, $request)
@@ -1332,7 +1333,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_REST_Request $request The request object with post and terms data.
+     * @param Request $request The request object with post and terms data.
      * @return bool Whether the current user can assign the provided terms.
      */
     protected function check_assign_terms_permission($request)
@@ -1496,7 +1497,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @access public
      *
      * @param WP_Post $post Post object.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_REST_Response Response object.
      */
     public function prepare_item_for_response($post, $request)
@@ -1701,7 +1702,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
          *
          * @param WP_REST_Response $response The response object.
          * @param WP_Post $post Post object.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          */
         return apply_filters("rest_prepare_{$this->post_type}", $response, $post, $request);
     }
@@ -2394,7 +2395,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
      * @access public
      *
      * @param  string|array $statuses One or more post statuses.
-     * @param  WP_REST_Request $request Full details about the request.
+     * @param  Request $request Full details about the request.
      * @param  string $parameter Additional parameter to pass to validation.
      * @return array|WP_Error A list of valid statuses, otherwise WP_Error object.
      */

@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -117,7 +118,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|bool True if the request has read access, error object otherwise.
      */
     public function get_items_permissions_check($request)
@@ -186,7 +187,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or error object on failure.
      */
     public function get_items($request)
@@ -267,7 +268,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
          * @link https://developer.wordpress.org/reference/classes/wp_comment_query/
          *
          * @param array $prepared_args Array of arguments for WP_Comment_Query.
-         * @param WP_REST_Request $request The current request.
+         * @param Request $request The current request.
          */
         $prepared_args = apply_filters('rest_comment_query', $prepared_args, $request);
 
@@ -366,7 +367,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|bool True if the request has read access for the item, error object otherwise.
      */
     public function get_item_permissions_check($request)
@@ -411,7 +412,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or error object on failure.
      */
     public function get_item($request)
@@ -433,7 +434,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|bool True if the request has access to create items, error object otherwise.
      */
     public function create_item_permissions_check($request)
@@ -456,7 +457,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
              *
              * @param bool $allow_anonymous Whether to allow anonymous comments to
              *                              be created. Default `false`.
-             * @param WP_REST_Request $request Request used to generate the
+             * @param Request $request Request used to generate the
              *                                 response.
              */
             $allow_anonymous = apply_filters('rest_allow_anonymous_comments', false, $request);
@@ -557,7 +558,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or error object on failure.
      */
     public function create_item($request)
@@ -671,7 +672,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
          * @since 4.8.0 $prepared_comment can now be a WP_Error to shortcircuit insertion.
          *
          * @param array|WP_Error $prepared_comment The prepared comment data for wp_insert_comment().
-         * @param WP_REST_Request $request Request used to insert the comment.
+         * @param Request $request Request used to insert the comment.
          */
         $prepared_comment = apply_filters('rest_pre_insert_comment', $prepared_comment, $request);
         if (is_wp_error($prepared_comment)) {
@@ -696,7 +697,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param WP_Comment $comment Inserted or updated comment object.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          * @param bool $creating True when creating a comment, false
          *                                  when updating.
          */
@@ -738,7 +739,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|bool True if the request has access to update the item, error object otherwise.
      */
     public function update_item_permissions_check($request)
@@ -765,7 +766,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or error object on failure.
      */
     public function update_item($request)
@@ -879,7 +880,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|bool True if the request has access to delete the item, error object otherwise.
      */
     public function delete_item_permissions_check($request)
@@ -905,7 +906,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, or error object on failure.
      */
     public function delete_item($request)
@@ -970,7 +971,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
          *
          * @param WP_Comment $comment The deleted comment data.
          * @param WP_REST_Response $response The response returned from the API.
-         * @param WP_REST_Request $request The request sent to the API.
+         * @param Request $request The request sent to the API.
          */
         do_action('rest_delete_comment', $comment, $response, $request);
 
@@ -984,7 +985,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @access public
      *
      * @param WP_Comment $comment Comment object.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_REST_Response Response object.
      */
     public function prepare_item_for_response($comment, $request)
@@ -1039,7 +1040,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
          *
          * @param WP_REST_Response $response The response object.
          * @param WP_Comment $comment The original comment object.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_comment', $response, $comment, $request);
     }
@@ -1186,7 +1187,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return array|WP_Error Prepared comment, otherwise WP_Error object.
      */
     protected function prepare_item_for_database($request)
@@ -1276,7 +1277,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param array $prepared_comment The prepared comment data for `wp_insert_comment`.
-         * @param WP_REST_Request $request The current request.
+         * @param Request $request The current request.
          */
         return apply_filters('rest_preprocess_comment', $prepared_comment, $request);
     }
@@ -1659,7 +1660,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @access protected
      *
      * @param WP_Post $post Post object.
-     * @param WP_REST_Request $request Request data to check.
+     * @param Request $request Request data to check.
      * @return bool Whether post can be read.
      */
     protected function check_read_post_permission($post, $request)
@@ -1701,7 +1702,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @access protected
      *
      * @param WP_Comment $comment Comment object.
-     * @param WP_REST_Request $request Request data to check.
+     * @param Request $request Request data to check.
      * @return bool Whether the comment can be read.
      */
     protected function check_read_permission($comment, $request)
@@ -1763,7 +1764,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller
      * @access public
      *
      * @param string $value Author email value submitted.
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @param string $param The parameter name.
      * @return WP_Error|string The sanitized email address, if valid,
      *                         otherwise an error.

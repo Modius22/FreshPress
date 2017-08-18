@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
+
 /**
  * Core controller used to access attachments via the REST API.
  *
@@ -25,7 +27,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @access protected
      *
      * @param array $prepared_args Optional. Array of prepared arguments. Default empty array.
-     * @param WP_REST_Request $request Optional. Request to prepare items for.
+     * @param Request $request Optional. Request to prepare items for.
      * @return array Array of query arguments.
      */
     protected function prepare_items_query($prepared_args = array(), $request = null)
@@ -63,7 +65,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|true Boolean true if the attachment may be created, or a WP_Error if not.
      */
     public function create_item_permissions_check($request)
@@ -105,7 +107,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, WP_Error object on failure.
      */
     public function create_item($request)
@@ -182,7 +184,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
          *
          * @param WP_Post $attachment Inserted or updated attachment
          *                                    object.
-         * @param WP_REST_Request $request The request sent to the API.
+         * @param Request $request The request sent to the API.
          * @param bool $creating True when creating an attachment, false when updating.
          */
         do_action('rest_insert_attachment', $attachment, $request, true);
@@ -217,7 +219,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_Error|WP_REST_Response Response object on success, WP_Error object on failure.
      */
     public function update_item($request)
@@ -267,7 +269,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_Error|stdClass $prepared_attachment Post object.
      */
     protected function prepare_item_for_database($request)
@@ -306,7 +308,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @access public
      *
      * @param WP_Post $post Attachment object.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_REST_Response Response object.
      */
     public function prepare_item_for_response($post, $request)
@@ -386,7 +388,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
          *
          * @param WP_REST_Response $response The response object.
          * @param WP_Post $post The original attachment post.
-         * @param WP_REST_Request $request Request used to generate the response.
+         * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_attachment', $response, $post, $request);
     }
@@ -700,7 +702,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @access public
      *
      * @param mixed $value Status value.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @param string $parameter Additional parameter to pass for validation.
      * @return WP_Error|bool True if the user may query, WP_Error if not.
      */

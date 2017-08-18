@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -155,7 +156,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param int|bool $value The value passed to the reassign parameter.
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @param string $param The parameter that is being sanitized.
      *
      * @return int|bool|WP_Error
@@ -179,7 +180,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has read access, otherwise WP_Error object.
      */
     public function get_items_permissions_check($request)
@@ -218,7 +219,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
@@ -289,7 +290,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param array $prepared_args Array of arguments for WP_User_Query.
-         * @param WP_REST_Request $request The current request.
+         * @param Request $request The current request.
          */
         $prepared_args = apply_filters('rest_user_query', $prepared_args, $request);
 
@@ -382,7 +383,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has read access for the item, otherwise WP_Error object.
      */
     public function get_item_permissions_check($request)
@@ -424,7 +425,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
@@ -446,7 +447,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_current_item($request)
@@ -471,7 +472,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to create items, WP_Error object otherwise.
      */
     public function create_item_permissions_check($request)
@@ -493,7 +494,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function create_item($request)
@@ -562,7 +563,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param WP_User $user Inserted or updated user object.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          * @param bool $creating True when creating a user, false when updating.
          */
         do_action('rest_insert_user', $user, $request, true);
@@ -603,7 +604,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to update the item, WP_Error object otherwise.
      */
     public function update_item_permissions_check($request)
@@ -638,7 +639,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function update_item($request)
@@ -728,7 +729,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to update the item, WP_Error object otherwise.
      */
     public function update_current_item_permissions_check($request)
@@ -744,7 +745,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function update_current_item($request)
@@ -760,7 +761,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
      */
     public function delete_item_permissions_check($request)
@@ -787,7 +788,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function delete_item($request)
@@ -847,7 +848,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          *
          * @param WP_User $user The user data.
          * @param WP_REST_Response $response The response returned from the API.
-         * @param WP_REST_Request $request The request sent to the API.
+         * @param Request $request The request sent to the API.
          */
         do_action('rest_delete_user', $user, $response, $request);
 
@@ -860,7 +861,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return true|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
      */
     public function delete_current_item_permissions_check($request)
@@ -876,7 +877,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function delete_current_item($request)
@@ -893,7 +894,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param WP_User $user User object.
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return WP_REST_Response Response object.
      */
     public function prepare_item_for_response($user, $request)
@@ -991,7 +992,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          *
          * @param WP_REST_Response $response The response object.
          * @param object $user User object used to create response.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          */
         return apply_filters('rest_prepare_user', $response, $user, $request);
     }
@@ -1025,7 +1026,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_REST_Request $request Request object.
+     * @param Request $request Request object.
      * @return object $prepared_user User object.
      */
     protected function prepare_item_for_database($request)
@@ -1095,7 +1096,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param object $prepared_user User object.
-         * @param WP_REST_Request $request Request object.
+         * @param Request $request Request object.
          */
         return apply_filters('rest_pre_insert_user', $prepared_user, $request);
     }
@@ -1170,7 +1171,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param  mixed $value The username submitted in the request.
-     * @param  WP_REST_Request $request Full details about the request.
+     * @param  Request $request Full details about the request.
      * @param  string $param The parameter name.
      * @return WP_Error|string The sanitized username, if valid, otherwise an error.
      */
@@ -1209,7 +1210,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param  mixed $value The password submitted in the request.
-     * @param  WP_REST_Request $request Full details about the request.
+     * @param  Request $request Full details about the request.
      * @param  string $param The parameter name.
      * @return WP_Error|string The sanitized password, if valid, otherwise an error.
      */

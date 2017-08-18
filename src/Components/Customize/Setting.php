@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use WP_Customize_Manager;
 use WP_Error;
 
@@ -608,7 +609,7 @@ class Setting
      *
      * @since 4.6.0
      *
-     * @see WP_REST_Request::has_valid_params()
+     * @see Request::has_valid_params()
      *
      * @param mixed $value Value to validate.
      * @return true|WP_Error True if the input was validated, otherwise WP_Error.

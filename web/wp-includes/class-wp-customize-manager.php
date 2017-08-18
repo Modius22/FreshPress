@@ -28,6 +28,7 @@ use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
 use Devtronic\FreshPress\Components\Customize\ThemesSection;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -1520,8 +1521,8 @@ final class WP_Customize_Manager
      * @access public
      *
      * @see Server::dispatch()
-     * @see WP_Rest_Request::sanitize_params()
-     * @see WP_Rest_Request::has_valid_params()
+     * @see Request::sanitize_params()
+     * @see Request::has_valid_params()
      *
      * @param Setting $setting A Setting derived object.
      * @param mixed $default Value returned $setting has no post value (added in 4.2.0)
@@ -2050,7 +2051,7 @@ final class WP_Customize_Manager
      * @since 4.6.0
      * @access public
      *
-     * @see WP_REST_Request::has_valid_params()
+     * @see Request::has_valid_params()
      * @see Setting::validate()
      *
      * @param array $setting_values Mapping of setting IDs to values to validate and sanitize.

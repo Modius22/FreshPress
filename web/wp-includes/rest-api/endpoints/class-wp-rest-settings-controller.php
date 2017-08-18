@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -64,7 +65,7 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return bool True if the request has read access for the item, otherwise false.
      */
     public function get_item_permissions_check($request)
@@ -78,7 +79,7 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return array|WP_Error Array on success, or WP_Error object on failure.
      */
     public function get_item($request)
@@ -155,7 +156,7 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Request $request Full details about the request.
+     * @param Request $request Full details about the request.
      * @return array|WP_Error Array on success, or error object on failure.
      */
     public function update_item($request)
@@ -323,7 +324,7 @@ class WP_REST_Settings_Controller extends WP_REST_Controller
      * @access public
      *
      * @param  mixed $value The value for the setting.
-     * @param  WP_REST_Request $request The request object.
+     * @param  Request $request The request object.
      * @param  string $param The parameter name.
      * @return mixed|WP_Error
      */
