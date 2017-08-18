@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\CommentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostStatusController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -226,7 +227,7 @@ function create_initial_rest_routes()
     $controller->register_routes();
 
     // Post statuses.
-    $controller = new WP_REST_Post_Statuses_Controller;
+    $controller = new PostStatusController();
     $controller->register_routes();
 
     // Taxonomies.

@@ -1,16 +1,18 @@
 <?php
 /**
- * REST API: WP_REST_Post_Statuses_Controller class
+ * REST API: PostStatusController class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+namespace Devtronic\FreshPress\Components\Rest\Endpoints;
+
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use WP_Error;
 
 /**
  * Core class used to access post statuses via the REST API.
@@ -19,7 +21,7 @@ use Devtronic\FreshPress\Components\Rest\Server;
  *
  * @see Controller
  */
-class WP_REST_Post_Statuses_Controller extends Controller
+class PostStatusController extends Controller
 {
 
     /**
@@ -44,33 +46,33 @@ class WP_REST_Post_Statuses_Controller extends Controller
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base, array(
-            array(
+        register_rest_route($this->namespace, '/' . $this->rest_base, [
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_items'),
-                'permission_callback' => array($this, 'get_items_permissions_check'),
+                'callback' => [$this, 'get_items'],
+                'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => $this->get_collection_params(),
-            ),
-            'schema' => array($this, 'get_public_item_schema'),
-        ));
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
 
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<status>[\w-]+)', array(
-            'args' => array(
-                'status' => array(
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<status>[\w-]+)', [
+            'args' => [
+                'status' => [
                     'description' => __('An alphanumeric identifier for the status.'),
                     'type' => 'string',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_item'),
-                'permission_callback' => array($this, 'get_item_permissions_check'),
-                'args' => array(
-                    'context' => $this->get_context_param(array('default' => 'view')),
-                ),
-            ),
-            'schema' => array($this, 'get_public_item_schema'),
-        ));
+                'callback' => [$this, 'get_item'],
+                'permission_callback' => [$this, 'get_item_permissions_check'],
+                'args' => [
+                    'context' => $this->get_context_param(['default' => 'view']),
+                ],
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
     }
 
     /**
@@ -85,7 +87,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
     public function get_items_permissions_check($request)
     {
         if ('edit' === $request['context']) {
-            $types = get_post_types(array('show_in_rest' => true), 'objects');
+            $types = get_post_types(['show_in_rest' => true], 'objects');
 
             foreach ($types as $type) {
                 if (current_user_can($type->cap->edit_posts)) {
@@ -95,7 +97,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
             return new WP_Error(
                 'rest_cannot_view',
                 __('Sorry, you are not allowed to edit posts in this post type.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -113,8 +115,8 @@ class WP_REST_Post_Statuses_Controller extends Controller
      */
     public function get_items($request)
     {
-        $data = array();
-        $statuses = get_post_stati(array('internal' => false), 'object');
+        $data = [];
+        $statuses = get_post_stati(['internal' => false], 'object');
         $statuses['trash'] = get_post_status_object('trash');
 
         foreach ($statuses as $slug => $obj) {
@@ -145,7 +147,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
         $status = get_post_status_object($request['status']);
 
         if (empty($status)) {
-            return new WP_Error('rest_status_invalid', __('Invalid status.'), array('status' => 404));
+            return new WP_Error('rest_status_invalid', __('Invalid status.'), ['status' => 404]);
         }
 
         $check = $this->check_read_permission($status);
@@ -154,7 +156,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
             return new WP_Error(
                 'rest_cannot_read_status',
                 __('Cannot view status.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -177,7 +179,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
         }
 
         if (false === $status->internal || 'trash' === $status->name) {
-            $types = get_post_types(array('show_in_rest' => true), 'objects');
+            $types = get_post_types(['show_in_rest' => true], 'objects');
 
             foreach ($types as $type) {
                 if (current_user_can($type->cap->edit_posts)) {
@@ -203,7 +205,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
         $obj = get_post_status_object($request['status']);
 
         if (empty($obj)) {
-            return new WP_Error('rest_status_invalid', __('Invalid status.'), array('status' => 404));
+            return new WP_Error('rest_status_invalid', __('Invalid status.'), ['status' => 404]);
         }
 
         $data = $this->prepare_item_for_response($obj, $request);
@@ -217,13 +219,13 @@ class WP_REST_Post_Statuses_Controller extends Controller
      * @since 4.7.0
      * @access public
      *
-     * @param stdClass $status Post status data.
+     * @param \stdClass $status Post status data.
      * @param Request $request Full details about the request.
      * @return Response Post status data.
      */
     public function prepare_item_for_response($status, $request)
     {
-        $data = array(
+        $data = [
             'name' => $status->label,
             'private' => (bool)$status->private,
             'protected' => (bool)$status->protected,
@@ -231,7 +233,7 @@ class WP_REST_Post_Statuses_Controller extends Controller
             'queryable' => (bool)$status->publicly_queryable,
             'show_in_list' => (bool)$status->show_in_admin_all_list,
             'slug' => $status->name,
-        );
+        ];
 
         $context = !empty($request['context']) ? $request['context'] : 'view';
         $data = $this->add_additional_fields_to_object($data, $request);
@@ -269,55 +271,55 @@ class WP_REST_Post_Statuses_Controller extends Controller
      */
     public function get_item_schema()
     {
-        $schema = array(
+        $schema = [
             '$schema' => 'http://json-schema.org/schema#',
             'title' => 'status',
             'type' => 'object',
-            'properties' => array(
-                'name' => array(
+            'properties' => [
+                'name' => [
                     'description' => __('The title for the status.'),
                     'type' => 'string',
-                    'context' => array('embed', 'view', 'edit'),
+                    'context' => ['embed', 'view', 'edit'],
                     'readonly' => true,
-                ),
-                'private' => array(
+                ],
+                'private' => [
                     'description' => __('Whether posts with this status should be private.'),
                     'type' => 'boolean',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'readonly' => true,
-                ),
-                'protected' => array(
+                ],
+                'protected' => [
                     'description' => __('Whether posts with this status should be protected.'),
                     'type' => 'boolean',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'readonly' => true,
-                ),
-                'public' => array(
+                ],
+                'public' => [
                     'description' => __('Whether posts of this status should be shown in the front end of the site.'),
                     'type' => 'boolean',
-                    'context' => array('view', 'edit'),
+                    'context' => ['view', 'edit'],
                     'readonly' => true,
-                ),
-                'queryable' => array(
+                ],
+                'queryable' => [
                     'description' => __('Whether posts with this status should be publicly-queryable.'),
                     'type' => 'boolean',
-                    'context' => array('view', 'edit'),
+                    'context' => ['view', 'edit'],
                     'readonly' => true,
-                ),
-                'show_in_list' => array(
+                ],
+                'show_in_list' => [
                     'description' => __('Whether to include posts in the edit listing for their post type.'),
                     'type' => 'boolean',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'readonly' => true,
-                ),
-                'slug' => array(
+                ],
+                'slug' => [
                     'description' => __('An alphanumeric identifier for the status.'),
                     'type' => 'string',
-                    'context' => array('embed', 'view', 'edit'),
+                    'context' => ['embed', 'view', 'edit'],
                     'readonly' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         return $this->add_additional_fields_schema($schema);
     }
@@ -332,8 +334,8 @@ class WP_REST_Post_Statuses_Controller extends Controller
      */
     public function get_collection_params()
     {
-        return array(
-            'context' => $this->get_context_param(array('default' => 'view')),
-        );
+        return [
+            'context' => $this->get_context_param(['default' => 'view']),
+        ];
     }
 }
