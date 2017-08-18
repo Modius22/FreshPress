@@ -17,7 +17,6 @@ use WP_Comment_Query;
 use WP_Error;
 use WP_Post;
 use WP_REST_Comment_Meta_Fields;
-use WP_REST_Posts_Controller;
 use WP_User;
 
 /**
@@ -1675,7 +1674,7 @@ class CommentsController extends Controller
      */
     protected function check_read_post_permission($post, $request)
     {
-        $posts_controller = new WP_REST_Posts_Controller($post->post_type);
+        $posts_controller = new PostsController($post->post_type);
         $post_type = get_post_type_object($post->post_type);
 
         $has_password_filter = false;

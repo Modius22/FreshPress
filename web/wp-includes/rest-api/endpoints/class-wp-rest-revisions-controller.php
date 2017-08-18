@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -60,7 +61,7 @@ class WP_REST_Revisions_Controller extends Controller
     public function __construct($parent_post_type)
     {
         $this->parent_post_type = $parent_post_type;
-        $this->parent_controller = new WP_REST_Posts_Controller($parent_post_type);
+        $this->parent_controller = new PostsController($parent_post_type);
         $this->namespace = 'wp/v2';
         $this->rest_base = 'revisions';
         $post_type_object = get_post_type_object($parent_post_type);

@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\CommentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostStatusController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostTypesController;
 use Devtronic\FreshPress\Components\Rest\Request;
@@ -205,7 +206,7 @@ function rest_api_default_filters()
 function create_initial_rest_routes()
 {
     foreach (get_post_types(array('show_in_rest' => true), 'objects') as $post_type) {
-        $class = !empty($post_type->rest_controller_class) ? $post_type->rest_controller_class : 'WP_REST_Posts_Controller';
+        $class = !empty($post_type->rest_controller_class) ? $post_type->rest_controller_class : PostsController::class;
 
         if (!class_exists($class)) {
             continue;

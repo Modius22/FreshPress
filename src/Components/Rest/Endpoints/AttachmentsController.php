@@ -13,16 +13,15 @@ use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use WP_Error;
 use WP_Post;
-use WP_REST_Posts_Controller;
 
 /**
  * Core controller used to access attachments via the REST API.
  *
  * @since 4.7.0
  *
- * @see WP_REST_Posts_Controller
+ * @see PostsController
  */
-class AttachmentsController extends WP_REST_Posts_Controller
+class AttachmentsController extends PostsController
 {
 
     /**

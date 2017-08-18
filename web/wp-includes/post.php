@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\AttachmentsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
 use Devtronic\FreshPress\Core\WPDB;
 
 //
@@ -50,7 +51,7 @@ function create_initial_post_types()
         ),
         'show_in_rest' => true,
         'rest_base' => 'posts',
-        'rest_controller_class' => 'WP_REST_Posts_Controller',
+        'rest_controller_class' => PostsController::class,
     ));
 
     register_post_type('page', array(
@@ -80,7 +81,7 @@ function create_initial_post_types()
         ),
         'show_in_rest' => true,
         'rest_base' => 'pages',
-        'rest_controller_class' => 'WP_REST_Posts_Controller',
+        'rest_controller_class' => PostsController::class,
     ));
 
     register_post_type('attachment', array(
@@ -1123,7 +1124,7 @@ function get_post_types($args = array(), $output = 'names', $operator = 'and')
  *                                              of $show_in_menu.
  * @type bool $show_in_rest Whether to add the post type route in the REST API 'wp/v2' namespace.
  * @type string $rest_base To change the base url of REST API route. Default is $post_type.
- * @type string $rest_controller_class REST API Controller class name. Default is 'WP_REST_Posts_Controller'.
+ * @type string $rest_controller_class REST API Controller class name. Default is 'Devtronic\FreshPress\Components\Rest\Endpoints\PostsController'.
  * @type int $menu_position The position in the menu order the post type should appear. To work,
  *                                              $show_in_menu must be true. Default null (at the bottom).
  * @type string $menu_icon The url to the icon to be used for this menu. Pass a base64-encoded
