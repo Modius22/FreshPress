@@ -2404,7 +2404,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller
     {
         $statuses = wp_parse_slug_list($statuses);
 
-        // The default status is different in WP_REST_Attachments_Controller
+        // The default status is different in Devtronic\FreshPress\Components\Rest\Endpoints\AttachmentsController
         $attributes = $request->get_attributes();
         $default_status = $attributes['args']['status']['default'];
 

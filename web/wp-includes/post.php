@@ -6,6 +6,7 @@
  * @subpackage Post
  */
 
+use Devtronic\FreshPress\Components\Rest\Endpoints\AttachmentsController;
 use Devtronic\FreshPress\Core\WPDB;
 
 //
@@ -108,7 +109,7 @@ function create_initial_post_types()
         'supports' => array('title', 'author', 'comments'),
         'show_in_rest' => true,
         'rest_base' => 'media',
-        'rest_controller_class' => 'WP_REST_Attachments_Controller',
+        'rest_controller_class' => AttachmentsController::class,
     ));
     add_post_type_support('attachment:audio', 'thumbnail');
     add_post_type_support('attachment:video', 'thumbnail');

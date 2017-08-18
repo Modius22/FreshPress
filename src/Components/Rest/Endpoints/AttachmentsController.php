@@ -1,14 +1,19 @@
 <?php
 /**
- * REST API: WP_REST_Attachments_Controller class
+ * REST API: AttachmentsController class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Rest\Endpoints;
+
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
+use WP_Error;
+use WP_Post;
+use WP_REST_Posts_Controller;
 
 /**
  * Core controller used to access attachments via the REST API.
@@ -17,7 +22,7 @@ use Devtronic\FreshPress\Components\Rest\Response;
  *
  * @see WP_REST_Posts_Controller
  */
-class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
+class AttachmentsController extends WP_REST_Posts_Controller
 {
 
     /**
@@ -31,7 +36,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @param Request $request Optional. Request to prepare items for.
      * @return array Array of query arguments.
      */
-    protected function prepare_items_query($prepared_args = array(), $request = null)
+    protected function prepare_items_query($prepared_args = [], $request = null)
     {
         $query_args = parent::prepare_items_query($prepared_args, $request);
 
@@ -81,7 +86,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             return new WP_Error(
                 'rest_cannot_create',
                 __('Sorry, you are not allowed to upload media on this site.'),
-                array('status' => 400)
+                ['status' => 400]
             );
         }
 
@@ -94,7 +99,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
                 return new WP_Error(
                     'rest_cannot_edit',
                     __('Sorry, you are not allowed to upload media to this post.'),
-                    array('status' => rest_authorization_required_code())
+                    ['status' => rest_authorization_required_code()]
                 );
             }
         }
@@ -114,11 +119,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
     public function create_item($request)
     {
         if (!empty($request['post']) && in_array(
-            get_post_type($request['post']),
-            array('revision', 'attachment'),
+                get_post_type($request['post']),
+                ['revision', 'attachment'],
                 true
-        )) {
-            return new WP_Error('rest_invalid_param', __('Invalid parent type.'), array('status' => 400));
+            )) {
+            return new WP_Error('rest_invalid_param', __('Invalid parent type.'), ['status' => 400]);
         }
 
         // Get the file via $_FILES or raw data.
@@ -168,11 +173,8 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         $id = wp_insert_post(wp_slash((array)$attachment), true);
 
         if (is_wp_error($id)) {
-            if ('db_update_error' === $id->get_error_code()) {
-                $id->add_data(array('status' => 500));
-            } else {
-                $id->add_data(array('status' => 400));
-            }
+            $status = ('db_update_error' === $id->get_error_code() ? 500 : 400);
+            $id->add_data(['status' => $status]);
             return $id;
         }
 
@@ -226,11 +228,11 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
     public function update_item($request)
     {
         if (!empty($request['post']) && in_array(
-            get_post_type($request['post']),
-            array('revision', 'attachment'),
+                get_post_type($request['post']),
+                ['revision', 'attachment'],
                 true
-        )) {
-            return new WP_Error('rest_invalid_param', __('Invalid parent type.'), array('status' => 400));
+            )) {
+            return new WP_Error('rest_invalid_param', __('Invalid parent type.'), ['status' => 400]);
         }
 
         $response = parent::update_item($request);
@@ -271,7 +273,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @access public
      *
      * @param Request $request Request object.
-     * @return WP_Error|stdClass $prepared_attachment Post object.
+     * @return WP_Error|\stdClass $prepared_attachment Post object.
      */
     protected function prepare_item_for_database($request)
     {
@@ -317,18 +319,18 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         $response = parent::prepare_item_for_response($post, $request);
         $data = $response->get_data();
 
-        $data['description'] = array(
+        $data['description'] = [
             'raw' => $post->post_content,
             /** This filter is documented in wp-includes/post-template.php */
             'rendered' => apply_filters('the_content', $post->post_content),
-        );
+        ];
 
         /** This filter is documented in wp-includes/post-template.php */
         $caption = apply_filters('the_excerpt', apply_filters('get_the_excerpt', $post->post_excerpt, $post));
-        $data['caption'] = array(
+        $data['caption'] = [
             'raw' => $post->post_excerpt,
             'rendered' => $caption,
-        );
+        ];
 
         $data['alt_text'] = get_post_meta($post->ID, '_wp_attachment_image_alt', true);
         $data['media_type'] = wp_attachment_is_image($post->ID) ? 'image' : 'file';
@@ -339,7 +341,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
 
         // Ensure empty details is an empty object.
         if (empty($data['media_details'])) {
-            $data['media_details'] = new stdClass;
+            $data['media_details'] = new \stdClass;
         } elseif (!empty($data['media_details']['sizes'])) {
             foreach ($data['media_details']['sizes'] as $size => &$size_data) {
                 if (isset($size_data['mime-type'])) {
@@ -359,16 +361,16 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             $full_src = wp_get_attachment_image_src($post->ID, 'full');
 
             if (!empty($full_src)) {
-                $data['media_details']['sizes']['full'] = array(
+                $data['media_details']['sizes']['full'] = [
                     'file' => wp_basename($full_src[0]),
                     'width' => $full_src[1],
                     'height' => $full_src[2],
                     'mime_type' => $post->post_mime_type,
                     'source_url' => $full_src[0],
-                );
+                ];
             }
         } else {
-            $data['media_details']['sizes'] = new stdClass;
+            $data['media_details']['sizes'] = new \stdClass;
         }
 
         $context = !empty($request['context']) ? $request['context'] : 'view';
@@ -406,94 +408,94 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
     {
         $schema = parent::get_item_schema();
 
-        $schema['properties']['alt_text'] = array(
+        $schema['properties']['alt_text'] = [
             'description' => __('Alternative text to display when attachment is not displayed.'),
             'type' => 'string',
-            'context' => array('view', 'edit', 'embed'),
-            'arg_options' => array(
+            'context' => ['view', 'edit', 'embed'],
+            'arg_options' => [
                 'sanitize_callback' => 'sanitize_text_field',
-            ),
-        );
+            ],
+        ];
 
-        $schema['properties']['caption'] = array(
+        $schema['properties']['caption'] = [
             'description' => __('The attachment caption.'),
             'type' => 'object',
-            'context' => array('view', 'edit', 'embed'),
-            'arg_options' => array(
+            'context' => ['view', 'edit', 'embed'],
+            'arg_options' => [
                 'sanitize_callback' => null, // Note: sanitization implemented in self::prepare_item_for_database()
-            ),
-            'properties' => array(
-                'raw' => array(
+            ],
+            'properties' => [
+                'raw' => [
                     'description' => __('Caption for the attachment, as it exists in the database.'),
                     'type' => 'string',
-                    'context' => array('edit'),
-                ),
-                'rendered' => array(
+                    'context' => ['edit'],
+                ],
+                'rendered' => [
                     'description' => __('HTML caption for the attachment, transformed for display.'),
                     'type' => 'string',
-                    'context' => array('view', 'edit', 'embed'),
+                    'context' => ['view', 'edit', 'embed'],
                     'readonly' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
-        $schema['properties']['description'] = array(
+        $schema['properties']['description'] = [
             'description' => __('The attachment description.'),
             'type' => 'object',
-            'context' => array('view', 'edit'),
-            'arg_options' => array(
+            'context' => ['view', 'edit'],
+            'arg_options' => [
                 'sanitize_callback' => null, // Note: sanitization implemented in self::prepare_item_for_database()
-            ),
-            'properties' => array(
-                'raw' => array(
+            ],
+            'properties' => [
+                'raw' => [
                     'description' => __('Description for the object, as it exists in the database.'),
                     'type' => 'string',
-                    'context' => array('edit'),
-                ),
-                'rendered' => array(
+                    'context' => ['edit'],
+                ],
+                'rendered' => [
                     'description' => __('HTML description for the object, transformed for display.'),
                     'type' => 'string',
-                    'context' => array('view', 'edit'),
+                    'context' => ['view', 'edit'],
                     'readonly' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
-        $schema['properties']['media_type'] = array(
+        $schema['properties']['media_type'] = [
             'description' => __('Attachment type.'),
             'type' => 'string',
-            'enum' => array('image', 'file'),
-            'context' => array('view', 'edit', 'embed'),
+            'enum' => ['image', 'file'],
+            'context' => ['view', 'edit', 'embed'],
             'readonly' => true,
-        );
+        ];
 
-        $schema['properties']['mime_type'] = array(
+        $schema['properties']['mime_type'] = [
             'description' => __('The attachment MIME type.'),
             'type' => 'string',
-            'context' => array('view', 'edit', 'embed'),
+            'context' => ['view', 'edit', 'embed'],
             'readonly' => true,
-        );
+        ];
 
-        $schema['properties']['media_details'] = array(
+        $schema['properties']['media_details'] = [
             'description' => __('Details about the media file, specific to its type.'),
             'type' => 'object',
-            'context' => array('view', 'edit', 'embed'),
+            'context' => ['view', 'edit', 'embed'],
             'readonly' => true,
-        );
+        ];
 
-        $schema['properties']['post'] = array(
+        $schema['properties']['post'] = [
             'description' => __('The ID for the associated post of the attachment.'),
             'type' => 'integer',
-            'context' => array('view', 'edit'),
-        );
+            'context' => ['view', 'edit'],
+        ];
 
-        $schema['properties']['source_url'] = array(
+        $schema['properties']['source_url'] = [
             'description' => __('URL to the original attachment file.'),
             'type' => 'string',
             'format' => 'uri',
-            'context' => array('view', 'edit', 'embed'),
+            'context' => ['view', 'edit', 'embed'],
             'readonly' => true,
-        );
+        ];
 
         unset($schema['properties']['password']);
 
@@ -513,18 +515,18 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
     protected function upload_from_data($data, $headers)
     {
         if (empty($data)) {
-            return new WP_Error('rest_upload_no_data', __('No data supplied.'), array('status' => 400));
+            return new WP_Error('rest_upload_no_data', __('No data supplied.'), ['status' => 400]);
         }
 
         if (empty($headers['content_type'])) {
-            return new WP_Error('rest_upload_no_content_type', __('No Content-Type supplied.'), array('status' => 400));
+            return new WP_Error('rest_upload_no_content_type', __('No Content-Type supplied.'), ['status' => 400]);
         }
 
         if (empty($headers['content_disposition'])) {
             return new WP_Error(
                 'rest_upload_no_content_disposition',
                 __('No Content-Disposition supplied.'),
-                array('status' => 400)
+                ['status' => 400]
             );
         }
 
@@ -534,7 +536,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             return new WP_Error(
                 'rest_upload_invalid_disposition',
                 __('Invalid Content-Disposition supplied. Content-Disposition needs to be formatted as `attachment; filename="image.png"` or similar.'),
-                array('status' => 400)
+                ['status' => 400]
             );
         }
 
@@ -547,7 +549,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
                 return new WP_Error(
                     'rest_upload_hash_mismatch',
                     __('Content hash did not match expected.'),
-                    array('status' => 412)
+                    ['status' => 412]
                 );
             }
         }
@@ -564,30 +566,30 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         $fp = fopen($tmpfname, 'w+');
 
         if (!$fp) {
-            return new WP_Error('rest_upload_file_error', __('Could not open file handle.'), array('status' => 500));
+            return new WP_Error('rest_upload_file_error', __('Could not open file handle.'), ['status' => 500]);
         }
 
         fwrite($fp, $data);
         fclose($fp);
 
         // Now, sideload it in.
-        $file_data = array(
+        $file_data = [
             'error' => null,
             'tmp_name' => $tmpfname,
             'name' => $filename,
             'type' => $type,
-        );
+        ];
 
-        $overrides = array(
+        $overrides = [
             'test_form' => false,
-        );
+        ];
 
         $sideloaded = wp_handle_sideload($file_data, $overrides);
 
         if (isset($sideloaded['error'])) {
             @unlink($tmpfname);
 
-            return new WP_Error('rest_upload_sideload_error', $sideloaded['error'], array('status' => 500));
+            return new WP_Error('rest_upload_sideload_error', $sideloaded['error'], ['status' => 500]);
         }
 
         return $sideloaded;
@@ -638,7 +640,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
             list($type, $attr_parts) = explode(';', $value, 2);
 
             $attr_parts = explode(';', $attr_parts);
-            $attributes = array();
+            $attributes = [];
 
             foreach ($attr_parts as $part) {
                 if (strpos($part, '=') === false) {
@@ -677,21 +679,21 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
     {
         $params = parent::get_collection_params();
         $params['status']['default'] = 'inherit';
-        $params['status']['items']['enum'] = array('inherit', 'private', 'trash');
+        $params['status']['items']['enum'] = ['inherit', 'private', 'trash'];
         $media_types = $this->get_media_types();
 
-        $params['media_type'] = array(
+        $params['media_type'] = [
             'default' => null,
             'description' => __('Limit result set to attachments of a particular media type.'),
             'type' => 'string',
             'enum' => array_keys($media_types),
-        );
+        ];
 
-        $params['mime_type'] = array(
+        $params['mime_type'] = [
             'default' => null,
             'description' => __('Limit result set to attachments of a particular MIME type.'),
             'type' => 'string',
-        );
+        ];
 
         return $params;
     }
@@ -729,7 +731,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
     protected function upload_from_file($files, $headers)
     {
         if (empty($files)) {
-            return new WP_Error('rest_upload_no_data', __('No data supplied.'), array('status' => 400));
+            return new WP_Error('rest_upload_no_data', __('No data supplied.'), ['status' => 400]);
         }
 
         // Verify hash, if given.
@@ -742,15 +744,15 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
                 return new WP_Error(
                     'rest_upload_hash_mismatch',
                     __('Content hash did not match expected.'),
-                    array('status' => 412)
+                    ['status' => 412]
                 );
             }
         }
 
         // Pass off to WP to handle the actual upload.
-        $overrides = array(
+        $overrides = [
             'test_form' => false,
-        );
+        ];
 
         // Bypasses is_uploaded_file() when running unit tests.
         if (defined('DIR_TESTDATA') && DIR_TESTDATA) {
@@ -763,7 +765,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
         $file = wp_handle_upload($files['file'], $overrides);
 
         if (isset($file['error'])) {
-            return new WP_Error('rest_upload_unknown_error', $file['error'], array('status' => 500));
+            return new WP_Error('rest_upload_unknown_error', $file['error'], ['status' => 500]);
         }
 
         return $file;
@@ -781,13 +783,13 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      */
     protected function get_media_types()
     {
-        $media_types = array();
+        $media_types = [];
 
         foreach (get_allowed_mime_types() as $mime_type) {
             $parts = explode('/', $mime_type);
 
             if (!isset($media_types[$parts[0]])) {
-                $media_types[$parts[0]] = array();
+                $media_types[$parts[0]] = [];
             }
 
             $media_types[$parts[0]][] = $mime_type;

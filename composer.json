@@ -74,7 +74,6 @@
             "web/wp-includes/class-wp-widget-factory.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php",
-            "web/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-post-types-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-post-statuses-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-revisions-controller.php",
