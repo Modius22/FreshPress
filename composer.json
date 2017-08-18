@@ -72,7 +72,6 @@
             "web/wp-includes/class-wp-http-requests-response.php",
             "web/wp-includes/class-wp-http-requests-hooks.php",
             "web/wp-includes/class-wp-widget-factory.php",
-            "web/wp-includes/rest-api/class-wp-rest-response.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php",

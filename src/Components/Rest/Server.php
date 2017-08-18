@@ -11,7 +11,6 @@ namespace Devtronic\FreshPress\Components\Rest;
 
 use WP_Error;
 use WP_HTTP_Response;
-use WP_REST_Response;
 
 /**
  * Core class used to implement the WordPress REST API server.
@@ -160,7 +159,7 @@ class Server
      * @access protected
      *
      * @param WP_Error $error WP_Error instance.
-     * @return WP_REST_Response List of associative arrays with code and message keys.
+     * @return Response List of associative arrays with code and message keys.
      */
     protected function error_to_response($error)
     {
@@ -187,7 +186,7 @@ class Server
             $data['additional_errors'] = $errors;
         }
 
-        $response = new WP_REST_Response($data, $status);
+        $response = new Response($data, $status);
 
         return $response;
     }
@@ -345,7 +344,7 @@ class Server
             $result = $this->dispatch($request);
         }
 
-        // Normalize to either WP_Error or WP_REST_Response...
+        // Normalize to either WP_Error or Response...
         $result = rest_ensure_response($result);
 
         // ...then convert WP_Error across.
@@ -361,7 +360,7 @@ class Server
          * @since 4.4.0
          * @since 4.5.0 Applied to embedded responses.
          *
-         * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
+         * @param WP_HTTP_Response $result Result to send to the client. Usually a Response.
          * @param Server $this Server instance.
          * @param Request $request Request used to generate the response.
          */
@@ -389,7 +388,7 @@ class Server
          *
          * @param bool $served Whether the request has already been served.
          *                                           Default false.
-         * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
+         * @param WP_HTTP_Response $result Result to send to the client. Usually a Response.
          * @param Request $request Request used to generate the response.
          * @param Server $this Server instance.
          */
@@ -429,7 +428,7 @@ class Server
      * @since 4.4.0
      * @access public
      *
-     * @param WP_REST_Response $response Response object.
+     * @param Response $response Response object.
      * @param bool $embed Whether links should be embedded.
      * @return array {
      *     Data with sub-requests embedded.
@@ -469,7 +468,7 @@ class Server
      * @access public
      * @static
      *
-     * @param WP_REST_Response $response Response to extract links from.
+     * @param Response $response Response to extract links from.
      * @return array Map of link relation to list of link hashes.
      */
     public static function get_response_links($response)
@@ -504,7 +503,7 @@ class Server
      * @access public
      * @static
      *
-     * @param WP_REST_Response $response Response to extract links from.
+     * @param Response $response Response to extract links from.
      * @return array Map of link relation to list of link hashes.
      */
     public static function get_compact_response_links($response)
@@ -631,9 +630,9 @@ class Server
      * @since 4.4.0
      * @access public
      *
-     * @param WP_REST_Response $response Response object.
+     * @param Response $response Response object.
      * @param bool $embed Whether links should be embedded.
-     * @return WP_REST_Response New response with wrapped data
+     * @return Response New response with wrapped data
      */
     public function envelope_response($response, $embed)
     {
@@ -649,7 +648,7 @@ class Server
          * @since 4.4.0
          *
          * @param array $envelope Envelope data.
-         * @param WP_REST_Response $response Original response data.
+         * @param Response $response Original response data.
          */
         $envelope = apply_filters('rest_envelope_response', $envelope, $response);
 
@@ -825,7 +824,7 @@ class Server
      * @access public
      *
      * @param Request $request Request to attempt dispatching.
-     * @return WP_REST_Response Response returned by the callback.
+     * @return Response Response returned by the callback.
      */
     public function dispatch($request)
     {
@@ -919,7 +918,7 @@ class Server
                  *
                  * @since 4.7.0
                  *
-                 * @param WP_HTTP_Response $response Result to send to the client. Usually a WP_REST_Response.
+                 * @param WP_HTTP_Response $response Result to send to the client. Usually a Response.
                  * @param Server $handler ResponseHandler instance (usually Server).
                  * @param Request $request Request used to generate the response.
                  */
@@ -982,7 +981,7 @@ class Server
                  *
                  * @since 4.7.0
                  *
-                 * @param WP_HTTP_Response $response Result to send to the client. Usually a WP_REST_Response.
+                 * @param WP_HTTP_Response $response Result to send to the client. Usually a Response.
                  * @param Server $handler ResponseHandler instance (usually Server).
                  * @param Request $request Request used to generate the response.
                  */
@@ -1065,7 +1064,7 @@ class Server
             'routes' => $this->get_data_for_routes($this->get_routes(), $request['context']),
         ];
 
-        $response = new WP_REST_Response($available);
+        $response = new Response($available);
 
         $response->add_link('help', 'http://v2.wp-api.org/');
 
@@ -1078,7 +1077,7 @@ class Server
          *
          * @since 4.4.0
          *
-         * @param WP_REST_Response $response Response data.
+         * @param Response $response Response data.
          */
         return apply_filters('rest_index', $response);
     }
@@ -1090,7 +1089,7 @@ class Server
      * @access public
      *
      * @param Request $request REST request instance.
-     * @return WP_REST_Response|WP_Error WP_REST_Response instance if the index was found,
+     * @return Response|WP_Error Response instance if the index was found,
      *                                   WP_Error if the namespace isn't set.
      */
     public function get_namespace_index($request)
@@ -1125,7 +1124,7 @@ class Server
          *
          * @since 4.4.0
          *
-         * @param WP_REST_Response $response Response data.
+         * @param Response $response Response data.
          * @param Request $request Request data. The namespace is passed as the 'namespace' parameter.
          */
         return apply_filters('rest_namespace_index', $response, $request);

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 
 /**
  * Core controller used to access attachments via the REST API.
@@ -108,7 +109,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, WP_Error object on failure.
      */
     public function create_item($request)
     {
@@ -220,7 +221,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, WP_Error object on failure.
      */
     public function update_item($request)
     {
@@ -309,7 +310,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
      *
      * @param WP_Post $post Attachment object.
      * @param Request $request Request object.
-     * @return WP_REST_Response Response object.
+     * @return Response Response object.
      */
     public function prepare_item_for_response($post, $request)
     {
@@ -386,7 +387,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller
          *
          * @since 4.7.0
          *
-         * @param WP_REST_Response $response The response object.
+         * @param Response $response The response object.
          * @param WP_Post $post The original attachment post.
          * @param Request $request Request used to generate the response.
          */

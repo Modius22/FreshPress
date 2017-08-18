@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -215,7 +216,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
     {
@@ -255,7 +256,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
     {
@@ -350,7 +351,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
             return new WP_Error('rest_cannot_delete', __('The post cannot be deleted.'), array('status' => 500));
         }
 
-        $response = new WP_REST_Response();
+        $response = new Response();
         $response->set_data(array('deleted' => true, 'previous' => $previous->get_data()));
         return $response;
     }
@@ -363,7 +364,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
      *
      * @param WP_Post $post Post revision object.
      * @param Request $request Request object.
-     * @return WP_REST_Response Response object.
+     * @return Response Response object.
      */
     public function prepare_item_for_response($post, $request)
     {
@@ -456,7 +457,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller
          *
          * @since 4.7.0
          *
-         * @param WP_REST_Response $response The response object.
+         * @param Response $response The response object.
          * @param WP_Post $post The original revision object.
          * @param Request $request Request used to generate the response.
          */

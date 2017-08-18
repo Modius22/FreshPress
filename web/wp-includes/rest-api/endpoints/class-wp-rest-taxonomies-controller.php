@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -109,7 +110,7 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return Response Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
     {
@@ -176,7 +177,7 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
     {
@@ -196,7 +197,7 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
      *
      * @param stdClass $taxonomy Taxonomy data.
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response Response object.
+     * @return Response Response object.
      */
     public function prepare_item_for_response($taxonomy, $request)
     {
@@ -236,7 +237,7 @@ class WP_REST_Taxonomies_Controller extends WP_REST_Controller
          *
          * @since 4.7.0
          *
-         * @param WP_REST_Response $response The response object.
+         * @param Response $response The response object.
          * @param object $item The original taxonomy object.
          * @param Request $request Request used to generate the response.
          */

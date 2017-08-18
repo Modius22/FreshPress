@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -76,7 +77,7 @@ abstract class WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
     {
@@ -112,7 +113,7 @@ abstract class WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
     {
@@ -148,7 +149,7 @@ abstract class WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function create_item($request)
     {
@@ -184,7 +185,7 @@ abstract class WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function update_item($request)
     {
@@ -220,7 +221,7 @@ abstract class WP_REST_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function delete_item($request)
     {
@@ -257,7 +258,7 @@ abstract class WP_REST_Controller
      *
      * @param mixed $item WordPress representation of the item.
      * @param Request $request Request object.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function prepare_item_for_response($item, $request)
     {
@@ -274,12 +275,12 @@ abstract class WP_REST_Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_REST_Response $response Response object.
+     * @param Response $response Response object.
      * @return array|mixed Response data, ready for insertion into collection data.
      */
     public function prepare_response_for_collection($response)
     {
-        if (!($response instanceof WP_REST_Response)) {
+        if (!($response instanceof Response)) {
             return $response;
         }
 

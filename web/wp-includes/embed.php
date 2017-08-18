@@ -675,7 +675,7 @@ function wp_oembed_ensure_format($format)
  * @since 4.4.0
  *
  * @param bool $served Whether the request has already been served.
- * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
+ * @param WP_HTTP_Response $result Result to send to the client. Usually a Devtronic\FreshPress\Components\Rest\Response.
  * @param Request $request Request used to generate the response.
  * @param Server $server Server instance.
  * @return true

@@ -88,6 +88,7 @@ $classes = array_change_key_case([
     'WP_Customize_Partial' => 'Devtronic\\FreshPress\\Components\\Customize\\Partial',
     'WP_REST_Server' => 'Devtronic\\FreshPress\\Components\\Rest\\Server',
     'WP_REST_Request' => 'Devtronic\\FreshPress\\Components\\Rest\\Request',
+    'WP_REST_Response' => 'Devtronic\\FreshPress\\Components\\Rest\\Response',
 ]);
 
 $abstractClasses = array_change_key_case([

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -408,7 +409,7 @@ function rest_url($path = '', $scheme = 'json')
  * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  *
  * @param Request|string $request Request.
- * @return WP_REST_Response REST response.
+ * @return Response REST response.
  */
 function rest_do_request($request)
 {
@@ -489,9 +490,9 @@ function rest_ensure_request($request)
  * @since 4.4.0
  *
  * @param WP_Error|WP_HTTP_Response|mixed $response Response to check.
- * @return WP_REST_Response|mixed If response generated an error, WP_Error, if response
+ * @return Response|mixed If response generated an error, WP_Error, if response
  *                                is already an instance, WP_HTTP_Response, otherwise
- *                                returns a new WP_REST_Response instance.
+ *                                returns a new Response instance.
  */
 function rest_ensure_response($response)
 {
@@ -503,7 +504,7 @@ function rest_ensure_response($response)
         return $response;
     }
 
-    return new WP_REST_Response($response);
+    return new Response($response);
 }
 
 /**
@@ -593,7 +594,7 @@ function rest_send_cors_headers($value)
  * @param mixed $response Current response, either response or `null` to indicate pass-through.
  * @param Server $handler ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  * @param Request $request The request that was used to make current response.
- * @return WP_REST_Response Modified response, either response or `null` to indicate pass-through.
+ * @return Response Modified response, either response or `null` to indicate pass-through.
  */
 function rest_handle_options_request($response, $handler, $request)
 {
@@ -601,7 +602,7 @@ function rest_handle_options_request($response, $handler, $request)
         return $response;
     }
 
-    $response = new WP_REST_Response();
+    $response = new Response();
     $data = array();
 
     foreach ($handler->get_routes() as $route => $endpoints) {
@@ -625,10 +626,10 @@ function rest_handle_options_request($response, $handler, $request)
  *
  * @since 4.4.0
  *
- * @param WP_REST_Response $response Current response being served.
+ * @param Response $response Current response being served.
  * @param Server $server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  * @param Request $request The request that was used to make current response.
- * @return WP_REST_Response Response to be served, with "Allow" header if route has allowed methods.
+ * @return Response Response to be served, with "Allow" header if route has allowed methods.
  */
 function rest_send_allow_header($response, $server, $request)
 {

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -105,7 +106,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
     {
@@ -130,7 +131,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
+     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
     {
@@ -169,7 +170,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
      *
      * @param stdClass $post_type Post type data.
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response Response object.
+     * @return Response Response object.
      */
     public function prepare_item_for_response($post_type, $request)
     {
@@ -212,7 +213,7 @@ class WP_REST_Post_Types_Controller extends WP_REST_Controller
          *
          * @since 4.7.0
          *
-         * @param WP_REST_Response $response The response object.
+         * @param Response $response The response object.
          * @param object $item The original post type object.
          * @param Request $request Request used to generate the response.
          */

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 
 /**
@@ -220,7 +221,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_items($request)
     {
@@ -426,7 +427,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_item($request)
     {
@@ -448,7 +449,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_current_item($request)
     {
@@ -495,7 +496,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function create_item($request)
     {
@@ -640,7 +641,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function update_item($request)
     {
@@ -746,7 +747,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function update_current_item($request)
     {
@@ -789,7 +790,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function delete_item($request)
     {
@@ -838,7 +839,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
             return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), array('status' => 500));
         }
 
-        $response = new WP_REST_Response();
+        $response = new Response();
         $response->set_data(array('deleted' => true, 'previous' => $previous->get_data()));
 
         /**
@@ -847,7 +848,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          * @since 4.7.0
          *
          * @param WP_User $user The user data.
-         * @param WP_REST_Response $response The response returned from the API.
+         * @param Response $response The response returned from the API.
          * @param Request $request The request sent to the API.
          */
         do_action('rest_delete_user', $user, $response, $request);
@@ -878,7 +879,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function delete_current_item($request)
     {
@@ -895,7 +896,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
      *
      * @param WP_User $user User object.
      * @param Request $request Request object.
-     * @return WP_REST_Response Response object.
+     * @return Response Response object.
      */
     public function prepare_item_for_response($user, $request)
     {
@@ -990,7 +991,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller
          *
          * @since 4.7.0
          *
-         * @param WP_REST_Response $response The response object.
+         * @param Response $response The response object.
          * @param object $user User object used to create response.
          * @param Request $request Request object.
          */
