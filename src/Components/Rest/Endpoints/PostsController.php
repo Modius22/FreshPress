@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Rest\Fields\PostMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -16,7 +17,6 @@ use WP_Error;
 use WP_Post;
 use WP_Post_Type;
 use WP_Query;
-use WP_REST_Post_Meta_Fields;
 
 /**
  * Core class to access posts via the REST API.
@@ -42,7 +42,7 @@ class PostsController extends Controller
      *
      * @since 4.7.0
      * @access protected
-     * @var WP_REST_Post_Meta_Fields
+     * @var PostMetaFields
      */
     protected $meta;
 
@@ -61,7 +61,7 @@ class PostsController extends Controller
         $obj = get_post_type_object($post_type);
         $this->rest_base = !empty($obj->rest_base) ? $obj->rest_base : $obj->name;
 
-        $this->meta = new WP_REST_Post_Meta_Fields($this->post_type);
+        $this->meta = new PostMetaFields($this->post_type);
     }
 
     /**
