@@ -1,16 +1,22 @@
 <?php
 /**
- * REST API: WP_REST_Users_Controller class
+ * REST API: UsersController class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+namespace Devtronic\FreshPress\Components\Rest\Endpoints;
+
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use WP_Error;
+use WP_Post;
+use WP_REST_User_Meta_Fields;
+use WP_User;
+use WP_User_Query;
 
 /**
  * Core class used to manage users via the REST API.
@@ -19,7 +25,7 @@ use Devtronic\FreshPress\Components\Rest\Server;
  *
  * @see Controller
  */
-class WP_REST_Users_Controller extends Controller
+class UsersController extends Controller
 {
 
     /**
@@ -55,98 +61,98 @@ class WP_REST_Users_Controller extends Controller
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base, array(
-            array(
+        register_rest_route($this->namespace, '/' . $this->rest_base, [
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_items'),
-                'permission_callback' => array($this, 'get_items_permissions_check'),
+                'callback' => [$this, 'get_items'],
+                'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => $this->get_collection_params(),
-            ),
-            array(
+            ],
+            [
                 'methods' => Server::CREATABLE,
-                'callback' => array($this, 'create_item'),
-                'permission_callback' => array($this, 'create_item_permissions_check'),
+                'callback' => [$this, 'create_item'],
+                'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(Server::CREATABLE),
-            ),
-            'schema' => array($this, 'get_public_item_schema'),
-        ));
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
 
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', array(
-            'args' => array(
-                'id' => array(
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
+            'args' => [
+                'id' => [
                     'description' => __('Unique identifier for the user.'),
                     'type' => 'integer',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_item'),
-                'permission_callback' => array($this, 'get_item_permissions_check'),
-                'args' => array(
-                    'context' => $this->get_context_param(array('default' => 'view')),
-                ),
-            ),
-            array(
+                'callback' => [$this, 'get_item'],
+                'permission_callback' => [$this, 'get_item_permissions_check'],
+                'args' => [
+                    'context' => $this->get_context_param(['default' => 'view']),
+                ],
+            ],
+            [
                 'methods' => Server::EDITABLE,
-                'callback' => array($this, 'update_item'),
-                'permission_callback' => array($this, 'update_item_permissions_check'),
+                'callback' => [$this, 'update_item'],
+                'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(Server::EDITABLE),
-            ),
-            array(
+            ],
+            [
                 'methods' => Server::DELETABLE,
-                'callback' => array($this, 'delete_item'),
-                'permission_callback' => array($this, 'delete_item_permissions_check'),
-                'args' => array(
-                    'force' => array(
+                'callback' => [$this, 'delete_item'],
+                'permission_callback' => [$this, 'delete_item_permissions_check'],
+                'args' => [
+                    'force' => [
                         'type' => 'boolean',
                         'default' => false,
                         'description' => __('Required to be true, as users do not support trashing.'),
-                    ),
-                    'reassign' => array(
+                    ],
+                    'reassign' => [
                         'type' => 'integer',
                         'description' => __('Reassign the deleted user\'s posts and links to this user ID.'),
                         'required' => true,
-                        'sanitize_callback' => array($this, 'check_reassign'),
-                    ),
-                ),
-            ),
-            'schema' => array($this, 'get_public_item_schema'),
-        ));
+                        'sanitize_callback' => [$this, 'check_reassign'],
+                    ],
+                ],
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
 
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/me', array(
-            array(
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/me', [
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_current_item'),
-                'args' => array(
-                    'context' => $this->get_context_param(array('default' => 'view')),
-                ),
-            ),
-            array(
+                'callback' => [$this, 'get_current_item'],
+                'args' => [
+                    'context' => $this->get_context_param(['default' => 'view']),
+                ],
+            ],
+            [
                 'methods' => Server::EDITABLE,
-                'callback' => array($this, 'update_current_item'),
-                'permission_callback' => array($this, 'update_current_item_permissions_check'),
+                'callback' => [$this, 'update_current_item'],
+                'permission_callback' => [$this, 'update_current_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(Server::EDITABLE),
-            ),
-            array(
+            ],
+            [
                 'methods' => Server::DELETABLE,
-                'callback' => array($this, 'delete_current_item'),
-                'permission_callback' => array($this, 'delete_current_item_permissions_check'),
-                'args' => array(
-                    'force' => array(
+                'callback' => [$this, 'delete_current_item'],
+                'permission_callback' => [$this, 'delete_current_item_permissions_check'],
+                'args' => [
+                    'force' => [
                         'type' => 'boolean',
                         'default' => false,
                         'description' => __('Required to be true, as users do not support trashing.'),
-                    ),
-                    'reassign' => array(
+                    ],
+                    'reassign' => [
                         'type' => 'integer',
                         'description' => __('Reassign the deleted user\'s posts and links to this user ID.'),
                         'required' => true,
-                        'sanitize_callback' => array($this, 'check_reassign'),
-                    ),
-                ),
-            ),
-            'schema' => array($this, 'get_public_item_schema'),
-        ));
+                        'sanitize_callback' => [$this, 'check_reassign'],
+                    ],
+                ],
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
     }
 
     /**
@@ -173,7 +179,7 @@ class WP_REST_Users_Controller extends Controller
             return false;
         }
 
-        return new WP_Error('rest_invalid_param', __('Invalid user parameter(s).'), array('status' => 400));
+        return new WP_Error('rest_invalid_param', __('Invalid user parameter(s).'), ['status' => 400]);
     }
 
     /**
@@ -192,7 +198,7 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_user_cannot_view',
                 __('Sorry, you are not allowed to filter users by role.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -200,15 +206,15 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_forbidden_context',
                 __('Sorry, you are not allowed to list users.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
-        if (in_array($request['orderby'], array('email', 'registered_date'), true) && !current_user_can('list_users')) {
+        if (in_array($request['orderby'], ['email', 'registered_date'], true) && !current_user_can('list_users')) {
             return new WP_Error(
                 'rest_forbidden_orderby',
                 __('Sorry, you are not allowed to order users by this parameter.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -236,7 +242,7 @@ class WP_REST_Users_Controller extends Controller
          * name equivalents (some are the same). Only values which are also
          * present in $registered will be set.
          */
-        $parameter_mappings = array(
+        $parameter_mappings = [
             'exclude' => 'exclude',
             'include' => 'include',
             'order' => 'order',
@@ -244,9 +250,9 @@ class WP_REST_Users_Controller extends Controller
             'search' => 'search',
             'roles' => 'role__in',
             'slug' => 'nicename__in',
-        );
+        ];
 
-        $prepared_args = array();
+        $prepared_args = [];
 
         /*
          * For each known parameter which is both registered and present in the request,
@@ -265,7 +271,7 @@ class WP_REST_Users_Controller extends Controller
         }
 
         if (isset($registered['orderby'])) {
-            $orderby_possibles = array(
+            $orderby_possibles = [
                 'id' => 'ID',
                 'include' => 'include',
                 'name' => 'display_name',
@@ -273,12 +279,12 @@ class WP_REST_Users_Controller extends Controller
                 'slug' => 'user_nicename',
                 'email' => 'user_email',
                 'url' => 'user_url',
-            );
+            ];
             $prepared_args['orderby'] = $orderby_possibles[$request['orderby']];
         }
 
         if (!current_user_can('list_users')) {
-            $prepared_args['has_published_posts'] = get_post_types(array('show_in_rest' => true), 'names');
+            $prepared_args['has_published_posts'] = get_post_types(['show_in_rest' => true], 'names');
         }
 
         if (!empty($prepared_args['search'])) {
@@ -298,7 +304,7 @@ class WP_REST_Users_Controller extends Controller
 
         $query = new WP_User_Query($prepared_args);
 
-        $users = array();
+        $users = [];
 
         foreach ($query->results as $user) {
             $data = $this->prepare_item_for_response($user, $request);
@@ -362,7 +368,7 @@ class WP_REST_Users_Controller extends Controller
      */
     protected function get_user($id)
     {
-        $error = new WP_Error('rest_user_invalid_id', __('Invalid user ID.'), array('status' => 404));
+        $error = new WP_Error('rest_user_invalid_id', __('Invalid user ID.'), ['status' => 404]);
         if ((int)$id <= 0) {
             return $error;
         }
@@ -395,7 +401,7 @@ class WP_REST_Users_Controller extends Controller
             return $user;
         }
 
-        $types = get_post_types(array('show_in_rest' => true), 'names');
+        $types = get_post_types(['show_in_rest' => true], 'names');
 
         if (get_current_user_id() === $user->ID) {
             return true;
@@ -405,16 +411,16 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_user_cannot_view',
                 __('Sorry, you are not allowed to list users.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         } elseif (!count_user_posts($user->ID, $types) && !current_user_can(
-            'edit_user',
+                'edit_user',
                 $user->ID
-        ) && !current_user_can('list_users')) {
+            ) && !current_user_can('list_users')) {
             return new WP_Error(
                 'rest_user_cannot_view',
                 __('Sorry, you are not allowed to list users.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -457,7 +463,7 @@ class WP_REST_Users_Controller extends Controller
         $current_user_id = get_current_user_id();
 
         if (empty($current_user_id)) {
-            return new WP_Error('rest_not_logged_in', __('You are not currently logged in.'), array('status' => 401));
+            return new WP_Error('rest_not_logged_in', __('You are not currently logged in.'), ['status' => 401]);
         }
 
         $user = wp_get_current_user();
@@ -483,7 +489,7 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_cannot_create_user',
                 __('Sorry, you are not allowed to create new users.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -502,7 +508,7 @@ class WP_REST_Users_Controller extends Controller
     public function create_item($request)
     {
         if (!empty($request['id'])) {
-            return new WP_Error('rest_user_exists', __('Cannot create existing user.'), array('status' => 400));
+            return new WP_Error('rest_user_exists', __('Cannot create existing user.'), ['status' => 400]);
         }
 
         $schema = $this->get_item_schema();
@@ -521,7 +527,7 @@ class WP_REST_Users_Controller extends Controller
             $ret = wpmu_validate_user_signup($user->user_login, $user->user_email);
 
             if (is_wp_error($ret['errors']) && !empty($ret['errors']->errors)) {
-                $error = new WP_Error('rest_invalid_param', __('Invalid user parameter(s).'), array('status' => 400));
+                $error = new WP_Error('rest_invalid_param', __('Invalid user parameter(s).'), ['status' => 400]);
                 foreach ($ret['errors']->errors as $code => $messages) {
                     foreach ($messages as $message) {
                         $error->add($code, $message);
@@ -538,7 +544,7 @@ class WP_REST_Users_Controller extends Controller
             $user_id = wpmu_create_user($user->user_login, $user->user_pass, $user->user_email);
 
             if (!$user_id) {
-                return new WP_Error('rest_user_create', __('Error creating new user.'), array('status' => 500));
+                return new WP_Error('rest_user_create', __('Error creating new user.'), ['status' => 500]);
             }
 
             $user->ID = $user_id;
@@ -571,7 +577,7 @@ class WP_REST_Users_Controller extends Controller
         do_action('rest_insert_user', $user, $request, true);
 
         if (!empty($request['roles']) && !empty($schema['properties']['roles'])) {
-            array_map(array($user, 'add_role'), $request['roles']);
+            array_map([$user, 'add_role'], $request['roles']);
         }
 
         if (!empty($schema['properties']['meta']) && isset($request['meta'])) {
@@ -620,7 +626,7 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_cannot_edit',
                 __('Sorry, you are not allowed to edit this user.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -628,7 +634,7 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_cannot_edit_roles',
                 __('Sorry, you are not allowed to edit roles of this user.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -654,22 +660,22 @@ class WP_REST_Users_Controller extends Controller
         $id = $user->ID;
 
         if (!$user) {
-            return new WP_Error('rest_user_invalid_id', __('Invalid user ID.'), array('status' => 404));
+            return new WP_Error('rest_user_invalid_id', __('Invalid user ID.'), ['status' => 404]);
         }
 
         if (email_exists($request['email']) && $request['email'] !== $user->user_email) {
-            return new WP_Error('rest_user_invalid_email', __('Invalid email address.'), array('status' => 400));
+            return new WP_Error('rest_user_invalid_email', __('Invalid email address.'), ['status' => 400]);
         }
 
         if (!empty($request['username']) && $request['username'] !== $user->user_login) {
-            return new WP_Error('rest_user_invalid_argument', __("Username isn't editable."), array('status' => 400));
+            return new WP_Error('rest_user_invalid_argument', __("Username isn't editable."), ['status' => 400]);
         }
 
         if (!empty($request['slug']) && $request['slug'] !== $user->user_nicename && get_user_by(
-            'slug',
+                'slug',
                 $request['slug']
-        )) {
-            return new WP_Error('rest_user_invalid_slug', __('Invalid slug.'), array('status' => 400));
+            )) {
+            return new WP_Error('rest_user_invalid_slug', __('Invalid slug.'), ['status' => 400]);
         }
 
         if (!empty($request['roles'])) {
@@ -697,7 +703,7 @@ class WP_REST_Users_Controller extends Controller
         do_action('rest_insert_user', $user, $request, false);
 
         if (!empty($request['roles'])) {
-            array_map(array($user, 'add_role'), $request['roles']);
+            array_map([$user, 'add_role'], $request['roles']);
         }
 
         $schema = $this->get_item_schema();
@@ -777,7 +783,7 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_user_cannot_delete',
                 __('Sorry, you are not allowed to delete this user.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -797,7 +803,7 @@ class WP_REST_Users_Controller extends Controller
     {
         // We don't support delete requests in multisite.
         if (is_multisite()) {
-            return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), array('status' => 501));
+            return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), ['status' => 501]);
         }
         $user = $this->get_user($request['id']);
         if (is_wp_error($user)) {
@@ -813,7 +819,7 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_trash_not_supported',
                 __('Users do not support trashing. Set force=true to delete.'),
-                array('status' => 501)
+                ['status' => 501]
             );
         }
 
@@ -822,7 +828,7 @@ class WP_REST_Users_Controller extends Controller
                 return new WP_Error(
                     'rest_user_invalid_reassign',
                     __('Invalid user ID for reassignment.'),
-                    array('status' => 400)
+                    ['status' => 400]
                 );
             }
         }
@@ -837,11 +843,11 @@ class WP_REST_Users_Controller extends Controller
         $result = wp_delete_user($id, $reassign);
 
         if (!$result) {
-            return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), array('status' => 500));
+            return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), ['status' => 500]);
         }
 
         $response = new Response();
-        $response->set_data(array('deleted' => true, 'previous' => $previous->get_data()));
+        $response->set_data(['deleted' => true, 'previous' => $previous->get_data()]);
 
         /**
          * Fires immediately after a user is deleted via the REST API.
@@ -901,7 +907,7 @@ class WP_REST_Users_Controller extends Controller
      */
     public function prepare_item_for_response($user, $request)
     {
-        $data = array();
+        $data = [];
         $schema = $this->get_item_schema();
 
         if (!empty($schema['properties']['id'])) {
@@ -1010,14 +1016,14 @@ class WP_REST_Users_Controller extends Controller
      */
     protected function prepare_links($user)
     {
-        $links = array(
-            'self' => array(
+        $links = [
+            'self' => [
                 'href' => rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $user->ID)),
-            ),
-            'collection' => array(
+            ],
+            'collection' => [
                 'href' => rest_url(sprintf('%s/%s', $this->namespace, $this->rest_base)),
-            ),
-        );
+            ],
+        ];
 
         return $links;
     }
@@ -1033,7 +1039,7 @@ class WP_REST_Users_Controller extends Controller
      */
     protected function prepare_item_for_database($request)
     {
-        $prepared_user = new stdClass;
+        $prepared_user = new \stdClass;
 
         $schema = $this->get_item_schema();
 
@@ -1124,7 +1130,7 @@ class WP_REST_Users_Controller extends Controller
                 return new WP_Error(
                     'rest_user_invalid_role',
                     sprintf(__('The role %s does not exist.'), $role),
-                    array('status' => 400)
+                    ['status' => 400]
                 );
             }
 
@@ -1142,7 +1148,7 @@ class WP_REST_Users_Controller extends Controller
                 return new WP_Error(
                     'rest_user_invalid_role',
                     __('Sorry, you are not allowed to give users that role.'),
-                    array('status' => rest_authorization_required_code())
+                    ['status' => rest_authorization_required_code()]
                 );
             }
 
@@ -1156,7 +1162,7 @@ class WP_REST_Users_Controller extends Controller
                 return new WP_Error(
                     'rest_user_invalid_role',
                     __('Sorry, you are not allowed to give users that role.'),
-                    array('status' => 403)
+                    ['status' => 403]
                 );
             }
         }
@@ -1185,18 +1191,18 @@ class WP_REST_Users_Controller extends Controller
             return new WP_Error(
                 'rest_user_invalid_username',
                 __('Username contains invalid characters.'),
-                array('status' => 400)
+                ['status' => 400]
             );
         }
 
         /** This filter is documented in wp-includes/user.php */
-        $illegal_logins = (array)apply_filters('illegal_user_logins', array());
+        $illegal_logins = (array)apply_filters('illegal_user_logins', []);
 
         if (in_array(strtolower($username), array_map('strtolower', $illegal_logins))) {
             return new WP_Error(
                 'rest_user_invalid_username',
                 __('Sorry, that username is not allowed.'),
-                array('status' => 400)
+                ['status' => 400]
             );
         }
 
@@ -1221,14 +1227,14 @@ class WP_REST_Users_Controller extends Controller
         $password = (string)$value;
 
         if (empty($password)) {
-            return new WP_Error('rest_user_invalid_password', __('Passwords cannot be empty.'), array('status' => 400));
+            return new WP_Error('rest_user_invalid_password', __('Passwords cannot be empty.'), ['status' => 400]);
         }
 
         if (false !== strpos($password, "\\")) {
             return new WP_Error(
                 'rest_user_invalid_password',
                 __('Passwords cannot contain the "\\" character.'),
-                array('status' => 400)
+                ['status' => 400]
             );
         }
 
@@ -1245,158 +1251,158 @@ class WP_REST_Users_Controller extends Controller
      */
     public function get_item_schema()
     {
-        $schema = array(
+        $schema = [
             '$schema' => 'http://json-schema.org/schema#',
             'title' => 'user',
             'type' => 'object',
-            'properties' => array(
-                'id' => array(
+            'properties' => [
+                'id' => [
                     'description' => __('Unique identifier for the user.'),
                     'type' => 'integer',
-                    'context' => array('embed', 'view', 'edit'),
+                    'context' => ['embed', 'view', 'edit'],
                     'readonly' => true,
-                ),
-                'username' => array(
+                ],
+                'username' => [
                     'description' => __('Login name for the user.'),
                     'type' => 'string',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'required' => true,
-                    'arg_options' => array(
-                        'sanitize_callback' => array($this, 'check_username'),
-                    ),
-                ),
-                'name' => array(
+                    'arg_options' => [
+                        'sanitize_callback' => [$this, 'check_username'],
+                    ],
+                ],
+                'name' => [
                     'description' => __('Display name for the user.'),
                     'type' => 'string',
-                    'context' => array('embed', 'view', 'edit'),
-                    'arg_options' => array(
+                    'context' => ['embed', 'view', 'edit'],
+                    'arg_options' => [
                         'sanitize_callback' => 'sanitize_text_field',
-                    ),
-                ),
-                'first_name' => array(
+                    ],
+                ],
+                'first_name' => [
                     'description' => __('First name for the user.'),
                     'type' => 'string',
-                    'context' => array('edit'),
-                    'arg_options' => array(
+                    'context' => ['edit'],
+                    'arg_options' => [
                         'sanitize_callback' => 'sanitize_text_field',
-                    ),
-                ),
-                'last_name' => array(
+                    ],
+                ],
+                'last_name' => [
                     'description' => __('Last name for the user.'),
                     'type' => 'string',
-                    'context' => array('edit'),
-                    'arg_options' => array(
+                    'context' => ['edit'],
+                    'arg_options' => [
                         'sanitize_callback' => 'sanitize_text_field',
-                    ),
-                ),
-                'email' => array(
+                    ],
+                ],
+                'email' => [
                     'description' => __('The email address for the user.'),
                     'type' => 'string',
                     'format' => 'email',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'required' => true,
-                ),
-                'url' => array(
+                ],
+                'url' => [
                     'description' => __('URL of the user.'),
                     'type' => 'string',
                     'format' => 'uri',
-                    'context' => array('embed', 'view', 'edit'),
-                ),
-                'description' => array(
+                    'context' => ['embed', 'view', 'edit'],
+                ],
+                'description' => [
                     'description' => __('Description of the user.'),
                     'type' => 'string',
-                    'context' => array('embed', 'view', 'edit'),
-                ),
-                'link' => array(
+                    'context' => ['embed', 'view', 'edit'],
+                ],
+                'link' => [
                     'description' => __('Author URL of the user.'),
                     'type' => 'string',
                     'format' => 'uri',
-                    'context' => array('embed', 'view', 'edit'),
+                    'context' => ['embed', 'view', 'edit'],
                     'readonly' => true,
-                ),
-                'locale' => array(
+                ],
+                'locale' => [
                     'description' => __('Locale for the user.'),
                     'type' => 'string',
-                    'enum' => array_merge(array('', 'en_US'), get_available_languages()),
-                    'context' => array('edit'),
-                ),
-                'nickname' => array(
+                    'enum' => array_merge(['', 'en_US'], get_available_languages()),
+                    'context' => ['edit'],
+                ],
+                'nickname' => [
                     'description' => __('The nickname for the user.'),
                     'type' => 'string',
-                    'context' => array('edit'),
-                    'arg_options' => array(
+                    'context' => ['edit'],
+                    'arg_options' => [
                         'sanitize_callback' => 'sanitize_text_field',
-                    ),
-                ),
-                'slug' => array(
+                    ],
+                ],
+                'slug' => [
                     'description' => __('An alphanumeric identifier for the user.'),
                     'type' => 'string',
-                    'context' => array('embed', 'view', 'edit'),
-                    'arg_options' => array(
-                        'sanitize_callback' => array($this, 'sanitize_slug'),
-                    ),
-                ),
-                'registered_date' => array(
+                    'context' => ['embed', 'view', 'edit'],
+                    'arg_options' => [
+                        'sanitize_callback' => [$this, 'sanitize_slug'],
+                    ],
+                ],
+                'registered_date' => [
                     'description' => __('Registration date for the user.'),
                     'type' => 'string',
                     'format' => 'date-time',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'readonly' => true,
-                ),
-                'roles' => array(
+                ],
+                'roles' => [
                     'description' => __('Roles assigned to the user.'),
                     'type' => 'array',
-                    'items' => array(
+                    'items' => [
                         'type' => 'string',
-                    ),
-                    'context' => array('edit'),
-                ),
-                'password' => array(
+                    ],
+                    'context' => ['edit'],
+                ],
+                'password' => [
                     'description' => __('Password for the user (never included).'),
                     'type' => 'string',
-                    'context' => array(), // Password is never displayed.
+                    'context' => [], // Password is never displayed.
                     'required' => true,
-                    'arg_options' => array(
-                        'sanitize_callback' => array($this, 'check_user_password'),
-                    ),
-                ),
-                'capabilities' => array(
+                    'arg_options' => [
+                        'sanitize_callback' => [$this, 'check_user_password'],
+                    ],
+                ],
+                'capabilities' => [
                     'description' => __('All capabilities assigned to the user.'),
                     'type' => 'object',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'readonly' => true,
-                ),
-                'extra_capabilities' => array(
+                ],
+                'extra_capabilities' => [
                     'description' => __('Any extra capabilities assigned to the user.'),
                     'type' => 'object',
-                    'context' => array('edit'),
+                    'context' => ['edit'],
                     'readonly' => true,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         if (get_option('show_avatars')) {
-            $avatar_properties = array();
+            $avatar_properties = [];
 
             $avatar_sizes = rest_get_avatar_sizes();
 
             foreach ($avatar_sizes as $size) {
-                $avatar_properties[$size] = array(
+                $avatar_properties[$size] = [
                     /* translators: %d: avatar image size in pixels */
                     'description' => sprintf(__('Avatar URL with image size of %d pixels.'), $size),
                     'type' => 'string',
                     'format' => 'uri',
-                    'context' => array('embed', 'view', 'edit'),
-                );
+                    'context' => ['embed', 'view', 'edit'],
+                ];
             }
 
-            $schema['properties']['avatar_urls'] = array(
+            $schema['properties']['avatar_urls'] = [
                 'description' => __('Avatar URLs for the user.'),
                 'type' => 'object',
-                'context' => array('embed', 'view', 'edit'),
+                'context' => ['embed', 'view', 'edit'],
                 'readonly' => true,
                 'properties' => $avatar_properties,
-            );
+            ];
         }
 
         $schema['properties']['meta'] = $this->meta->get_field_schema();
@@ -1418,40 +1424,40 @@ class WP_REST_Users_Controller extends Controller
 
         $query_params['context']['default'] = 'view';
 
-        $query_params['exclude'] = array(
+        $query_params['exclude'] = [
             'description' => __('Ensure result set excludes specific IDs.'),
             'type' => 'array',
-            'items' => array(
+            'items' => [
                 'type' => 'integer',
-            ),
-            'default' => array(),
-        );
+            ],
+            'default' => [],
+        ];
 
-        $query_params['include'] = array(
+        $query_params['include'] = [
             'description' => __('Limit result set to specific IDs.'),
             'type' => 'array',
-            'items' => array(
+            'items' => [
                 'type' => 'integer',
-            ),
-            'default' => array(),
-        );
+            ],
+            'default' => [],
+        ];
 
-        $query_params['offset'] = array(
+        $query_params['offset'] = [
             'description' => __('Offset the result set by a specific number of items.'),
             'type' => 'integer',
-        );
+        ];
 
-        $query_params['order'] = array(
+        $query_params['order'] = [
             'default' => 'asc',
             'description' => __('Order sort attribute ascending or descending.'),
-            'enum' => array('asc', 'desc'),
+            'enum' => ['asc', 'desc'],
             'type' => 'string',
-        );
+        ];
 
-        $query_params['orderby'] = array(
+        $query_params['orderby'] = [
             'default' => 'name',
             'description' => __('Sort collection by object attribute.'),
-            'enum' => array(
+            'enum' => [
                 'id',
                 'include',
                 'name',
@@ -1459,25 +1465,25 @@ class WP_REST_Users_Controller extends Controller
                 'slug',
                 'email',
                 'url',
-            ),
+            ],
             'type' => 'string',
-        );
+        ];
 
-        $query_params['slug'] = array(
+        $query_params['slug'] = [
             'description' => __('Limit result set to users with one or more specific slugs.'),
             'type' => 'array',
-            'items' => array(
+            'items' => [
                 'type' => 'string',
-            ),
-        );
+            ],
+        ];
 
-        $query_params['roles'] = array(
+        $query_params['roles'] = [
             'description' => __('Limit result set to users matching at least one specific role provided. Accepts csv list or single role.'),
             'type' => 'array',
-            'items' => array(
+            'items' => [
                 'type' => 'string',
-            ),
-        );
+            ],
+        ];
 
         /**
          * Filter collection parameters for the users controller.

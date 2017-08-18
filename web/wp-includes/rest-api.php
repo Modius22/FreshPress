@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\RevisionsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\SettingsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TaxonomiesController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\UsersController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -256,7 +257,7 @@ function create_initial_rest_routes()
     }
 
     // Users.
-    $controller = new WP_REST_Users_Controller;
+    $controller = new UsersController();
     $controller->register_routes();
 
     // Comments.
