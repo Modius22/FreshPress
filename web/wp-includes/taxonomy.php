@@ -6,6 +6,7 @@
  * @subpackage Taxonomy
  */
 
+use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
 use Devtronic\FreshPress\Core\WPDB;
 
 //
@@ -72,7 +73,7 @@ function create_initial_taxonomies()
         ),
         'show_in_rest' => true,
         'rest_base' => 'categories',
-        'rest_controller_class' => 'WP_REST_Terms_Controller',
+        'rest_controller_class' => TermsController::class,
     ));
 
     register_taxonomy('post_tag', 'post', array(
@@ -91,7 +92,7 @@ function create_initial_taxonomies()
         ),
         'show_in_rest' => true,
         'rest_base' => 'tags',
-        'rest_controller_class' => 'WP_REST_Terms_Controller',
+        'rest_controller_class' => TermsController::class,
     ));
 
     register_taxonomy('nav_menu', 'nav_menu_item', array(
@@ -339,7 +340,7 @@ function is_taxonomy_hierarchical($taxonomy)
  *                                                set, the default is inherited from `$public` (default true).
  * @type bool $show_in_rest Whether to include the taxonomy in the REST API.
  * @type string $rest_base To change the base url of REST API route. Default is $taxonomy.
- * @type string $rest_controller_class REST API Controller class name. Default is 'WP_REST_Terms_Controller'.
+ * @type string $rest_controller_class REST API Controller class name. Default is 'TermsController'.
  * @type bool $show_tagcloud Whether to list the taxonomy in the Tag Cloud Widget controls. If not set,
  *                                                the default is inherited from `$show_ui` (default true).
  * @type bool $show_in_quick_edit Whether to show the taxonomy in the quick/bulk edit panel. It not set,

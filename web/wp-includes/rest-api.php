@@ -15,6 +15,7 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\PostTypesController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\RevisionsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\SettingsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TaxonomiesController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -241,7 +242,7 @@ function create_initial_rest_routes()
 
     // Terms.
     foreach (get_taxonomies(array('show_in_rest' => true), 'object') as $taxonomy) {
-        $class = !empty($taxonomy->rest_controller_class) ? $taxonomy->rest_controller_class : 'WP_REST_Terms_Controller';
+        $class = !empty($taxonomy->rest_controller_class) ? $taxonomy->rest_controller_class : TermsController::class;
 
         if (!class_exists($class)) {
             continue;
