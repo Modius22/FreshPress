@@ -1,15 +1,17 @@
 <?php
 /**
- * REST API: WP_REST_Settings_Controller class
+ * REST API: SettingsController class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+namespace Devtronic\FreshPress\Components\Rest\Endpoints;
+
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
+use WP_Error;
 
 /**
  * Core class used to manage a site's settings via the REST API.
@@ -18,7 +20,7 @@ use Devtronic\FreshPress\Components\Rest\Server;
  *
  * @see Controller
  */
-class WP_REST_Settings_Controller extends Controller
+class SettingsController extends Controller
 {
 
     /**
@@ -43,21 +45,21 @@ class WP_REST_Settings_Controller extends Controller
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base, array(
-            array(
+        register_rest_route($this->namespace, '/' . $this->rest_base, [
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_item'),
-                'args' => array(),
-                'permission_callback' => array($this, 'get_item_permissions_check'),
-            ),
-            array(
+                'callback' => [$this, 'get_item'],
+                'args' => [],
+                'permission_callback' => [$this, 'get_item_permissions_check'],
+            ],
+            [
                 'methods' => Server::EDITABLE,
-                'callback' => array($this, 'update_item'),
+                'callback' => [$this, 'update_item'],
                 'args' => $this->get_endpoint_args_for_item_schema(Server::EDITABLE),
-                'permission_callback' => array($this, 'get_item_permissions_check'),
-            ),
-            'schema' => array($this, 'get_public_item_schema'),
-        ));
+                'permission_callback' => [$this, 'get_item_permissions_check'],
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
     }
 
     /**
@@ -86,7 +88,7 @@ class WP_REST_Settings_Controller extends Controller
     public function get_item($request)
     {
         $options = $this->get_registered_options();
-        $response = array();
+        $response = [];
 
         foreach ($options as $name => $args) {
             /**
@@ -214,7 +216,7 @@ class WP_REST_Settings_Controller extends Controller
                             __('The %s property has an invalid stored value, and cannot be updated to null.'),
                             $name
                         ),
-                        array('status' => 500)
+                        ['status' => 500]
                     );
                 }
 
@@ -237,31 +239,31 @@ class WP_REST_Settings_Controller extends Controller
      */
     protected function get_registered_options()
     {
-        $rest_options = array();
+        $rest_options = [];
 
         foreach (get_registered_settings() as $name => $args) {
             if (empty($args['show_in_rest'])) {
                 continue;
             }
 
-            $rest_args = array();
+            $rest_args = [];
 
             if (is_array($args['show_in_rest'])) {
                 $rest_args = $args['show_in_rest'];
             }
 
-            $defaults = array(
+            $defaults = [
                 'name' => !empty($rest_args['name']) ? $rest_args['name'] : $name,
-                'schema' => array(),
-            );
+                'schema' => [],
+            ];
 
             $rest_args = array_merge($defaults, $rest_args);
 
-            $default_schema = array(
+            $default_schema = [
                 'type' => empty($args['type']) ? null : $args['type'],
                 'description' => empty($args['description']) ? '' : $args['description'],
                 'default' => isset($args['default']) ? $args['default'] : null,
-            );
+            ];
 
             $rest_args['schema'] = array_merge($default_schema, $rest_args['schema']);
             $rest_args['option_name'] = $name;
@@ -275,7 +277,7 @@ class WP_REST_Settings_Controller extends Controller
              * Whitelist the supported types for settings, as we don't want invalid types
              * to be updated with arbitrary values that we can't do decent sanitizing for.
              */
-            if (!in_array($rest_args['schema']['type'], array('number', 'integer', 'string', 'boolean'), true)) {
+            if (!in_array($rest_args['schema']['type'], ['number', 'integer', 'string', 'boolean'], true)) {
                 continue;
             }
 
@@ -297,18 +299,18 @@ class WP_REST_Settings_Controller extends Controller
     {
         $options = $this->get_registered_options();
 
-        $schema = array(
+        $schema = [
             '$schema' => 'http://json-schema.org/schema#',
             'title' => 'settings',
             'type' => 'object',
-            'properties' => array(),
-        );
+            'properties' => [],
+        ];
 
         foreach ($options as $option_name => $option) {
             $schema['properties'][$option_name] = $option['schema'];
-            $schema['properties'][$option_name]['arg_options'] = array(
-                'sanitize_callback' => array($this, 'sanitize_callback'),
-            );
+            $schema['properties'][$option_name]['arg_options'] = [
+                'sanitize_callback' => [$this, 'sanitize_callback'],
+            ];
         }
 
         return $this->add_additional_fields_schema($schema);

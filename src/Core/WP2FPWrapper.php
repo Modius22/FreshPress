@@ -95,6 +95,7 @@ $classes = array_change_key_case([
     'WP_REST_Post_Types_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\PostTypesController',
     'WP_REST_Posts_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\PostsController',
     'WP_REST_Revisions_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\RevisionsController',
+    'WP_REST_Settings_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\SettingsController',
 ]);
 
 $abstractClasses = array_change_key_case([

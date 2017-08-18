@@ -75,7 +75,6 @@
             "web/wp-includes/rest-api/endpoints/class-wp-rest-taxonomies-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php",
             "web/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php",
-            "web/wp-includes/rest-api/endpoints/class-wp-rest-settings-controller.php",
             "web/wp-includes/rest-api/fields/class-wp-rest-meta-fields.php",
             "web/wp-includes/rest-api/fields/class-wp-rest-comment-meta-fields.php",
             "web/wp-includes/rest-api/fields/class-wp-rest-post-meta-fields.php",
