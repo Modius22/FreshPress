@@ -19,6 +19,7 @@ use Devtronic\FreshPress\Components\Customize\NavMenuSetting;
 use Devtronic\FreshPress\Components\Customize\NavMenusPanel;
 use Devtronic\FreshPress\Components\Customize\NewMenuControl;
 use Devtronic\FreshPress\Components\Customize\NewMenuSection;
+use Devtronic\FreshPress\Components\Customize\Partial;
 use Devtronic\FreshPress\Components\Customize\Setting;
 
 /**
@@ -1456,7 +1457,7 @@ final class WP_Customize_Nav_Menus
      *
      * @see wp_nav_menu()
      *
-     * @param WP_Customize_Partial $partial Partial.
+     * @param Partial $partial Partial.
      * @param array $nav_menu_args Nav menu args supplied as container context.
      * @return string|false
      */

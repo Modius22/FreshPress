@@ -1,11 +1,15 @@
 <?php
 /**
- * Customize API: WP_Customize_Partial class
+ * Customize API: Partial class
  *
  * @package WordPress
  * @subpackage Customize
  * @since 4.5.0
  */
+
+namespace Devtronic\FreshPress\Components\Customize;
+
+use WP_Customize_Selective_Refresh;
 
 /**
  * Core Customizer class for implementing selective refresh partials.
@@ -16,7 +20,7 @@
  *
  * @since 4.5.0
  */
-class WP_Customize_Partial
+class Partial
 {
 
     /**
@@ -50,7 +54,7 @@ class WP_Customize_Partial
      * @type array $keys Keys for multidimensional.
      * }
      */
-    protected $id_data = array();
+    protected $id_data = [];
 
     /**
      * Type of this partial.
@@ -107,9 +111,9 @@ class WP_Customize_Partial
      *
      * @since 4.5.0
      * @access public
-     * @see WP_Customize_Partial::render()
+     * @see Partial::render()
      * @var callable Callback is called with one argument, the instance of
-     *                 WP_Customize_Partial. The callback can either echo the
+     *                 Partial. The callback can either echo the
      *                 partial or return the partial as a string, or return false if error.
      */
     public $render_callback;
@@ -152,7 +156,7 @@ class WP_Customize_Partial
      * @type array|string $settings All settings IDs tied to the partial. If undefined, `$id` will be used.
      * }
      */
-    public function __construct(WP_Customize_Selective_Refresh $component, $id, $args = array())
+    public function __construct(WP_Customize_Selective_Refresh $component, $id, $args = [])
     {
         $keys = array_keys(get_object_vars($this));
         foreach ($keys as $key) {
@@ -167,15 +171,15 @@ class WP_Customize_Partial
         $this->id_data['base'] = array_shift($this->id_data['keys']);
 
         if (empty($this->render_callback)) {
-            $this->render_callback = array($this, 'render_callback');
+            $this->render_callback = [$this, 'render_callback'];
         }
 
         // Process settings.
         if (!isset($this->settings)) {
-            $this->settings = array($id);
+            $this->settings = [$id];
         } else {
             if (is_string($this->settings)) {
-                $this->settings = array($this->settings);
+                $this->settings = [$this->settings];
             }
         }
 
@@ -213,7 +217,7 @@ class WP_Customize_Partial
      * @return string|array|false The rendered partial as a string, raw data array (for client-side JS template),
      *                            or false if no render applied.
      */
-    final public function render($container_context = array())
+    final public function render($container_context = [])
     {
         $partial = $this;
         $rendered = false;
@@ -244,7 +248,7 @@ class WP_Customize_Partial
          * @since 4.5.0
          *
          * @param string|array|false $rendered The partial value. Default false.
-         * @param WP_Customize_Partial $partial Devtronic\FreshPress\Components\Customize\Setting instance.
+         * @param Partial $partial Devtronic\FreshPress\Components\Customize\Setting instance.
          * @param array $container_context Optional array of context data associated with
          *                                                the target container.
          */
@@ -258,7 +262,7 @@ class WP_Customize_Partial
          * @since 4.5.0
          *
          * @param string|array|false $rendered The partial value. Default false.
-         * @param WP_Customize_Partial $partial Devtronic\FreshPress\Components\Customize\Setting instance.
+         * @param Partial $partial Devtronic\FreshPress\Components\Customize\Setting instance.
          * @param array $container_context Optional array of context data associated with
          *                                                the target container.
          */
@@ -282,11 +286,11 @@ class WP_Customize_Partial
      * @since 4.5.0
      * @access public
      *
-     * @param WP_Customize_Partial $partial Partial.
+     * @param Partial $partial Partial.
      * @param array $context Context.
      * @return string|array|false
      */
-    public function render_callback(WP_Customize_Partial $partial, $context = array())
+    public function render_callback(Partial $partial, $context = [])
     {
         unset($partial, $context);
         return false;
@@ -302,14 +306,14 @@ class WP_Customize_Partial
      */
     public function json()
     {
-        $exports = array(
+        $exports = [
             'settings' => $this->settings,
             'primarySetting' => $this->primary_setting,
             'selector' => $this->selector,
             'type' => $this->type,
             'fallbackRefresh' => $this->fallback_refresh,
             'containerInclusive' => $this->container_inclusive,
-        );
+        ];
         return $exports;
     }
 

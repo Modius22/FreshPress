@@ -7,6 +7,8 @@
  * @since 4.5.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Partial;
+
 /**
  * Core Customizer class for implementing selective refresh.
  *
@@ -32,11 +34,11 @@ final class WP_Customize_Selective_Refresh
     public $manager;
 
     /**
-     * Registered instances of WP_Customize_Partial.
+     * Registered instances of Partial.
      *
      * @since 4.5.0
      * @access protected
-     * @var WP_Customize_Partial[]
+     * @var Partial[]
      */
     protected $partials = array();
 
@@ -69,8 +71,6 @@ final class WP_Customize_Selective_Refresh
     public function __construct(WP_Customize_Manager $manager)
     {
         $this->manager = $manager;
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-partial.php');
-
         add_action('customize_preview_init', array($this, 'init_preview'));
     }
 
@@ -92,7 +92,7 @@ final class WP_Customize_Selective_Refresh
      *
      * @since 4.5.0
      *
-     * @param WP_Customize_Partial|string $id Customize Partial object, or Panel ID.
+     * @param Partial|string $id Customize Partial object, or Panel ID.
      * @param array $args {
      *  Optional. Array of properties for the new Partials object. Default empty array.
      *
@@ -105,7 +105,7 @@ final class WP_Customize_Selective_Refresh
      *                                        Normally this is empty and the capability is derived from the capabilities
      *                                        of the associated `$settings`.
      * @type callable $render_callback Render callback.
-     *                                        Callback is called with one argument, the instance of WP_Customize_Partial.
+     *                                        Callback is called with one argument, the instance of Devtronic\FreshPress\Components\Customize\Partial.
      *                                        The callback can either echo the partial or return the partial as a string,
      *                                        or return false if error.
      * @type bool $container_inclusive Whether the container element is included in the partial, or if only
@@ -114,14 +114,14 @@ final class WP_Customize_Selective_Refresh
      *                                        A partial render is considered a failure if the render_callback returns
      *                                        false.
      * }
-     * @return WP_Customize_Partial             The instance of the panel that was added.
+     * @return Partial             The instance of the panel that was added.
      */
     public function add_partial($id, $args = array())
     {
-        if ($id instanceof WP_Customize_Partial) {
+        if ($id instanceof Partial) {
             $partial = $id;
         } else {
-            $class = 'WP_Customize_Partial';
+            $class = Partial::class;
 
             /** This filter is documented in wp-includes/customize/class-wp-customize-selective-refresh.php */
             $args = apply_filters('customize_dynamic_partial_args', $args, $id);
@@ -143,7 +143,7 @@ final class WP_Customize_Selective_Refresh
      * @access public
      *
      * @param string $id Customize Partial ID.
-     * @return WP_Customize_Partial|null The partial, if set. Otherwise null.
+     * @return Partial|null The partial, if set. Otherwise null.
      */
     public function get_partial($id)
     {
@@ -240,7 +240,7 @@ final class WP_Customize_Selective_Refresh
      * @see WP_Customize_Manager::add_dynamic_settings()
      *
      * @param array $partial_ids The partial ID to add.
-     * @return array Added WP_Customize_Partial instances.
+     * @return array Added Partial instances.
      */
     public function add_dynamic_partials($partial_ids)
     {
@@ -255,18 +255,18 @@ final class WP_Customize_Selective_Refresh
             }
 
             $partial_args = false;
-            $partial_class = 'WP_Customize_Partial';
+            $partial_class = Partial::class;
 
             /**
              * Filters a dynamic partial's constructor arguments.
              *
              * For a dynamic partial to be registered, this filter must be employed
              * to override the default false value with an array of args to pass to
-             * the WP_Customize_Partial constructor.
+             * the Partial constructor.
              *
              * @since 4.5.0
              *
-             * @param false|array $partial_args The arguments to the WP_Customize_Partial constructor.
+             * @param false|array $partial_args The arguments to the Partial constructor.
              * @param string $partial_id ID for dynamic partial.
              */
             $partial_args = apply_filters('customize_dynamic_partial_args', $partial_args, $partial_id);
@@ -277,13 +277,13 @@ final class WP_Customize_Selective_Refresh
             /**
              * Filters the class used to construct partials.
              *
-             * Allow non-statically created partials to be constructed with custom WP_Customize_Partial subclass.
+             * Allow non-statically created partials to be constructed with custom Partial subclass.
              *
              * @since 4.5.0
              *
-             * @param string $partial_class WP_Customize_Partial or a subclass.
+             * @param string $partial_class Partial or a subclass.
              * @param string $partial_id ID for dynamic partial.
-             * @param array $partial_args The arguments to the WP_Customize_Partial constructor.
+             * @param array $partial_args The arguments to the Partial constructor.
              */
             $partial_class = apply_filters(
                 'customize_dynamic_partial_class',

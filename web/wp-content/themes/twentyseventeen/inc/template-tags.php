@@ -9,6 +9,8 @@
  * @since 1.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Partial;
+
 if (!function_exists('twentyseventeen_posted_on')) :
     /**
      * Prints HTML with meta information for the current post-date/time and author.
@@ -135,12 +137,12 @@ endif;
 /**
  * Display a front page section.
  *
- * @param WP_Customize_Partial $partial Partial associated with a selective refresh request.
+ * @param Partial $partial Partial associated with a selective refresh request.
  * @param integer $id Front page section to display.
  */
 function twentyseventeen_front_page_section($partial = null, $id = 0)
 {
-    if (is_a($partial, 'WP_Customize_Partial')) {
+    if (is_a($partial, Partial::class)) {
         // Find out the id and set it up during a selective refresh.
         global $twentyseventeencounter;
         $id = str_replace('panel_', '', $partial->id);

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Panel;
+use Devtronic\FreshPress\Components\Customize\Partial;
 use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SidebarSection;
 use Devtronic\FreshPress\Components\Customize\WidgetAreaControl;
@@ -1936,7 +1937,7 @@ final class WP_Customize_Widgets
      *
      * @see dynamic_sidebar()
      *
-     * @param WP_Customize_Partial $partial Partial.
+     * @param Partial $partial Partial.
      * @param array $context {
      *     Sidebar args supplied as container context.
      *
