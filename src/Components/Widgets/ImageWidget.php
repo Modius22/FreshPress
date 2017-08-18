@@ -9,6 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Widgets;
 
+use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+
 /**
  * Core class that implements an image widget.
  *
@@ -60,8 +62,8 @@ class ImageWidget extends MediaWidget
      * @since  4.8.0
      * @access public
      *
-     * @see WP_REST_Controller::get_item_schema()
-     * @see WP_REST_Controller::get_additional_fields()
+     * @see Controller::get_item_schema()
+     * @see Controller::get_additional_fields()
      * @link https://core.trac.wordpress.org/ticket/35574
      * @return array Schema for properties.
      */

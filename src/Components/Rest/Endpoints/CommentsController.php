@@ -17,7 +17,6 @@ use WP_Comment_Query;
 use WP_Error;
 use WP_Post;
 use WP_REST_Comment_Meta_Fields;
-use WP_REST_Controller;
 use WP_REST_Posts_Controller;
 use WP_User;
 
@@ -26,9 +25,9 @@ use WP_User;
  *
  * @since 4.7.0
  *
- * @see WP_REST_Controller
+ * @see Controller
  */
-class CommentsController extends WP_REST_Controller
+class CommentsController extends Controller
 {
 
     /**

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\CommentsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -208,7 +209,7 @@ function create_initial_rest_routes()
             continue;
         }
         $controller = new $class($post_type->name);
-        if (!is_subclass_of($controller, 'WP_REST_Controller')) {
+        if (!is_subclass_of($controller, Controller::class)) {
             continue;
         }
 
@@ -240,7 +241,7 @@ function create_initial_rest_routes()
             continue;
         }
         $controller = new $class($taxonomy->name);
-        if (!is_subclass_of($controller, 'WP_REST_Controller')) {
+        if (!is_subclass_of($controller, Controller::class)) {
             continue;
         }
 

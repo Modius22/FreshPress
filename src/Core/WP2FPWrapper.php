@@ -95,6 +95,7 @@ $classes = array_change_key_case([
 
 $abstractClasses = array_change_key_case([
     'WP_Widget_Media' => 'Devtronic\\FreshPress\\Components\\Widgets\\MediaWidget',
+    'WP_REST_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\Controller',
 ]);
 
 $finalClasses = array_change_key_case([

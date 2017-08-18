@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -16,9 +17,9 @@ use Devtronic\FreshPress\Components\Rest\Server;
  *
  * @since 4.7.0
  *
- * @see WP_REST_Controller
+ * @see Controller
  */
-class WP_REST_Posts_Controller extends WP_REST_Controller
+class WP_REST_Posts_Controller extends Controller
 {
 
     /**

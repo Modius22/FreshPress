@@ -1,22 +1,25 @@
 <?php
 /**
- * REST API: WP_REST_Controller class
+ * REST API: Controller class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Rest\Endpoints;
+
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use WP_Error;
 
 /**
  * Core base controller for managing and interacting with REST API items.
  *
  * @since 4.7.0
  */
-abstract class WP_REST_Controller
+abstract class Controller
 {
 
     /**
@@ -46,7 +49,7 @@ abstract class WP_REST_Controller
     public function register_routes()
     {
         _doing_it_wrong(
-            'WP_REST_Controller::register_routes',
+            'Devtronic\FreshPress\Components\Rest\Endpoints\Controller::register_routes',
             __('The register_routes() method must be overridden'),
             '4.7'
         );
@@ -66,7 +69,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -84,7 +87,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -102,7 +105,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -120,7 +123,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -138,7 +141,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -156,7 +159,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -174,7 +177,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -192,7 +195,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -210,7 +213,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -228,7 +231,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -246,7 +249,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -265,7 +268,7 @@ abstract class WP_REST_Controller
         return new WP_Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            array('status' => 405)
+            ['status' => 405]
         );
     }
 
@@ -288,9 +291,9 @@ abstract class WP_REST_Controller
         $server = rest_get_server();
 
         if (method_exists($server, 'get_compact_response_links')) {
-            $links = call_user_func(array($server, 'get_compact_response_links'), $response);
+            $links = call_user_func([$server, 'get_compact_response_links'], $response);
         } else {
-            $links = call_user_func(array($server, 'get_response_links'), $response);
+            $links = call_user_func([$server, 'get_response_links'], $response);
         }
 
         if (!empty($links)) {
@@ -352,7 +355,7 @@ abstract class WP_REST_Controller
      */
     public function get_item_schema()
     {
-        return $this->add_additional_fields_schema(array());
+        return $this->add_additional_fields_schema([]);
     }
 
     /**
@@ -384,17 +387,17 @@ abstract class WP_REST_Controller
      */
     public function get_collection_params()
     {
-        return array(
+        return [
             'context' => $this->get_context_param(),
-            'page' => array(
+            'page' => [
                 'description' => __('Current page of the collection.'),
                 'type' => 'integer',
                 'default' => 1,
                 'sanitize_callback' => 'absint',
                 'validate_callback' => 'rest_validate_request_arg',
                 'minimum' => 1,
-            ),
-            'per_page' => array(
+            ],
+            'per_page' => [
                 'description' => __('Maximum number of items to be returned in result set.'),
                 'type' => 'integer',
                 'default' => 10,
@@ -402,14 +405,14 @@ abstract class WP_REST_Controller
                 'maximum' => 100,
                 'sanitize_callback' => 'absint',
                 'validate_callback' => 'rest_validate_request_arg',
-            ),
-            'search' => array(
+            ],
+            'search' => [
                 'description' => __('Limit results to those matching a string.'),
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
                 'validate_callback' => 'rest_validate_request_arg',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -423,14 +426,14 @@ abstract class WP_REST_Controller
      * @param array $args Optional. Additional arguments for context parameter. Default empty array.
      * @return array Context parameter details.
      */
-    public function get_context_param($args = array())
+    public function get_context_param($args = [])
     {
-        $param_details = array(
+        $param_details = [
             'description' => __('Scope under which the request is made; determines fields present in response.'),
             'type' => 'string',
             'sanitize_callback' => 'sanitize_key',
             'validate_callback' => 'rest_validate_request_arg',
-        );
+        ];
 
         $schema = $this->get_item_schema();
 
@@ -438,7 +441,7 @@ abstract class WP_REST_Controller
             return array_merge($param_details, $args);
         }
 
-        $contexts = array();
+        $contexts = [];
 
         foreach ($schema['properties'] as $attributes) {
             if (!empty($attributes['context'])) {
@@ -576,13 +579,13 @@ abstract class WP_REST_Controller
         }
 
         if (!$object_type) {
-            return array();
+            return [];
         }
 
         global $wp_rest_additional_fields;
 
         if (!$wp_rest_additional_fields || !isset($wp_rest_additional_fields[$object_type])) {
-            return array();
+            return [];
         }
 
         return $wp_rest_additional_fields[$object_type];
@@ -621,8 +624,8 @@ abstract class WP_REST_Controller
     public function get_endpoint_args_for_item_schema($method = Server::CREATABLE)
     {
         $schema = $this->get_item_schema();
-        $schema_properties = !empty($schema['properties']) ? $schema['properties'] : array();
-        $endpoint_args = array();
+        $schema_properties = !empty($schema['properties']) ? $schema['properties'] : [];
+        $endpoint_args = [];
 
         foreach ($schema_properties as $field_id => $params) {
 
@@ -631,10 +634,10 @@ abstract class WP_REST_Controller
                 continue;
             }
 
-            $endpoint_args[$field_id] = array(
+            $endpoint_args[$field_id] = [
                 'validate_callback' => 'rest_validate_request_arg',
                 'sanitize_callback' => 'rest_sanitize_request_arg',
-            );
+            ];
 
             if (isset($params['description'])) {
                 $endpoint_args[$field_id]['description'] = $params['description'];
@@ -648,7 +651,7 @@ abstract class WP_REST_Controller
                 $endpoint_args[$field_id]['required'] = true;
             }
 
-            foreach (array('type', 'format', 'enum', 'items') as $schema_prop) {
+            foreach (['type', 'format', 'enum', 'items'] as $schema_prop) {
                 if (isset($params[$schema_prop])) {
                     $endpoint_args[$field_id][$schema_prop] = $params[$schema_prop];
                 }
@@ -661,7 +664,7 @@ abstract class WP_REST_Controller
                 if (Server::CREATABLE !== $method) {
                     $params['arg_options'] = array_diff_key(
                         $params['arg_options'],
-                        array('required' => '', 'default' => '')
+                        ['required' => '', 'default' => '']
                     );
                 }
 

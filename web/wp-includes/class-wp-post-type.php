@@ -358,7 +358,7 @@ final class WP_Post_Type
     /**
      * The controller for this post type's REST API endpoints.
      *
-     * Custom controllers must extend WP_REST_Controller.
+     * Custom controllers must extend Devtronic\FreshPress\Components\Rest\Endpoints\Controller.
      *
      * @since 4.7.4
      * @access public
