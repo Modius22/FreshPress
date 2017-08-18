@@ -12,6 +12,7 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostStatusController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostTypesController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\RevisionsController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -219,7 +220,7 @@ function create_initial_rest_routes()
         $controller->register_routes();
 
         if (post_type_supports($post_type->name, 'revisions')) {
-            $revisions_controller = new WP_REST_Revisions_Controller($post_type->name);
+            $revisions_controller = new RevisionsController($post_type->name);
             $revisions_controller->register_routes();
         }
     }

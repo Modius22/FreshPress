@@ -1,17 +1,19 @@
 <?php
 /**
- * REST API: WP_REST_Revisions_Controller class
+ * REST API: RevisionsController class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
-use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
-use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
+namespace Devtronic\FreshPress\Components\Rest\Endpoints;
+
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use WP_Error;
+use WP_Post;
 
 /**
  * Core class used to access revisions via the REST API.
@@ -20,7 +22,7 @@ use Devtronic\FreshPress\Components\Rest\Server;
  *
  * @see Controller
  */
-class WP_REST_Revisions_Controller extends Controller
+class RevisionsController extends Controller
 {
 
     /**
@@ -81,59 +83,59 @@ class WP_REST_Revisions_Controller extends Controller
         register_rest_route(
             $this->namespace,
             '/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base,
-            array(
-                'args' => array(
-                    'parent' => array(
+            [
+                'args' => [
+                    'parent' => [
                         'description' => __('The ID for the parent of the object.'),
                         'type' => 'integer',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'methods' => Server::READABLE,
-                    'callback' => array($this, 'get_items'),
-                    'permission_callback' => array($this, 'get_items_permissions_check'),
+                    'callback' => [$this, 'get_items'],
+                    'permission_callback' => [$this, 'get_items_permissions_check'],
                     'args' => $this->get_collection_params(),
-                ),
-                'schema' => array($this, 'get_public_item_schema'),
-            )
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ]
         );
 
         register_rest_route(
             $this->namespace,
             '/' . $this->parent_base . '/(?P<parent>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)',
-            array(
-                'args' => array(
-                    'parent' => array(
+            [
+                'args' => [
+                    'parent' => [
                         'description' => __('The ID for the parent of the object.'),
                         'type' => 'integer',
-                    ),
-                    'id' => array(
+                    ],
+                    'id' => [
                         'description' => __('Unique identifier for the object.'),
                         'type' => 'integer',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'methods' => Server::READABLE,
-                    'callback' => array($this, 'get_item'),
-                    'permission_callback' => array($this, 'get_item_permissions_check'),
-                    'args' => array(
-                        'context' => $this->get_context_param(array('default' => 'view')),
-                    ),
-                ),
-                array(
+                    'callback' => [$this, 'get_item'],
+                    'permission_callback' => [$this, 'get_item_permissions_check'],
+                    'args' => [
+                        'context' => $this->get_context_param(['default' => 'view']),
+                    ],
+                ],
+                [
                     'methods' => Server::DELETABLE,
-                    'callback' => array($this, 'delete_item'),
-                    'permission_callback' => array($this, 'delete_item_permissions_check'),
-                    'args' => array(
-                        'force' => array(
+                    'callback' => [$this, 'delete_item'],
+                    'permission_callback' => [$this, 'delete_item_permissions_check'],
+                    'args' => [
+                        'force' => [
                             'type' => 'boolean',
                             'default' => false,
                             'description' => __('Required to be true, as revisions do not support trashing.'),
-                        ),
-                    ),
-                ),
-                'schema' => array($this, 'get_public_item_schema'),
-            )
+                        ],
+                    ],
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ]
         );
     }
 
@@ -147,7 +149,7 @@ class WP_REST_Revisions_Controller extends Controller
      */
     protected function get_parent($parent)
     {
-        $error = new WP_Error('rest_post_invalid_parent', __('Invalid post parent ID.'), array('status' => 404));
+        $error = new WP_Error('rest_post_invalid_parent', __('Invalid post parent ID.'), ['status' => 404]);
         if ((int)$parent <= 0) {
             return $error;
         }
@@ -181,7 +183,7 @@ class WP_REST_Revisions_Controller extends Controller
             return new WP_Error(
                 'rest_cannot_read',
                 __('Sorry, you are not allowed to view revisions of this post.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
 
@@ -198,7 +200,7 @@ class WP_REST_Revisions_Controller extends Controller
      */
     protected function get_revision($id)
     {
-        $error = new WP_Error('rest_post_invalid_id', __('Invalid revision ID.'), array('status' => 404));
+        $error = new WP_Error('rest_post_invalid_id', __('Invalid revision ID.'), ['status' => 404]);
         if ((int)$id <= 0) {
             return $error;
         }
@@ -229,7 +231,7 @@ class WP_REST_Revisions_Controller extends Controller
 
         $revisions = wp_get_post_revisions($request['parent']);
 
-        $response = array();
+        $response = [];
         foreach ($revisions as $revision) {
             $data = $this->prepare_item_for_response($revision, $request);
             $response[] = $this->prepare_response_for_collection($data);
@@ -329,7 +331,7 @@ class WP_REST_Revisions_Controller extends Controller
             return new WP_Error(
                 'rest_trash_not_supported',
                 __('Revisions do not support trashing. Set force=true to delete.'),
-                array('status' => 501)
+                ['status' => 501]
             );
         }
 
@@ -350,11 +352,11 @@ class WP_REST_Revisions_Controller extends Controller
         do_action('rest_delete_revision', $result, $request);
 
         if (!$result) {
-            return new WP_Error('rest_cannot_delete', __('The post cannot be deleted.'), array('status' => 500));
+            return new WP_Error('rest_cannot_delete', __('The post cannot be deleted.'), ['status' => 500]);
         }
 
         $response = new Response();
-        $response->set_data(array('deleted' => true, 'previous' => $previous->get_data()));
+        $response->set_data(['deleted' => true, 'previous' => $previous->get_data()]);
         return $response;
     }
 
@@ -376,7 +378,7 @@ class WP_REST_Revisions_Controller extends Controller
 
         $schema = $this->get_item_schema();
 
-        $data = array();
+        $data = [];
 
         if (!empty($schema['properties']['author'])) {
             $data['author'] = (int)$post->post_author;
@@ -411,33 +413,33 @@ class WP_REST_Revisions_Controller extends Controller
         }
 
         if (!empty($schema['properties']['guid'])) {
-            $data['guid'] = array(
+            $data['guid'] = [
                 /** This filter is documented in wp-includes/post-template.php */
                 'rendered' => apply_filters('get_the_guid', $post->guid),
                 'raw' => $post->guid,
-            );
+            ];
         }
 
         if (!empty($schema['properties']['title'])) {
-            $data['title'] = array(
+            $data['title'] = [
                 'raw' => $post->post_title,
                 'rendered' => get_the_title($post->ID),
-            );
+            ];
         }
 
         if (!empty($schema['properties']['content'])) {
-            $data['content'] = array(
+            $data['content'] = [
                 'raw' => $post->post_content,
                 /** This filter is documented in wp-includes/post-template.php */
                 'rendered' => apply_filters('the_content', $post->post_content),
-            );
+            ];
         }
 
         if (!empty($schema['properties']['excerpt'])) {
-            $data['excerpt'] = array(
+            $data['excerpt'] = [
                 'raw' => $post->post_excerpt,
                 'rendered' => $this->prepare_excerpt_response($post->post_excerpt, $post),
-            );
+            ];
         }
 
         $context = !empty($request['context']) ? $request['context'] : 'view';
@@ -500,63 +502,63 @@ class WP_REST_Revisions_Controller extends Controller
      */
     public function get_item_schema()
     {
-        $schema = array(
+        $schema = [
             '$schema' => 'http://json-schema.org/schema#',
             'title' => "{$this->parent_post_type}-revision",
             'type' => 'object',
             // Base properties for every Revision.
-            'properties' => array(
-                'author' => array(
+            'properties' => [
+                'author' => [
                     'description' => __('The ID for the author of the object.'),
                     'type' => 'integer',
-                    'context' => array('view', 'edit', 'embed'),
-                ),
-                'date' => array(
+                    'context' => ['view', 'edit', 'embed'],
+                ],
+                'date' => [
                     'description' => __("The date the object was published, in the site's timezone."),
                     'type' => 'string',
                     'format' => 'date-time',
-                    'context' => array('view', 'edit', 'embed'),
-                ),
-                'date_gmt' => array(
+                    'context' => ['view', 'edit', 'embed'],
+                ],
+                'date_gmt' => [
                     'description' => __('The date the object was published, as GMT.'),
                     'type' => 'string',
                     'format' => 'date-time',
-                    'context' => array('view', 'edit'),
-                ),
-                'guid' => array(
+                    'context' => ['view', 'edit'],
+                ],
+                'guid' => [
                     'description' => __('GUID for the object, as it exists in the database.'),
                     'type' => 'string',
-                    'context' => array('view', 'edit'),
-                ),
-                'id' => array(
+                    'context' => ['view', 'edit'],
+                ],
+                'id' => [
                     'description' => __('Unique identifier for the object.'),
                     'type' => 'integer',
-                    'context' => array('view', 'edit', 'embed'),
-                ),
-                'modified' => array(
+                    'context' => ['view', 'edit', 'embed'],
+                ],
+                'modified' => [
                     'description' => __("The date the object was last modified, in the site's timezone."),
                     'type' => 'string',
                     'format' => 'date-time',
-                    'context' => array('view', 'edit'),
-                ),
-                'modified_gmt' => array(
+                    'context' => ['view', 'edit'],
+                ],
+                'modified_gmt' => [
                     'description' => __('The date the object was last modified, as GMT.'),
                     'type' => 'string',
                     'format' => 'date-time',
-                    'context' => array('view', 'edit'),
-                ),
-                'parent' => array(
+                    'context' => ['view', 'edit'],
+                ],
+                'parent' => [
                     'description' => __('The ID for the parent of the object.'),
                     'type' => 'integer',
-                    'context' => array('view', 'edit', 'embed'),
-                ),
-                'slug' => array(
+                    'context' => ['view', 'edit', 'embed'],
+                ],
+                'slug' => [
                     'description' => __('An alphanumeric identifier for the object unique to its type.'),
                     'type' => 'string',
-                    'context' => array('view', 'edit', 'embed'),
-                ),
-            ),
-        );
+                    'context' => ['view', 'edit', 'embed'],
+                ],
+            ],
+        ];
 
         $parent_schema = $this->parent_controller->get_item_schema();
 
@@ -589,9 +591,9 @@ class WP_REST_Revisions_Controller extends Controller
      */
     public function get_collection_params()
     {
-        return array(
-            'context' => $this->get_context_param(array('default' => 'view')),
-        );
+        return [
+            'context' => $this->get_context_param(['default' => 'view']),
+        ];
     }
 
     /**
