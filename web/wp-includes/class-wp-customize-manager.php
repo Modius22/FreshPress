@@ -21,6 +21,7 @@ use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
 use Devtronic\FreshPress\Components\Customize\Panel;
 use Devtronic\FreshPress\Components\Customize\Section;
+use Devtronic\FreshPress\Components\Customize\SelectiveRefresh;
 use Devtronic\FreshPress\Components\Customize\Setting;
 use Devtronic\FreshPress\Components\Customize\SidebarSection;
 use Devtronic\FreshPress\Components\Customize\SiteIconControl;
@@ -93,7 +94,7 @@ final class WP_Customize_Manager
      *
      * @since 4.5.0
      * @access public
-     * @var WP_Customize_Selective_Refresh
+     * @var SelectiveRefresh
      */
     public $selective_refresh;
 
@@ -308,8 +309,7 @@ final class WP_Customize_Manager
          */
         $components = apply_filters('customize_loaded_components', $this->components, $this);
 
-        require_once(ABSPATH . WPINC . '/customize/class-wp-customize-selective-refresh.php');
-        $this->selective_refresh = new WP_Customize_Selective_Refresh($this);
+        $this->selective_refresh = new SelectiveRefresh($this);
 
         if (in_array('widgets', $components, true)) {
             require_once(ABSPATH . WPINC . '/class-wp-customize-widgets.php');
@@ -4508,7 +4508,7 @@ final class WP_Customize_Manager
      * @since 4.7.0
      *
      * @param array $response Response.
-     * @param WP_Customize_Selective_Refresh $selective_refresh Selective refresh component.
+     * @param SelectiveRefresh $selective_refresh Selective refresh component.
      * @param array $partials Array of partials.
      * @return array
      */

@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Selective_Refresh;
-
 /**
  * Core Customizer class for implementing selective refresh partials.
  *
@@ -28,7 +26,7 @@ class Partial
      *
      * @since 4.5.0
      * @access public
-     * @var WP_Customize_Selective_Refresh
+     * @var SelectiveRefresh
      */
     public $component;
 
@@ -148,7 +146,7 @@ class Partial
      * @since 4.5.0
      * @access public
      *
-     * @param WP_Customize_Selective_Refresh $component Customize Partial Refresh plugin instance.
+     * @param SelectiveRefresh $component Customize Partial Refresh plugin instance.
      * @param string $id Control ID.
      * @param array $args {
      *     Optional. Arguments to override class property defaults.
@@ -156,7 +154,7 @@ class Partial
      * @type array|string $settings All settings IDs tied to the partial. If undefined, `$id` will be used.
      * }
      */
-    public function __construct(WP_Customize_Selective_Refresh $component, $id, $args = [])
+    public function __construct(SelectiveRefresh $component, $id, $args = [])
     {
         $keys = array_keys(get_object_vars($this));
         foreach ($keys as $key) {

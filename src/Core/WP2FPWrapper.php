@@ -96,6 +96,7 @@ $finalClasses = array_change_key_case([
     'WP_Customize_Background_Image_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\BackgroundImageSetting',
     'WP_Customize_Custom_CSS_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\CustomCssSetting',
     'WP_Customize_Header_Image_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\HeaderImageSetting',
+    'WP_Customize_Selective_Refresh' => 'Devtronic\\FreshPress\\Components\\Customize\\SelectiveRefresh',
 ]);
 
 // Classes
