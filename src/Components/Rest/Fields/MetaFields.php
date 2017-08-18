@@ -1,20 +1,24 @@
 <?php
 /**
- * REST API: WP_REST_Meta_Fields class
+ * REST API: MetaFields class
  *
  * @package WordPress
  * @subpackage REST_API
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Rest\Fields;
+
 use Devtronic\FreshPress\Components\Rest\Request;
+use WP_Error;
+use WP_Http;
 
 /**
  * Core class to manage meta values for an object via the REST API.
  *
  * @since 4.7.0
  */
-abstract class WP_REST_Meta_Fields
+abstract class MetaFields
 {
 
     /**
@@ -48,11 +52,11 @@ abstract class WP_REST_Meta_Fields
      */
     public function register_field()
     {
-        register_rest_field($this->get_rest_field_type(), 'meta', array(
-            'get_callback' => array($this, 'get_value'),
-            'update_callback' => array($this, 'update_value'),
+        register_rest_field($this->get_rest_field_type(), 'meta', [
+            'get_callback' => [$this, 'get_value'],
+            'update_callback' => [$this, 'update_value'],
             'schema' => $this->get_field_schema(),
-        ));
+        ]);
     }
 
     /**
@@ -68,7 +72,7 @@ abstract class WP_REST_Meta_Fields
     public function get_value($object_id, $request)
     {
         $fields = $this->get_registered_fields();
-        $response = array();
+        $response = [];
 
         foreach ($fields as $meta_key => $args) {
             $name = $args['name'];
@@ -81,7 +85,7 @@ abstract class WP_REST_Meta_Fields
                 }
                 $value = $this->prepare_value_for_response($value, $request, $args);
             } else {
-                $value = array();
+                $value = [];
                 foreach ($all_values as $row) {
                     $value[] = $this->prepare_value_for_response($row, $request, $args);
                 }
@@ -150,7 +154,7 @@ abstract class WP_REST_Meta_Fields
 
             $is_valid = rest_validate_value_from_schema($meta[$name], $args['schema'], 'meta.' . $name);
             if (is_wp_error($is_valid)) {
-                $is_valid->add_data(array('status' => 400));
+                $is_valid->add_data(['status' => 400]);
                 return $is_valid;
             }
 
@@ -189,7 +193,7 @@ abstract class WP_REST_Meta_Fields
                 'rest_cannot_delete',
                 /* translators: %s: custom field key */
                 sprintf(__('Sorry, you are not allowed to edit the %s custom field.'), $name),
-                array('key' => $name, 'status' => rest_authorization_required_code())
+                ['key' => $name, 'status' => rest_authorization_required_code()]
             );
         }
 
@@ -197,7 +201,7 @@ abstract class WP_REST_Meta_Fields
             return new WP_Error(
                 'rest_meta_database_error',
                 __('Could not delete meta value from database.'),
-                array('key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR)
+                ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
             );
         }
 
@@ -226,7 +230,7 @@ abstract class WP_REST_Meta_Fields
                 'rest_cannot_update',
                 /* translators: %s: custom field key */
                 sprintf(__('Sorry, you are not allowed to edit the %s custom field.'), $name),
-                array('key' => $name, 'status' => rest_authorization_required_code())
+                ['key' => $name, 'status' => rest_authorization_required_code()]
             );
         }
 
@@ -261,7 +265,7 @@ abstract class WP_REST_Meta_Fields
                 return new WP_Error(
                     'rest_meta_database_error',
                     __('Could not update meta value in database.'),
-                    array('key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR)
+                    ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
                 );
             }
         }
@@ -271,7 +275,7 @@ abstract class WP_REST_Meta_Fields
                 return new WP_Error(
                     'rest_meta_database_error',
                     __('Could not update meta value in database.'),
-                    array('key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR)
+                    ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
                 );
             }
         }
@@ -299,7 +303,7 @@ abstract class WP_REST_Meta_Fields
                 'rest_cannot_update',
                 /* translators: %s: custom field key */
                 sprintf(__('Sorry, you are not allowed to edit the %s custom field.'), $name),
-                array('key' => $name, 'status' => rest_authorization_required_code())
+                ['key' => $name, 'status' => rest_authorization_required_code()]
             );
         }
 
@@ -319,7 +323,7 @@ abstract class WP_REST_Meta_Fields
             return new WP_Error(
                 'rest_meta_database_error',
                 __('Could not update meta value in database.'),
-                array('key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR)
+                ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
             );
         }
 
@@ -336,32 +340,32 @@ abstract class WP_REST_Meta_Fields
      */
     protected function get_registered_fields()
     {
-        $registered = array();
+        $registered = [];
 
         foreach (get_registered_meta_keys($this->get_meta_type()) as $name => $args) {
             if (empty($args['show_in_rest'])) {
                 continue;
             }
 
-            $rest_args = array();
+            $rest_args = [];
 
             if (is_array($args['show_in_rest'])) {
                 $rest_args = $args['show_in_rest'];
             }
 
-            $default_args = array(
+            $default_args = [
                 'name' => $name,
                 'single' => $args['single'],
                 'type' => !empty($args['type']) ? $args['type'] : null,
-                'schema' => array(),
-                'prepare_callback' => array($this, 'prepare_value'),
-            );
+                'schema' => [],
+                'prepare_callback' => [$this, 'prepare_value'],
+            ];
 
-            $default_schema = array(
+            $default_schema = [
                 'type' => $default_args['type'],
                 'description' => empty($args['description']) ? '' : $args['description'],
                 'default' => isset($args['default']) ? $args['default'] : null,
-            );
+            ];
 
             $rest_args = array_merge($default_args, $rest_args);
             $rest_args['schema'] = array_merge($default_schema, $rest_args['schema']);
@@ -369,14 +373,14 @@ abstract class WP_REST_Meta_Fields
             $type = !empty($rest_args['type']) ? $rest_args['type'] : null;
             $type = !empty($rest_args['schema']['type']) ? $rest_args['schema']['type'] : $type;
 
-            if (!in_array($type, array('string', 'boolean', 'integer', 'number'))) {
+            if (!in_array($type, ['string', 'boolean', 'integer', 'number'])) {
                 continue;
             }
 
             if (empty($rest_args['single'])) {
-                $rest_args['schema']['items'] = array(
+                $rest_args['schema']['items'] = [
                     'type' => $rest_args['type'],
-                );
+                ];
                 $rest_args['schema']['type'] = 'array';
             }
 
@@ -398,16 +402,16 @@ abstract class WP_REST_Meta_Fields
     {
         $fields = $this->get_registered_fields();
 
-        $schema = array(
+        $schema = [
             'description' => __('Meta fields.'),
             'type' => 'object',
-            'context' => array('view', 'edit'),
-            'properties' => array(),
-            'arg_options' => array(
+            'context' => ['view', 'edit'],
+            'properties' => [],
+            'arg_options' => [
                 'sanitize_callback' => null,
-                'validate_callback' => array($this, 'check_meta_is_array'),
-            ),
-        );
+                'validate_callback' => [$this, 'check_meta_is_array'],
+            ],
+        ];
 
         foreach ($fields as $args) {
             $schema['properties'][$args['name']] = $args['schema'];
@@ -455,7 +459,7 @@ abstract class WP_REST_Meta_Fields
         }
 
         // Don't allow objects to be output.
-        if (is_object($value) && !($value instanceof JsonSerializable)) {
+        if (is_object($value) && !($value instanceof \JsonSerializable)) {
             return null;
         }
 

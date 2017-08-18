@@ -9,16 +9,14 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Fields;
 
-use WP_REST_Meta_Fields;
-
 /**
  * Core class to manage comment meta via the REST API.
  *
  * @since 4.7.0
  *
- * @see WP_REST_Meta_Fields
+ * @see MetaFields
  */
-class CommentMetaFields extends WP_REST_Meta_Fields
+class CommentMetaFields extends MetaFields
 {
 
     /**

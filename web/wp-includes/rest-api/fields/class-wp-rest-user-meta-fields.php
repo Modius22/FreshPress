@@ -7,14 +7,16 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Fields\MetaFields;
+
 /**
  * Core class used to manage meta values for users via the REST API.
  *
  * @since 4.7.0
  *
- * @see WP_REST_Meta_Fields
+ * @see MetaFields
  */
-class WP_REST_User_Meta_Fields extends WP_REST_Meta_Fields
+class WP_REST_User_Meta_Fields extends MetaFields
 {
 
     /**
