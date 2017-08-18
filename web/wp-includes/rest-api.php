@@ -14,6 +14,7 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\PostStatusController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostTypesController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\RevisionsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\SettingsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\TaxonomiesController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -235,7 +236,7 @@ function create_initial_rest_routes()
     $controller->register_routes();
 
     // Taxonomies.
-    $controller = new WP_REST_Taxonomies_Controller;
+    $controller = new TaxonomiesController();
     $controller->register_routes();
 
     // Terms.
