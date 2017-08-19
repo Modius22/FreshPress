@@ -1,13 +1,13 @@
 <?php
 /**
- * Upgrader API: Bulk_Plugin_Upgrader_Skin class
+ * Upgrader API: BulkPluginUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\BulkUpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
 
 /**
  * Bulk Plugin Upgrader Skin for WordPress Plugin Upgrades.
@@ -17,9 +17,9 @@ use Devtronic\FreshPress\Components\Upgrader\BulkUpgraderSkin;
  *
  * @see BulkUpgraderSkin
  */
-class Bulk_Plugin_Upgrader_Skin extends BulkUpgraderSkin
+class BulkPluginUpgraderSkin extends BulkUpgraderSkin
 {
-    public $plugin_info = array(); // Plugin_Upgrader::bulk() will fill this in.
+    public $plugin_info = []; // Plugin_Upgrader::bulk() will fill this in.
 
     public function add_strings()
     {
@@ -52,10 +52,10 @@ class Bulk_Plugin_Upgrader_Skin extends BulkUpgraderSkin
     public function bulk_footer()
     {
         parent::bulk_footer();
-        $update_actions = array(
+        $update_actions = [
             'plugins_page' => '<a href="' . self_admin_url('plugins.php') . '" target="_parent">' . __('Return to Plugins page') . '</a>',
             'updates_page' => '<a href="' . self_admin_url('update-core.php') . '" target="_parent">' . __('Return to WordPress Updates page') . '</a>'
-        );
+        ];
         if (!current_user_can('activate_plugins')) {
             unset($update_actions['plugins_page']);
         }

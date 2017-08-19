@@ -13,9 +13,6 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
 
-/** Bulk_Plugin_Upgrader_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-bulk-plugin-upgrader-skin.php';
-
 /**
  * Core class used for upgrading/installing a local set of files via
  * the Filesystem Abstraction classes from a Zip file.
