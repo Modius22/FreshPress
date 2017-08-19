@@ -1,13 +1,13 @@
 <?php
 /**
- * Upgrader API: Plugin_Installer_Skin class
+ * Upgrader API: PluginInstallerSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
 
 /**
  * Plugin Installer Skin for WordPress Plugin Installer.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see UpgraderSkin
  */
-class Plugin_Installer_Skin extends UpgraderSkin
+class PluginInstallerSkin extends UpgraderSkin
 {
     public $api;
     public $type;
@@ -26,13 +26,13 @@ class Plugin_Installer_Skin extends UpgraderSkin
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array('type' => 'web', 'url' => '', 'plugin' => '', 'nonce' => '', 'title' => '');
+        $defaults = ['type' => 'web', 'url' => '', 'plugin' => '', 'nonce' => '', 'title' => ''];
         $args = wp_parse_args($args, $defaults);
 
         $this->type = $args['type'];
-        $this->api = isset($args['api']) ? $args['api'] : array();
+        $this->api = isset($args['api']) ? $args['api'] : [];
 
         parent::__construct($args);
     }
@@ -58,27 +58,27 @@ class Plugin_Installer_Skin extends UpgraderSkin
     {
         $plugin_file = $this->upgrader->plugin_info();
 
-        $install_actions = array();
+        $install_actions = [];
 
         $from = isset($_GET['from']) ? wp_unslash($_GET['from']) : 'plugins';
 
         if ('import' == $from) {
             $install_actions['activate_plugin'] = '<a class="button button-primary" href="' . wp_nonce_url(
-                'plugins.php?action=activate&amp;from=import&amp;plugin=' . urlencode($plugin_file),
+                    'plugins.php?action=activate&amp;from=import&amp;plugin=' . urlencode($plugin_file),
                     'activate-plugin_' . $plugin_file
-            ) . '" target="_parent">' . __('Activate Plugin &amp; Run Importer') . '</a>';
+                ) . '" target="_parent">' . __('Activate Plugin &amp; Run Importer') . '</a>';
         } else {
             $install_actions['activate_plugin'] = '<a class="button button-primary" href="' . wp_nonce_url(
-                'plugins.php?action=activate&amp;plugin=' . urlencode($plugin_file),
+                    'plugins.php?action=activate&amp;plugin=' . urlencode($plugin_file),
                     'activate-plugin_' . $plugin_file
-            ) . '" target="_parent">' . __('Activate Plugin') . '</a>';
+                ) . '" target="_parent">' . __('Activate Plugin') . '</a>';
         }
 
         if (is_multisite() && current_user_can('manage_network_plugins')) {
             $install_actions['network_activate'] = '<a class="button button-primary" href="' . wp_nonce_url(
-                'plugins.php?action=activate&amp;networkwide=1&amp;plugin=' . urlencode($plugin_file),
+                    'plugins.php?action=activate&amp;networkwide=1&amp;plugin=' . urlencode($plugin_file),
                     'activate-plugin_' . $plugin_file
-            ) . '" target="_parent">' . __('Network Activate') . '</a>';
+                ) . '" target="_parent">' . __('Network Activate') . '</a>';
             unset($install_actions['activate_plugin']);
         }
 

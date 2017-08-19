@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Upgrader\PluginInstallerSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\ThemeInstallerSkin;
 
@@ -144,7 +145,7 @@ if (isset($_GET['action'])) {
 
         $type = 'web'; //Install plugin type, From Web or an Upload.
 
-        $upgrader = new Plugin_Upgrader(new Plugin_Installer_Skin(compact('title', 'url', 'nonce', 'plugin', 'api')));
+        $upgrader = new Plugin_Upgrader(new PluginInstallerSkin(compact('title', 'url', 'nonce', 'plugin', 'api')));
         $upgrader->install($api->download_link);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
@@ -167,7 +168,7 @@ if (isset($_GET['action'])) {
         $url = add_query_arg(array('package' => $file_upload->id), 'update.php?action=upload-plugin');
         $type = 'upload'; //Install plugin type, From Web or an Upload.
 
-        $upgrader = new Plugin_Upgrader(new Plugin_Installer_Skin(compact('type', 'title', 'nonce', 'url')));
+        $upgrader = new Plugin_Upgrader(new PluginInstallerSkin(compact('type', 'title', 'nonce', 'url')));
         $result = $upgrader->install($file_upload->package);
 
         if ($result || is_wp_error($result)) {
