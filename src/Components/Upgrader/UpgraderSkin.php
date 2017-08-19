@@ -1,11 +1,16 @@
 <?php
 /**
- * Upgrader API: WP_Upgrader_Skin class
+ * Upgrader API: UpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
+
+namespace Devtronic\FreshPress\Components\Upgrader;
+
+use WP_Error;
+use WP_Upgrader;
 
 /**
  * Generic Skin for the WordPress Upgrader classes. This skin is designed to be extended for specific purposes.
@@ -13,7 +18,7 @@
  * @since 2.8.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader-skins.php.
  */
-class WP_Upgrader_Skin
+class UpgraderSkin
 {
     public $upgrader;
     public $done_header = false;
@@ -27,15 +32,15 @@ class WP_Upgrader_Skin
      * @var string|bool|WP_Error
      */
     public $result = false;
-    public $options = array();
+    public $options = [];
 
     /**
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array('url' => '', 'nonce' => '', 'title' => '', 'context' => false);
+        $defaults = ['url' => '', 'nonce' => '', 'title' => '', 'context' => false];
         $this->options = wp_parse_args($args, $defaults);
     }
 
@@ -96,7 +101,7 @@ class WP_Upgrader_Skin
             $url = wp_nonce_url($url, $this->options['nonce']);
         }
 
-        $extra_fields = array();
+        $extra_fields = [];
 
         return request_filesystem_credentials($url, '', $error, $context, $extra_fields, $allow_relaxed_file_ownership);
     }

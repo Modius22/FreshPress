@@ -10,9 +10,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
-
-/** WP_Upgrader_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader-skin.php';
+use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
 
 /** Plugin_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader-skin.php';
@@ -67,7 +65,7 @@ class WP_Upgrader
      *
      * @since 2.8.0
      * @access public
-     * @var Automatic_Upgrader_Skin|WP_Upgrader_Skin $skin
+     * @var Automatic_Upgrader_Skin|UpgraderSkin $skin
      */
     public $skin = null;
 
@@ -125,13 +123,13 @@ class WP_Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @param WP_Upgrader_Skin $skin The upgrader skin to use. Default is a WP_Upgrader_Skin.
+     * @param UpgraderSkin $skin The upgrader skin to use. Default is a UpgraderSkin.
      *                               instance.
      */
     public function __construct($skin = null)
     {
         if (null == $skin) {
-            $this->skin = new WP_Upgrader_Skin();
+            $this->skin = new UpgraderSkin();
         } else {
             $this->skin = $skin;
         }

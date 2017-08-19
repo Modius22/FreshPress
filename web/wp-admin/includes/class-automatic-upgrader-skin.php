@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+
 /**
  * Upgrader Skin for Automatic WordPress Upgrades
  *
@@ -18,7 +20,7 @@
  *
  * @see Bulk_Upgrader_Skin
  */
-class Automatic_Upgrader_Skin extends WP_Upgrader_Skin
+class Automatic_Upgrader_Skin extends UpgraderSkin
 {
     protected $messages = array();
 

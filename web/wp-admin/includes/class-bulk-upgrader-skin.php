@@ -7,15 +7,17 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+
 /**
  * Generic Bulk Upgrader Skin for WordPress Upgrades.
  *
  * @since 3.0.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader-skins.php.
  *
- * @see WP_Upgrader_Skin
+ * @see UpgraderSkin
  */
-class Bulk_Upgrader_Skin extends WP_Upgrader_Skin
+class Bulk_Upgrader_Skin extends UpgraderSkin
 {
     public $in_loop = false;
     /**

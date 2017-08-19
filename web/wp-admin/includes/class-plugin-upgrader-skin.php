@@ -7,15 +7,17 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+
 /**
  * Plugin Upgrader Skin for WordPress Plugin Upgrades.
  *
  * @since 2.8.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader-skins.php.
  *
- * @see WP_Upgrader_Skin
+ * @see UpgraderSkin
  */
-class Plugin_Upgrader_Skin extends WP_Upgrader_Skin
+class Plugin_Upgrader_Skin extends UpgraderSkin
 {
     public $plugin = '';
     public $plugin_active = false;

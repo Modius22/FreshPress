@@ -34,7 +34,7 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin
      * @since 4.6.0
      * @access public
      *
-     * @param array $args Options for the upgrader, see WP_Upgrader_Skin::__construct().
+     * @param array $args Options for the upgrader, see Devtronic\FreshPress\Components\Upgrader\UpgraderSkin::__construct().
      */
     public function __construct($args = array())
     {
