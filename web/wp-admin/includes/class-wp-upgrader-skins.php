@@ -9,9 +9,6 @@
 
 _deprecated_file(basename(__FILE__), '4.7.0', 'class-wp-upgrader.php');
 
-/** Plugin_Upgrader_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader-skin.php';
-
 /** Theme_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader-skin.php';
 

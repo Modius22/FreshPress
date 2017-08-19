@@ -1,13 +1,13 @@
 <?php
 /**
- * Upgrader API: Plugin_Upgrader_Skin class
+ * Upgrader API: PluginUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
 
 /**
  * Plugin Upgrader Skin for WordPress Plugin Upgrades.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see UpgraderSkin
  */
-class Plugin_Upgrader_Skin extends UpgraderSkin
+class PluginUpgraderSkin extends UpgraderSkin
 {
     public $plugin = '';
     public $plugin_active = false;
@@ -27,9 +27,9 @@ class Plugin_Upgrader_Skin extends UpgraderSkin
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array('url' => '', 'plugin' => '', 'nonce' => '', 'title' => __('Update Plugin'));
+        $defaults = ['url' => '', 'plugin' => '', 'nonce' => '', 'title' => __('Update Plugin')];
         $args = wp_parse_args($args, $defaults);
 
         $this->plugin = $args['plugin'];
@@ -49,20 +49,20 @@ class Plugin_Upgrader_Skin extends UpgraderSkin
         if (!empty($this->plugin) && !is_wp_error($this->result) && $this->plugin_active) {
             // Currently used only when JS is off for a single plugin update?
             echo '<iframe title="' . esc_attr__('Update progress') . '" style="border:0;overflow:hidden" width="100%" height="170" src="' . wp_nonce_url(
-                'update.php?action=activate-plugin&networkwide=' . $this->plugin_network_active . '&plugin=' . urlencode($this->plugin),
+                    'update.php?action=activate-plugin&networkwide=' . $this->plugin_network_active . '&plugin=' . urlencode($this->plugin),
                     'activate-plugin_' . $this->plugin
-            ) . '"></iframe>';
+                ) . '"></iframe>';
         }
 
         $this->decrement_update_count('plugin');
 
-        $update_actions = array(
+        $update_actions = [
             'activate_plugin' => '<a href="' . wp_nonce_url(
-                'plugins.php?action=activate&amp;plugin=' . urlencode($this->plugin),
+                    'plugins.php?action=activate&amp;plugin=' . urlencode($this->plugin),
                     'activate-plugin_' . $this->plugin
-            ) . '" target="_parent">' . __('Activate Plugin') . '</a>',
+                ) . '" target="_parent">' . __('Activate Plugin') . '</a>',
             'plugins_page' => '<a href="' . self_admin_url('plugins.php') . '" target="_parent">' . __('Return to Plugins page') . '</a>'
-        );
+        ];
         if ($this->plugin_active || !$this->result || is_wp_error($this->result) || !current_user_can('activate_plugins')) {
             unset($update_actions['activate_plugin']);
         }

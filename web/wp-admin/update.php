@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
+
 if (!defined('IFRAME_REQUEST') && isset($_GET['action']) && in_array(
     $_GET['action'],
         array('update-selected', 'activate-plugin', 'update-selected-themes')
@@ -67,7 +69,7 @@ if (isset($_GET['action'])) {
         $nonce = 'upgrade-plugin_' . $plugin;
         $url = 'update.php?action=upgrade-plugin&plugin=' . urlencode($plugin);
 
-        $upgrader = new Plugin_Upgrader(new Plugin_Upgrader_Skin(compact('title', 'nonce', 'url', 'plugin')));
+        $upgrader = new Plugin_Upgrader(new PluginUpgraderSkin(compact('title', 'nonce', 'url', 'plugin')));
         $upgrader->upgrade($plugin);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
