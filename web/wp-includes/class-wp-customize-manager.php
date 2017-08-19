@@ -19,6 +19,7 @@ use Devtronic\FreshPress\Components\Customize\HeaderImageControl;
 use Devtronic\FreshPress\Components\Customize\HeaderImageSetting;
 use Devtronic\FreshPress\Components\Customize\ImageControl;
 use Devtronic\FreshPress\Components\Customize\MediaControl;
+use Devtronic\FreshPress\Components\Customize\NavMenus;
 use Devtronic\FreshPress\Components\Customize\Panel;
 use Devtronic\FreshPress\Components\Customize\Section;
 use Devtronic\FreshPress\Components\Customize\SelectiveRefresh;
@@ -87,7 +88,7 @@ final class WP_Customize_Manager
      *
      * @since 4.3.0
      * @access public
-     * @var WP_Customize_Nav_Menus
+     * @var NavMenus
      */
     public $nav_menus;
 
@@ -319,8 +320,7 @@ final class WP_Customize_Manager
         }
 
         if (in_array('nav_menus', $components, true)) {
-            require_once(ABSPATH . WPINC . '/class-wp-customize-nav-menus.php');
-            $this->nav_menus = new WP_Customize_Nav_Menus($this);
+            $this->nav_menus = new NavMenus($this);
         }
 
         add_action('setup_theme', array($this, 'setup_theme'));
