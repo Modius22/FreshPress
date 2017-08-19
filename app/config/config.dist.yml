@@ -15,7 +15,7 @@ core:
         bypass_hosts: ~ # WP_PROXY_BYPASS_HOSTS
         block_external: false # WP_HTTP_BLOCK_EXTERNAL
 
-    filesystem_method: 'direct' # FS_METHOD
+    filesystem_method: ~ # FS_METHOD
     directories:
         # languages: '%core.install_path%/web/wp-content/languages/' # WP_LANG_DIR
         # plugins: '%core.install_path%/web/wp-content/legacy-plugins/' # WP_PLUGIN_DIR

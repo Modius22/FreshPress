@@ -47,7 +47,7 @@ require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
 nocache_headers();
 // Support wp-config-sample.php one level up, for the develop repo.
 $parameters = '';
-$configFile = ABSPATH . '../app/config/parameters.yml';
+$parametersFile = ABSPATH . '../app/config/parameters.yml';
 if (file_exists(ABSPATH . '../app/config/parameters.dist.yml')) {
     $parameters = Yaml::parse(file_get_contents(ABSPATH . '../app/config/parameters.dist.yml'));
 } else {
@@ -274,17 +274,22 @@ if ($step == -1 && wp_can_install_language_pack() && empty($language) && ($langu
 
     $context = getTemplateParameters();
 
-    $context['config_file'] = $configFile;
+    $context['config_file'] = $parametersFile;
     $context['install_link'] = $install;
-    if (!is_writable(dirname($configFile))) {
+    if (!is_writable(dirname($parametersFile))) {
         $context['parameters_data'] = $configContent;
 
         echo $twig->render('installer/config_creation_failed.html.twig', $context);
     } else {
-        $handle = fopen($configFile, 'w');
+        $configFile = ABSPATH . '../app/config/config.yml';
+        $configTemplateFile = ABSPATH . '../app/config/config.dist.yml';
+        if(!is_file($configFile) && is_file($configTemplateFile)){
+            copy($configTemplateFile, $configFile);
+        }
+        $handle = fopen($parametersFile, 'w');
         fputs($handle, $configContent);
         fclose($handle);
-        chmod($configFile, 0666);
+        chmod($parametersFile, 0666);
 
         echo $twig->render('installer/config_created.html.twig', $context);
     }
