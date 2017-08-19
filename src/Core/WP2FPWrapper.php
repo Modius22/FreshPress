@@ -105,6 +105,7 @@ $classes = array_change_key_case([
     'WP_REST_User_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\UserMetaFields',
     'WP_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\UpgraderSkin',
     'Plugin_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\PluginUpgraderSkin',
+    'Language_Pack_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\LanguageUpgraderSkin',
 ]);
 
 $abstractClasses = array_change_key_case([

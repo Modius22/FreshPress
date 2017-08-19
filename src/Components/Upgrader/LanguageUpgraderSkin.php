@@ -1,13 +1,15 @@
 <?php
 /**
- * Upgrader API: Language_Pack_Upgrader_Skin class
+ * Upgrader API: LanguageUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
+
+use WP_Error;
 
 /**
  * Translation Upgrader Skin for WordPress Translation Upgrades.
@@ -17,7 +19,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see UpgraderSkin
  */
-class Language_Pack_Upgrader_Skin extends UpgraderSkin
+class LanguageUpgraderSkin extends UpgraderSkin
 {
     public $language_update = null;
     public $done_header = false;
@@ -28,14 +30,14 @@ class Language_Pack_Upgrader_Skin extends UpgraderSkin
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array(
+        $defaults = [
             'url' => '',
             'nonce' => '',
             'title' => __('Update Translations'),
             'skip_header_footer' => false
-        );
+        ];
         $args = wp_parse_args($args, $defaults);
         if ($args['skip_header_footer']) {
             $this->done_header = true;
@@ -86,7 +88,7 @@ class Language_Pack_Upgrader_Skin extends UpgraderSkin
     public function bulk_footer()
     {
         $this->decrement_update_count('translation');
-        $update_actions = array();
+        $update_actions = [];
         $update_actions['updates_page'] = '<a href="' . self_admin_url('update-core.php') . '" target="_parent">' . __('Return to WordPress Updates page') . '</a>';
 
         /**

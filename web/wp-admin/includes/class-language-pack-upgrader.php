@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 
 /**
  * Core class used for updating/installing language packs (translations)
@@ -101,7 +102,7 @@ class Language_Pack_Upgrader extends WP_Upgrader
         if ($upgrader && $upgrader->skin instanceof Automatic_Upgrader_Skin) {
             $skin = $upgrader->skin;
         } else {
-            $skin = new Language_Pack_Upgrader_Skin(array(
+            $skin = new LanguageUpgraderSkin(array(
                 'skip_header_footer' => true,
             ));
         }
