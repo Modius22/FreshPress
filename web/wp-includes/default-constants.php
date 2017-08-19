@@ -63,30 +63,6 @@ function wp_initial_constants()
         $blog_id = 1;
     }
 
-    if (!defined('WP_CONTENT_DIR')) {
-        define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
-    } // no trailing slash, full paths only - WP_CONTENT_URL is defined further down
-
-    // Add core.debug = true to app/config/config.yml to enable display of notices during development.
-    if (!defined('WP_DEBUG')) {
-        define('WP_DEBUG', false);
-    }
-
-    // Add core.debug_display = null to app/config/config.yml use the globally configured setting for
-    // display_errors and not force errors to be displayed. Use false to force display_errors off.
-    if (!defined('WP_DEBUG_DISPLAY')) {
-        define('WP_DEBUG_DISPLAY', true);
-    }
-
-    // Add core.debug_log to enable error logging to wp-content/debug.log.
-    if (!defined('WP_DEBUG_LOG')) {
-        define('WP_DEBUG_LOG', false);
-    }
-
-    if (!defined('WP_CACHE')) {
-        define('WP_CACHE', false);
-    }
-
     // Add core.debug_script to app/config/config.yml to enable loading of non-minified,
     // non-concatenated scripts and stylesheets.
     if (!defined('SCRIPT_DEBUG')) {
@@ -108,9 +84,6 @@ function wp_initial_constants()
     if (!defined('SHORTINIT')) {
         define('SHORTINIT', false);
     }
-
-    // Constants for features added to WP that should short-circuit their plugin implementations
-    define('WP_FEATURE_BETTER_PASSWORDS', true);
 
     /**#@+
      * Constants for expressing human-readable intervals
