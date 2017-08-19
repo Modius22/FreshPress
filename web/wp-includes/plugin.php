@@ -22,13 +22,13 @@
  */
 
 // Initialize the filter globals.
-require(dirname(__FILE__) . '/class-wp-hook.php');
+use Devtronic\FreshPress\EventDispatcher\Hook;
 
-/** @var WP_Hook[] $wp_filter */
+/** @var Hook[] $wp_filter */
 global $wp_filter, $wp_actions, $wp_current_filter;
 
 if ($wp_filter) {
-    $wp_filter = WP_Hook::build_preinitialized_hooks($wp_filter);
+    $wp_filter = Hook::build_preinitialized_hooks($wp_filter);
 } else {
     $wp_filter = array();
 }
@@ -109,7 +109,7 @@ function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1)
 {
     global $wp_filter;
     if (!isset($wp_filter[$tag])) {
-        $wp_filter[$tag] = new WP_Hook();
+        $wp_filter[$tag] = new Hook();
     }
     $wp_filter[$tag]->add_filter($tag, $function_to_add, $priority, $accepted_args);
     return true;
@@ -205,7 +205,7 @@ function apply_filters($tag, $value)
         $args = func_get_args();
     }
 
-    // don't pass the tag name to WP_Hook
+    // don't pass the tag name to Devtronic\FreshPress\EventDispatcher\Hook
     array_shift($args);
 
     $filtered = $wp_filter[$tag]->apply_filters($value, $args);

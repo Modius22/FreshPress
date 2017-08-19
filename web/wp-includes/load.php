@@ -6,6 +6,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\EventDispatcher\Hook;
 
 /**
  * Return the HTTP protocol sent by the server.
@@ -567,7 +568,7 @@ function wp_start_object_cache()
 
             // Re-initialize any hooks added manually by object-cache.php
             if ($wp_filter) {
-                $wp_filter = WP_Hook::build_preinitialized_hooks($wp_filter);
+                $wp_filter = Hook::build_preinitialized_hooks($wp_filter);
             }
         }
 

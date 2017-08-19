@@ -1,11 +1,13 @@
 <?php
 /**
- * Plugin API: WP_Hook class
+ * Plugin API: Hook class
  *
  * @package WordPress
  * @subpackage Plugin
  * @since 4.7.0
  */
+
+namespace Devtronic\FreshPress\EventDispatcher;
 
 /**
  * Core class used to implement action and filter hook functionality.
@@ -15,7 +17,7 @@
  * @see Iterator
  * @see ArrayAccess
  */
-final class WP_Hook implements Iterator, ArrayAccess
+class Hook implements \Iterator, \ArrayAccess
 {
 
     /**
@@ -25,7 +27,7 @@ final class WP_Hook implements Iterator, ArrayAccess
      * @access public
      * @var array
      */
-    public $callbacks = array();
+    public $callbacks = [];
 
     /**
      * The priority keys of actively running iterations of a hook.
@@ -34,7 +36,7 @@ final class WP_Hook implements Iterator, ArrayAccess
      * @access private
      * @var array
      */
-    private $iterations = array();
+    private $iterations = [];
 
     /**
      * The current priority of actively running iterations of a hook.
@@ -43,7 +45,7 @@ final class WP_Hook implements Iterator, ArrayAccess
      * @access private
      * @var array
      */
-    private $current_priority = array();
+    private $current_priority = [];
 
     /**
      * Number of levels this hook can be recursively called.
@@ -82,10 +84,10 @@ final class WP_Hook implements Iterator, ArrayAccess
         $idx = _wp_filter_build_unique_id($tag, $function_to_add, $priority);
         $priority_existed = isset($this->callbacks[$priority]);
 
-        $this->callbacks[$priority][$idx] = array(
+        $this->callbacks[$priority][$idx] = [
             'function' => $function_to_add,
             'accepted_args' => $accepted_args
-        );
+        ];
 
         // if we're adding a new priority to the list, put them back in sorted order
         if (!$priority_existed && count($this->callbacks) > 1) {
@@ -260,7 +262,7 @@ final class WP_Hook implements Iterator, ArrayAccess
         }
 
         if (false === $priority) {
-            $this->callbacks = array();
+            $this->callbacks = [];
         } else {
             if (isset($this->callbacks[$priority])) {
                 unset($this->callbacks[$priority]);
@@ -303,7 +305,7 @@ final class WP_Hook implements Iterator, ArrayAccess
 
                 // Avoid the array_slice if possible.
                 if ($the_['accepted_args'] == 0) {
-                    $value = call_user_func_array($the_['function'], array());
+                    $value = call_user_func_array($the_['function'], []);
                 } elseif ($the_['accepted_args'] >= $num_args) {
                     $value = call_user_func_array($the_['function'], $args);
                 } else {
@@ -384,26 +386,26 @@ final class WP_Hook implements Iterator, ArrayAccess
     }
 
     /**
-     * Normalizes filters set up before WordPress has initialized to WP_Hook objects.
+     * Normalizes filters set up before WordPress has initialized to Hook objects.
      *
      * @since 4.7.0
      * @access public
      * @static
      *
      * @param array $filters Filters to normalize.
-     * @return WP_Hook[] Array of normalized filters.
+     * @return Hook[] Array of normalized filters.
      */
     public static function build_preinitialized_hooks($filters)
     {
-        /** @var WP_Hook[] $normalized */
-        $normalized = array();
+        /** @var Hook[] $normalized */
+        $normalized = [];
 
         foreach ($filters as $tag => $callback_groups) {
-            if (is_object($callback_groups) && $callback_groups instanceof WP_Hook) {
+            if (is_object($callback_groups) && $callback_groups instanceof Hook) {
                 $normalized[$tag] = $callback_groups;
                 continue;
             }
-            $hook = new WP_Hook();
+            $hook = new Hook();
 
             // Loop through callback groups.
             foreach ($callback_groups as $priority => $callbacks) {
