@@ -13,9 +13,6 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
 
-/** Theme_Upgrader_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader-skin.php';
-
 /** Bulk_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-bulk-upgrader-skin.php';
 

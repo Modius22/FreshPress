@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Upgrader\PluginInstallerSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\ThemeInstallerSkin;
+use Devtronic\FreshPress\Components\Upgrader\ThemeUpgraderSkin;
 
 if (!defined('IFRAME_REQUEST') && isset($_GET['action']) && in_array(
     $_GET['action'],
@@ -194,7 +195,7 @@ if (isset($_GET['action'])) {
         $nonce = 'upgrade-theme_' . $theme;
         $url = 'update.php?action=upgrade-theme&theme=' . urlencode($theme);
 
-        $upgrader = new Theme_Upgrader(new Theme_Upgrader_Skin(compact('title', 'nonce', 'url', 'theme')));
+        $upgrader = new Theme_Upgrader(new ThemeUpgraderSkin(compact('title', 'nonce', 'url', 'theme')));
         $upgrader->upgrade($theme);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');

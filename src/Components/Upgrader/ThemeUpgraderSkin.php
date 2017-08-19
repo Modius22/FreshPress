@@ -1,13 +1,13 @@
 <?php
 /**
- * Upgrader API: Theme_Upgrader_Skin class
+ * Upgrader API: ThemeUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
 
 /**
  * Theme Upgrader Skin for WordPress Theme Upgrades.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see UpgraderSkin
  */
-class Theme_Upgrader_Skin extends UpgraderSkin
+class ThemeUpgraderSkin extends UpgraderSkin
 {
     public $theme = '';
 
@@ -25,9 +25,9 @@ class Theme_Upgrader_Skin extends UpgraderSkin
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array('url' => '', 'theme' => '', 'nonce' => '', 'title' => __('Update Theme'));
+        $defaults = ['url' => '', 'theme' => '', 'nonce' => '', 'title' => __('Update Theme')];
         $args = wp_parse_args($args, $defaults);
 
         $this->theme = $args['theme'];
@@ -42,37 +42,37 @@ class Theme_Upgrader_Skin extends UpgraderSkin
     {
         $this->decrement_update_count('theme');
 
-        $update_actions = array();
+        $update_actions = [];
         if (!empty($this->upgrader->result['destination_name']) && $theme_info = $this->upgrader->theme_info()) {
             $name = $theme_info->display('Name');
             $stylesheet = $this->upgrader->result['destination_name'];
             $template = $theme_info->get_template();
 
-            $activate_link = add_query_arg(array(
+            $activate_link = add_query_arg([
                 'action' => 'activate',
                 'template' => urlencode($template),
                 'stylesheet' => urlencode($stylesheet),
-            ), admin_url('themes.php'));
+            ], admin_url('themes.php'));
             $activate_link = wp_nonce_url($activate_link, 'switch-theme_' . $stylesheet);
 
             if (get_stylesheet() == $stylesheet) {
                 if (current_user_can('edit_theme_options') && current_user_can('customize')) {
                     $update_actions['preview'] = '<a href="' . wp_customize_url($stylesheet) . '" class="hide-if-no-customize load-customize"><span aria-hidden="true">' . __('Customize') . '</span><span class="screen-reader-text">' . sprintf(
-                        __('Customize &#8220;%s&#8221;'),
+                            __('Customize &#8220;%s&#8221;'),
                             $name
-                    ) . '</span></a>';
+                        ) . '</span></a>';
                 }
             } elseif (current_user_can('switch_themes')) {
                 if (current_user_can('edit_theme_options') && current_user_can('customize')) {
                     $update_actions['preview'] = '<a href="' . wp_customize_url($stylesheet) . '" class="hide-if-no-customize load-customize"><span aria-hidden="true">' . __('Live Preview') . '</span><span class="screen-reader-text">' . sprintf(
-                        __('Live Preview &#8220;%s&#8221;'),
+                            __('Live Preview &#8220;%s&#8221;'),
                             $name
-                    ) . '</span></a>';
+                        ) . '</span></a>';
                 }
                 $update_actions['activate'] = '<a href="' . esc_url($activate_link) . '" class="activatelink"><span aria-hidden="true">' . __('Activate') . '</span><span class="screen-reader-text">' . sprintf(
-                    __('Activate &#8220;%s&#8221;'),
+                        __('Activate &#8220;%s&#8221;'),
                         $name
-                ) . '</span></a>';
+                    ) . '</span></a>';
             }
 
             if (!$this->result || is_wp_error($this->result) || is_network_admin()) {
