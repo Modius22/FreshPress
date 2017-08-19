@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
+
 /**
  * Loads the WP image-editing interface.
  *
@@ -308,24 +310,24 @@ function wp_image_editor($post_id, $msg = false)
 }
 
 /**
- * Streams image in WP_Image_Editor to browser.
+ * Streams image in ImageEditor to browser.
  * Provided for backcompat reasons
  *
- * @param WP_Image_Editor $image
+ * @param ImageEditor $image
  * @param string $mime_type
  * @param int $post_id
  * @return bool
  */
 function wp_stream_image($image, $mime_type, $post_id)
 {
-    if ($image instanceof WP_Image_Editor) {
+    if ($image instanceof ImageEditor) {
 
         /**
-         * Filters the WP_Image_Editor instance for the image to be streamed to the browser.
+         * Filters the ImageEditor instance for the image to be streamed to the browser.
          *
          * @since 3.5.0
          *
-         * @param WP_Image_Editor $image WP_Image_Editor instance.
+         * @param ImageEditor $image ImageEditor instance.
          * @param int $post_id Post ID.
          */
         $image = apply_filters('image_editor_save_pre', $image, $post_id);
@@ -336,7 +338,7 @@ function wp_stream_image($image, $mime_type, $post_id)
 
         return true;
     } else {
-        _deprecated_argument(__FUNCTION__, '3.5.0', __('$image needs to be an WP_Image_Editor object'));
+        _deprecated_argument(__FUNCTION__, '3.5.0', __('$image needs to be an Devtronic\FreshPress\Components\ImageEditor\ImageEditor object'));
 
         /**
          * Filters the GD image resource to be streamed to the browser.
@@ -369,14 +371,14 @@ function wp_stream_image($image, $mime_type, $post_id)
  * Saves Image to File
  *
  * @param string $filename
- * @param WP_Image_Editor $image
+ * @param ImageEditor $image
  * @param string $mime_type
  * @param int $post_id
  * @return bool
  */
 function wp_save_image_file($filename, $image, $mime_type, $post_id)
 {
-    if ($image instanceof WP_Image_Editor) {
+    if ($image instanceof ImageEditor) {
 
         /** This filter is documented in wp-admin/includes/image-edit.php */
         $image = apply_filters('image_editor_save_pre', $image, $post_id);
@@ -391,7 +393,7 @@ function wp_save_image_file($filename, $image, $mime_type, $post_id)
          *
          * @param mixed $override Value to return instead of saving. Default null.
          * @param string $filename Name of the file to be saved.
-         * @param WP_Image_Editor $image WP_Image_Editor instance.
+         * @param ImageEditor $image ImageEditor instance.
          * @param string $mime_type Image mime type.
          * @param int $post_id Post ID.
          */
@@ -403,7 +405,7 @@ function wp_save_image_file($filename, $image, $mime_type, $post_id)
 
         return $image->save($filename, $mime_type);
     } else {
-        _deprecated_argument(__FUNCTION__, '3.5.0', __('$image needs to be an WP_Image_Editor object'));
+        _deprecated_argument(__FUNCTION__, '3.5.0', __('$image needs to be an Devtronic\FreshPress\Components\ImageEditor\ImageEditor object'));
 
         /** This filter is documented in wp-admin/includes/image-edit.php */
         $image = apply_filters('image_save_pre', $image, $post_id);
@@ -419,7 +421,7 @@ function wp_save_image_file($filename, $image, $mime_type, $post_id)
          *
          * @param mixed $override Value to return instead of saving. Default null.
          * @param string $filename Name of the file to be saved.
-         * @param WP_Image_Editor $image WP_Image_Editor instance.
+         * @param ImageEditor $image ImageEditor instance.
          * @param string $mime_type Image mime type.
          * @param int $post_id Post ID.
          */
@@ -472,7 +474,7 @@ function _image_get_preview_ratio($w, $h)
  */
 function _rotate_image_resource($img, $angle)
 {
-    _deprecated_function(__FUNCTION__, '3.5.0', 'WP_Image_Editor::rotate()');
+    _deprecated_function(__FUNCTION__, '3.5.0', 'Devtronic\FreshPress\Components\ImageEditor\ImageEditor::rotate()');
     if (function_exists('imagerotate')) {
         $rotated = imagerotate($img, $angle, 0);
         if (is_resource($rotated)) {
@@ -496,7 +498,7 @@ function _rotate_image_resource($img, $angle)
  */
 function _flip_image_resource($img, $horz, $vert)
 {
-    _deprecated_function(__FUNCTION__, '3.5.0', 'WP_Image_Editor::flip()');
+    _deprecated_function(__FUNCTION__, '3.5.0', 'Devtronic\FreshPress\Components\ImageEditor\ImageEditor::flip()');
     $w = imagesx($img);
     $h = imagesy($img);
     $dst = wp_imagecreatetruecolor($w, $h);
@@ -544,14 +546,14 @@ function _crop_image_resource($img, $x, $y, $w, $h)
  *
  * @since 2.9.0
  *
- * @param WP_Image_Editor $image WP_Image_Editor instance.
+ * @param ImageEditor $image ImageEditor instance.
  * @param array $changes Array of change operations.
- * @return WP_Image_Editor WP_Image_Editor instance with changes applied.
+ * @return ImageEditor ImageEditor instance with changes applied.
  */
 function image_edit_apply_changes($image, $changes)
 {
     if (is_resource($image)) {
-        _deprecated_argument(__FUNCTION__, '3.5.0', __('$image needs to be an WP_Image_Editor object'));
+        _deprecated_argument(__FUNCTION__, '3.5.0', __('$image needs to be an Devtronic\FreshPress\Components\ImageEditor\ImageEditor object'));
     }
 
     if (!is_array($changes)) {
@@ -602,14 +604,14 @@ function image_edit_apply_changes($image, $changes)
     }
 
     // Image resource before applying the changes.
-    if ($image instanceof WP_Image_Editor) {
+    if ($image instanceof ImageEditor) {
 
         /**
-         * Filters the WP_Image_Editor instance before applying changes to the image.
+         * Filters the ImageEditor instance before applying changes to the image.
          *
          * @since 3.5.0
          *
-         * @param WP_Image_Editor $image WP_Image_Editor instance.
+         * @param ImageEditor $image ImageEditor instance.
          * @param array $changes Array of change operations.
          */
         $image = apply_filters('wp_image_editor_before_change', $image, $changes);
@@ -631,7 +633,7 @@ function image_edit_apply_changes($image, $changes)
         switch ($operation->type) {
             case 'rotate':
                 if ($operation->angle != 0) {
-                    if ($image instanceof WP_Image_Editor) {
+                    if ($image instanceof ImageEditor) {
                         $image->rotate($operation->angle);
                     } else {
                         $image = _rotate_image_resource($image, $operation->angle);
@@ -640,7 +642,7 @@ function image_edit_apply_changes($image, $changes)
                 break;
             case 'flip':
                 if ($operation->axis != 0) {
-                    if ($image instanceof WP_Image_Editor) {
+                    if ($image instanceof ImageEditor) {
                         $image->flip(($operation->axis & 1) != 0, ($operation->axis & 2) != 0);
                     } else {
                         $image = _flip_image_resource($image, ($operation->axis & 1) != 0, ($operation->axis & 2) != 0);
@@ -650,7 +652,7 @@ function image_edit_apply_changes($image, $changes)
             case 'crop':
                 $sel = $operation->sel;
 
-                if ($image instanceof WP_Image_Editor) {
+                if ($image instanceof ImageEditor) {
                     $size = $image->get_size();
                     $w = $size['width'];
                     $h = $size['height'];

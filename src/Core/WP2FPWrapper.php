@@ -126,6 +126,7 @@ $abstractClasses = array_change_key_case([
     'WP_Widget_Media' => 'Devtronic\\FreshPress\\Components\\Widgets\\MediaWidget',
     'WP_REST_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\Controller',
     'WP_REST_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\MetaFields',
+    'WP_Image_Editor' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImageEditor',
 ]);
 
 $finalClasses = array_change_key_case([
@@ -155,6 +156,6 @@ spl_autoload_register(function ($oldClass) use ($abstractClasses) {
 spl_autoload_register(function ($oldClass) use ($finalClasses) {
     $oldClass = strtolower($oldClass);
     if (isset($classes[$oldClass])) {
-        eval(sprintf('abstract class %s extends %s {}', $oldClass, $finalClasses[$oldClass]));
+        eval(sprintf('final class %s extends %s {}', $oldClass, $finalClasses[$oldClass]));
     }
 });

@@ -6,12 +6,16 @@
  * @subpackage Image_Editor
  */
 
+namespace Devtronic\FreshPress\Components\ImageEditor;
+
+use WP_Error;
+
 /**
  * Base image editor class from which implementations extend
  *
  * @since 3.5.0
  */
-abstract class WP_Image_Editor
+abstract class ImageEditor
 {
     protected $file = null;
     protected $size = null;
@@ -43,7 +47,7 @@ abstract class WP_Image_Editor
      * @param array $args
      * @return bool
      */
-    public static function test($args = array())
+    public static function test($args = [])
     {
         return false;
     }
@@ -208,10 +212,10 @@ abstract class WP_Image_Editor
      */
     protected function update_size($width = null, $height = null)
     {
-        $this->size = array(
+        $this->size = [
             'width' => (int)$width,
             'height' => (int)$height
-        );
+        ];
         return true;
     }
 
@@ -363,7 +367,7 @@ abstract class WP_Image_Editor
             $filename = trailingslashit($dir) . wp_basename($filename, ".$ext") . ".{$new_ext}";
         }
 
-        return array($filename, $new_ext, $mime_type);
+        return [$filename, $new_ext, $mime_type];
     }
 
     /**
@@ -420,7 +424,7 @@ abstract class WP_Image_Editor
      * @since 3.5.0
      * @access protected
      *
-     * @param string|stream $filename
+     * @param string|resource $filename
      * @param callable $function
      * @param array $arguments
      * @return bool

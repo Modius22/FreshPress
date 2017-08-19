@@ -6,15 +6,17 @@
  * @subpackage Image_Editor
  */
 
+use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
+
 /**
  * WordPress Image Editor Class for Image Manipulation through Imagick PHP Module
  *
  * @since 3.5.0
  * @package WordPress
  * @subpackage Image_Editor
- * @uses WP_Image_Editor Extends class
+ * @uses ImageEditor Extends class
  */
-class WP_Image_Editor_Imagick extends WP_Image_Editor
+class WP_Image_Editor_Imagick extends ImageEditor
 {
     /**
      * Imagick object.

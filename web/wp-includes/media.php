@@ -6,6 +6,7 @@
  * @subpackage Media
  */
 
+use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -492,7 +493,7 @@ function wp_constrain_dimensions($current_width, $current_height, $max_width = 0
 }
 
 /**
- * Retrieves calculated resize dimensions for use in WP_Image_Editor.
+ * Retrieves calculated resize dimensions for use in ImageEditor.
  *
  * Calculates dimensions and coordinates for a resized image that fits
  * within a specified width and height.
@@ -2999,15 +3000,14 @@ function wp_max_upload_size()
 }
 
 /**
- * Returns a WP_Image_Editor instance and loads file into it.
+ * Returns a ImageEditor instance and loads file into it.
  *
  * @since 3.5.0
  *
  * @param string $path Path to the file to load.
  * @param array $args Optional. Additional arguments for retrieving the image editor.
  *                     Default empty array.
- * @return WP_Image_Editor|WP_Error The WP_Image_Editor object if successful, an WP_Error
- *                                  object otherwise.
+ * @return ImageEditor|WP_Error The ImageEditor object if successful, an WP_Error object otherwise.
  */
 function wp_get_image_editor($path, $args = array())
 {
@@ -3065,7 +3065,6 @@ function wp_image_editor_supports($args = array())
  */
 function _wp_image_editor_choose($args = array())
 {
-    require_once ABSPATH . WPINC . '/class-wp-image-editor.php';
     require_once ABSPATH . WPINC . '/class-wp-image-editor-gd.php';
     require_once ABSPATH . WPINC . '/class-wp-image-editor-imagick.php';
     /**
