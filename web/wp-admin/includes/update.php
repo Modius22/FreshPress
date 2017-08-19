@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
 
 /**
  * Selects the first update version from the update_core option.
@@ -87,7 +88,7 @@ function find_core_auto_update()
     }
 
     $auto_update = false;
-    $upgrader = new WP_Automatic_Updater;
+    $upgrader = new AutomaticUpdater();
     foreach ($updates->updates as $update) {
         if ('autoupdate' != $update->response) {
             continue;

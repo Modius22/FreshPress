@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 
@@ -203,7 +204,7 @@ function core_upgrade_preamble()
         _e('You have the latest version of WordPress.');
 
         if (wp_http_supports(array('ssl'))) {
-            $upgrader = new WP_Automatic_Updater;
+            $upgrader = new AutomaticUpdater();
             $future_minor_update = (object)array(
                 'current' => $wp_version . '.1.next.minor',
                 'version' => $wp_version . '.1.next.minor',
@@ -227,7 +228,7 @@ function core_upgrade_preamble()
     }
 
     if (isset($updates[0]) && $updates[0]->response == 'development') {
-        $upgrader = new WP_Automatic_Updater;
+        $upgrader = new AutomaticUpdater();
         if (wp_http_supports('ssl') && $upgrader->should_update('core', $updates[0], ABSPATH)) {
             echo '<div class="updated inline"><p>';
             echo '<strong>' . __('BETA TESTERS:') . '</strong> ' . __('This site is set up to install updates of future beta versions automatically.');

@@ -943,6 +943,3 @@ require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
 
 /** File_Upload_Upgrader class */
 require_once ABSPATH . 'wp-admin/includes/class-file-upload-upgrader.php';
-
-/** WP_Automatic_Updater class */
-require_once ABSPATH . 'wp-admin/includes/class-wp-automatic-updater.php';

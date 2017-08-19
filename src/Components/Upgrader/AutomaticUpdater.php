@@ -1,17 +1,18 @@
 <?php
 /**
- * Upgrade API: WP_Automatic_Updater class
+ * Upgrade API: AutomaticUpdater class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
-use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
-use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
-use Devtronic\FreshPress\Components\Upgrader\Upgrader;
+namespace Devtronic\FreshPress\Components\Upgrader;
+
 use Devtronic\FreshPress\Core\WPDB;
+use Language_Pack_Upgrader;
+use Theme_Upgrader;
+use WP_Error;
 
 /**
  * Core class used for handling automatic background updates.
@@ -19,7 +20,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * @since 3.7.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader.php.
  */
-class WP_Automatic_Updater
+class AutomaticUpdater
 {
 
     /**
@@ -28,7 +29,7 @@ class WP_Automatic_Updater
      * @var array
      * @access protected
      */
-    protected $update_results = array();
+    protected $update_results = [];
 
     /**
      * Whether the entire automatic updater is disabled.
@@ -84,13 +85,13 @@ class WP_Automatic_Updater
      */
     public function is_vcs_checkout($context)
     {
-        $context_dirs = array(untrailingslashit($context));
+        $context_dirs = [untrailingslashit($context)];
         if ($context !== ABSPATH) {
             $context_dirs[] = untrailingslashit(ABSPATH);
         }
 
-        $vcs_dirs = array('.svn', '.git', '.hg', '.bzr');
-        $check_dirs = array();
+        $vcs_dirs = ['.svn', '.git', '.hg', '.bzr'];
+        $check_dirs = [];
 
         foreach ($context_dirs as $context_dir) {
             // Walk up from $context_dir to the root.
@@ -162,10 +163,10 @@ class WP_Automatic_Updater
 
         // If we can't do an auto core update, we may still be able to email the user.
         if (!$skin->request_filesystem_credentials(
-            false,
-            $context,
+                false,
+                $context,
                 $allow_relaxed_file_ownership
-        ) || $this->is_vcs_checkout($context)) {
+            ) || $this->is_vcs_checkout($context)) {
             if ('core' == $type) {
                 $this->send_core_update_notification_email($item);
             }
@@ -291,7 +292,7 @@ class WP_Automatic_Updater
         switch ($type) {
             case 'core':
                 // The Core upgrader doesn't use the Upgrader's skin during the actual main part of the upgrade, instead, firing a filter.
-                add_filter('update_feedback', array($skin, 'feedback'));
+                add_filter('update_feedback', [$skin, 'feedback']);
                 $upgrader = new CoreUpgrader($skin);
                 $context = ABSPATH;
                 break;
@@ -361,7 +362,7 @@ class WP_Automatic_Updater
         }
 
         // Boom, This sites about to get a whole new splash of paint!
-        $upgrade_result = $upgrader->upgrade($upgrader_item, array(
+        $upgrade_result = $upgrader->upgrade($upgrader_item, [
             'clear_update_cache' => false,
             // Always use partial builds if possible for core updates.
             'pre_check_md5' => false,
@@ -369,7 +370,7 @@ class WP_Automatic_Updater
             'attempt_rollback' => true,
             // Allow relaxed file ownership in some scenarios
             'allow_relaxed_file_ownership' => $allow_relaxed_file_ownership,
-        ));
+        ]);
 
         // If the filesystem is unavailable, false is returned.
         if (false === $upgrade_result) {
@@ -390,12 +391,12 @@ class WP_Automatic_Updater
             }
         }
 
-        $this->update_results[$type][] = (object)array(
+        $this->update_results[$type][] = (object)[
             'item' => $item,
             'result' => $upgrade_result,
             'name' => $item_name,
             'messages' => $skin->get_upgrade_messages()
-        );
+        ];
 
         return $upgrade_result;
     }
@@ -421,7 +422,7 @@ class WP_Automatic_Updater
         }
 
         // Don't automatically run these thins, as we'll handle it ourselves
-        remove_action('upgrader_process_complete', array('Language_Pack_Upgrader', 'async_upgrade'), 20);
+        remove_action('upgrader_process_complete', ['Language_Pack_Upgrader', 'async_upgrade'], 20);
         remove_action('upgrader_process_complete', 'wp_version_check');
         remove_action('upgrader_process_complete', 'wp_update_plugins');
         remove_action('upgrader_process_complete', 'wp_update_themes');
@@ -458,7 +459,7 @@ class WP_Automatic_Updater
 
         // Clean up, and check for any pending translations
         // (Devtronic\FreshPress\Components\Upgrader\CoreUpgrader checks for core updates)
-        $theme_stats = array();
+        $theme_stats = [];
         if (isset($this->update_results['theme'])) {
             foreach ($this->update_results['theme'] as $upgrade) {
                 $theme_stats[$upgrade->item->theme] = (true === $upgrade->result);
@@ -466,7 +467,7 @@ class WP_Automatic_Updater
         }
         wp_update_themes($theme_stats);  // Check for Theme updates
 
-        $plugin_stats = array();
+        $plugin_stats = [];
         if (isset($this->update_results['plugin'])) {
             foreach ($this->update_results['plugin'] as $upgrade) {
                 $plugin_stats[$upgrade->item->plugin] = (true === $upgrade->result);
@@ -560,14 +561,14 @@ class WP_Automatic_Updater
         }
 
         if ($critical) {
-            $critical_data = array(
+            $critical_data = [
                 'attempted' => $core_update->current,
                 'current' => $wp_version,
                 'error_code' => $error_code,
                 'error_data' => $result->get_error_data(),
                 'timestamp' => time(),
                 'critical' => true,
-            );
+            ];
             if (isset($rollback_result)) {
                 $critical_data['rollback_code'] = $rollback_result->get_error_code();
                 $critical_data['rollback_data'] = $rollback_result->get_error_data();
@@ -589,7 +590,7 @@ class WP_Automatic_Updater
          * the issue could actually be on WordPress.org's side.) If that one fails, then email.
          */
         $send = true;
-        $transient_failures = array('incompatible_archive', 'download_failed', 'insane_distro', 'locked');
+        $transient_failures = ['incompatible_archive', 'download_failed', 'insane_distro', 'locked'];
         if (in_array($error_code, $transient_failures) && !get_site_option('auto_core_update_failed')) {
             wp_schedule_single_event(time() + HOUR_IN_SECONDS, 'wp_maybe_auto_update');
             $send = false;
@@ -601,14 +602,14 @@ class WP_Automatic_Updater
             $send = false;
         }
 
-        update_site_option('auto_core_update_failed', array(
+        update_site_option('auto_core_update_failed', [
             'attempted' => $core_update->current,
             'current' => $wp_version,
             'error_code' => $error_code,
             'error_data' => $result->get_error_data(),
             'timestamp' => time(),
             'retry' => in_array($error_code, $transient_failures),
-        ));
+        ]);
 
         if ($send) {
             $this->send_email('fail', $core_update, $result);
@@ -627,12 +628,12 @@ class WP_Automatic_Updater
      */
     protected function send_email($type, $core_update, $result = null)
     {
-        update_site_option('auto_core_update_notified', array(
+        update_site_option('auto_core_update_notified', [
             'type' => $type,
             'email' => get_site_option('admin_email'),
             'version' => $core_update->current,
             'timestamp' => time(),
-        ));
+        ]);
 
         $next_user_core_update = get_preferred_from_update_core();
         // If the update transient is empty, use the update we just performed
@@ -640,10 +641,10 @@ class WP_Automatic_Updater
             $next_user_core_update = $core_update;
         }
         $newer_version_available = ('upgrade' == $next_user_core_update->response && version_compare(
-            $next_user_core_update->version,
+                $next_user_core_update->version,
                 $core_update->version,
-            '>'
-        ));
+                '>'
+            ));
 
         /**
          * Filters whether to send an email following an automatic background core update.
@@ -706,9 +707,9 @@ class WP_Automatic_Updater
 
                 if ($newer_version_available) {
                     $body .= "\n\n" . sprintf(
-                        __('WordPress %s is also now available.'),
+                            __('WordPress %s is also now available.'),
                             $next_user_core_update->current
-                    ) . ' ';
+                        ) . ' ';
                     $body .= __('Updating is easy and only takes a few moments:');
                     $body .= "\n" . network_admin_url('update-core.php');
                 }
@@ -761,9 +762,9 @@ class WP_Automatic_Updater
         if ($critical_support) {
             // Support offer if available.
             $body .= "\n\n" . sprintf(
-                __("The WordPress team is willing to help you. Forward this email to %s and the team will work with you to make sure your site is working."),
+                    __("The WordPress team is willing to help you. Forward this email to %s and the team will work with you to make sure your site is working."),
                     $core_update->support_email
-            );
+                );
         } else {
             // Add a note about the support forums.
             $body .= "\n\n" . __('If you experience any issues or need support, the volunteers in the WordPress.org support forums may be able to help.');
@@ -796,9 +797,9 @@ class WP_Automatic_Updater
             // If we had a rollback and we're still critical, then the rollback failed too.
             // Loop through all errors (the main WP_Error, the update result, the rollback result) for code, data, etc.
             if ('rollback_was_required' == $result->get_error_code()) {
-                $errors = array($result, $result->get_error_data()->update, $result->get_error_data()->rollback);
+                $errors = [$result, $result->get_error_data()->update, $result->get_error_data()->rollback];
             } else {
-                $errors = array($result);
+                $errors = [$result];
             }
 
             foreach ($errors as $error) {
@@ -863,7 +864,7 @@ class WP_Automatic_Updater
             $update_count += count($updates);
         }
 
-        $body = array();
+        $body = [];
         $failures = 0;
 
         $body[] = sprintf(__('WordPress site: %s'), network_home_url('/'));
@@ -881,17 +882,17 @@ class WP_Automatic_Updater
         }
 
         // Plugins, Themes, Translations
-        foreach (array('plugin', 'theme', 'translation') as $type) {
+        foreach (['plugin', 'theme', 'translation'] as $type) {
             if (!isset($this->update_results[$type])) {
                 continue;
             }
-            $success_items = wp_list_filter($this->update_results[$type], array('result' => true));
+            $success_items = wp_list_filter($this->update_results[$type], ['result' => true]);
             if ($success_items) {
-                $messages = array(
+                $messages = [
                     'plugin' => __('The following plugins were successfully updated:'),
                     'theme' => __('The following themes were successfully updated:'),
                     'translation' => __('The following translations were successfully updated:'),
-                );
+                ];
 
                 $body[] = $messages[$type];
                 foreach (wp_list_pluck($success_items, 'name') as $name) {
@@ -900,11 +901,11 @@ class WP_Automatic_Updater
             }
             if ($success_items != $this->update_results[$type]) {
                 // Failed updates
-                $messages = array(
+                $messages = [
                     'plugin' => __('The following plugins failed to update:'),
                     'theme' => __('The following themes failed to update:'),
                     'translation' => __('The following translations failed to update:'),
-                );
+                ];
 
                 $body[] = $messages[$type];
                 foreach ($this->update_results[$type] as $item) {
@@ -944,7 +945,7 @@ Thanks! -- The WordPress Team"
         ));
         $body[] = '';
 
-        foreach (array('core', 'plugin', 'theme', 'translation') as $type) {
+        foreach (['core', 'plugin', 'theme', 'translation'] as $type) {
             if (!isset($this->update_results[$type])) {
                 continue;
             }
@@ -955,7 +956,7 @@ Thanks! -- The WordPress Team"
                     $body[] = "  " . html_entity_decode(str_replace('&#8230;', '...', $message));
                 }
                 if (is_wp_error($update->result)) {
-                    $results = array('update' => $update->result);
+                    $results = ['update' => $update->result];
                     // If we rolled back, we want to know an error that occurred then too.
                     if ('rollback_was_required' === $update->result->get_error_code()) {
                         $results = (array)$update->result->get_error_data();
@@ -968,17 +969,17 @@ Thanks! -- The WordPress Team"
                         if ('rollback' === $result_type) {
                             /* translators: 1: Error code, 2: Error message. */
                             $body[] = '  ' . sprintf(
-                                __('Rollback Error: [%1$s] %2$s'),
-                                $result->get_error_code(),
+                                    __('Rollback Error: [%1$s] %2$s'),
+                                    $result->get_error_code(),
                                     $result->get_error_message()
-                            );
+                                );
                         } else {
                             /* translators: 1: Error code, 2: Error message. */
                             $body[] = '  ' . sprintf(
-                                __('Error: [%1$s] %2$s'),
-                                $result->get_error_code(),
+                                    __('Error: [%1$s] %2$s'),
+                                    $result->get_error_code(),
                                     $result->get_error_message()
-                            );
+                                );
                         }
 
                         if ($result->get_error_data()) {
@@ -990,12 +991,12 @@ Thanks! -- The WordPress Team"
             }
         }
 
-        $email = array(
+        $email = [
             'to' => get_site_option('admin_email'),
             'subject' => $subject,
             'body' => implode("\n", $body),
             'headers' => ''
-        );
+        ];
 
         /**
          * Filters the debug email that can be sent following an automatic

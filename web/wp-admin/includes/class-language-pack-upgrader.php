@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\Upgrader;
@@ -73,7 +74,7 @@ class Language_Pack_Upgrader extends Upgrader
          * Avoid messing with VCS installs, at least for now.
          * Noted: this is not the ideal way to accomplish this.
          */
-        $check_vcs = new WP_Automatic_Updater;
+        $check_vcs = new AutomaticUpdater();
         if ($check_vcs->is_vcs_checkout(WP_CONTENT_DIR)) {
             return;
         }
