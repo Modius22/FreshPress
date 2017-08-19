@@ -1368,20 +1368,20 @@ function wp_default_styles(&$styles)
     $suffix = SCRIPT_DEBUG ? '' : '.min';
 
     // Admin CSS
-    $styles->add('common', "/wp-admin/css/common$suffix.css");
-    $styles->add('forms', "/wp-admin/css/forms$suffix.css");
-    $styles->add('admin-menu', "/wp-admin/css/admin-menu$suffix.css");
-    $styles->add('dashboard', "/wp-admin/css/dashboard$suffix.css");
-    $styles->add('list-tables', "/wp-admin/css/list-tables$suffix.css");
-    $styles->add('edit', "/wp-admin/css/edit$suffix.css");
-    $styles->add('revisions', "/wp-admin/css/revisions$suffix.css");
-    $styles->add('media', "/wp-admin/css/media$suffix.css");
-    $styles->add('themes', "/wp-admin/css/themes$suffix.css");
-    $styles->add('about', "/wp-admin/css/about$suffix.css");
-    $styles->add('nav-menus', "/wp-admin/css/nav-menus$suffix.css");
-    $styles->add('widgets', "/wp-admin/css/widgets$suffix.css");
-    $styles->add('site-icon', "/wp-admin/css/site-icon$suffix.css");
-    $styles->add('l10n', "/wp-admin/css/l10n$suffix.css");
+    $styles->add('common', "/wp-admin/assets/css/common$suffix.css");
+    $styles->add('forms', "/wp-admin/assets/css/forms$suffix.css");
+    $styles->add('admin-menu', "/wp-admin/assets/css/admin-menu$suffix.css");
+    $styles->add('dashboard', "/wp-admin/assets/css/dashboard$suffix.css");
+    $styles->add('list-tables', "/wp-admin/assets/css/list-tables$suffix.css");
+    $styles->add('edit', "/wp-admin/assets/css/edit$suffix.css");
+    $styles->add('revisions', "/wp-admin/assets/css/revisions$suffix.css");
+    $styles->add('media', "/wp-admin/assets/css/media$suffix.css");
+    $styles->add('themes', "/wp-admin/assets/css/themes$suffix.css");
+    $styles->add('about', "/wp-admin/assets/css/about$suffix.css");
+    $styles->add('nav-menus', "/wp-admin/assets/css/nav-menus$suffix.css");
+    $styles->add('widgets', "/wp-admin/assets/css/widgets$suffix.css");
+    $styles->add('site-icon', "/wp-admin/assets/css/site-icon$suffix.css");
+    $styles->add('l10n', "/wp-admin/assets/css/l10n$suffix.css");
 
     $styles->add('wp-admin', false, array(
         'dashicons',
@@ -1401,19 +1401,19 @@ function wp_default_styles(&$styles)
         'l10n'
     ));
 
-    $styles->add('login', "/wp-admin/css/login$suffix.css", array('dashicons', 'buttons', 'forms', 'l10n'));
-    $styles->add('install', "/wp-admin/css/install$suffix.css", array('buttons'));
-    $styles->add('wp-color-picker', "/wp-admin/css/color-picker$suffix.css");
+    $styles->add('login', "/wp-admin/assets/css/login$suffix.css", array('dashicons', 'buttons', 'forms', 'l10n'));
+    $styles->add('install', "/wp-admin/assets/css/install$suffix.css", array('buttons'));
+    $styles->add('wp-color-picker', "/wp-admin/assets/css/color-picker$suffix.css");
     $styles->add(
         'customize-controls',
-        "/wp-admin/css/customize-controls$suffix.css",
+        "/wp-admin/assets/css/customize-controls$suffix.css",
         array('wp-admin', 'colors', 'ie', 'imgareaselect')
     );
-    $styles->add('customize-widgets', "/wp-admin/css/customize-widgets$suffix.css", array('wp-admin', 'colors'));
-    $styles->add('customize-nav-menus', "/wp-admin/css/customize-nav-menus$suffix.css", array('wp-admin', 'colors'));
-    $styles->add('press-this', "/wp-admin/css/press-this$suffix.css", array('buttons'));
+    $styles->add('customize-widgets', "/wp-admin/assets/css/customize-widgets$suffix.css", array('wp-admin', 'colors'));
+    $styles->add('customize-nav-menus', "/wp-admin/assets/css/customize-nav-menus$suffix.css", array('wp-admin', 'colors'));
+    $styles->add('press-this', "/wp-admin/assets/css/press-this$suffix.css", array('buttons'));
 
-    $styles->add('ie', "/wp-admin/css/ie$suffix.css");
+    $styles->add('ie', "/wp-admin/assets/css/ie$suffix.css");
     $styles->add_data('ie', 'conditional', 'lte IE 7');
 
     // Common dependencies
@@ -1442,8 +1442,8 @@ function wp_default_styles(&$styles)
     $styles->add('thickbox', '/wp-includes/js/thickbox/thickbox.css', array('dashicons'));
 
     // Deprecated CSS
-    $styles->add('deprecated-media', "/wp-admin/css/deprecated-media$suffix.css");
-    $styles->add('farbtastic', "/wp-admin/css/farbtastic$suffix.css", array(), '1.3u1');
+    $styles->add('deprecated-media', "/wp-admin/assets/css/deprecated-media$suffix.css");
+    $styles->add('farbtastic', "/wp-admin/assets/css/farbtastic$suffix.css", array(), '1.3u1');
     $styles->add('jcrop', "/wp-includes/js/jcrop/jquery.Jcrop.min.css", array(), '0.9.12');
     $styles->add('colors-fresh', false, array('wp-admin', 'buttons')); // Old handle.
     $styles->add('open-sans', $open_sans_font_url); // No longer used in core as of 4.6
