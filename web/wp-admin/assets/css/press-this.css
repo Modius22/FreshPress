@@ -1471,7 +1471,7 @@ html {
 	width: 20px;
 	display: inline-block;
 	visibility: hidden;
-	background: url(../../images/spinner.gif) no-repeat center;
+	background: url(../images/spinner.gif) no-repeat center;
 	-webkit-background-size: 20px 20px;
 	background-size: 20px 20px;
 	opacity: 0.7;
@@ -1485,7 +1485,7 @@ html {
 	(min-resolution: 120dpi) {
 
 	.spinner {
-		background-image: url(../../images/spinner-2x.gif);
+		background-image: url(../images/spinner-2x.gif);
 	}
 }
 

@@ -1,4 +1,4 @@
-![Logo](web/wp-admin/images/wordpress-logo.png)
+![Logo](web/wp-admin/assets/images/wordpress-logo.png)
 
 Semantic Personal Publishing Platform
 

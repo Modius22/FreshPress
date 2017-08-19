@@ -2233,7 +2233,7 @@ h1.nav-tab-wrapper, /* Back-compat for pre-4.4 */
 ------------------------------------------------------------------------------*/
 
 .spinner {
-	background: url(../../images/spinner.gif) no-repeat;
+	background: url(../images/spinner.gif) no-repeat;
 	-webkit-background-size: 20px 20px;
 	background-size: 20px 20px;
 	display: inline-block;
@@ -2449,11 +2449,11 @@ div.star-holder {
 	position: relative;
 	height: 17px;
 	width: 100px;
-	background: url(../../images/stars.png?ver=20121108) repeat-x bottom left;
+	background: url(../images/stars.png?ver=20121108) repeat-x bottom left;
 }
 
 div.star-holder .star-rating {
-	background: url(../../images/stars.png?ver=20121108) repeat-x top left;
+	background: url(../images/stars.png?ver=20121108) repeat-x top left;
 	height: 17px;
 	float: left;
 }
@@ -2968,7 +2968,7 @@ body.index-php #TB_window.thickbox-loading:before {
 	top: 50%;
 	z-index: -1;
 	margin: -10px 0 0 -10px;
-	background: #fcfcfc url(../../images/spinner.gif) no-repeat center;
+	background: #fcfcfc url(../images/spinner.gif) no-repeat center;
 	-webkit-background-size: 20px 20px;
 	background-size: 20px 20px;
 	-webkit-transform: translateZ(0);
@@ -2985,7 +2985,7 @@ body.index-php #TB_window.thickbox-loading:before {
 	body.plugins-php #TB_window.thickbox-loading:before,
 	body.update-core-php #TB_window.thickbox-loading:before,
 	body.index-php #TB_window.thickbox-loading:before {
-		background-image: url(../../images/spinner-2x.gif);
+		background-image: url(../images/spinner-2x.gif);
 	}
 }
 
@@ -3569,13 +3569,13 @@ img {
 	/* Back-compat for pre-3.8 */
 	div.star-holder,
 	div.star-holder .star-rating {
-		background: url(../../images/stars-2x.png?ver=20121108) repeat-x bottom left;
+		background: url(../images/stars-2x.png?ver=20121108) repeat-x bottom left;
 		-webkit-background-size: 21px 37px;
 		background-size: 21px 37px;
 	}
 
 	.spinner {
-		background-image: url(../../images/spinner-2x.gif);
+		background-image: url(../images/spinner-2x.gif);
 	}
 
 	/* @todo: evaluate - most of these were likely replaced by dashicons */

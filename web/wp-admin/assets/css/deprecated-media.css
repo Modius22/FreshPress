@@ -108,19 +108,19 @@ th {
 /* specific to the image upload form */
 
 .image-align-none-label {
-	background: url(../../images/align-none.png) no-repeat center left;
+	background: url(../images/align-none.png) no-repeat center left;
 }
 
 .image-align-left-label {
-	background: url(../../images/align-left.png) no-repeat center left;
+	background: url(../images/align-left.png) no-repeat center left;
 }
 
 .image-align-center-label {
-	background: url(../../images/align-center.png) no-repeat center left;
+	background: url(../images/align-center.png) no-repeat center left;
 }
 
 .image-align-right-label {
-	background: url(../../images/align-right.png) no-repeat center left;
+	background: url(../images/align-right.png) no-repeat center left;
 }
 
 tr.image-size td {
@@ -393,25 +393,25 @@ table.not-image tr.image-only {
   (min-resolution: 120dpi) {
 
 	.image-align-none-label {
-		background-image: url(../../images/align-none-2x.png?ver=20120916);
+		background-image: url(../images/align-none-2x.png?ver=20120916);
 		-webkit-background-size: 21px 15px;
 		background-size: 21px 15px;
 	}
 
 	.image-align-left-label {
-		background-image: url(../../images/align-left-2x.png?ver=20120916);
+		background-image: url(../images/align-left-2x.png?ver=20120916);
 		-webkit-background-size: 22px 15px;
 		background-size: 22px 15px;
 	}
 
 	.image-align-center-label {
-		background-image: url(../../images/align-center-2x.png?ver=20120916);
+		background-image: url(../images/align-center-2x.png?ver=20120916);
 		-webkit-background-size: 21px 15px;
 		background-size: 21px 15px;
 	}
 
 	.image-align-right-label {
-		background-image: url(../../images/align-right-2x.png?ver=20120916);
+		background-image: url(../images/align-right-2x.png?ver=20120916);
 		-webkit-background-size: 22px 15px;
 		background-size: 22px 15px;
 	}
