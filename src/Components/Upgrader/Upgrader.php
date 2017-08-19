@@ -934,6 +934,3 @@ class Upgrader
         return delete_option($lock_name . '.lock');
     }
 }
-
-/** File_Upload_Upgrader class */
-require_once ABSPATH . 'wp-admin/includes/class-file-upload-upgrader.php';

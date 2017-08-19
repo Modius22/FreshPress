@@ -122,6 +122,7 @@ $classes = array_change_key_case([
     'Theme_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeUpgrader',
     'WP_Image_Editor_GD' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\GdImageEditor',
     'WP_Image_Editor_Imagick' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImagickImageEditor',
+    'File_Upload_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\FileUploadUpgrader',
 ]);
 
 $abstractClasses = array_change_key_case([

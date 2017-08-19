@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\Upgrader\BulkPluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\BulkThemeUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\FileUploadUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginInstallerSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
@@ -159,7 +160,7 @@ if (isset($_GET['action'])) {
 
         check_admin_referer('plugin-upload');
 
-        $file_upload = new File_Upload_Upgrader('pluginzip', 'package');
+        $file_upload = new FileUploadUpgrader('pluginzip', 'package');
 
         $title = __('Upload Plugin');
         $parent_file = 'plugins.php';
@@ -266,7 +267,7 @@ if (isset($_GET['action'])) {
 
         check_admin_referer('theme-upload');
 
-        $file_upload = new File_Upload_Upgrader('themezip', 'package');
+        $file_upload = new FileUploadUpgrader('themezip', 'package');
 
         wp_enqueue_script('customize-loader');
 
