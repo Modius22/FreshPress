@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Upgrader\BulkPluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\BulkThemeUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginInstallerSkin;
+use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\ThemeInstallerSkin;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgraderSkin;
@@ -51,7 +52,7 @@ if (isset($_GET['action'])) {
         wp_enqueue_script('updates');
         iframe_header();
 
-        $upgrader = new Plugin_Upgrader(new BulkPluginUpgraderSkin(compact('nonce', 'url')));
+        $upgrader = new PluginUpgrader(new BulkPluginUpgraderSkin(compact('nonce', 'url')));
         $upgrader->bulk_upgrade($plugins);
 
         iframe_footer();
@@ -72,7 +73,7 @@ if (isset($_GET['action'])) {
         $nonce = 'upgrade-plugin_' . $plugin;
         $url = 'update.php?action=upgrade-plugin&plugin=' . urlencode($plugin);
 
-        $upgrader = new Plugin_Upgrader(new PluginUpgraderSkin(compact('title', 'nonce', 'url', 'plugin')));
+        $upgrader = new PluginUpgrader(new PluginUpgraderSkin(compact('title', 'nonce', 'url', 'plugin')));
         $upgrader->upgrade($plugin);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
@@ -146,7 +147,7 @@ if (isset($_GET['action'])) {
 
         $type = 'web'; //Install plugin type, From Web or an Upload.
 
-        $upgrader = new Plugin_Upgrader(new PluginInstallerSkin(compact('title', 'url', 'nonce', 'plugin', 'api')));
+        $upgrader = new PluginUpgrader(new PluginInstallerSkin(compact('title', 'url', 'nonce', 'plugin', 'api')));
         $upgrader->install($api->download_link);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
@@ -169,7 +170,7 @@ if (isset($_GET['action'])) {
         $url = add_query_arg(array('package' => $file_upload->id), 'update.php?action=upload-plugin');
         $type = 'upload'; //Install plugin type, From Web or an Upload.
 
-        $upgrader = new Plugin_Upgrader(new PluginInstallerSkin(compact('type', 'title', 'nonce', 'url')));
+        $upgrader = new PluginUpgrader(new PluginInstallerSkin(compact('type', 'title', 'nonce', 'url')));
         $result = $upgrader->install($file_upload->package);
 
         if ($result || is_wp_error($result)) {

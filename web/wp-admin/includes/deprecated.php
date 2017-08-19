@@ -12,6 +12,8 @@
  * Deprecated functions come here to die.
  */
 
+use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
+
 /**
  * @since 2.1.0
  * @deprecated 2.1.0 Use wp_editor()
@@ -1245,23 +1247,23 @@ function wp_update_core($current, $feedback = '')
 /**
  * This was once used to kick-off the Plugin Updater.
  *
- * Deprecated in favor of instantating a Plugin_Upgrader instance directly,
+ * Deprecated in favor of instantating a Devtronic\FreshPress\Components\Upgrader\PluginUpgrader instance directly,
  * and calling the 'upgrade' method.
  * Unused since 2.8.0.
  *
  * @since 2.5.0
- * @deprecated 3.7.0 Use Plugin_Upgrader
- * @see Plugin_Upgrader
+ * @deprecated 3.7.0 Use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader
+ * @see PluginUpgrader
  */
 function wp_update_plugin($plugin, $feedback = '')
 {
-    _deprecated_function(__FUNCTION__, '3.7.0', 'new Plugin_Upgrader();');
+    _deprecated_function(__FUNCTION__, '3.7.0', 'new Devtronic\FreshPress\Components\Upgrader\PluginUpgrader();');
 
     if (!empty($feedback)) {
         add_filter('update_feedback', $feedback);
     }
 
-    $upgrader = new Plugin_Upgrader();
+    $upgrader = new PluginUpgrader();
     return $upgrader->upgrade($plugin);
 }
 

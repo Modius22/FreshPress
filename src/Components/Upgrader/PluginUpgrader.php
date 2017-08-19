@@ -1,14 +1,16 @@
 <?php
 /**
- * Upgrade API: Plugin_Upgrader class
+ * Upgrade API: PluginUpgrader class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
+namespace Devtronic\FreshPress\Components\Upgrader;
+
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
-use Devtronic\FreshPress\Components\Upgrader\Upgrader;
+use WP_Error;
 
 /**
  * Core class used for upgrading/installing plugins.
@@ -21,7 +23,7 @@ use Devtronic\FreshPress\Components\Upgrader\Upgrader;
  *
  * @see Upgrader
  */
-class Plugin_Upgrader extends Upgrader
+class PluginUpgrader extends Upgrader
 {
 
     /**
@@ -96,35 +98,35 @@ class Plugin_Upgrader extends Upgrader
      * }
      * @return bool|WP_Error True if the install was successful, false or a WP_Error otherwise.
      */
-    public function install($package, $args = array())
+    public function install($package, $args = [])
     {
-        $defaults = array(
+        $defaults = [
             'clear_update_cache' => true,
-        );
+        ];
         $parsed_args = wp_parse_args($args, $defaults);
 
         $this->init();
         $this->install_strings();
 
-        add_filter('upgrader_source_selection', array($this, 'check_package'));
+        add_filter('upgrader_source_selection', [$this, 'check_package']);
         if ($parsed_args['clear_update_cache']) {
             // Clear cache so wp_update_plugins() knows about the new plugin.
             add_action('upgrader_process_complete', 'wp_clean_plugins_cache', 9, 0);
         }
 
-        $this->run(array(
+        $this->run([
             'package' => $package,
             'destination' => WP_PLUGIN_DIR,
             'clear_destination' => false, // Do not overwrite files.
             'clear_working' => true,
-            'hook_extra' => array(
+            'hook_extra' => [
                 'type' => 'plugin',
                 'action' => 'install',
-            )
-        ));
+            ]
+        ]);
 
         remove_action('upgrader_process_complete', 'wp_clean_plugins_cache', 9);
-        remove_filter('upgrader_source_selection', array($this, 'check_package'));
+        remove_filter('upgrader_source_selection', [$this, 'check_package']);
 
         if (!$this->result || is_wp_error($this->result)) {
             return $this->result;
@@ -152,11 +154,11 @@ class Plugin_Upgrader extends Upgrader
      * }
      * @return bool|WP_Error True if the upgrade was successful, false or a WP_Error object otherwise.
      */
-    public function upgrade($plugin, $args = array())
+    public function upgrade($plugin, $args = [])
     {
-        $defaults = array(
+        $defaults = [
             'clear_update_cache' => true,
-        );
+        ];
         $parsed_args = wp_parse_args($args, $defaults);
 
         $this->init();
@@ -174,30 +176,30 @@ class Plugin_Upgrader extends Upgrader
         // Get the URL to the zip file
         $r = $current->response[$plugin];
 
-        add_filter('upgrader_pre_install', array($this, 'deactivate_plugin_before_upgrade'), 10, 2);
-        add_filter('upgrader_clear_destination', array($this, 'delete_old_plugin'), 10, 4);
+        add_filter('upgrader_pre_install', [$this, 'deactivate_plugin_before_upgrade'], 10, 2);
+        add_filter('upgrader_clear_destination', [$this, 'delete_old_plugin'], 10, 4);
         //'source_selection' => array($this, 'source_selection'), //there's a trac ticket to move up the directory for zip's which are made a bit differently, useful for non-.org plugins.
         if ($parsed_args['clear_update_cache']) {
             // Clear cache so wp_update_plugins() knows about the new plugin.
             add_action('upgrader_process_complete', 'wp_clean_plugins_cache', 9, 0);
         }
 
-        $this->run(array(
+        $this->run([
             'package' => $r->package,
             'destination' => WP_PLUGIN_DIR,
             'clear_destination' => true,
             'clear_working' => true,
-            'hook_extra' => array(
+            'hook_extra' => [
                 'plugin' => $plugin,
                 'type' => 'plugin',
                 'action' => 'update',
-            ),
-        ));
+            ],
+        ]);
 
         // Cleanup our hooks, in case something else does a upgrade on this connection.
         remove_action('upgrader_process_complete', 'wp_clean_plugins_cache', 9);
-        remove_filter('upgrader_pre_install', array($this, 'deactivate_plugin_before_upgrade'));
-        remove_filter('upgrader_clear_destination', array($this, 'delete_old_plugin'));
+        remove_filter('upgrader_pre_install', [$this, 'deactivate_plugin_before_upgrade']);
+        remove_filter('upgrader_clear_destination', [$this, 'delete_old_plugin']);
 
         if (!$this->result || is_wp_error($this->result)) {
             return $this->result;
@@ -225,11 +227,11 @@ class Plugin_Upgrader extends Upgrader
      * }
      * @return array|false An array of results indexed by plugin file, or false if unable to connect to the filesystem.
      */
-    public function bulk_upgrade($plugins, $args = array())
+    public function bulk_upgrade($plugins, $args = [])
     {
-        $defaults = array(
+        $defaults = [
             'clear_update_cache' => true,
-        );
+        ];
         $parsed_args = wp_parse_args($args, $defaults);
 
         $this->init();
@@ -238,12 +240,12 @@ class Plugin_Upgrader extends Upgrader
 
         $current = get_site_transient('update_plugins');
 
-        add_filter('upgrader_clear_destination', array($this, 'delete_old_plugin'), 10, 4);
+        add_filter('upgrader_clear_destination', [$this, 'delete_old_plugin'], 10, 4);
 
         $this->skin->header();
 
         // Connect to the Filesystem first.
-        $res = $this->fs_connect(array(WP_CONTENT_DIR, WP_PLUGIN_DIR));
+        $res = $this->fs_connect([WP_CONTENT_DIR, WP_PLUGIN_DIR]);
         if (!$res) {
             $this->skin->footer();
             return false;
@@ -265,7 +267,7 @@ class Plugin_Upgrader extends Upgrader
             $this->maintenance_mode(true);
         }
 
-        $results = array();
+        $results = [];
 
         $this->update_count = count($plugins);
         $this->update_current = 0;
@@ -287,16 +289,16 @@ class Plugin_Upgrader extends Upgrader
 
             $this->skin->plugin_active = is_plugin_active($plugin);
 
-            $result = $this->run(array(
+            $result = $this->run([
                 'package' => $r->package,
                 'destination' => WP_PLUGIN_DIR,
                 'clear_destination' => true,
                 'clear_working' => true,
                 'is_multi' => true,
-                'hook_extra' => array(
+                'hook_extra' => [
                     'plugin' => $plugin
-                )
-            ));
+                ]
+            ]);
 
             $results[$plugin] = $this->result;
 
@@ -312,19 +314,19 @@ class Plugin_Upgrader extends Upgrader
         wp_clean_plugins_cache($parsed_args['clear_update_cache']);
 
         /** This action is documented in wp-admin/includes/class-wp-upgrader.php */
-        do_action('upgrader_process_complete', $this, array(
+        do_action('upgrader_process_complete', $this, [
             'action' => 'update',
             'type' => 'plugin',
             'bulk' => true,
             'plugins' => $plugins,
-        ));
+        ]);
 
         $this->skin->bulk_footer();
 
         $this->skin->footer();
 
         // Cleanup our hooks, in case something else does a upgrade on this connection.
-        remove_filter('upgrader_clear_destination', array($this, 'delete_old_plugin'));
+        remove_filter('upgrader_clear_destination', [$this, 'delete_old_plugin']);
 
         return $results;
     }
@@ -333,7 +335,7 @@ class Plugin_Upgrader extends Upgrader
      * Check a source package to be sure it contains a plugin.
      *
      * This function is added to the {@see 'upgrader_source_selection'} filter by
-     * Plugin_Upgrader::install().
+     * PluginUpgrader::install().
      *
      * @since 3.3.0
      * @access public
@@ -413,7 +415,7 @@ class Plugin_Upgrader extends Upgrader
     /**
      * Deactivates a plugin before it is upgraded.
      *
-     * Hooked to the {@see 'upgrader_pre_install'} filter by Plugin_Upgrader::upgrade().
+     * Hooked to the {@see 'upgrader_pre_install'} filter by PluginUpgrader::upgrade().
      *
      * @since 2.8.0
      * @since 4.1.0 Added a return value.
@@ -451,7 +453,7 @@ class Plugin_Upgrader extends Upgrader
      * Delete the old plugin during an upgrade.
      *
      * Hooked to the {@see 'upgrader_clear_destination'} filter by
-     * Plugin_Upgrader::upgrade() and Plugin_Upgrader::bulk_upgrade().
+     * PluginUpgrader::upgrade() and PluginUpgrader::bulk_upgrade().
      *
      * @since 2.8.0
      * @access public
@@ -486,9 +488,9 @@ class Plugin_Upgrader extends Upgrader
 
         // If plugin is in its own directory, recursively delete the directory.
         if (strpos(
-            $plugin,
+                $plugin,
                 '/'
-        ) && $this_plugin_dir != $plugins_dir) { //base check on if plugin includes directory separator AND that it's not the root plugin folder
+            ) && $this_plugin_dir != $plugins_dir) { //base check on if plugin includes directory separator AND that it's not the root plugin folder
             $deleted = $wp_filesystem->delete($this_plugin_dir, true);
         } else {
             $deleted = $wp_filesystem->delete($plugins_dir . $plugin);

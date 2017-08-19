@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
 
 //
@@ -3968,7 +3969,7 @@ function wp_ajax_delete_theme()
  *
  * @since 4.6.0
  *
- * @see Plugin_Upgrader
+ * @see PluginUpgrader
  */
 function wp_ajax_install_plugin()
 {
@@ -4009,7 +4010,7 @@ function wp_ajax_install_plugin()
     $status['pluginName'] = $api->name;
 
     $skin = new AjaxUpgraderSkin();
-    $upgrader = new Plugin_Upgrader($skin);
+    $upgrader = new PluginUpgrader($skin);
     $result = $upgrader->install($api->download_link);
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -4067,7 +4068,7 @@ function wp_ajax_install_plugin()
  *
  * @since 4.2.0
  *
- * @see Plugin_Upgrader
+ * @see PluginUpgrader
  */
 function wp_ajax_update_plugin()
 {
@@ -4107,7 +4108,7 @@ function wp_ajax_update_plugin()
     wp_update_plugins();
 
     $skin = new AjaxUpgraderSkin();
-    $upgrader = new Plugin_Upgrader($skin);
+    $upgrader = new PluginUpgrader($skin);
     $result = $upgrader->bulk_upgrade(array($plugin));
 
     if (defined('WP_DEBUG') && WP_DEBUG) {

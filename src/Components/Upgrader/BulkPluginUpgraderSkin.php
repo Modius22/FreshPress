@@ -19,7 +19,7 @@ namespace Devtronic\FreshPress\Components\Upgrader;
  */
 class BulkPluginUpgraderSkin extends BulkUpgraderSkin
 {
-    public $plugin_info = []; // Plugin_Upgrader::bulk() will fill this in.
+    public $plugin_info = []; // PluginUpgrader::bulk() will fill this in.
 
     public function add_strings()
     {

@@ -532,7 +532,7 @@ class Upgrader
 
         /*
          * Protection against deleting files in any important base directories.
-         * Theme_Upgrader & Plugin_Upgrader also trigger this, as they pass the
+         * Theme_Upgrader & PluginUpgrader also trigger this, as they pass the
          * destination directory (WP_PLUGIN_DIR / wp-content/themes) intending
          * to copy the directory into the directory, whilst they pass the source
          * as the actual files to copy.
@@ -809,7 +809,7 @@ class Upgrader
              * @since 4.6.0 `$translations` was added as a possible argument to `$hook_extra`.
              *
              * @param Upgrader $this Upgrader instance. In other contexts, $this, might be a
-             *                          Theme_Upgrader, Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
+             *                          Theme_Upgrader, PluginUpgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
              * @param array $hook_extra {
              *     Array of bulk item update data.
              *
@@ -934,9 +934,6 @@ class Upgrader
         return delete_option($lock_name . '.lock');
     }
 }
-
-/** Plugin_Upgrader class */
-require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
 
 /** Theme_Upgrader class */
 require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader.php';
