@@ -1,13 +1,15 @@
 <?php
 /**
- * Upgrader API: Bulk_Upgrader_Skin class
+ * Upgrader API: BulkUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
+
+use WP_Error;
 
 /**
  * Generic Bulk Upgrader Skin for WordPress Upgrades.
@@ -17,7 +19,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see UpgraderSkin
  */
-class Bulk_Upgrader_Skin extends UpgraderSkin
+class BulkUpgraderSkin extends UpgraderSkin
 {
     public $in_loop = false;
     /**
@@ -29,9 +31,9 @@ class Bulk_Upgrader_Skin extends UpgraderSkin
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array('url' => '', 'nonce' => '');
+        $defaults = ['url' => '', 'nonce' => ''];
         $args = wp_parse_args($args, $defaults);
 
         parent::__construct($args);
@@ -107,7 +109,7 @@ class Bulk_Upgrader_Skin extends UpgraderSkin
         }
 
         if (is_wp_error($error)) {
-            $messages = array();
+            $messages = [];
             foreach ($error->get_error_messages() as $emessage) {
                 if ($error->get_error_data() && is_string($error->get_error_data())) {
                     $messages[] = $emessage . ' ' . esc_html(strip_tags($error->get_error_data()));
@@ -165,15 +167,15 @@ class Bulk_Upgrader_Skin extends UpgraderSkin
         if ($this->error || !$this->result) {
             if ($this->error) {
                 echo '<div class="error"><p>' . sprintf(
-                    $this->upgrader->strings['skin_update_failed_error'],
-                    $title,
+                        $this->upgrader->strings['skin_update_failed_error'],
+                        $title,
                         '<strong>' . $this->error . '</strong>'
-                ) . '</p></div>';
+                    ) . '</p></div>';
             } else {
                 echo '<div class="error"><p>' . sprintf(
-                    $this->upgrader->strings['skin_update_failed'],
+                        $this->upgrader->strings['skin_update_failed'],
                         $title
-                ) . '</p></div>';
+                    ) . '</p></div>';
             }
 
             echo '<script type="text/javascript">jQuery(\'#progress-' . esc_js($this->upgrader->update_current) . '\').show();</script>';

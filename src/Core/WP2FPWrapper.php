@@ -111,6 +111,7 @@ $classes = array_change_key_case([
     'WP_Ajax_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AjaxUpgraderSkin',
     'Automatic_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AutomaticUpgraderSkin',
     'Theme_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeUpgraderSkin',
+    'Bulk_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\BulkUpgraderSkin',
 ]);
 
 $abstractClasses = array_change_key_case([
