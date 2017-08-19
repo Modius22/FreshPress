@@ -29,6 +29,7 @@ use Devtronic\FreshPress\Components\Customize\SiteIconControl;
 use Devtronic\FreshPress\Components\Customize\ThemeControl;
 use Devtronic\FreshPress\Components\Customize\ThemesSection;
 use Devtronic\FreshPress\Components\Customize\UploadControl;
+use Devtronic\FreshPress\Components\Customize\Widgets;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 
@@ -79,7 +80,7 @@ final class WP_Customize_Manager
      *
      * @since 3.9.0
      * @access public
-     * @var WP_Customize_Widgets
+     * @var Widgets
      */
     public $widgets;
 
@@ -315,8 +316,7 @@ final class WP_Customize_Manager
         $this->selective_refresh = new SelectiveRefresh($this);
 
         if (in_array('widgets', $components, true)) {
-            require_once(ABSPATH . WPINC . '/class-wp-customize-widgets.php');
-            $this->widgets = new WP_Customize_Widgets($this);
+            $this->widgets = new Widgets($this);
         }
 
         if (in_array('nav_menus', $components, true)) {

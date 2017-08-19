@@ -138,6 +138,7 @@ $finalClasses = array_change_key_case([
     'WP_Customize_Header_Image_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\HeaderImageSetting',
     'WP_Customize_Selective_Refresh' => 'Devtronic\\FreshPress\\Components\\Customize\\SelectiveRefresh',
     'WP_Customize_Nav_Menus' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenus',
+    'WP_Customize_Widgets' => 'Devtronic\\FreshPress\\Components\\Customize\\Widgets',
 ]);
 
 // Classes

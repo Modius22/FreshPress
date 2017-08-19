@@ -592,7 +592,7 @@ class NavMenuSetting extends Setting
                     continue;
                 }
 
-                $widget_instance = $nav_menu_widget_setting->post_value(); // Note that this calls WP_Customize_Widgets::sanitize_widget_instance().
+                $widget_instance = $nav_menu_widget_setting->post_value(); // Note that this calls Devtronic\FreshPress\Components\Customize\Widgets::sanitize_widget_instance().
                 if (empty($widget_instance['nav_menu']) || intval($widget_instance['nav_menu']) !== $this->previous_term_id) {
                     continue;
                 }
