@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Upgrader\BulkThemeUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginInstallerSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\ThemeInstallerSkin;
@@ -222,7 +223,7 @@ if (isset($_GET['action'])) {
         wp_enqueue_script('updates');
         iframe_header();
 
-        $upgrader = new Theme_Upgrader(new Bulk_Theme_Upgrader_Skin(compact('nonce', 'url')));
+        $upgrader = new Theme_Upgrader(new BulkThemeUpgraderSkin(compact('nonce', 'url')));
         $upgrader->bulk_upgrade($themes);
 
         iframe_footer();

@@ -112,6 +112,7 @@ $classes = array_change_key_case([
     'Automatic_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AutomaticUpgraderSkin',
     'Theme_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeUpgraderSkin',
     'Bulk_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\BulkUpgraderSkin',
+    'Bulk_Theme_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\BulkThemeUpgraderSkin',
 ]);
 
 $abstractClasses = array_change_key_case([

@@ -1,13 +1,13 @@
 <?php
 /**
- * Upgrader API: Bulk_Plugin_Upgrader_Skin class
+ * Upgrader API: BulkThemeUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\BulkUpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
 
 /**
  * Bulk Theme Upgrader Skin for WordPress Theme Upgrades.
@@ -17,9 +17,9 @@ use Devtronic\FreshPress\Components\Upgrader\BulkUpgraderSkin;
  *
  * @see BulkUpgraderSkin
  */
-class Bulk_Theme_Upgrader_Skin extends BulkUpgraderSkin
+class BulkThemeUpgraderSkin extends BulkUpgraderSkin
 {
-    public $theme_info = array(); // Theme_Upgrader::bulk() will fill this in.
+    public $theme_info = []; // Theme_Upgrader::bulk() will fill this in.
 
     public function add_strings()
     {
@@ -52,10 +52,10 @@ class Bulk_Theme_Upgrader_Skin extends BulkUpgraderSkin
     public function bulk_footer()
     {
         parent::bulk_footer();
-        $update_actions = array(
+        $update_actions = [
             'themes_page' => '<a href="' . self_admin_url('themes.php') . '" target="_parent">' . __('Return to Themes page') . '</a>',
             'updates_page' => '<a href="' . self_admin_url('update-core.php') . '" target="_parent">' . __('Return to WordPress Updates page') . '</a>'
-        );
+        ];
         if (!current_user_can('switch_themes') && !current_user_can('edit_theme_options')) {
             unset($update_actions['themes_page']);
         }
