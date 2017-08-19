@@ -162,7 +162,7 @@ class WP_Scripts extends WP_Dependencies
          *
          * @param WP_Scripts &$this WP_Scripts instance, passed by reference.
          */
-        do_action('wp_default_scripts', array(&$this));
+        do_action_ref_array('wp_default_scripts', array(&$this));
     }
 
     /**

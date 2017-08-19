@@ -307,7 +307,7 @@ class Hook implements \Iterator, \ArrayAccess
                 if ($the_['accepted_args'] == 0) {
                     $value = call_user_func_array($the_['function'], []);
                 } elseif ($the_['accepted_args'] >= $num_args) {
-                    $value = call_user_func_array($the_['function'], $args);
+                    $value = @call_user_func_array($the_['function'], $args);
                 } else {
                     $value = call_user_func_array(
                         $the_['function'],
