@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\Upgrader;
 
 /**
  * Core class used for upgrading/installing themes.
@@ -18,9 +19,9 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
  * @since 2.8.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader.php.
  *
- * @see WP_Upgrader
+ * @see Upgrader
  */
-class Theme_Upgrader extends WP_Upgrader
+class Theme_Upgrader extends Upgrader
 {
 
     /**
@@ -29,7 +30,7 @@ class Theme_Upgrader extends WP_Upgrader
      * @since 2.8.0
      * @access public
      * @var array|WP_Error $result
-     * @see WP_Upgrader::$result
+     * @see Upgrader::$result
      */
     public $result;
 

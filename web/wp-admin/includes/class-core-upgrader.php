@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\Upgrader;
 
 /**
  * Core class used for updating core.
@@ -18,9 +19,9 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
  * @since 2.8.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader.php.
  *
- * @see WP_Upgrader
+ * @see Upgrader
  */
-class Core_Upgrader extends WP_Upgrader
+class Core_Upgrader extends Upgrader
 {
 
     /**
@@ -122,20 +123,20 @@ class Core_Upgrader extends WP_Upgrader
         }
 
         // Lock to prevent multiple Core Updates occurring
-        $lock = WP_Upgrader::create_lock('core_updater', 15 * MINUTE_IN_SECONDS);
+        $lock = Upgrader::create_lock('core_updater', 15 * MINUTE_IN_SECONDS);
         if (!$lock) {
             return new WP_Error('locked', $this->strings['locked']);
         }
 
         $download = $this->download_package($current->packages->$to_download);
         if (is_wp_error($download)) {
-            WP_Upgrader::release_lock('core_updater');
+            Upgrader::release_lock('core_updater');
             return $download;
         }
 
         $working_dir = $this->unpack_package($download);
         if (is_wp_error($working_dir)) {
-            WP_Upgrader::release_lock('core_updater');
+            Upgrader::release_lock('core_updater');
             return $working_dir;
         }
 
@@ -146,7 +147,7 @@ class Core_Upgrader extends WP_Upgrader
             true
         )) {
             $wp_filesystem->delete($working_dir, true);
-            WP_Upgrader::release_lock('core_updater');
+            Upgrader::release_lock('core_updater');
             return new WP_Error(
                 'copy_failed_for_update_core_file',
                 __('The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.'),
@@ -158,7 +159,7 @@ class Core_Upgrader extends WP_Upgrader
         require_once(ABSPATH . 'wp-admin/includes/update-core.php');
 
         if (!function_exists('update_core')) {
-            WP_Upgrader::release_lock('core_updater');
+            Upgrader::release_lock('core_updater');
             return new WP_Error('copy_failed_space', $this->strings['copy_failed_space']);
         }
 
@@ -240,7 +241,7 @@ class Core_Upgrader extends WP_Upgrader
             wp_version_check($stats);
         }
 
-        WP_Upgrader::release_lock('core_updater');
+        Upgrader::release_lock('core_updater');
 
         return $result;
     }

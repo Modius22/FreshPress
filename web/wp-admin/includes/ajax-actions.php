@@ -3734,7 +3734,6 @@ function wp_ajax_install_theme()
         wp_send_json_error($status);
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
     include_once(ABSPATH . 'wp-admin/includes/theme.php');
 
     $api = themes_api('theme_information', array(
@@ -3841,8 +3840,6 @@ function wp_ajax_update_theme()
         $status['errorMessage'] = __('Sorry, you are not allowed to update themes for this site.');
         wp_send_json_error($status);
     }
-
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 
     $current = get_site_transient('update_themes');
     if (empty($current)) {
@@ -3995,7 +3992,6 @@ function wp_ajax_install_plugin()
         wp_send_json_error($status);
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
     include_once(ABSPATH . 'wp-admin/includes/plugin-install.php');
 
     $api = plugins_api('plugin_information', array(
@@ -4107,8 +4103,6 @@ function wp_ajax_update_plugin()
         /* translators: %s: Plugin version */
         $status['oldVersion'] = sprintf(__('Version %s'), $plugin_data['Version']);
     }
-
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 
     wp_update_plugins();
 

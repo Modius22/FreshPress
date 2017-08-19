@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Upgrader;
 
 use WP_Error;
-use WP_Upgrader;
 
 /**
  * Generic Skin for the WordPress Upgrader classes. This skin is designed to be extended for specific purposes.
@@ -45,7 +44,7 @@ class UpgraderSkin
     }
 
     /**
-     * @param WP_Upgrader $upgrader
+     * @param Upgrader $upgrader
      */
     public function set_upgrader(&$upgrader)
     {

@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\Upgrader;
 
 /**
  * Core class used for updating/installing language packs (translations)
@@ -18,9 +19,9 @@ use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
  * @since 3.7.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader.php.
  *
- * @see WP_Upgrader
+ * @see Upgrader
  */
-class Language_Pack_Upgrader extends WP_Upgrader
+class Language_Pack_Upgrader extends Upgrader
 {
 
     /**
@@ -29,7 +30,7 @@ class Language_Pack_Upgrader extends WP_Upgrader
      * @since 3.7.0
      * @access public
      * @var array|WP_Error $result
-     * @see WP_Upgrader::$result
+     * @see Upgrader::$result
      */
     public $result;
 
@@ -51,7 +52,7 @@ class Language_Pack_Upgrader extends WP_Upgrader
      * @access public
      * @static
      *
-     * @param false|WP_Upgrader $upgrader Optional. WP_Upgrader instance or false. If `$upgrader` is
+     * @param false|Upgrader $upgrader Optional. Upgrader instance or false. If `$upgrader` is
      *                                    a Language_Pack_Upgrader instance, the method will bail to
      *                                    avoid recursion. Otherwise unused. Default false.
      */

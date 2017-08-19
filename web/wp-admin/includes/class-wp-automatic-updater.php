@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\Upgrader;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -413,7 +414,7 @@ class WP_Automatic_Updater
             return;
         }
 
-        if (!WP_Upgrader::create_lock('auto_updater')) {
+        if (!Upgrader::create_lock('auto_updater')) {
             return;
         }
 
@@ -517,7 +518,7 @@ class WP_Automatic_Updater
             do_action('automatic_updates_complete', $this->update_results);
         }
 
-        WP_Upgrader::release_lock('auto_updater');
+        Upgrader::release_lock('auto_updater');
     }
 
     /**

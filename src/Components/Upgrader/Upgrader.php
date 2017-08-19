@@ -1,17 +1,18 @@
 <?php
 /**
- * Upgrade API: WP_Upgrader class
+ * Upgrade API: Upgrader class
  *
- * Requires skin classes and WP_Upgrader subclasses for backward compatibility.
+ * Requires skin classes and Upgrader subclasses for backward compatibility.
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 2.8.0
  */
 
+namespace Devtronic\FreshPress\Components\Upgrader;
+
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
-use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+use WP_Error;
 
 /**
  * Core class used for upgrading/installing a local set of files via
@@ -19,7 +20,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @since 2.8.0
  */
-class WP_Upgrader
+class Upgrader
 {
 
     /**
@@ -29,7 +30,7 @@ class WP_Upgrader
      * @access public
      * @var array $strings
      */
-    public $strings = array();
+    public $strings = [];
 
     /**
      * The upgrader skin being used.
@@ -43,7 +44,7 @@ class WP_Upgrader
     /**
      * The result of the installation.
      *
-     * This is set by WP_Upgrader::install_package(), only when the package is installed
+     * This is set by Upgrader::install_package(), only when the package is installed
      * successfully. It will then be an array, unless a WP_Error is returned by the
      * {@see 'upgrader_post_install'} filter. In that case, the WP_Error will be assigned to
      * it.
@@ -64,7 +65,7 @@ class WP_Upgrader
      * @type bool $clear_destination Whether the destination folder was cleared.
      * }
      */
-    public $result = array();
+    public $result = [];
 
     /**
      * The total number of updates being performed.
@@ -110,7 +111,7 @@ class WP_Upgrader
      * Initialize the upgrader.
      *
      * This will set the relationship between the skin being used and this upgrader,
-     * and also add the generic strings to `WP_Upgrader::$strings`.
+     * and also add the generic strings to `Upgrader::$strings`.
      *
      * @since 2.8.0
      * @access public
@@ -122,7 +123,7 @@ class WP_Upgrader
     }
 
     /**
-     * Add the generic strings to WP_Upgrader::$strings.
+     * Add the generic strings to Upgrader::$strings.
      *
      * @since 2.8.0
      * @access public
@@ -166,15 +167,15 @@ class WP_Upgrader
      *                                            Default false.
      * @return bool|WP_Error True if able to connect, false or a WP_Error otherwise.
      */
-    public function fs_connect($directories = array(), $allow_relaxed_file_ownership = false)
+    public function fs_connect($directories = [], $allow_relaxed_file_ownership = false)
     {
         global $wp_filesystem;
 
         if (false === ($credentials = $this->skin->request_filesystem_credentials(
-            false,
-            $directories[0],
+                false,
+                $directories[0],
                 $allow_relaxed_file_ownership
-        ))) {
+            ))) {
             return false;
         }
 
@@ -253,7 +254,7 @@ class WP_Upgrader
          * @param bool $reply Whether to bail without returning the package.
          *                             Default false.
          * @param string $package The package file name.
-         * @param WP_Upgrader $this The WP_Upgrader instance.
+         * @param Upgrader $this The Upgrader instance.
          */
         $reply = apply_filters('upgrader_pre_download', false, $package, $this);
         if (false !== $reply) {
@@ -363,7 +364,7 @@ class WP_Upgrader
         }
 
         // Check all files are writable before attempting to clear the destination.
-        $unwritable_files = array();
+        $unwritable_files = [];
 
         $_files = $wp_filesystem->dirlist($remote_destination, true, true);
 
@@ -437,23 +438,23 @@ class WP_Upgrader
      * @type bool $abort_if_destination_exists Whether to abort the installation if
      *                                               the destination folder already exists. Default true.
      * @type array $hook_extra Extra arguments to pass to the filter hooks called by
-     *                                               WP_Upgrader::install_package(). Default empty array.
+     *                                               Upgrader::install_package(). Default empty array.
      * }
      *
-     * @return array|WP_Error The result (also stored in `WP_Upgrader::$result`), or a WP_Error on failure.
+     * @return array|WP_Error The result (also stored in `Upgrader::$result`), or a WP_Error on failure.
      */
-    public function install_package($args = array())
+    public function install_package($args = [])
     {
         global $wp_filesystem, $wp_theme_directories;
 
-        $defaults = array(
+        $defaults = [
             'source' => '', // Please always pass this
             'destination' => '', // and this
             'clear_destination' => false,
             'clear_working' => false,
             'abort_if_destination_exists' => true,
-            'hook_extra' => array()
-        );
+            'hook_extra' => []
+        ];
 
         $args = wp_parse_args($args, $defaults);
 
@@ -515,7 +516,7 @@ class WP_Upgrader
          *
          * @param string $source File source location.
          * @param string $remote_source Remote file source location.
-         * @param WP_Upgrader $this WP_Upgrader instance.
+         * @param Upgrader $this Upgrader instance.
          * @param array $hook_extra Extra arguments passed to hooked filters.
          */
         $source = apply_filters('upgrader_source_selection', $source, $remote_source, $this, $args['hook_extra']);
@@ -536,7 +537,7 @@ class WP_Upgrader
          * to copy the directory into the directory, whilst they pass the source
          * as the actual files to copy.
          */
-        $protected_directories = array(ABSPATH, WP_CONTENT_DIR, WP_PLUGIN_DIR, WP_CONTENT_DIR . '/themes');
+        $protected_directories = [ABSPATH, WP_CONTENT_DIR, WP_PLUGIN_DIR, WP_CONTENT_DIR . '/themes'];
 
         if (is_array($wp_theme_directories)) {
             $protected_directories = array_merge($protected_directories, $wp_theme_directories);
@@ -665,17 +666,17 @@ class WP_Upgrader
      *                                               should be false. Default true.
      * @type bool $is_multi Whether this run is one of multiple upgrade/install
      *                                               actions being performed in bulk. When true, the skin
-     *                                               WP_Upgrader::header() and WP_Upgrader::footer()
+     *                                               Upgrader::header() and Upgrader::footer()
      *                                               aren't called. Default false.
      * @type array $hook_extra Extra arguments to pass to the filter hooks called by
-     *                                               WP_Upgrader::run().
+     *                                               Upgrader::run().
      * }
-     * @return array|false|WP_error The result from self::install_package() on success, otherwise a WP_Error,
+     * @return array|false|WP_Error The result from self::install_package() on success, otherwise a WP_Error,
      *                              or false if unable to connect to the filesystem.
      */
     public function run($options)
     {
-        $defaults = array(
+        $defaults = [
             'package' => '',
             // Please always pass this.
             'destination' => '',
@@ -685,9 +686,9 @@ class WP_Upgrader
             // Abort if the Destination directory exists, Pass clear_destination as false please
             'clear_working' => true,
             'is_multi' => false,
-            'hook_extra' => array()
+            'hook_extra' => []
             // Pass any extra $hook_extra args here, this will be passed to any hooked filters.
-        );
+        ];
 
         $options = wp_parse_args($options, $defaults);
 
@@ -728,7 +729,7 @@ class WP_Upgrader
         }
 
         // Connect to the Filesystem first.
-        $res = $this->fs_connect(array(WP_CONTENT_DIR, $options['destination']));
+        $res = $this->fs_connect([WP_CONTENT_DIR, $options['destination']]);
         // Mainly for non-connected filesystem.
         if (!$res) {
             if (!$options['is_multi']) {
@@ -776,14 +777,14 @@ class WP_Upgrader
         }
 
         // With the given options, this installs it to the destination directory.
-        $result = $this->install_package(array(
+        $result = $this->install_package([
             'source' => $working_dir,
             'destination' => $options['destination'],
             'clear_destination' => $options['clear_destination'],
             'abort_if_destination_exists' => $options['abort_if_destination_exists'],
             'clear_working' => $options['clear_working'],
             'hook_extra' => $options['hook_extra']
-        ));
+        ]);
 
         $this->skin->set_result($result);
         if (is_wp_error($result)) {
@@ -804,10 +805,10 @@ class WP_Upgrader
              * See also {@see 'upgrader_package_options'}.
              *
              * @since 3.6.0
-             * @since 3.7.0 Added to WP_Upgrader::run().
+             * @since 3.7.0 Added to Upgrader::run().
              * @since 4.6.0 `$translations` was added as a possible argument to `$hook_extra`.
              *
-             * @param WP_Upgrader $this WP_Upgrader instance. In other contexts, $this, might be a
+             * @param Upgrader $this Upgrader instance. In other contexts, $this, might be a
              *                          Theme_Upgrader, Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
              * @param array $hook_extra {
              *     Array of bulk item update data.
@@ -905,9 +906,9 @@ class WP_Upgrader
             }
 
             // There must exist an expired lock, clear it and re-gain it.
-            WP_Upgrader::release_lock($lock_name);
+            Upgrader::release_lock($lock_name);
 
-            return WP_Upgrader::create_lock($lock_name, $release_timeout);
+            return Upgrader::create_lock($lock_name, $release_timeout);
         }
 
         // Update the lock, as by this point we've definitely got a lock, just need to fire the actions.
@@ -923,7 +924,7 @@ class WP_Upgrader
      * @access public
      * @static
      *
-     * @see WP_Upgrader::create_lock()
+     * @see Upgrader::create_lock()
      *
      * @param string $lock_name The name of this unique lock.
      * @return bool True if the lock was successfully released. False on failure.

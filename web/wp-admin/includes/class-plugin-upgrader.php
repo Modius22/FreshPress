@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\Upgrader;
 
 /**
  * Core class used for upgrading/installing plugins.
@@ -18,9 +19,9 @@ use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
  * @since 2.8.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader.php.
  *
- * @see WP_Upgrader
+ * @see Upgrader
  */
-class Plugin_Upgrader extends WP_Upgrader
+class Plugin_Upgrader extends Upgrader
 {
 
     /**
@@ -30,7 +31,7 @@ class Plugin_Upgrader extends WP_Upgrader
      * @access public
      * @var array|WP_Error $result
      *
-     * @see WP_Upgrader::$result
+     * @see Upgrader::$result
      */
     public $result;
 
