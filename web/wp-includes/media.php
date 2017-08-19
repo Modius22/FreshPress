@@ -3065,7 +3065,6 @@ function wp_image_editor_supports($args = array())
  */
 function _wp_image_editor_choose($args = array())
 {
-    require_once ABSPATH . WPINC . '/class-wp-image-editor-gd.php';
     require_once ABSPATH . WPINC . '/class-wp-image-editor-imagick.php';
     /**
      * Filters the list of image editing library classes.
@@ -3073,9 +3072,9 @@ function _wp_image_editor_choose($args = array())
      * @since 3.5.0
      *
      * @param array $image_editors List of available image editors. Defaults are
-     *                             'WP_Image_Editor_Imagick', 'WP_Image_Editor_GD'.
+     *                             'WP_Image_Editor_Imagick', 'GdImageEditor'.
      */
-    $implementations = apply_filters('wp_image_editors', array('WP_Image_Editor_Imagick', 'WP_Image_Editor_GD'));
+    $implementations = apply_filters('wp_image_editors', array('WP_Image_Editor_Imagick', 'GdImageEditor'));
 
     foreach ($implementations as $implementation) {
         if (!call_user_func(array($implementation, 'test'), $args)) {

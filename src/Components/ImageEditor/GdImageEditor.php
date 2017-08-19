@@ -6,7 +6,9 @@
  * @subpackage Image_Editor
  */
 
-use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
+namespace Devtronic\FreshPress\Components\ImageEditor;
+
+use WP_Error;
 
 /**
  * WordPress Image Editor Class for Image Manipulation through GD
@@ -16,7 +18,7 @@ use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
  * @subpackage Image_Editor
  * @uses ImageEditor Extends class
  */
-class WP_Image_Editor_GD extends ImageEditor
+class GdImageEditor extends ImageEditor
 {
     /**
      * GD Resource.
@@ -45,7 +47,7 @@ class WP_Image_Editor_GD extends ImageEditor
      * @param array $args
      * @return bool
      */
-    public static function test($args = array())
+    public static function test($args = [])
     {
         if (!extension_loaded('gd') || !function_exists('gd_info')) {
             return false;
@@ -243,7 +245,7 @@ class WP_Image_Editor_GD extends ImageEditor
      */
     public function multi_resize($sizes)
     {
-        $metadata = array();
+        $metadata = [];
         $orig_size = $this->size;
 
         foreach ($sizes as $size => $size_data) {
@@ -427,7 +429,7 @@ class WP_Image_Editor_GD extends ImageEditor
         }
 
         if ('image/gif' == $mime_type) {
-            if (!$this->make_image($filename, 'imagegif', array($image, $filename))) {
+            if (!$this->make_image($filename, 'imagegif', [$image, $filename])) {
                 return new WP_Error('image_save_error', __('Image Editor Save Failed'));
             }
         } elseif ('image/png' == $mime_type) {
@@ -436,11 +438,11 @@ class WP_Image_Editor_GD extends ImageEditor
                 imagetruecolortopalette($image, false, imagecolorstotal($image));
             }
 
-            if (!$this->make_image($filename, 'imagepng', array($image, $filename))) {
+            if (!$this->make_image($filename, 'imagepng', [$image, $filename])) {
                 return new WP_Error('image_save_error', __('Image Editor Save Failed'));
             }
         } elseif ('image/jpeg' == $mime_type) {
-            if (!$this->make_image($filename, 'imagejpeg', array($image, $filename, $this->get_quality()))) {
+            if (!$this->make_image($filename, 'imagejpeg', [$image, $filename, $this->get_quality()])) {
                 return new WP_Error('image_save_error', __('Image Editor Save Failed'));
             }
         } else {
@@ -459,13 +461,13 @@ class WP_Image_Editor_GD extends ImageEditor
          *
          * @param string $filename Name of the file.
          */
-        return array(
+        return [
             'path' => $filename,
             'file' => wp_basename(apply_filters('image_make_intermediate_size', $filename)),
             'width' => $this->size['width'],
             'height' => $this->size['height'],
             'mime-type' => $mime_type,
-        );
+        ];
     }
 
     /**
@@ -500,7 +502,7 @@ class WP_Image_Editor_GD extends ImageEditor
      * @since 3.5.0
      * @access protected
      *
-     * @param string|stream $filename
+     * @param string|resource $filename
      * @param callable $function
      * @param array $arguments
      * @return bool
