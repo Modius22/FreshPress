@@ -24,9 +24,6 @@ require_once ABSPATH . 'wp-admin/includes/class-bulk-theme-upgrader-skin.php';
 /** Plugin_Installer_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-plugin-installer-skin.php';
 
-/** Theme_Installer_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-theme-installer-skin.php';
-
 /** Automatic_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-automatic-upgrader-skin.php';
 

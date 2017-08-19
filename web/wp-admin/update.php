@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\ThemeInstallerSkin;
 
 if (!defined('IFRAME_REQUEST') && isset($_GET['action']) && in_array(
     $_GET['action'],
@@ -252,7 +253,7 @@ if (isset($_GET['action'])) {
         $url = 'update.php?action=install-theme&theme=' . urlencode($theme);
         $type = 'web'; //Install theme type, From Web or an Upload.
 
-        $upgrader = new Theme_Upgrader(new Theme_Installer_Skin(compact('title', 'url', 'nonce', 'plugin', 'api')));
+        $upgrader = new Theme_Upgrader(new ThemeInstallerSkin(compact('title', 'url', 'nonce', 'plugin', 'api')));
         $upgrader->install($api->download_link);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
@@ -278,7 +279,7 @@ if (isset($_GET['action'])) {
         $url = add_query_arg(array('package' => $file_upload->id), 'update.php?action=upload-theme');
         $type = 'upload'; //Install plugin type, From Web or an Upload.
 
-        $upgrader = new Theme_Upgrader(new Theme_Installer_Skin(compact('type', 'title', 'nonce', 'url')));
+        $upgrader = new Theme_Upgrader(new ThemeInstallerSkin(compact('type', 'title', 'nonce', 'url')));
         $result = $upgrader->install($file_upload->package);
 
         if ($result || is_wp_error($result)) {

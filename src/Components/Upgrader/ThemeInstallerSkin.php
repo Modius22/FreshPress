@@ -1,13 +1,15 @@
 <?php
 /**
- * Upgrader API: Theme_Installer_Skin class
+ * Upgrader API: ThemeInstallerSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
+
+use WP_Theme;
 
 /**
  * Theme Installer Skin for the WordPress Theme Installer.
@@ -17,7 +19,7 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see UpgraderSkin
  */
-class Theme_Installer_Skin extends UpgraderSkin
+class ThemeInstallerSkin extends UpgraderSkin
 {
     public $api;
     public $type;
@@ -26,13 +28,13 @@ class Theme_Installer_Skin extends UpgraderSkin
      *
      * @param array $args
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $defaults = array('type' => 'web', 'url' => '', 'theme' => '', 'nonce' => '', 'title' => '');
+        $defaults = ['type' => 'web', 'url' => '', 'theme' => '', 'nonce' => '', 'title' => ''];
         $args = wp_parse_args($args, $defaults);
 
         $this->type = $args['type'];
-        $this->api = isset($args['api']) ? $args['api'] : array();
+        $this->api = isset($args['api']) ? $args['api'] : [];
 
         parent::__construct($args);
     }
@@ -69,31 +71,31 @@ class Theme_Installer_Skin extends UpgraderSkin
         $stylesheet = $this->upgrader->result['destination_name'];
         $template = $theme_info->get_template();
 
-        $activate_link = add_query_arg(array(
+        $activate_link = add_query_arg([
             'action' => 'activate',
             'template' => urlencode($template),
             'stylesheet' => urlencode($stylesheet),
-        ), admin_url('themes.php'));
+        ], admin_url('themes.php'));
         $activate_link = wp_nonce_url($activate_link, 'switch-theme_' . $stylesheet);
 
-        $install_actions = array();
+        $install_actions = [];
 
         if (current_user_can('edit_theme_options') && current_user_can('customize')) {
             $install_actions['preview'] = '<a href="' . wp_customize_url($stylesheet) . '" class="hide-if-no-customize load-customize"><span aria-hidden="true">' . __('Live Preview') . '</span><span class="screen-reader-text">' . sprintf(
-                __('Live Preview &#8220;%s&#8221;'),
+                    __('Live Preview &#8220;%s&#8221;'),
                     $name
-            ) . '</span></a>';
+                ) . '</span></a>';
         }
         $install_actions['activate'] = '<a href="' . esc_url($activate_link) . '" class="activatelink"><span aria-hidden="true">' . __('Activate') . '</span><span class="screen-reader-text">' . sprintf(
-            __('Activate &#8220;%s&#8221;'),
+                __('Activate &#8220;%s&#8221;'),
                 $name
-        ) . '</span></a>';
+            ) . '</span></a>';
 
         if (is_network_admin() && current_user_can('manage_network_themes')) {
             $install_actions['network_enable'] = '<a href="' . esc_url(wp_nonce_url(
-                'themes.php?action=enable&amp;theme=' . urlencode($stylesheet),
+                    'themes.php?action=enable&amp;theme=' . urlencode($stylesheet),
                     'enable-theme_' . $stylesheet
-            )) . '" target="_parent">' . __('Network Enable') . '</a>';
+                )) . '" target="_parent">' . __('Network Enable') . '</a>';
         }
 
         if ($this->type == 'web') {
