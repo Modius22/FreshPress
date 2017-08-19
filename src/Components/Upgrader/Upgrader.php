@@ -809,7 +809,7 @@ class Upgrader
              * @since 4.6.0 `$translations` was added as a possible argument to `$hook_extra`.
              *
              * @param Upgrader $this Upgrader instance. In other contexts, $this, might be a
-             *                          Theme_Upgrader, PluginUpgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
+             *                          Theme_Upgrader, PluginUpgrader, Core_Upgrade, or LanguageUpgrader instance.
              * @param array $hook_extra {
              *     Array of bulk item update data.
              *
@@ -937,9 +937,6 @@ class Upgrader
 
 /** Theme_Upgrader class */
 require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader.php';
-
-/** Language_Pack_Upgrader class */
-require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
 
 /** File_Upload_Upgrader class */
 require_once ABSPATH . 'wp-admin/includes/class-file-upload-upgrader.php';

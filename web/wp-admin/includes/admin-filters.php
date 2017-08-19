@@ -8,6 +8,8 @@
  */
 
 // Bookmark hooks.
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
+
 add_action('admin_page_access_denied', 'wp_link_manager_disabled_message');
 
 // Dashboard hooks.
@@ -115,7 +117,7 @@ add_filter('update_footer', 'core_update_footer');
 add_action('_core_updated_successfully', '_redirect_to_about_wordpress');
 
 // Upgrade hooks.
-add_action('upgrader_process_complete', array('Language_Pack_Upgrader', 'async_upgrade'), 20);
+add_action('upgrader_process_complete', array(LanguageUpgrader::class, 'async_upgrade'), 20);
 add_action('upgrader_process_complete', 'wp_version_check', 10, 0);
 add_action('upgrader_process_complete', 'wp_update_plugins', 10, 0);
 add_action('upgrader_process_complete', 'wp_update_themes', 10, 0);

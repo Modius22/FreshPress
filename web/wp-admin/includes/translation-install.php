@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
 
 
 /**
@@ -236,7 +237,7 @@ function wp_download_language_pack($download)
     $translation = (object)$translation;
 
     $skin = new AutomaticUpgraderSkin();
-    $upgrader = new Language_Pack_Upgrader($skin);
+    $upgrader = new LanguageUpgrader($skin);
     $translation->type = 'core';
     $result = $upgrader->upgrade($translation, array('clear_update_cache' => false));
 
@@ -262,7 +263,7 @@ function wp_can_install_language_pack()
     }
 
     $skin = new AutomaticUpgraderSkin();
-    $upgrader = new Language_Pack_Upgrader($skin);
+    $upgrader = new LanguageUpgrader($skin);
     $upgrader->init();
 
     $check = $upgrader->fs_connect(array(WP_CONTENT_DIR, WP_LANG_DIR));

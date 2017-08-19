@@ -1,17 +1,16 @@
 <?php
 /**
- * Upgrade API: Language_Pack_Upgrader class
+ * Upgrade API: LanguageUpgrader class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
+namespace Devtronic\FreshPress\Components\Upgrader;
+
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
-use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
-use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
-use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
-use Devtronic\FreshPress\Components\Upgrader\Upgrader;
+use WP_Error;
 
 /**
  * Core class used for updating/installing language packs (translations)
@@ -22,7 +21,7 @@ use Devtronic\FreshPress\Components\Upgrader\Upgrader;
  *
  * @see Upgrader
  */
-class Language_Pack_Upgrader extends Upgrader
+class LanguageUpgrader extends Upgrader
 {
 
     /**
@@ -54,13 +53,13 @@ class Language_Pack_Upgrader extends Upgrader
      * @static
      *
      * @param false|Upgrader $upgrader Optional. Upgrader instance or false. If `$upgrader` is
-     *                                    a Language_Pack_Upgrader instance, the method will bail to
+     *                                    a LanguageUpgrader instance, the method will bail to
      *                                    avoid recursion. Otherwise unused. Default false.
      */
     public static function async_upgrade($upgrader = false)
     {
         // Avoid recursion.
-        if ($upgrader && $upgrader instanceof Language_Pack_Upgrader) {
+        if ($upgrader && $upgrader instanceof LanguageUpgrader) {
             return;
         }
 
@@ -105,12 +104,12 @@ class Language_Pack_Upgrader extends Upgrader
         if ($upgrader && $upgrader->skin instanceof AutomaticUpgraderSkin) {
             $skin = $upgrader->skin;
         } else {
-            $skin = new LanguageUpgraderSkin(array(
+            $skin = new LanguageUpgraderSkin([
                 'skip_header_footer' => true,
-            ));
+            ]);
         }
 
-        $lp_upgrader = new Language_Pack_Upgrader($skin);
+        $lp_upgrader = new LanguageUpgrader($skin);
         $lp_upgrader->bulk_upgrade($language_updates);
     }
 
@@ -139,13 +138,13 @@ class Language_Pack_Upgrader extends Upgrader
      *
      * @param string|false $update Optional. Whether an update offer is available. Default false.
      * @param array $args Optional. Other optional arguments, see
-     *                             Language_Pack_Upgrader::bulk_upgrade(). Default empty array.
+     *                             LanguageUpgrader::bulk_upgrade(). Default empty array.
      * @return array|bool|WP_Error The result of the upgrade, or a WP_Error object instead.
      */
-    public function upgrade($update = false, $args = array())
+    public function upgrade($update = false, $args = [])
     {
         if ($update) {
-            $update = array($update);
+            $update = [$update];
         }
 
         $results = $this->bulk_upgrade($update, $args);
@@ -175,13 +174,13 @@ class Language_Pack_Upgrader extends Upgrader
      * @return array|bool|WP_Error Will return an array of results, or true if there are no updates,
      *                                   false or WP_Error for initial errors.
      */
-    public function bulk_upgrade($language_updates = array(), $args = array())
+    public function bulk_upgrade($language_updates = [], $args = [])
     {
         global $wp_filesystem;
 
-        $defaults = array(
+        $defaults = [
             'clear_update_cache' => true,
-        );
+        ];
         $parsed_args = wp_parse_args($args, $defaults);
 
         $this->init();
@@ -210,18 +209,18 @@ class Language_Pack_Upgrader extends Upgrader
         remove_all_filters('upgrader_post_install');
         remove_all_filters('upgrader_source_selection');
 
-        add_filter('upgrader_source_selection', array($this, 'check_package'), 10, 2);
+        add_filter('upgrader_source_selection', [$this, 'check_package'], 10, 2);
 
         $this->skin->header();
 
         // Connect to the Filesystem first.
-        $res = $this->fs_connect(array(WP_CONTENT_DIR, WP_LANG_DIR));
+        $res = $this->fs_connect([WP_CONTENT_DIR, WP_LANG_DIR]);
         if (!$res) {
             $this->skin->footer();
             return false;
         }
 
-        $results = array();
+        $results = [];
 
         $this->update_count = count($language_updates);
         $this->update_current = 0;
@@ -237,7 +236,7 @@ class Language_Pack_Upgrader extends Upgrader
             }
         }
 
-        $language_updates_results = array();
+        $language_updates_results = [];
 
         foreach ($language_updates as $language_update) {
             $this->skin->language_update = $language_update;
@@ -251,18 +250,18 @@ class Language_Pack_Upgrader extends Upgrader
 
             $this->update_current++;
 
-            $options = array(
+            $options = [
                 'package' => $language_update->package,
                 'destination' => $destination,
                 'clear_destination' => false,
                 'abort_if_destination_exists' => false, // We expect the destination to exist.
                 'clear_working' => true,
                 'is_multi' => true,
-                'hook_extra' => array(
+                'hook_extra' => [
                     'language_update_type' => $language_update->type,
                     'language_update' => $language_update,
-                )
-            );
+                ]
+            ];
 
             $result = $this->run($options);
 
@@ -273,30 +272,38 @@ class Language_Pack_Upgrader extends Upgrader
                 break;
             }
 
-            $language_updates_results[] = array(
+            $language_updates_results[] = [
                 'language' => $language_update->language,
                 'type' => $language_update->type,
                 'slug' => isset($language_update->slug) ? $language_update->slug : 'default',
                 'version' => $language_update->version,
-            );
+            ];
         }
 
         // Remove upgrade hooks which are not required for translation updates.
-        remove_action('upgrader_process_complete', array('Language_Pack_Upgrader', 'async_upgrade'), 20);
+        remove_action(
+            'upgrader_process_complete',
+            [LanguageUpgrader::class, 'async_upgrade'],
+            20
+        );
         remove_action('upgrader_process_complete', 'wp_version_check');
         remove_action('upgrader_process_complete', 'wp_update_plugins');
         remove_action('upgrader_process_complete', 'wp_update_themes');
 
         /** This action is documented in wp-admin/includes/class-wp-upgrader.php */
-        do_action('upgrader_process_complete', $this, array(
+        do_action('upgrader_process_complete', $this, [
             'action' => 'update',
             'type' => 'translation',
             'bulk' => true,
             'translations' => $language_updates_results
-        ));
+        ]);
 
         // Re-add upgrade hooks.
-        add_action('upgrader_process_complete', array('Language_Pack_Upgrader', 'async_upgrade'), 20);
+        add_action(
+            'upgrader_process_complete',
+            [LanguageUpgrader::class, 'async_upgrade'],
+            20
+        );
         add_action('upgrader_process_complete', 'wp_version_check', 10, 0);
         add_action('upgrader_process_complete', 'wp_update_plugins', 10, 0);
         add_action('upgrader_process_complete', 'wp_update_themes', 10, 0);
@@ -306,7 +313,7 @@ class Language_Pack_Upgrader extends Upgrader
         $this->skin->footer();
 
         // Clean up our hooks, in case something else does an upgrade on this connection.
-        remove_filter('upgrader_source_selection', array($this, 'check_package'));
+        remove_filter('upgrader_source_selection', [$this, 'check_package']);
 
         if ($parsed_args['clear_update_cache']) {
             wp_clean_update_cache();
@@ -318,8 +325,7 @@ class Language_Pack_Upgrader extends Upgrader
     /**
      * Check the package source to make sure there are .mo and .po files.
      *
-     * Hooked to the {@see 'upgrader_source_selection'} filter by
-     * Language_Pack_Upgrader::bulk_upgrade().
+     * Hooked to the {@see 'upgrader_source_selection'} filter by LanguageUpgrader::bulk_upgrade().
      *
      * @since 3.7.0
      * @access public

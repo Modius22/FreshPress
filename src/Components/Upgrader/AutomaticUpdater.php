@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Upgrader;
 
 use Devtronic\FreshPress\Core\WPDB;
-use Language_Pack_Upgrader;
 use Theme_Upgrader;
 use WP_Error;
 
@@ -305,7 +304,7 @@ class AutomaticUpdater
                 $context = get_theme_root($item->theme);
                 break;
             case 'translation':
-                $upgrader = new Language_Pack_Upgrader($skin);
+                $upgrader = new LanguageUpgrader($skin);
                 $context = WP_CONTENT_DIR; // WP_LANG_DIR;
                 break;
         }
@@ -422,7 +421,7 @@ class AutomaticUpdater
         }
 
         // Don't automatically run these thins, as we'll handle it ourselves
-        remove_action('upgrader_process_complete', ['Language_Pack_Upgrader', 'async_upgrade'], 20);
+        remove_action('upgrader_process_complete', [LanguageUpgrader::class, 'async_upgrade'], 20);
         remove_action('upgrader_process_complete', 'wp_version_check');
         remove_action('upgrader_process_complete', 'wp_update_plugins');
         remove_action('upgrader_process_complete', 'wp_update_themes');

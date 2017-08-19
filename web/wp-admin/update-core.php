@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 
 /** WordPress Administration Bootstrap */
@@ -861,7 +862,7 @@ if ('upgrade-core' == $action) {
     $title = __('Update Translations');
     $context = WP_LANG_DIR;
 
-    $upgrader = new Language_Pack_Upgrader(new LanguageUpgraderSkin(compact('url', 'nonce', 'title', 'context')));
+    $upgrader = new LanguageUpgrader(new LanguageUpgraderSkin(compact('url', 'nonce', 'title', 'context')));
     $result = $upgrader->bulk_upgrade();
 
     wp_localize_script('updates', '_wpUpdatesItemCounts', array(
