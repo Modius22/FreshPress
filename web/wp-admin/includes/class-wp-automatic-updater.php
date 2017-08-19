@@ -7,6 +7,7 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -144,7 +145,7 @@ class WP_Automatic_Updater
     public function should_update($type, $item, $context)
     {
         // Used to see if WP_Filesystem is set up to allow unattended updates.
-        $skin = new Automatic_Upgrader_Skin;
+        $skin = new AutomaticUpgraderSkin();
 
         if ($this->is_disabled()) {
             return false;
@@ -282,7 +283,7 @@ class WP_Automatic_Updater
      */
     public function update($type, $item)
     {
-        $skin = new Automatic_Upgrader_Skin;
+        $skin = new AutomaticUpgraderSkin();
 
         switch ($type) {
             case 'core':

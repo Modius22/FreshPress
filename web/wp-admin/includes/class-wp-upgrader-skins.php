@@ -20,6 +20,3 @@ require_once ABSPATH . 'wp-admin/includes/class-bulk-plugin-upgrader-skin.php';
 
 /** Bulk_Theme_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-bulk-theme-upgrader-skin.php';
-
-/** Automatic_Upgrader_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-automatic-upgrader-skin.php';

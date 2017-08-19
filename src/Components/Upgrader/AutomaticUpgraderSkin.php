@@ -1,13 +1,15 @@
 <?php
 /**
- * Upgrader API: Automatic_Upgrader_Skin class
+ * Upgrader API: AutomaticUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
+namespace Devtronic\FreshPress\Components\Upgrader;
+
+use WP_Error;
 
 /**
  * Upgrader Skin for Automatic WordPress Upgrades
@@ -20,9 +22,9 @@ use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
  *
  * @see Bulk_Upgrader_Skin
  */
-class Automatic_Upgrader_Skin extends UpgraderSkin
+class AutomaticUpgraderSkin extends UpgraderSkin
 {
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * Determines whether the upgrader needs FTP/SSH details in order to connect
@@ -90,14 +92,14 @@ class Automatic_Upgrader_Skin extends UpgraderSkin
         $string = trim($string);
 
         // Only allow basic HTML in the messages, as it'll be used in emails/logs rather than direct browser output.
-        $string = wp_kses($string, array(
-            'a' => array(
+        $string = wp_kses($string, [
+            'a' => [
                 'href' => true
-            ),
+            ],
             'br' => true,
             'em' => true,
             'strong' => true,
-        ));
+        ]);
 
         if (empty($string)) {
             return;

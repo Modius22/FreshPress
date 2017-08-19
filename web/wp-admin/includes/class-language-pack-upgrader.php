@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 
 /**
@@ -99,7 +100,7 @@ class Language_Pack_Upgrader extends WP_Upgrader
         }
 
         // Re-use the automatic upgrader skin if the parent upgrader is using it.
-        if ($upgrader && $upgrader->skin instanceof Automatic_Upgrader_Skin) {
+        if ($upgrader && $upgrader->skin instanceof AutomaticUpgraderSkin) {
             $skin = $upgrader->skin;
         } else {
             $skin = new LanguageUpgraderSkin(array(

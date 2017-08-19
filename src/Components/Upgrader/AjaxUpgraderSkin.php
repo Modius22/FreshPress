@@ -9,7 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use Automatic_Upgrader_Skin;
 use WP_Error;
 
 /**
@@ -19,9 +18,9 @@ use WP_Error;
  *
  * @since 4.6.0
  *
- * @see Automatic_Upgrader_Skin
+ * @see AutomaticUpgraderSkin
  */
-class AjaxUpgraderSkin extends Automatic_Upgrader_Skin
+class AjaxUpgraderSkin extends AutomaticUpgraderSkin
 {
 
     /**

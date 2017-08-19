@@ -10,6 +10,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\UpgraderSkin;
 
 /** Theme_Upgrader_Skin class */
@@ -23,9 +24,6 @@ require_once ABSPATH . 'wp-admin/includes/class-bulk-plugin-upgrader-skin.php';
 
 /** Bulk_Theme_Upgrader_Skin class */
 require_once ABSPATH . 'wp-admin/includes/class-bulk-theme-upgrader-skin.php';
-
-/** Automatic_Upgrader_Skin class */
-require_once ABSPATH . 'wp-admin/includes/class-automatic-upgrader-skin.php';
 
 /**
  * Core class used for upgrading/installing a local set of files via
@@ -50,7 +48,7 @@ class WP_Upgrader
      *
      * @since 2.8.0
      * @access public
-     * @var Automatic_Upgrader_Skin|UpgraderSkin $skin
+     * @var AutomaticUpgraderSkin|UpgraderSkin $skin
      */
     public $skin = null;
 
