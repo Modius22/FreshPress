@@ -12,6 +12,7 @@
  * Deprecated functions come here to die.
  */
 
+use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 
 /**
@@ -1225,22 +1226,22 @@ function wp_nav_menu_locations_meta_box()
 /**
  * This was once used to kick-off the Core Updater.
  *
- * Deprecated in favor of instantating a Core_Upgrader instance directly,
+ * Deprecated in favor of instantating a CoreUpgrader instance directly,
  * and calling the 'upgrade' method.
  *
  * @since 2.7.0
- * @deprecated 3.7.0 Use Core_Upgrader
- * @see Core_Upgrader
+ * @deprecated 3.7.0 Use CoreUpgrader
+ * @see CoreUpgrader
  */
 function wp_update_core($current, $feedback = '')
 {
-    _deprecated_function(__FUNCTION__, '3.7.0', 'new Core_Upgrader();');
+    _deprecated_function(__FUNCTION__, '3.7.0', 'new Devtronic\FreshPress\Components\Upgrader\CoreUpgrader();');
 
     if (!empty($feedback)) {
         add_filter('update_feedback', $feedback);
     }
 
-    $upgrader = new Core_Upgrader();
+    $upgrader = new CoreUpgrader();
     return $upgrader->upgrade($current);
 }
 

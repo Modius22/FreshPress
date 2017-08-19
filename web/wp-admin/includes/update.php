@@ -681,7 +681,7 @@ function maintenance_nag()
          * If we simply failed to update before we tried to copy any files, then assume things are
          * OK if they are now running the latest.
          *
-         * This flag is cleared whenever a successful update occurs using Core_Upgrader.
+         * This flag is cleared whenever a successful update occurs using Devtronic\FreshPress\Components\Upgrader\CoreUpgrader.
          */
         $comparison = !empty($failed['critical']) ? '>=' : '>';
         if (version_compare($failed['attempted'], $wp_version, $comparison)) {

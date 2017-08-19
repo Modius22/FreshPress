@@ -1326,7 +1326,7 @@ function _redirect_to_about_wordpress($new_version)
         return;
     }
 
-    // Ensure we only run this on the update-core.php page. The Core_Upgrader may be used in other contexts.
+    // Ensure we only run this on the update-core.php page. The Devtronic\FreshPress\Components\Upgrader\CoreUpgrader may be used in other contexts.
     if ('update-core.php' != $pagenow) {
         return;
     }

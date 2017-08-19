@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\Upgrader;
 use Devtronic\FreshPress\Core\WPDB;
@@ -173,7 +174,7 @@ class WP_Automatic_Updater
 
         // Next up, is this an item we can update?
         if ('core' == $type) {
-            $update = Core_Upgrader::should_update_to_version($item->current);
+            $update = CoreUpgrader::should_update_to_version($item->current);
         } else {
             $update = !empty($item->autoupdate);
         }
@@ -291,7 +292,7 @@ class WP_Automatic_Updater
             case 'core':
                 // The Core upgrader doesn't use the Upgrader's skin during the actual main part of the upgrade, instead, firing a filter.
                 add_filter('update_feedback', array($skin, 'feedback'));
-                $upgrader = new Core_Upgrader($skin);
+                $upgrader = new CoreUpgrader($skin);
                 $context = ABSPATH;
                 break;
             case 'plugin':
@@ -456,7 +457,7 @@ class WP_Automatic_Updater
         }
 
         // Clean up, and check for any pending translations
-        // (Core_Upgrader checks for core updates)
+        // (Devtronic\FreshPress\Components\Upgrader\CoreUpgrader checks for core updates)
         $theme_stats = array();
         if (isset($this->update_results['theme'])) {
             foreach ($this->update_results['theme'] as $upgrade) {

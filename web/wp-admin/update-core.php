@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 
 /** WordPress Administration Bootstrap */
@@ -588,7 +589,7 @@ function do_core_upgrade($reinstall = false)
 
     add_filter('update_feedback', 'show_message');
 
-    $upgrader = new Core_Upgrader();
+    $upgrader = new CoreUpgrader();
     $result = $upgrader->upgrade($update, array(
             'allow_relaxed_file_ownership' => $allow_relaxed_file_ownership
         ));

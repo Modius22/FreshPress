@@ -941,9 +941,6 @@ require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader.php';
 /** Language_Pack_Upgrader class */
 require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
 
-/** Core_Upgrader class */
-require_once ABSPATH . 'wp-admin/includes/class-core-upgrader.php';
-
 /** File_Upload_Upgrader class */
 require_once ABSPATH . 'wp-admin/includes/class-file-upload-upgrader.php';
 
