@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Upgrader;
 
 use Devtronic\FreshPress\Core\WPDB;
-use Theme_Upgrader;
 use WP_Error;
 
 /**
@@ -300,7 +299,7 @@ class AutomaticUpdater
                 $context = WP_PLUGIN_DIR; // We don't support custom Plugin directories, or updates for WPMU_PLUGIN_DIR
                 break;
             case 'theme':
-                $upgrader = new Theme_Upgrader($skin);
+                $upgrader = new ThemeUpgrader($skin);
                 $context = get_theme_root($item->theme);
                 break;
             case 'translation':

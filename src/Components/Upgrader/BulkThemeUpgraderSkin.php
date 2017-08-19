@@ -19,7 +19,7 @@ namespace Devtronic\FreshPress\Components\Upgrader;
  */
 class BulkThemeUpgraderSkin extends BulkUpgraderSkin
 {
-    public $theme_info = []; // Theme_Upgrader::bulk() will fill this in.
+    public $theme_info = []; // ThemeUpgrader::bulk() will fill this in.
 
     public function add_strings()
     {

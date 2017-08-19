@@ -14,6 +14,7 @@
 
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
 
 /**
  * @since 2.1.0
@@ -1271,23 +1272,23 @@ function wp_update_plugin($plugin, $feedback = '')
 /**
  * This was once used to kick-off the Theme Updater.
  *
- * Deprecated in favor of instantiating a Theme_Upgrader instance directly,
+ * Deprecated in favor of instantiating a ThemeUpgrader instance directly,
  * and calling the 'upgrade' method.
  * Unused since 2.8.0.
  *
  * @since 2.7.0
- * @deprecated 3.7.0 Use Theme_Upgrader
- * @see Theme_Upgrader
+ * @deprecated 3.7.0 Use ThemeUpgrader
+ * @see ThemeUpgrader
  */
 function wp_update_theme($theme, $feedback = '')
 {
-    _deprecated_function(__FUNCTION__, '3.7.0', 'new Theme_Upgrader();');
+    _deprecated_function(__FUNCTION__, '3.7.0', 'new Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader();');
 
     if (!empty($feedback)) {
         add_filter('update_feedback', $feedback);
     }
 
-    $upgrader = new Theme_Upgrader();
+    $upgrader = new ThemeUpgrader();
     return $upgrader->upgrade($theme);
 }
 

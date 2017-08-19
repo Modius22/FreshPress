@@ -119,6 +119,7 @@ $classes = array_change_key_case([
     'Core_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\CoreUpgrader',
     'WP_Automatic_Updater' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AutomaticUpdater',
     'Language_Pack_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\LanguageUpgrader',
+    'Theme_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeUpgrader',
 ]);
 
 $abstractClasses = array_change_key_case([

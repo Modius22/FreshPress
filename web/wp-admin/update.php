@@ -12,6 +12,7 @@ use Devtronic\FreshPress\Components\Upgrader\PluginInstallerSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\ThemeInstallerSkin;
+use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgraderSkin;
 
 if (!defined('IFRAME_REQUEST') && isset($_GET['action']) && in_array(
@@ -196,7 +197,7 @@ if (isset($_GET['action'])) {
         $nonce = 'upgrade-theme_' . $theme;
         $url = 'update.php?action=upgrade-theme&theme=' . urlencode($theme);
 
-        $upgrader = new Theme_Upgrader(new ThemeUpgraderSkin(compact('title', 'nonce', 'url', 'theme')));
+        $upgrader = new ThemeUpgrader(new ThemeUpgraderSkin(compact('title', 'nonce', 'url', 'theme')));
         $upgrader->upgrade($theme);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
@@ -223,7 +224,7 @@ if (isset($_GET['action'])) {
         wp_enqueue_script('updates');
         iframe_header();
 
-        $upgrader = new Theme_Upgrader(new BulkThemeUpgraderSkin(compact('nonce', 'url')));
+        $upgrader = new ThemeUpgrader(new BulkThemeUpgraderSkin(compact('nonce', 'url')));
         $upgrader->bulk_upgrade($themes);
 
         iframe_footer();
@@ -254,7 +255,7 @@ if (isset($_GET['action'])) {
         $url = 'update.php?action=install-theme&theme=' . urlencode($theme);
         $type = 'web'; //Install theme type, From Web or an Upload.
 
-        $upgrader = new Theme_Upgrader(new ThemeInstallerSkin(compact('title', 'url', 'nonce', 'plugin', 'api')));
+        $upgrader = new ThemeUpgrader(new ThemeInstallerSkin(compact('title', 'url', 'nonce', 'plugin', 'api')));
         $upgrader->install($api->download_link);
 
         include(ABSPATH . 'wp-admin/admin-footer.php');
@@ -280,7 +281,7 @@ if (isset($_GET['action'])) {
         $url = add_query_arg(array('package' => $file_upload->id), 'update.php?action=upload-theme');
         $type = 'upload'; //Install plugin type, From Web or an Upload.
 
-        $upgrader = new Theme_Upgrader(new ThemeInstallerSkin(compact('type', 'title', 'nonce', 'url')));
+        $upgrader = new ThemeUpgrader(new ThemeInstallerSkin(compact('type', 'title', 'nonce', 'url')));
         $result = $upgrader->install($file_upload->package);
 
         if ($result || is_wp_error($result)) {
