@@ -7,6 +7,8 @@
  * @since 3.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
+
 define('IFRAME_REQUEST', true);
 
 /** Load WordPress Administration Bootstrap */
@@ -22,7 +24,7 @@ if (!current_user_can('customize')) {
 
 /**
  * @global WP_Scripts $wp_scripts
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  */
 global $wp_scripts, $wp_customize;
 

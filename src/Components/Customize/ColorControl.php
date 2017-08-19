@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize Color Control class.
  *
@@ -51,7 +49,7 @@ class ColorControl extends Control
      * @since 3.4.0
      * @uses Control::__construct()
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */

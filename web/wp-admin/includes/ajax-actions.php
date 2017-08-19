@@ -7,6 +7,7 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
@@ -2234,7 +2235,7 @@ function wp_ajax_save_widget()
  *
  * @since 3.9.0
  *
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  */
 function wp_ajax_update_widget()
 {

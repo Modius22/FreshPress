@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Core Customizer class for implementing selective refresh.
  *
@@ -31,7 +29,7 @@ class SelectiveRefresh
      *
      * @since 4.5.0
      * @access public
-     * @var WP_Customize_Manager
+     * @var Manager
      */
     public $manager;
 
@@ -68,9 +66,9 @@ class SelectiveRefresh
      * @since 4.5.0
      * @access public
      *
-     * @param WP_Customize_Manager $manager Manager instance.
+     * @param Manager $manager Manager instance.
      */
-    public function __construct(WP_Customize_Manager $manager)
+    public function __construct(Manager $manager)
     {
         $this->manager = $manager;
         add_action('customize_preview_init', [$this, 'init_preview']);
@@ -239,7 +237,7 @@ class SelectiveRefresh
      * @since 4.5.0
      * @access public
      *
-     * @see WP_Customize_Manager::add_dynamic_settings()
+     * @see Manager::add_dynamic_settings()
      *
      * @param array $partial_ids The partial ID to add.
      * @return array Added Partial instances.
@@ -359,7 +357,7 @@ class SelectiveRefresh
         /*
          * Note that is_customize_preview() returning true will entail that the
          * user passed the 'customize' capability check and the nonce check, since
-         * WP_Customize_Manager::setup_theme() is where the previewing flag is set.
+         * Manager::setup_theme() is where the previewing flag is set.
          */
         if (!is_customize_preview()) {
             wp_send_json_error('expected_customize_preview', 403);

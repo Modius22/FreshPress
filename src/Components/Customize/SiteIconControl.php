@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize Site Icon control class.
  *
@@ -38,7 +36,7 @@ class SiteIconControl extends CroppedImageControl
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */

@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use Devtronic\FreshPress\Components\Rest\Request;
-use WP_Customize_Manager;
 use WP_Error;
 
 /**
@@ -20,7 +19,7 @@ use WP_Error;
  *
  * @since 3.4.0
  *
- * @see WP_Customize_Manager
+ * @see Manager
  */
 class Setting
 {
@@ -29,7 +28,7 @@ class Setting
      *
      * @since 3.4.0
      * @access public
-     * @var WP_Customize_Manager
+     * @var Manager
      */
     public $manager;
 
@@ -177,7 +176,7 @@ class Setting
      *
      * @since 3.4.0
      *
-     * @param WP_Customize_Manager $manager
+     * @param Manager $manager
      * @param string $id An specific ID of the setting. Can be a
      *                                      theme mod or option name.
      * @param array $args Setting arguments.
@@ -449,7 +448,7 @@ class Setting
      *
      * @since 4.4.0
      *
-     * @see WP_Customize_Manager::set_post_value()
+     * @see Manager::set_post_value()
      * @see Setting::_multidimensional_preview_filter()
      */
     final public function _clear_aggregated_multidimensional_preview_applied_flag()

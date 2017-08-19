@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize Control class.
  *
@@ -46,7 +44,7 @@ class Control
      *
      * @since 3.4.0
      * @access public
-     * @var WP_Customize_Manager
+     * @var Manager
      */
     public $manager;
 
@@ -194,14 +192,14 @@ class Control
      *
      * @since 3.4.0
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
      * @param array $args {
      *     Optional. Arguments to override class property defaults.
      *
      * @type int $instance_number Order in which this instance was created in relation
      *                                                 to other instances.
-     * @type WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @type Manager $manager Customizer bootstrap instance.
      * @type string $id Control ID.
      * @type array $settings All settings tied to the control. If undefined, `$id` will
      *                                                 be used.
@@ -691,7 +689,7 @@ class Control
      * Render the control's JS template.
      *
      * This function is only run for control types that have been registered with
-     * WP_Customize_Manager::register_control_type().
+     * Manager::register_control_type().
      *
      * In the future, this will also print the template for the control's container
      * element and be override-able.

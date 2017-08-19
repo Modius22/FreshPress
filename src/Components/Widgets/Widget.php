@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Widgets;
 
-use WP_Customize_Manager;
+use Devtronic\FreshPress\Components\Customize\Manager;
 
 /**
  * Core base class extended to register widgets.
@@ -334,7 +334,7 @@ class Widget
      * @since 3.9.0
      * @access public
      *
-     * @global WP_Customize_Manager $wp_customize
+     * @global Manager $wp_customize
      *
      * @return bool True if within the Customizer preview, false if not.
      */

@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize Background Image Control class.
  *
@@ -28,7 +26,7 @@ class BackgroundImageControl extends ImageControl
      * @since 3.4.0
      * @uses ImageControl::__construct()
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      */
     public function __construct($manager)
     {

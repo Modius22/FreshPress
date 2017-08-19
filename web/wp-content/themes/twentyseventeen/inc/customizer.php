@@ -8,11 +8,12 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\ColorControl;
+use Devtronic\FreshPress\Components\Customize\Manager;
 
 /**
  * Add postMessage support for site title and description for the Theme Customizer.
  *
- * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+ * @param Manager $wp_customize Theme Customizer object.
  */
 function twentyseventeen_customize_register($wp_customize)
 {

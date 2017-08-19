@@ -11,7 +11,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
 use WP_Error;
 
 /**
@@ -68,7 +67,7 @@ class CustomCssSetting extends Setting
      *
      * @throws \Exception If the setting ID does not match the pattern `custom_css[$stylesheet]`.
      *
-     * @param WP_Customize_Manager $manager The Customize Manager class.
+     * @param Manager $manager The Customize Manager class.
      * @param string $id An specific ID of the setting. Can be a
      *                                      theme mod or option name.
      * @param array $args Setting arguments.

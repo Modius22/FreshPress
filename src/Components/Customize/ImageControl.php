@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize Image Control class.
  *
@@ -29,7 +27,7 @@ class ImageControl extends UploadControl
      * @since 3.4.0
      * @uses UploadControl::__construct()
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */

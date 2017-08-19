@@ -139,6 +139,7 @@ $finalClasses = array_change_key_case([
     'WP_Customize_Selective_Refresh' => 'Devtronic\\FreshPress\\Components\\Customize\\SelectiveRefresh',
     'WP_Customize_Nav_Menus' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenus',
     'WP_Customize_Widgets' => 'Devtronic\\FreshPress\\Components\\Customize\\Widgets',
+    'WP_Customize_Manager' => 'Devtronic\\FreshPress\\Components\\Customize\\Manager',
 ]);
 
 // Classes

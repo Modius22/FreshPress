@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize control to represent the name field for a given menu.
  *
@@ -45,7 +43,7 @@ class NavMenuItemControl extends Control
      *
      * @see Control::__construct()
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      * @param string $id The control ID.
      * @param array $args Optional. Overrides class property defaults.
      */

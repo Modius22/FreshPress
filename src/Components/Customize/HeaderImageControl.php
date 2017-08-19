@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use Custom_Image_Header;
-use WP_Customize_Manager;
 
 /**
  * Customize Header Image Control class.
@@ -30,7 +29,7 @@ class HeaderImageControl extends ImageControl
      *
      * @since 3.4.0
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      */
     public function __construct($manager)
     {

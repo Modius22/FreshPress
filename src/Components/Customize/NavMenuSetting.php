@@ -9,7 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
 use WP_Error;
 
 /**
@@ -139,17 +138,17 @@ class NavMenuSetting extends Setting
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Customize_Manager $manager Bootstrap Customizer instance.
+     * @param Manager $manager Bootstrap Customizer instance.
      * @param string $id An specific ID of the setting. Can be a
      *                                      theme mod or option name.
      * @param array $args Optional. Setting arguments.
      *
      * @throws \Exception If $id is not valid for this setting type.
      */
-    public function __construct(WP_Customize_Manager $manager, $id, array $args = [])
+    public function __construct(Manager $manager, $id, array $args = [])
     {
         if (empty($manager->nav_menus)) {
-            throw new \Exception('Expected WP_Customize_Manager::$nav_menus to be set.');
+            throw new \Exception('Expected Devtronic\FreshPress\Components\Customize\Manager::$nav_menus to be set.');
         }
 
         if (!preg_match(self::ID_PATTERN, $id, $matches)) {
@@ -215,7 +214,7 @@ class NavMenuSetting extends Setting
      * @since 4.4.0 Added boolean return value
      * @access public
      *
-     * @see WP_Customize_Manager::post_value()
+     * @see Manager::post_value()
      *
      * @return bool False if method short-circuited due to no-op.
      */

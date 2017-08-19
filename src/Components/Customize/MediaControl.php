@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
-
 /**
  * Customize Media Control class.
  *
@@ -53,7 +51,7 @@ class MediaControl extends Control
      * @since 4.1.0
      * @since 4.2.0 Moved from UploadControl.
      *
-     * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+     * @param Manager $manager Customizer bootstrap instance.
      * @param string $id Control ID.
      * @param array $args Optional. Arguments to override class property defaults.
      */

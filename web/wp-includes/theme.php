@@ -6,6 +6,7 @@
  * @subpackage Theme
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -725,7 +726,7 @@ function locale_stylesheet()
  * @since 2.5.0
  *
  * @global array $wp_theme_directories
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  * @global array $sidebars_widgets
  *
  * @param string $stylesheet Stylesheet name
@@ -3016,7 +3017,7 @@ function check_theme_switched()
 }
 
 /**
- * Includes and instantiates the WP_Customize_Manager class.
+ * Includes and instantiates the Manager class.
  *
  * Loads the Customizer at plugins_loaded when accessing the customize.php admin
  * page or when any request includes a wp_customize=on param or a customize_changeset
@@ -3026,7 +3027,7 @@ function check_theme_switched()
  *
  * @since 3.4.0
  *
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  */
 function _wp_customize_include()
 {
@@ -3080,8 +3081,7 @@ function _wp_customize_include()
         $messenger_channel = sanitize_key($input_vars['customize_messenger_channel']);
     }
 
-    require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
-    $GLOBALS['wp_customize'] = new WP_Customize_Manager(compact('changeset_uuid', 'theme', 'messenger_channel'));
+    $GLOBALS['wp_customize'] = new Manager(compact('changeset_uuid', 'theme', 'messenger_channel'));
 }
 
 /**
@@ -3107,8 +3107,7 @@ function _wp_customize_publish_changeset($new_status, $old_status, $changeset_po
     }
 
     if (empty($wp_customize)) {
-        require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
-        $wp_customize = new WP_Customize_Manager(array('changeset_uuid' => $changeset_post->post_name));
+        $wp_customize = new Manager(array('changeset_uuid' => $changeset_post->post_name));
     }
 
     if (!did_action('customize_register')) {
@@ -3323,7 +3322,7 @@ function wp_customize_support_script()
  *
  * @since 4.0.0
  *
- * @global WP_Customize_Manager $wp_customize Customizer instance.
+ * @global Manager $wp_customize Customizer instance.
  *
  * @return bool True if the site is being previewed in the Customizer, false otherwise.
  */
@@ -3331,7 +3330,7 @@ function is_customize_preview()
 {
     global $wp_customize;
 
-    return ($wp_customize instanceof WP_Customize_Manager) && $wp_customize->is_preview();
+    return ($wp_customize instanceof Manager) && $wp_customize->is_preview();
 }
 
 /**

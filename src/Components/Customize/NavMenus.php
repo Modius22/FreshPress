@@ -9,7 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
 use WP_Error;
 use WP_Post;
 use WP_Query;
@@ -21,17 +20,17 @@ use WP_Query;
  *
  * @since 4.3.0
  *
- * @see WP_Customize_Manager
+ * @see Manager
  */
 class NavMenus
 {
 
     /**
-     * WP_Customize_Manager instance.
+     * Manager instance.
      *
      * @since 4.3.0
      * @access public
-     * @var WP_Customize_Manager
+     * @var Manager
      */
     public $manager;
 
@@ -50,7 +49,7 @@ class NavMenus
      * @since 4.3.0
      * @access public
      *
-     * @param object $manager An instance of the WP_Customize_Manager class.
+     * @param object $manager An instance of the Manager class.
      */
     public function __construct($manager)
     {

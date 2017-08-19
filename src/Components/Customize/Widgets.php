@@ -9,7 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Customize_Manager;
 use WP_Error;
 use WP_Scripts;
 
@@ -20,17 +19,17 @@ use WP_Scripts;
  *
  * @since 3.9.0
  *
- * @see WP_Customize_Manager
+ * @see Manager
  */
 class Widgets
 {
 
     /**
-     * WP_Customize_Manager instance.
+     * Manager instance.
      *
      * @since 3.9.0
      * @access public
-     * @var WP_Customize_Manager
+     * @var Manager
      */
     public $manager;
 
@@ -105,7 +104,7 @@ class Widgets
      * @since 3.9.0
      * @access public
      *
-     * @param WP_Customize_Manager $manager Customize manager bootstrap instance.
+     * @param Manager $manager Customize manager bootstrap instance.
      */
     public function __construct($manager)
     {

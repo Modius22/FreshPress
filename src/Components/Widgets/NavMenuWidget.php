@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Widgets;
 
-use WP_Customize_Manager;
+use Devtronic\FreshPress\Components\Customize\Manager;
 use WP_Term;
 
 /**
@@ -125,7 +125,7 @@ class NavMenuWidget extends Widget
      * @access public
      *
      * @param array $instance Current settings.
-     * @global WP_Customize_Manager $wp_customize
+     * @global Manager $wp_customize
      */
     public function form($instance)
     {
@@ -139,7 +139,7 @@ class NavMenuWidget extends Widget
 
         echo sprintf('<p class="nav-menu-widget-no-menus-message" %s>', $widgetStyle);
         $url = admin_url('nav-menus.php');
-        if ($wp_customize instanceof WP_Customize_Manager) {
+        if ($wp_customize instanceof Manager) {
             $url = 'javascript: wp.customize.panel( "nav_menus" ).focus();';
         }
         echo sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'), esc_attr($url));
@@ -167,7 +167,7 @@ class NavMenuWidget extends Widget
             </select>
         </p>
         <?php
-        if ($wp_customize instanceof WP_Customize_Manager) {
+        if ($wp_customize instanceof Manager) {
             $paragraphStyle = (!$nav_menu ? 'style="display: none' : '');
             $buttonText = _e('Edit Menu');
             echo <<<HTML
