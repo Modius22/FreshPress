@@ -1,11 +1,16 @@
 <?php
 /**
- * Upgrader API: WP_Ajax_Upgrader_Skin class
+ * Upgrader API: AjaxUpgraderSkin class
  *
  * @package WordPress
  * @subpackage Upgrader
  * @since 4.6.0
  */
+
+namespace Devtronic\FreshPress\Components\Upgrader;
+
+use Automatic_Upgrader_Skin;
+use WP_Error;
 
 /**
  * Upgrader Skin for Ajax WordPress upgrades.
@@ -16,7 +21,7 @@
  *
  * @see Automatic_Upgrader_Skin
  */
-class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin
+class AjaxUpgraderSkin extends Automatic_Upgrader_Skin
 {
 
     /**
@@ -34,9 +39,9 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin
      * @since 4.6.0
      * @access public
      *
-     * @param array $args Options for the upgrader, see Devtronic\FreshPress\Components\Upgrader\UpgraderSkin::__construct().
+     * @param array $args Options for the upgrader, see UpgraderSkin::__construct().
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         parent::__construct($args);
 
@@ -66,7 +71,7 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin
      */
     public function get_error_messages()
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($this->errors->get_error_codes() as $error_code) {
             if ($this->errors->get_error_data($error_code) && is_string($this->errors->get_error_data($error_code))) {
@@ -117,7 +122,7 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin
         }
 
         $args = func_get_args();
-        call_user_func_array(array($this, 'parent::error'), $args);
+        call_user_func_array([$this, 'parent::error'], $args);
     }
 
     /**
@@ -141,6 +146,6 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin
         }
 
         $args = func_get_args();
-        call_user_func_array(array($this, 'parent::feedback'), $args);
+        call_user_func_array([$this, 'parent::feedback'], $args);
     }
 }

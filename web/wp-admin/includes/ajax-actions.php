@@ -15,6 +15,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
 
 //
@@ -3746,7 +3747,7 @@ function wp_ajax_install_theme()
         wp_send_json_error($status);
     }
 
-    $skin = new WP_Ajax_Upgrader_Skin();
+    $skin = new AjaxUpgraderSkin();
     $upgrader = new Theme_Upgrader($skin);
     $result = $upgrader->install($api->download_link);
 
@@ -3848,7 +3849,7 @@ function wp_ajax_update_theme()
         wp_update_themes();
     }
 
-    $skin = new WP_Ajax_Upgrader_Skin();
+    $skin = new AjaxUpgraderSkin();
     $upgrader = new Theme_Upgrader($skin);
     $result = $upgrader->bulk_upgrade(array($stylesheet));
 
@@ -4011,7 +4012,7 @@ function wp_ajax_install_plugin()
 
     $status['pluginName'] = $api->name;
 
-    $skin = new WP_Ajax_Upgrader_Skin();
+    $skin = new AjaxUpgraderSkin();
     $upgrader = new Plugin_Upgrader($skin);
     $result = $upgrader->install($api->download_link);
 
@@ -4111,7 +4112,7 @@ function wp_ajax_update_plugin()
 
     wp_update_plugins();
 
-    $skin = new WP_Ajax_Upgrader_Skin();
+    $skin = new AjaxUpgraderSkin();
     $upgrader = new Plugin_Upgrader($skin);
     $result = $upgrader->bulk_upgrade(array($plugin));
 
