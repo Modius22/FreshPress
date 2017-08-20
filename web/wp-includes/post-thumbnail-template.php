@@ -9,13 +9,15 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * Check if post has an image attached.
  *
  * @since 2.9.0
- * @since 4.4.0 `$post` can be a post ID or WP_Post object.
+ * @since 4.4.0 `$post` can be a post ID or Post object.
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global `$post`.
  * @return bool Whether the post has an image attached.
  */
 function has_post_thumbnail($post = null)
@@ -27,9 +29,9 @@ function has_post_thumbnail($post = null)
  * Retrieve post thumbnail ID.
  *
  * @since 2.9.0
- * @since 4.4.0 `$post` can be a post ID or WP_Post object.
+ * @since 4.4.0 `$post` can be a post ID or Post object.
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global `$post`.
  * @return string|int Post thumbnail ID or empty string.
  */
 function get_post_thumbnail_id($post = null)
@@ -109,9 +111,9 @@ function update_post_thumbnail_cache($wp_query = null)
  * size is used by default, though a different size can be specified instead as needed.
  *
  * @since 2.9.0
- * @since 4.4.0 `$post` can be a post ID or WP_Post object.
+ * @since 4.4.0 `$post` can be a post ID or Post object.
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object.  Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object.  Default is global `$post`.
  * @param string|array $size Optional. Image size to use. Accepts any valid image size, or
  *                           an array of width and height values in pixels (in that order).
  *                           Default 'post-thumbnail'.
@@ -190,7 +192,7 @@ function get_the_post_thumbnail($post = null, $size = 'post-thumbnail', $attr = 
  *
  * @since 4.4.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object.  Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object.  Default is global `$post`.
  * @param string|array $size Optional. Registered image size to retrieve the source for or a flat
  *                           array of height and width dimensions. Default 'post-thumbnail'.
  * @return string|false Post thumbnail URL or false if no URL is available.
@@ -226,7 +228,7 @@ function the_post_thumbnail_url($size = 'post-thumbnail')
  *
  * @since 4.6.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global `$post`.
  * @return string Post thumbnail caption.
  */
 function get_the_post_thumbnail_caption($post = null)
@@ -250,7 +252,7 @@ function get_the_post_thumbnail_caption($post = null)
  *
  * @since 4.6.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global `$post`.
  */
 function the_post_thumbnail_caption($post = null)
 {

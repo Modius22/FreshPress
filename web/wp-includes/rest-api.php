@@ -7,6 +7,20 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Endpoints\CommentsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostStatusController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\PostTypesController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\RevisionsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\SettingsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\TaxonomiesController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
+use Devtronic\FreshPress\Components\Rest\Endpoints\UsersController;
+use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Response;
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * Version number for our API.
  *
@@ -19,7 +33,7 @@ define('REST_API_VERSION', '2.0');
  *
  * @since 4.4.0
  *
- * @global WP_REST_Server $wp_rest_server ResponseHandler instance (usually WP_REST_Server).
+ * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  *
  * @param string $namespace The first URL segment after core prefix. Should be unique to your package/plugin.
  * @param string $route The base URL for route you are adding.
@@ -31,14 +45,14 @@ define('REST_API_VERSION', '2.0');
  */
 function register_rest_route($namespace, $route, $args = array(), $override = false)
 {
-    /** @var WP_REST_Server $wp_rest_server */
+    /** @var Server $wp_rest_server */
     global $wp_rest_server;
 
     if (empty($namespace)) {
         /*
          * Non-namespaced routes are not allowed, with the exception of the main
          * and namespace indexes. If you really need to register a
-         * non-namespaced route, call `WP_REST_Server::register_route` directly.
+         * non-namespaced route, call `Devtronic\FreshPress\Components\Rest\Server::register_route` directly.
          */
         _doing_it_wrong(
             'register_rest_route',
@@ -197,45 +211,45 @@ function rest_api_default_filters()
 function create_initial_rest_routes()
 {
     foreach (get_post_types(array('show_in_rest' => true), 'objects') as $post_type) {
-        $class = !empty($post_type->rest_controller_class) ? $post_type->rest_controller_class : 'WP_REST_Posts_Controller';
+        $class = !empty($post_type->rest_controller_class) ? $post_type->rest_controller_class : PostsController::class;
 
         if (!class_exists($class)) {
             continue;
         }
         $controller = new $class($post_type->name);
-        if (!is_subclass_of($controller, 'WP_REST_Controller')) {
+        if (!is_subclass_of($controller, Controller::class)) {
             continue;
         }
 
         $controller->register_routes();
 
         if (post_type_supports($post_type->name, 'revisions')) {
-            $revisions_controller = new WP_REST_Revisions_Controller($post_type->name);
+            $revisions_controller = new RevisionsController($post_type->name);
             $revisions_controller->register_routes();
         }
     }
 
     // Post types.
-    $controller = new WP_REST_Post_Types_Controller;
+    $controller = new PostTypesController();
     $controller->register_routes();
 
     // Post statuses.
-    $controller = new WP_REST_Post_Statuses_Controller;
+    $controller = new PostStatusController();
     $controller->register_routes();
 
     // Taxonomies.
-    $controller = new WP_REST_Taxonomies_Controller;
+    $controller = new TaxonomiesController();
     $controller->register_routes();
 
     // Terms.
     foreach (get_taxonomies(array('show_in_rest' => true), 'object') as $taxonomy) {
-        $class = !empty($taxonomy->rest_controller_class) ? $taxonomy->rest_controller_class : 'WP_REST_Terms_Controller';
+        $class = !empty($taxonomy->rest_controller_class) ? $taxonomy->rest_controller_class : TermsController::class;
 
         if (!class_exists($class)) {
             continue;
         }
         $controller = new $class($taxonomy->name);
-        if (!is_subclass_of($controller, 'WP_REST_Controller')) {
+        if (!is_subclass_of($controller, Controller::class)) {
             continue;
         }
 
@@ -243,15 +257,15 @@ function create_initial_rest_routes()
     }
 
     // Users.
-    $controller = new WP_REST_Users_Controller;
+    $controller = new UsersController();
     $controller->register_routes();
 
     // Comments.
-    $controller = new WP_REST_Comments_Controller;
+    $controller = new CommentsController();
     $controller->register_routes();
 
     // Settings.
-    $controller = new WP_REST_Settings_Controller;
+    $controller = new SettingsController();
     $controller->register_routes();
 }
 
@@ -261,7 +275,7 @@ function create_initial_rest_routes()
  * @since 4.4.0
  *
  * @global WP $wp Current WordPress environment instance.
- * @global WP_REST_Server $wp_rest_server ResponseHandler instance (usually WP_REST_Server).
+ * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  */
 function rest_api_loaded()
 {
@@ -398,14 +412,14 @@ function rest_url($path = '', $scheme = 'json')
 /**
  * Do a REST request.
  *
- * Used primarily to route internal requests through WP_REST_Server.
+ * Used primarily to route internal requests through Devtronic\FreshPress\Components\Rest\Server.
  *
  * @since 4.4.0
  *
- * @global WP_REST_Server $wp_rest_server ResponseHandler instance (usually WP_REST_Server).
+ * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  *
- * @param WP_REST_Request|string $request Request.
- * @return WP_REST_Response REST response.
+ * @param Request|string $request Request.
+ * @return Response REST response.
  */
 function rest_do_request($request)
 {
@@ -420,13 +434,13 @@ function rest_do_request($request)
  *
  * @since 4.5.0
  *
- * @global WP_REST_Server $wp_rest_server REST server instance.
+ * @global Server $wp_rest_server REST server instance.
  *
- * @return WP_REST_Server REST server instance.
+ * @return Server REST server instance.
  */
 function rest_get_server()
 {
-    /* @var WP_REST_Server $wp_rest_server */
+    /* @var Server $wp_rest_server */
     global $wp_rest_server;
 
     if (empty($wp_rest_server)) {
@@ -438,9 +452,9 @@ function rest_get_server()
          *
          * @since 4.4.0
          *
-         * @param string $class_name The name of the server class. Default 'WP_REST_Server'.
+         * @param string $class_name The name of the server class. Default 'Server'.
          */
-        $wp_rest_server_class = apply_filters('wp_rest_server_class', 'WP_REST_Server');
+        $wp_rest_server_class = apply_filters('wp_rest_server_class', Server::class);
         $wp_rest_server = new $wp_rest_server_class;
 
         /**
@@ -451,7 +465,7 @@ function rest_get_server()
          *
          * @since 4.4.0
          *
-         * @param WP_REST_Server $wp_rest_server Server object.
+         * @param Server $wp_rest_server Server object.
          */
         do_action('rest_api_init', $wp_rest_server);
     }
@@ -464,16 +478,16 @@ function rest_get_server()
  *
  * @since 4.4.0
  *
- * @param array|WP_REST_Request $request Request to check.
- * @return WP_REST_Request REST request instance.
+ * @param array|Request $request Request to check.
+ * @return Request REST request instance.
  */
 function rest_ensure_request($request)
 {
-    if ($request instanceof WP_REST_Request) {
+    if ($request instanceof Request) {
         return $request;
     }
 
-    return new WP_REST_Request('GET', '', $request);
+    return new Request('GET', '', $request);
 }
 
 /**
@@ -486,9 +500,9 @@ function rest_ensure_request($request)
  * @since 4.4.0
  *
  * @param WP_Error|WP_HTTP_Response|mixed $response Response to check.
- * @return WP_REST_Response|mixed If response generated an error, WP_Error, if response
+ * @return Response|mixed If response generated an error, WP_Error, if response
  *                                is already an instance, WP_HTTP_Response, otherwise
- *                                returns a new WP_REST_Response instance.
+ *                                returns a new Response instance.
  */
 function rest_ensure_response($response)
 {
@@ -500,7 +514,7 @@ function rest_ensure_response($response)
         return $response;
     }
 
-    return new WP_REST_Response($response);
+    return new Response($response);
 }
 
 /**
@@ -588,9 +602,9 @@ function rest_send_cors_headers($value)
  * @since 4.4.0
  *
  * @param mixed $response Current response, either response or `null` to indicate pass-through.
- * @param WP_REST_Server $handler ResponseHandler instance (usually WP_REST_Server).
- * @param WP_REST_Request $request The request that was used to make current response.
- * @return WP_REST_Response Modified response, either response or `null` to indicate pass-through.
+ * @param Server $handler ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
+ * @param Request $request The request that was used to make current response.
+ * @return Response Modified response, either response or `null` to indicate pass-through.
  */
 function rest_handle_options_request($response, $handler, $request)
 {
@@ -598,7 +612,7 @@ function rest_handle_options_request($response, $handler, $request)
         return $response;
     }
 
-    $response = new WP_REST_Response();
+    $response = new Response();
     $data = array();
 
     foreach ($handler->get_routes() as $route => $endpoints) {
@@ -622,10 +636,10 @@ function rest_handle_options_request($response, $handler, $request)
  *
  * @since 4.4.0
  *
- * @param WP_REST_Response $response Current response being served.
- * @param WP_REST_Server $server ResponseHandler instance (usually WP_REST_Server).
- * @param WP_REST_Request $request The request that was used to make current response.
- * @return WP_REST_Response Response to be served, with "Allow" header if route has allowed methods.
+ * @param Response $response Current response being served.
+ * @param Server $server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
+ * @param Request $request The request that was used to make current response.
+ * @return Response Response to be served, with "Allow" header if route has allowed methods.
  */
 function rest_send_allow_header($response, $server, $request)
 {
@@ -728,7 +742,7 @@ function rest_output_link_header()
  * @since 4.4.0
  *
  * @global mixed $wp_rest_auth_cookie
- * @global WP_REST_Server $wp_rest_server REST server instance.
+ * @global Server $wp_rest_server REST server instance.
  *
  * @param WP_Error|mixed $result Error from another authentication handler,
  *                               null if we should handle it, or another value
@@ -887,7 +901,7 @@ function rest_authorization_required_code()
  * @since 4.7.0
  *
  * @param  mixed $value
- * @param  WP_REST_Request $request
+ * @param  Request $request
  * @param  string $param
  * @return WP_Error|boolean
  */
@@ -908,7 +922,7 @@ function rest_validate_request_arg($value, $request, $param)
  * @since 4.7.0
  *
  * @param  mixed $value
- * @param  WP_REST_Request $request
+ * @param  Request $request
  * @param  string $param
  * @return mixed
  */
@@ -932,7 +946,7 @@ function rest_sanitize_request_arg($value, $request, $param)
  * @since 4.7.0
  *
  * @param  mixed $value
- * @param  WP_REST_Request $request
+ * @param  Request $request
  * @param  string $param
  * @return mixed
  */

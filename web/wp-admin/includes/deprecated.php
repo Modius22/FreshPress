@@ -12,6 +12,11 @@
  * Deprecated functions come here to die.
  */
 
+use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * @since 2.1.0
  * @deprecated 2.1.0 Use wp_editor()
@@ -1178,7 +1183,7 @@ function get_post_to_edit($id)
  * @deprecated 3.5.0 Use get_default_post_to_edit()
  * @see get_default_post_to_edit()
  *
- * @return WP_Post Post object containing all the default post data as attributes
+ * @return Post Post object containing all the default post data as attributes
  */
 function get_default_page_to_edit()
 {
@@ -1223,71 +1228,68 @@ function wp_nav_menu_locations_meta_box()
 /**
  * This was once used to kick-off the Core Updater.
  *
- * Deprecated in favor of instantating a Core_Upgrader instance directly,
+ * Deprecated in favor of instantating a CoreUpgrader instance directly,
  * and calling the 'upgrade' method.
  *
  * @since 2.7.0
- * @deprecated 3.7.0 Use Core_Upgrader
- * @see Core_Upgrader
+ * @deprecated 3.7.0 Use CoreUpgrader
+ * @see CoreUpgrader
  */
 function wp_update_core($current, $feedback = '')
 {
-    _deprecated_function(__FUNCTION__, '3.7.0', 'new Core_Upgrader();');
+    _deprecated_function(__FUNCTION__, '3.7.0', 'new Devtronic\FreshPress\Components\Upgrader\CoreUpgrader();');
 
     if (!empty($feedback)) {
         add_filter('update_feedback', $feedback);
     }
 
-    include(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-    $upgrader = new Core_Upgrader();
+    $upgrader = new CoreUpgrader();
     return $upgrader->upgrade($current);
 }
 
 /**
  * This was once used to kick-off the Plugin Updater.
  *
- * Deprecated in favor of instantating a Plugin_Upgrader instance directly,
+ * Deprecated in favor of instantating a Devtronic\FreshPress\Components\Upgrader\PluginUpgrader instance directly,
  * and calling the 'upgrade' method.
  * Unused since 2.8.0.
  *
  * @since 2.5.0
- * @deprecated 3.7.0 Use Plugin_Upgrader
- * @see Plugin_Upgrader
+ * @deprecated 3.7.0 Use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader
+ * @see PluginUpgrader
  */
 function wp_update_plugin($plugin, $feedback = '')
 {
-    _deprecated_function(__FUNCTION__, '3.7.0', 'new Plugin_Upgrader();');
+    _deprecated_function(__FUNCTION__, '3.7.0', 'new Devtronic\FreshPress\Components\Upgrader\PluginUpgrader();');
 
     if (!empty($feedback)) {
         add_filter('update_feedback', $feedback);
     }
 
-    include(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-    $upgrader = new Plugin_Upgrader();
+    $upgrader = new PluginUpgrader();
     return $upgrader->upgrade($plugin);
 }
 
 /**
  * This was once used to kick-off the Theme Updater.
  *
- * Deprecated in favor of instantiating a Theme_Upgrader instance directly,
+ * Deprecated in favor of instantiating a ThemeUpgrader instance directly,
  * and calling the 'upgrade' method.
  * Unused since 2.8.0.
  *
  * @since 2.7.0
- * @deprecated 3.7.0 Use Theme_Upgrader
- * @see Theme_Upgrader
+ * @deprecated 3.7.0 Use ThemeUpgrader
+ * @see ThemeUpgrader
  */
 function wp_update_theme($theme, $feedback = '')
 {
-    _deprecated_function(__FUNCTION__, '3.7.0', 'new Theme_Upgrader();');
+    _deprecated_function(__FUNCTION__, '3.7.0', 'new Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader();');
 
     if (!empty($feedback)) {
         add_filter('update_feedback', $feedback);
     }
 
-    include(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-    $upgrader = new Theme_Upgrader();
+    $upgrader = new ThemeUpgrader();
     return $upgrader->upgrade($theme);
 }
 

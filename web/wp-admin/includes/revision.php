@@ -7,6 +7,8 @@
  * @since 3.6.0
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * Get the revision UI diff.
  *
@@ -74,7 +76,7 @@ function wp_get_revision_ui_diff($post, $compare_from, $compare_to)
          *
          * @param string $compare_from ->$field The current revision field to compare to or from.
          * @param string $field The current revision field.
-         * @param WP_Post $compare_from The revision post object to compare to or from.
+         * @param Post $compare_from The revision post object to compare to or from.
          * @param string  null                  The context of whether the current revision is the old
          *                                      or the new one. Values are 'to' or 'from'.
          */
@@ -107,8 +109,8 @@ function wp_get_revision_ui_diff($post, $compare_from, $compare_to)
          *                                 un-split view (single column). Default true.
          * }
          * @param string $field The current revision field.
-         * @param WP_Post $compare_from The revision post to compare from.
-         * @param WP_Post $compare_to The revision post to compare to.
+         * @param Post $compare_from The revision post to compare from.
+         * @param Post $compare_to The revision post to compare to.
          */
         $args = apply_filters('revision_text_diff_options', $args, $field, $compare_from, $compare_to);
 
@@ -138,8 +140,8 @@ function wp_get_revision_ui_diff($post, $compare_from, $compare_to)
      * @since 4.1.0
      *
      * @param array $return Revision UI fields. Each item is an array of id, name and diff.
-     * @param WP_Post $compare_from The revision post to compare from.
-     * @param WP_Post $compare_to The revision post to compare to.
+     * @param Post $compare_from The revision post to compare from.
+     * @param Post $compare_to The revision post to compare to.
      */
     return apply_filters('wp_get_revision_ui_diff', $return, $compare_from, $compare_to);
 }
@@ -238,7 +240,7 @@ function wp_prepare_revisions_for_js($post, $selected_revision_id, $from = null)
          *     The bootstrapped data for the revisions screen.
          *
          * @type int $id Revision ID.
-         * @type string $title Title for the revision's parent WP_Post object.
+         * @type string $title Title for the revision's parent Post object.
          * @type int $author Revision post author ID.
          * @type string $date Date the revision was modified.
          * @type string $dateShort Short-form version of the date the revision was modified.
@@ -248,8 +250,8 @@ function wp_prepare_revisions_for_js($post, $selected_revision_id, $from = null)
          *                                  modified date matches the revision modified date (GMT-aware).
          * @type bool|false $restoreUrl URL if the revision can be restored, false otherwise.
          * }
-         * @param WP_Post $revision The revision's WP_Post object.
-         * @param WP_Post $post The revision's parent WP_Post object.
+         * @param Post $revision The revision's Post object.
+         * @param Post $post The revision's parent Post object.
          */
         $revisions[$revision->ID] = apply_filters('wp_prepare_revision_for_js', $revisions_data, $revision, $post);
     }
@@ -330,7 +332,7 @@ function wp_prepare_revisions_for_js($post, $selected_revision_id, $from = null)
  *
  * @since 4.1.0
  *
- * @global WP_Post $post The global `$post` object.
+ * @global Post $post The global `$post` object.
  */
 function wp_print_revision_templates()
 {

@@ -6,6 +6,9 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
+
 
 /**
  * Retrieve translations from WordPress Translation API.
@@ -233,9 +236,8 @@ function wp_download_language_pack($download)
     }
     $translation = (object)$translation;
 
-    require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-    $skin = new Automatic_Upgrader_Skin;
-    $upgrader = new Language_Pack_Upgrader($skin);
+    $skin = new AutomaticUpgraderSkin();
+    $upgrader = new LanguageUpgrader($skin);
     $translation->type = 'core';
     $result = $upgrader->upgrade($translation, array('clear_update_cache' => false));
 
@@ -260,9 +262,8 @@ function wp_can_install_language_pack()
         return false;
     }
 
-    require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-    $skin = new Automatic_Upgrader_Skin;
-    $upgrader = new Language_Pack_Upgrader($skin);
+    $skin = new AutomaticUpgraderSkin();
+    $upgrader = new LanguageUpgrader($skin);
     $upgrader->init();
 
     $check = $upgrader->fs_connect(array(WP_CONTENT_DIR, WP_LANG_DIR));

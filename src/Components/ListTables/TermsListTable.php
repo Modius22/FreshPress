@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Term;
+use Devtronic\FreshPress\Entity\Term;
 
 /**
  * Core class used to implement displaying terms in a list table.
@@ -338,7 +338,7 @@ class TermsListTable extends ListTable
 
     /**
      * @global string $taxonomy
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @param int $level
      */
     public function single_row($tag, $level = 0)
@@ -354,7 +354,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @return string
      */
     public function column_cb($tag)
@@ -369,7 +369,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @return string
      */
     public function column_name($tag)
@@ -389,7 +389,7 @@ class TermsListTable extends ListTable
          * @see TermsListTable::column_name()
          *
          * @param string $pad_tag_name The term name, padded if not top-level.
-         * @param WP_Term $tag Term object.
+         * @param Term $tag Term object.
          */
         $name = apply_filters('term_name', $pad . ' ' . $tag->name, $tag);
 
@@ -440,7 +440,7 @@ class TermsListTable extends ListTable
      * @since 4.3.0
      * @access protected
      *
-     * @param WP_Term $tag Tag being acted upon.
+     * @param Term $tag Tag being acted upon.
      * @param string $column_name Current column name.
      * @param string $primary Primary column name.
      * @return string Row actions output for terms.
@@ -507,7 +507,7 @@ class TermsListTable extends ListTable
          *
          * @param array $actions An array of action links to be displayed. Default
          *                        'Edit', 'Quick Edit', 'Delete', and 'View'.
-         * @param WP_Term $tag Term object.
+         * @param Term $tag Term object.
          */
         $actions = apply_filters('tag_row_actions', $actions, $tag);
 
@@ -520,7 +520,7 @@ class TermsListTable extends ListTable
          *
          * @param array $actions An array of action links to be displayed. Default
          *                        'Edit', 'Quick Edit', 'Delete', and 'View'.
-         * @param WP_Term $tag Term object.
+         * @param Term $tag Term object.
          */
         $actions = apply_filters("{$taxonomy}_row_actions", $actions, $tag);
 
@@ -528,7 +528,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @return string
      */
     public function column_description($tag)
@@ -537,7 +537,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @return string
      */
     public function column_slug($tag)
@@ -547,7 +547,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @return string
      */
     public function column_posts($tag)
@@ -579,7 +579,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @return string
      */
     public function column_links($tag)
@@ -592,7 +592,7 @@ class TermsListTable extends ListTable
     }
 
     /**
-     * @param WP_Term $tag Term object.
+     * @param Term $tag Term object.
      * @param string $column_name
      * @return string
      */

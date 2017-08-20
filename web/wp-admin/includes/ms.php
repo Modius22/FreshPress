@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Determine if uploaded file exceeds space quota.
@@ -224,7 +225,7 @@ function wpmu_delete_user($id)
     }
 
     $id = (int)$id;
-    $user = new WP_User($id);
+    $user = new User($id);
 
     if (!$user->exists()) {
         return false;
@@ -631,7 +632,7 @@ function update_user_status($id, $pref, $value, $deprecated = null)
 
     $wpdb->update($wpdb->users, array(sanitize_key($pref) => $value), array('ID' => $id));
 
-    $user = new WP_User($id);
+    $user = new User($id);
     clean_user_cache($user);
 
     if ($pref == 'spam') {

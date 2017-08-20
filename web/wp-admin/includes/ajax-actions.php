@@ -7,6 +7,8 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
@@ -15,7 +17,11 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
+use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
+use Devtronic\FreshPress\Entity\Post;
 
 //
 // No-privilege Ajax handlers.
@@ -2231,7 +2237,7 @@ function wp_ajax_save_widget()
  *
  * @since 3.9.0
  *
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  */
 function wp_ajax_update_widget()
 {
@@ -3031,7 +3037,7 @@ function wp_ajax_send_attachment_to_editor()
  *
  * @since 3.5.0
  *
- * @global WP_Post $post
+ * @global Post $post
  * @global WP_Embed $wp_embed
  */
 function wp_ajax_send_link_to_editor()
@@ -3319,9 +3325,9 @@ function wp_ajax_query_themes()
  *
  * @since 4.0.0
  *
- * @global WP_Post $post Global $post.
+ * @global Post $post Global $post.
  * @global WP_Embed $wp_embed Embed API instance.
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  */
 function wp_ajax_parse_embed()
 {
@@ -3425,8 +3431,8 @@ function wp_ajax_parse_embed()
 /**
  * @since 4.0.0
  *
- * @global WP_Post $post
- * @global WP_Scripts $wp_scripts
+ * @global Post $post
+ * @global Scripts $wp_scripts
  */
 function wp_ajax_parse_media_shortcode()
 {
@@ -3707,7 +3713,7 @@ function wp_ajax_save_wporg_username()
  *
  * @since 4.6.0
  *
- * @see Theme_Upgrader
+ * @see ThemeUpgrader
  */
 function wp_ajax_install_theme()
 {
@@ -3733,7 +3739,6 @@ function wp_ajax_install_theme()
         wp_send_json_error($status);
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
     include_once(ABSPATH . 'wp-admin/includes/theme.php');
 
     $api = themes_api('theme_information', array(
@@ -3746,8 +3751,8 @@ function wp_ajax_install_theme()
         wp_send_json_error($status);
     }
 
-    $skin = new WP_Ajax_Upgrader_Skin();
-    $upgrader = new Theme_Upgrader($skin);
+    $skin = new AjaxUpgraderSkin();
+    $upgrader = new ThemeUpgrader($skin);
     $result = $upgrader->install($api->download_link);
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -3815,7 +3820,7 @@ function wp_ajax_install_theme()
  *
  * @since 4.6.0
  *
- * @see Theme_Upgrader
+ * @see ThemeUpgrader
  */
 function wp_ajax_update_theme()
 {
@@ -3841,15 +3846,13 @@ function wp_ajax_update_theme()
         wp_send_json_error($status);
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-
     $current = get_site_transient('update_themes');
     if (empty($current)) {
         wp_update_themes();
     }
 
-    $skin = new WP_Ajax_Upgrader_Skin();
-    $upgrader = new Theme_Upgrader($skin);
+    $skin = new AjaxUpgraderSkin();
+    $upgrader = new ThemeUpgrader($skin);
     $result = $upgrader->bulk_upgrade(array($stylesheet));
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -3970,7 +3973,7 @@ function wp_ajax_delete_theme()
  *
  * @since 4.6.0
  *
- * @see Plugin_Upgrader
+ * @see PluginUpgrader
  */
 function wp_ajax_install_plugin()
 {
@@ -3994,7 +3997,6 @@ function wp_ajax_install_plugin()
         wp_send_json_error($status);
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
     include_once(ABSPATH . 'wp-admin/includes/plugin-install.php');
 
     $api = plugins_api('plugin_information', array(
@@ -4011,8 +4013,8 @@ function wp_ajax_install_plugin()
 
     $status['pluginName'] = $api->name;
 
-    $skin = new WP_Ajax_Upgrader_Skin();
-    $upgrader = new Plugin_Upgrader($skin);
+    $skin = new AjaxUpgraderSkin();
+    $upgrader = new PluginUpgrader($skin);
     $result = $upgrader->install($api->download_link);
 
     if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -4070,7 +4072,7 @@ function wp_ajax_install_plugin()
  *
  * @since 4.2.0
  *
- * @see Plugin_Upgrader
+ * @see PluginUpgrader
  */
 function wp_ajax_update_plugin()
 {
@@ -4107,12 +4109,10 @@ function wp_ajax_update_plugin()
         $status['oldVersion'] = sprintf(__('Version %s'), $plugin_data['Version']);
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-
     wp_update_plugins();
 
-    $skin = new WP_Ajax_Upgrader_Skin();
-    $upgrader = new Plugin_Upgrader($skin);
+    $skin = new AjaxUpgraderSkin();
+    $upgrader = new PluginUpgrader($skin);
     $result = $upgrader->bulk_upgrade(array($plugin));
 
     if (defined('WP_DEBUG') && WP_DEBUG) {

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Defines the default media upload tabs
@@ -1039,7 +1040,7 @@ function media_upload_library()
  *
  * @since 2.7.0
  *
- * @param WP_Post $post
+ * @param Post $post
  * @param string $checked
  * @return string
  */
@@ -1069,7 +1070,7 @@ function image_align_input_fields($post, $checked = '')
  *
  * @since 2.7.0
  *
- * @param WP_Post $post
+ * @param Post $post
  * @param bool|string $check
  * @return array
  */
@@ -1152,7 +1153,7 @@ function image_size_input_fields($post, $check = '')
  *
  * @since 2.7.0
  *
- * @param WP_Post $post
+ * @param Post $post
  * @param string $url_type
  * @return string
  */
@@ -1185,7 +1186,7 @@ function image_link_input_fields($post, $url_type = '')
  *
  * @since 3.4.0
  *
- * @param WP_Post $edit_post Attachment WP_Post object.
+ * @param Post $edit_post Attachment Post object.
  * @return string HTML markup for the textarea element.
  */
 function wp_caption_input_textarea($edit_post)
@@ -1216,7 +1217,7 @@ function image_attachment_fields_to_edit($form_fields, $post)
  * @since 2.5.0
  *
  * @param array $form_fields An array of attachment form fields.
- * @param WP_Post $post The WP_Post attachment object.
+ * @param Post $post The Post attachment object.
  * @return array Filtered attachment form fields.
  */
 function media_single_attachment_fields_to_edit($form_fields, $post)
@@ -1231,7 +1232,7 @@ function media_single_attachment_fields_to_edit($form_fields, $post)
  * @since 2.8.0
  *
  * @param array $form_fields An array of attachment form fields.
- * @param WP_Post $post The WP_Post attachment object.
+ * @param Post $post The Post attachment object.
  * @return array Filtered attachment form fields.
  */
 function media_post_single_attachment_fields_to_edit($form_fields, $post)
@@ -1249,7 +1250,7 @@ function media_post_single_attachment_fields_to_edit($form_fields, $post)
  *
  * @since 2.5.0
  *
- * @param array $post The WP_Post attachment object converted to an array.
+ * @param array $post The Post attachment object converted to an array.
  * @param array $attachment An array of attachment metadata.
  * @return array Filtered attachment post object.
  */
@@ -1306,7 +1307,7 @@ function image_media_send_to_editor($html, $attachment_id, $attachment)
  *
  * @since 2.5.0
  *
- * @param WP_Post $post
+ * @param Post $post
  * @param array $errors
  * @return array
  */
@@ -1316,7 +1317,7 @@ function get_attachment_fields_to_edit($post, $errors = null)
         $post = get_post($post);
     }
     if (is_array($post)) {
-        $post = new WP_Post((object)$post);
+        $post = new Post((object)$post);
     }
 
     $image_url = wp_get_attachment_url($post->ID);
@@ -1421,7 +1422,7 @@ function get_attachment_fields_to_edit($post, $errors = null)
      * @since 2.5.0
      *
      * @param array $form_fields An array of attachment form fields.
-     * @param WP_Post $post The WP_Post attachment object.
+     * @param Post $post The Post attachment object.
      */
     $form_fields = apply_filters('attachment_fields_to_edit', $form_fields, $post);
 
@@ -1586,7 +1587,7 @@ function get_media_item($attachment_id, $args = null)
      * @since 2.5.0
      *
      * @param string $media_dims The HTML markup containing the media dimensions.
-     * @param WP_Post $post The WP_Post attachment object.
+     * @param Post $post The Post attachment object.
      */
     $media_dims = apply_filters('media_meta', $media_dims, $post);
 
@@ -2976,7 +2977,7 @@ function multisite_over_quota_message()
  *
  * @since 3.5.0
  *
- * @param WP_Post $post A post object.
+ * @param Post $post A post object.
  */
 function edit_form_image_editor($post)
 {
@@ -3064,7 +3065,7 @@ function edit_form_image_editor($post)
              *
              * @since 4.6.0
              *
-             * @param WP_Post $post A post object.
+             * @param Post $post A post object.
              */
             do_action('wp_edit_form_attachment_display', $post);
 

@@ -6,6 +6,8 @@
  * @subpackage Rewrite
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * Endpoint Mask for default, which is nothing.
  *
@@ -400,7 +402,7 @@ function wp_resolve_numeric_slug_conflicts($query_vars = array())
     $value = $query_vars[$compare];
 
     $post = get_page_by_path($value, OBJECT, 'post');
-    if (!($post instanceof WP_Post)) {
+    if (!($post instanceof Post)) {
         return $query_vars;
     }
 
@@ -522,7 +524,7 @@ function url_to_postid($url)
     if (trim($url, '/') === home_url() && 'page' == get_option('show_on_front')) {
         $page_on_front = get_option('page_on_front');
 
-        if ($page_on_front && get_post($page_on_front) instanceof WP_Post) {
+        if ($page_on_front && get_post($page_on_front) instanceof Post) {
             return (int)$page_on_front;
         }
     }

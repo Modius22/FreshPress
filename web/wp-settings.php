@@ -8,6 +8,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\EventDispatcher\Hook;
+
 /**
  * Stores the location of the WordPress directory of functions, classes, and core content.
  *
@@ -85,7 +87,7 @@ if (WP_CACHE && apply_filters('enable_loading_advanced_cache_dropin', true)) {
 
     // Re-initialize any hooks added manually by advanced-cache.php
     if ($wp_filter) {
-        $wp_filter = WP_Hook::build_preinitialized_hooks($wp_filter);
+        $wp_filter = Hook::build_preinitialized_hooks($wp_filter);
     }
 }
 
@@ -145,7 +147,6 @@ require(ABSPATH . WPINC . '/link-template.php');
 require(ABSPATH . WPINC . '/author-template.php');
 require(ABSPATH . WPINC . '/post.php');
 require(ABSPATH . WPINC . '/class-wp-post-type.php');
-require(ABSPATH . WPINC . '/class-wp-post.php');
 require(ABSPATH . WPINC . '/post-template.php');
 require(ABSPATH . WPINC . '/revision.php');
 require(ABSPATH . WPINC . '/post-formats.php');

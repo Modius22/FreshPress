@@ -6,6 +6,8 @@
  * @since 2.3.0
  */
 
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
+
 /**
  * Check WordPress version against the newest version.
  *
@@ -561,9 +563,8 @@ function wp_update_themes($extra_stats = array())
 function wp_maybe_auto_update()
 {
     include_once(ABSPATH . '/wp-admin/includes/admin.php');
-    include_once(ABSPATH . '/wp-admin/includes/class-wp-upgrader.php');
 
-    $upgrader = new WP_Automatic_Updater;
+    $upgrader = new AutomaticUpdater();
     $upgrader->run();
 }
 

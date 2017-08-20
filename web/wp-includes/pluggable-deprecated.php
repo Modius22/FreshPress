@@ -15,6 +15,8 @@
  * Deprecated functions come here to die.
  */
 
+use Devtronic\FreshPress\Entity\User;
+
 if (!function_exists('set_current_user')) :
     /**
      * Changes the current user by ID or name.
@@ -27,7 +29,7 @@ if (!function_exists('set_current_user')) :
      *
      * @param int|null $id User ID.
      * @param string $name Optional. The user's username
-     * @return WP_User returns wp_set_current_user()
+     * @return User returns wp_set_current_user()
      */
     function set_current_user($id, $name = '')
     {
@@ -44,7 +46,7 @@ if (!function_exists('get_currentuserinfo')) :
      * @deprecated 4.5.0 Use wp_get_current_user()
      * @see wp_get_current_user()
      *
-     * @return bool|WP_User False on XMLRPC Request and invalid auth cookie, WP_User instance otherwise.
+     * @return bool|User False on XMLRPC Request and invalid auth cookie, User instance otherwise.
      */
     function get_currentuserinfo()
     {

@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
+
 /**
  * The custom header image class.
  *
@@ -1472,7 +1474,7 @@ class Custom_Image_Header
      *
      * @since 3.9.0
      *
-     * @param WP_Customize_Manager $wp_customize Customize manager.
+     * @param Manager $wp_customize Customize manager.
      */
     public function customize_set_last_used($wp_customize)
     {

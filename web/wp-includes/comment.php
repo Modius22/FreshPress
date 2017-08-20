@@ -7,6 +7,8 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Check whether a comment passes internal checks to be allowed to add.
@@ -194,12 +196,12 @@ function get_approved_comments($post_id, $args = array())
  *
  * @since 2.0.0
  *
- * @global WP_Comment $comment
+ * @global Comment $comment
  *
- * @param WP_Comment|string|int $comment Comment to retrieve.
+ * @param Comment|string|int $comment Comment to retrieve.
  * @param string $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
- *                                       a WP_Comment object, an associative array, or a numeric array, respectively. Default OBJECT.
- * @return WP_Comment|array|null Depends on $output value.
+ *                                       a Comment object, an associative array, or a numeric array, respectively. Default OBJECT.
+ * @return Comment|array|null Depends on $output value.
  */
 function get_comment(&$comment = null, $output = OBJECT)
 {
@@ -207,12 +209,12 @@ function get_comment(&$comment = null, $output = OBJECT)
         $comment = $GLOBALS['comment'];
     }
 
-    if ($comment instanceof WP_Comment) {
+    if ($comment instanceof Comment) {
         $_comment = $comment;
     } elseif (is_object($comment)) {
-        $_comment = new WP_Comment($comment);
+        $_comment = new Comment($comment);
     } else {
-        $_comment = WP_Comment::get_instance($comment);
+        $_comment = Comment::get_instance($comment);
     }
 
     if (!$_comment) {
@@ -535,7 +537,7 @@ function wp_queue_comments_for_comment_meta_lazyload($comments)
     $comment_ids = array();
     if (is_array($comments)) {
         foreach ($comments as $comment) {
-            if ($comment instanceof WP_Comment) {
+            if ($comment instanceof Comment) {
                 $comment_ids[] = $comment->comment_ID;
             }
         }
@@ -551,7 +553,7 @@ function wp_queue_comments_for_comment_meta_lazyload($comments)
  * Sets the cookies used to store an unauthenticated commentator's identity. Typically used
  * to recall previous comments by this commentator that are still held in moderation.
  *
- * @param WP_Comment $comment Comment object.
+ * @param Comment $comment Comment object.
  * @param object $user Comment author's object.
  *
  * @since 3.4.0
@@ -975,7 +977,7 @@ function separate_comments(&$comments)
  *
  * @global WP_Query $wp_query
  *
- * @param array $comments Optional array of WP_Comment objects. Defaults to $wp_query->comments
+ * @param array $comments Optional array of Comment objects. Defaults to $wp_query->comments
  * @param int $per_page Optional comments per page.
  * @param bool $threaded Optional control over flat or threaded comments.
  * @return int Number of comment pages.
@@ -1384,7 +1386,7 @@ function wp_count_comments($post_id = 0)
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object.
+ * @param int|Comment $comment_id Comment ID or Comment object.
  * @param bool $force_delete Whether to bypass trash and force deletion. Default is false.
  * @return bool True on success, false on failure.
  */
@@ -1465,7 +1467,7 @@ function wp_delete_comment($comment_id, $force_delete = false)
  *
  * @since 2.9.0
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object.
+ * @param int|Comment $comment_id Comment ID or Comment object.
  * @return bool True on success, false on failure.
  */
 function wp_trash_comment($comment_id)
@@ -1512,7 +1514,7 @@ function wp_trash_comment($comment_id)
  *
  * @since 2.9.0
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object.
+ * @param int|Comment $comment_id Comment ID or Comment object.
  * @return bool True on success, false on failure.
  */
 function wp_untrash_comment($comment_id)
@@ -1558,7 +1560,7 @@ function wp_untrash_comment($comment_id)
  *
  * @since 2.9.0
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object.
+ * @param int|Comment $comment_id Comment ID or Comment object.
  * @return bool True on success, false on failure.
  */
 function wp_spam_comment($comment_id)
@@ -1601,7 +1603,7 @@ function wp_spam_comment($comment_id)
  *
  * @since 2.9.0
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object.
+ * @param int|Comment $comment_id Comment ID or Comment object.
  * @return bool True on success, false on failure.
  */
 function wp_unspam_comment($comment_id)
@@ -1647,7 +1649,7 @@ function wp_unspam_comment($comment_id)
  *
  * @since 1.0.0
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object
+ * @param int|Comment $comment_id Comment ID or Comment object
  * @return false|string Status might be 'trash', 'approved', 'unapproved', 'spam'. False on failure.
  */
 function wp_get_comment_status($comment_id)
@@ -1732,7 +1734,7 @@ function wp_transition_comment_status($new_status, $old_status, $comment)
          *
          * @since 2.7.0
          *
-         * @param WP_Comment $comment Comment object.
+         * @param Comment $comment Comment object.
          */
         do_action("comment_{$old_status}_to_{$new_status}", $comment);
     }
@@ -1748,7 +1750,7 @@ function wp_transition_comment_status($new_status, $old_status, $comment)
      * @since 2.7.0
      *
      * @param int $comment_ID The comment ID.
-     * @param WP_Comment $comment Comment object.
+     * @param Comment $comment Comment object.
      */
     do_action("comment_{$new_status}_{$comment->comment_type}", $comment->comment_ID, $comment);
 }
@@ -1929,7 +1931,7 @@ function wp_insert_comment($commentdata)
      * @since 2.8.0
      *
      * @param int $id The comment ID.
-     * @param WP_Comment $comment Comment object.
+     * @param Comment $comment Comment object.
      */
     do_action('wp_insert_comment', $id, $comment);
 
@@ -2248,7 +2250,7 @@ function wp_new_comment_notify_postauthor($comment_ID)
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param int|WP_Comment $comment_id Comment ID or WP_Comment object.
+ * @param int|Comment $comment_id Comment ID or Comment object.
  * @param string $comment_status New comment status, either 'hold', 'approve', 'spam', or 'trash'.
  * @param bool $wp_error Whether to return a WP_Error object if there is a failure. Default is false.
  * @return bool|WP_Error True on success, false or WP_Error on failure.
@@ -2693,11 +2695,11 @@ function do_all_pings()
  * Perform trackbacks.
  *
  * @since 1.5.0
- * @since 4.7.0 $post_id can be a WP_Post object.
+ * @since 4.7.0 $post_id can be a Post object.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param int|WP_Post $post_id Post object or ID to do trackbacks on.
+ * @param int|Post $post_id Post object or ID to do trackbacks on.
  */
 function do_trackbacks($post_id)
 {
@@ -2770,10 +2772,10 @@ function generic_ping($post_id = 0)
  * Pings back the links found in a post.
  *
  * @since 0.71
- * @since 4.7.0 $post_id can be a WP_Post object.
+ * @since 4.7.0 $post_id can be a Post object.
  *
  * @param string $content Post content to check for links. If empty will retrieve from post.
- * @param int|WP_Post $post_id Post Object or ID.
+ * @param int|Post $post_id Post Object or ID.
  */
 function pingback($content, $post_id)
 {
@@ -3105,7 +3107,7 @@ function _prime_comment_caches($comment_ids, $update_meta_cache = true)
  * @access private
  * @since 2.7.0
  *
- * @param WP_Post $posts Post data object.
+ * @param Post $posts Post data object.
  * @param WP_Query $query Query object.
  * @return array
  */
@@ -3204,7 +3206,7 @@ function _close_comments_for_old_post($open, $post_id)
  * @type string|int $comment_parent The ID of this comment's parent, if any. Default 0.
  * @type string $_wp_unfiltered_html_comment The nonce value for allowing unfiltered HTML.
  * }
- * @return WP_Comment|WP_Error A WP_Comment object on success, a WP_Error object on failure.
+ * @return Comment|WP_Error A Comment object on success, a WP_Error object on failure.
  */
 function wp_handle_comment_submission($comment_data)
 {

@@ -6,7 +6,11 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+use Devtronic\FreshPress\Components\Dependencies\Dependency;
+use Devtronic\FreshPress\Components\Dependencies\Styles;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Load header template.
@@ -2308,7 +2312,7 @@ function the_date($d = '', $before = '', $after = '', $echo = true)
  * @since 3.0.0
  *
  * @param  string $d Optional. PHP date format defaults to the date_format option if not specified.
- * @param  int|WP_Post $post Optional. Post ID or WP_Post object. Default current post.
+ * @param  int|Post $post Optional. Post ID or Post object. Default current post.
  * @return false|string Date the current post was written. False on failure.
  */
 function get_the_date($d = '', $post = null)
@@ -2333,7 +2337,7 @@ function get_the_date($d = '', $post = null)
      * @param string $the_date The formatted date.
      * @param string $d PHP date format. Defaults to 'date_format' option
      *                              if not specified.
-     * @param int|WP_Post $post The post object or ID.
+     * @param int|Post $post The post object or ID.
      */
     return apply_filters('get_the_date', $the_date, $d, $post);
 }
@@ -2380,7 +2384,7 @@ function the_modified_date($d = '', $before = '', $after = '', $echo = true)
  * @since 4.6.0 Added the `$post` parameter.
  *
  * @param string $d Optional. PHP date format defaults to the date_format option if not specified.
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default current post.
+ * @param int|Post $post Optional. Post ID or Post object. Default current post.
  * @return false|string Date the current post was modified. False on failure.
  */
 function get_the_modified_date($d = '', $post = null)
@@ -2405,7 +2409,7 @@ function get_the_modified_date($d = '', $post = null)
      * @param string $the_time The formatted date.
      * @param string $d PHP date format. Defaults to value specified in
      *                          'date_format' option.
-     * @param WP_Post $post WP_Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('get_the_modified_date', $the_time, $d, $post);
 }
@@ -2439,7 +2443,7 @@ function the_time($d = '')
  * @param string $d Optional. Format to use for retrieving the time the post
  *                          was written. Either 'G', 'U', or php date format defaults
  *                          to the value specified in the time_format option. Default empty.
- * @param int|WP_Post $post WP_Post object or ID. Default is global $post object.
+ * @param int|Post $post Post object or ID. Default is global $post object.
  * @return string|int|false Formatted date string or Unix timestamp if `$id` is 'U' or 'G'. False on failure.
  */
 function get_the_time($d = '', $post = null)
@@ -2465,7 +2469,7 @@ function get_the_time($d = '', $post = null)
      * @param string $d Format to use for retrieving the time the post was written.
      *                              Accepts 'G', 'U', or php date format value specified
      *                              in 'time_format' option. Default empty.
-     * @param int|WP_Post $post WP_Post object or ID.
+     * @param int|Post $post Post object or ID.
      */
     return apply_filters('get_the_time', $the_time, $d, $post);
 }
@@ -2478,7 +2482,7 @@ function get_the_time($d = '', $post = null)
  * @param string $d Optional. Format to use for retrieving the time the post
  *                               was written. Either 'G', 'U', or php date format. Default 'U'.
  * @param bool $gmt Optional. Whether to retrieve the GMT time. Default false.
- * @param int|WP_Post $post WP_Post object or ID. Default is global $post object.
+ * @param int|Post $post Post object or ID. Default is global $post object.
  * @param bool $translate Whether to translate the time string. Default false.
  * @return string|int|false Formatted date string or Unix timestamp if `$id` is 'U' or 'G'. False on failure.
  */
@@ -2542,7 +2546,7 @@ function the_modified_time($d = '')
  * @param string $d Optional. Format to use for retrieving the time the post
  *                           was modified. Either 'G', 'U', or php date format defaults
  *                           to the value specified in the time_format option. Default empty.
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default current post.
+ * @param int|Post $post Optional. Post ID or Post object. Default current post.
  * @return false|string Formatted date string or Unix timestamp. False on failure.
  */
 function get_the_modified_time($d = '', $post = null)
@@ -2568,7 +2572,7 @@ function get_the_modified_time($d = '', $post = null)
      * @param string $d Format to use for retrieving the time the post was
      *                         written. Accepts 'G', 'U', or php date format. Defaults
      *                         to value specified in 'time_format' option.
-     * @param WP_Post $post WP_Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('get_the_modified_time', $the_time, $d, $post);
 }
@@ -2581,7 +2585,7 @@ function get_the_modified_time($d = '', $post = null)
  * @param string $d Optional. Format to use for retrieving the time the post
  *                               was modified. Either 'G', 'U', or php date format. Default 'U'.
  * @param bool $gmt Optional. Whether to retrieve the GMT time. Default false.
- * @param int|WP_Post $post WP_Post object or ID. Default is global $post object.
+ * @param int|Post $post Post object or ID. Default is global $post object.
  * @param bool $translate Whether to translate the time string. Default false.
  * @return string|int|false Formatted date string or Unix timestamp if `$id` is 'U' or 'G'. False on failure.
  */
@@ -3114,13 +3118,13 @@ function wp_dependencies_unique_hosts()
     $unique_hosts = array();
 
     foreach (array($wp_scripts, $wp_styles) as $dependencies) {
-        if ($dependencies instanceof WP_Dependencies && !empty($dependencies->queue)) {
+        if ($dependencies instanceof Dependencies && !empty($dependencies->queue)) {
             foreach ($dependencies->queue as $handle) {
                 if (!isset($dependencies->registered[$handle])) {
                     continue;
                 }
 
-                /* @var _WP_Dependency $dependency */
+                /* @var Dependency $dependency */
                 $dependency = $dependencies->registered[$handle];
                 $parsed = wp_parse_url($dependency->src);
 
@@ -3245,7 +3249,7 @@ function wp_editor($content, $editor_id, $settings = array())
  * Outputs the editor scripts, stylesheets, and default settings.
  *
  * The editor can be initialized when needed after page load.
- * See wp.editor.initialize() in wp-admin/js/editor.js for initialization options.
+ * See wp.editor.initialize() in wp-admin/assets/js/editor.js for initialization options.
  *
  * @uses _WP_Editors
  * @since 4.8.0
@@ -3723,7 +3727,7 @@ function register_admin_color_schemes()
 /**
  * Displays the URL of a WordPress admin CSS file.
  *
- * @see WP_Styles::_css_href and its {@see 'style_loader_src'} filter.
+ * @see Styles::_css_href and its {@see 'style_loader_src'} filter.
  *
  * @since 2.3.0
  *

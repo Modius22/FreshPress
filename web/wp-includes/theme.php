@@ -6,7 +6,9 @@
  * @subpackage Theme
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Returns an array of WP_Theme objects based on the arguments.
@@ -725,7 +727,7 @@ function locale_stylesheet()
  * @since 2.5.0
  *
  * @global array $wp_theme_directories
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  * @global array $sidebars_widgets
  *
  * @param string $stylesheet Stylesheet name
@@ -1777,7 +1779,7 @@ function wp_custom_css_cb()
  * @access public
  *
  * @param string $stylesheet Optional. A theme object stylesheet name. Defaults to the current theme.
- * @return WP_Post|null The custom_css post or null if none exists.
+ * @return Post|null The custom_css post or null if none exists.
  */
 function wp_get_custom_css_post($stylesheet = '')
 {
@@ -1873,7 +1875,7 @@ function wp_get_custom_css($stylesheet = '')
  * @type string $preprocessed Pre-processed CSS, stored in `post_content_filtered`. Normally empty string. Optional.
  * @type string $stylesheet Stylesheet (child theme) to update. Optional, defaults to current theme/stylesheet.
  * }
- * @return WP_Post|WP_Error Post on success, error on failure.
+ * @return Post|WP_Error Post on success, error on failure.
  */
 function wp_update_custom_css_post($css, $args = array())
 {
@@ -3016,7 +3018,7 @@ function check_theme_switched()
 }
 
 /**
- * Includes and instantiates the WP_Customize_Manager class.
+ * Includes and instantiates the Manager class.
  *
  * Loads the Customizer at plugins_loaded when accessing the customize.php admin
  * page or when any request includes a wp_customize=on param or a customize_changeset
@@ -3026,7 +3028,7 @@ function check_theme_switched()
  *
  * @since 3.4.0
  *
- * @global WP_Customize_Manager $wp_customize
+ * @global Manager $wp_customize
  */
 function _wp_customize_include()
 {
@@ -3080,8 +3082,7 @@ function _wp_customize_include()
         $messenger_channel = sanitize_key($input_vars['customize_messenger_channel']);
     }
 
-    require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
-    $GLOBALS['wp_customize'] = new WP_Customize_Manager(compact('changeset_uuid', 'theme', 'messenger_channel'));
+    $GLOBALS['wp_customize'] = new Manager(compact('changeset_uuid', 'theme', 'messenger_channel'));
 }
 
 /**
@@ -3089,7 +3090,7 @@ function _wp_customize_include()
  *
  * @param string $new_status New post status.
  * @param string $old_status Old post status.
- * @param WP_Post $changeset_post Changeset post object.
+ * @param Post $changeset_post Changeset post object.
  */
 function _wp_customize_publish_changeset($new_status, $old_status, $changeset_post)
 {
@@ -3107,8 +3108,7 @@ function _wp_customize_publish_changeset($new_status, $old_status, $changeset_po
     }
 
     if (empty($wp_customize)) {
-        require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
-        $wp_customize = new WP_Customize_Manager(array('changeset_uuid' => $changeset_post->post_name));
+        $wp_customize = new Manager(array('changeset_uuid' => $changeset_post->post_name));
     }
 
     if (!did_action('customize_register')) {
@@ -3323,7 +3323,7 @@ function wp_customize_support_script()
  *
  * @since 4.0.0
  *
- * @global WP_Customize_Manager $wp_customize Customizer instance.
+ * @global Manager $wp_customize Customizer instance.
  *
  * @return bool True if the site is being previewed in the Customizer, false otherwise.
  */
@@ -3331,7 +3331,7 @@ function is_customize_preview()
 {
     global $wp_customize;
 
-    return ($wp_customize instanceof WP_Customize_Manager) && $wp_customize->is_preview();
+    return ($wp_customize instanceof Manager) && $wp_customize->is_preview();
 }
 
 /**
@@ -3350,7 +3350,7 @@ function is_customize_preview()
  *
  * @param string $new_status Transition to this post status.
  * @param string $old_status Previous post status.
- * @param \WP_Post $post Post data.
+ * @param Post $post Post data.
  * @global WPDB $wpdb
  */
 function _wp_keep_alive_customize_changeset_dependent_auto_drafts($new_status, $old_status, $post)

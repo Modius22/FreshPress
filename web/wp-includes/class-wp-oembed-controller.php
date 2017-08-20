@@ -7,6 +7,9 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Components\Rest\Server;
+
 /**
  * oEmbed API endpoint controller.
  *
@@ -36,7 +39,7 @@ final class WP_oEmbed_Controller
 
         register_rest_route('oembed/1.0', '/embed', array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_item'),
                 'args' => array(
                     'url' => array(
@@ -57,7 +60,7 @@ final class WP_oEmbed_Controller
 
         register_rest_route('oembed/1.0', '/proxy', array(
             array(
-                'methods' => WP_REST_Server::READABLE,
+                'methods' => Server::READABLE,
                 'callback' => array($this, 'get_proxy_item'),
                 'permission_callback' => array($this, 'get_proxy_item_permissions_check'),
                 'args' => array(
@@ -105,7 +108,7 @@ final class WP_oEmbed_Controller
      * @since 4.4.0
      * @access public
      *
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|array oEmbed response data or WP_Error on failure.
      */
     public function get_item($request)
@@ -160,7 +163,7 @@ final class WP_oEmbed_Controller
      * @access public
      *
      * @see WP_oEmbed::get_html()
-     * @param WP_REST_Request $request Full data about the request.
+     * @param Request $request Full data about the request.
      * @return WP_Error|array oEmbed response data or WP_Error on failure.
      */
     public function get_proxy_item($request)

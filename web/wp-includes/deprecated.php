@@ -9,6 +9,8 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
+use Devtronic\FreshPress\Entity\User;
 
 /*
  * Deprecated functions come here to die.
@@ -3002,7 +3004,7 @@ function sanitize_user_object($user, $context = 'display')
         if (!isset($user->ID)) {
             $user->ID = 0;
         }
-        if (!($user instanceof WP_User)) {
+        if (!($user instanceof User)) {
             $vars = get_object_vars($user);
             foreach (array_keys($vars) as $field) {
                 if (is_string($user->$field) || is_numeric($user->$field)) {
@@ -3570,14 +3572,14 @@ function sticky_class($post_id = null)
 /**
  * Retrieve post ancestors.
  *
- * This is no longer needed as WP_Post lazy-loads the ancestors
+ * This is no longer needed as Post lazy-loads the ancestors
  * property with get_post_ancestors().
  *
  * @since 2.3.4
  * @deprecated 3.5.0 Use get_post_ancestors()
  * @see get_post_ancestors()
  *
- * @param WP_Post &$post Post object, passed by reference (unused).
+ * @param Post &$post Post object, passed by reference (unused).
  */
 function _get_post_ancestors(&$post)
 {
@@ -3685,7 +3687,7 @@ function image_resize($file, $max_w, $max_h, $crop = false, $suffix = null, $des
  *
  * @param int $postid Post ID.
  * @param string $mode How to return result, either OBJECT, ARRAY_N, or ARRAY_A.
- * @return WP_Post|null Post object or array holding post contents and information
+ * @return Post|null Post object or array holding post contents and information
  */
 function wp_get_single_post($postid = 0, $mode = OBJECT)
 {
@@ -4065,7 +4067,7 @@ function wp_htmledit_pre($output)
  * @deprecated 4.4.0 Use get_permalink()
  * @see get_permalink()
  *
- * @param int|WP_Post $post_id Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post_id Optional. Post ID or Post object. Default is global $post.
  * @return string|false
  */
 function post_permalink($post_id = 0)

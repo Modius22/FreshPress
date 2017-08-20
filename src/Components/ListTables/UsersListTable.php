@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_User;
+use Devtronic\FreshPress\Entity\User;
 use WP_User_Query;
 
 /**
@@ -415,7 +415,7 @@ class UsersListTable extends ListTable
      * @since 4.4.0 The `$role` parameter was deprecated.
      * @access public
      *
-     * @param WP_User $user_object The current user object.
+     * @param User $user_object The current user object.
      * @param string $style Deprecated. Not used.
      * @param string $role Deprecated. Not used.
      * @param int $numposts Optional. Post count to display for this user. Defaults
@@ -424,7 +424,7 @@ class UsersListTable extends ListTable
      */
     public function single_row($user_object, $style = '', $role = '', $numposts = 0)
     {
-        if (!($user_object instanceof WP_User)) {
+        if (!($user_object instanceof User)) {
             $user_object = get_userdata((int)$user_object);
         }
         $user_object->filter = 'display';
@@ -486,7 +486,7 @@ class UsersListTable extends ListTable
              * @param array $actions An array of action links to be displayed.
              *                             Default 'Edit', 'Delete' for single site, and
              *                             'Edit', 'Remove' for Multisite.
-             * @param WP_User $user_object WP_User object for the currently-listed user.
+             * @param User $user_object User object for the currently-listed user.
              */
             $actions = apply_filters('user_row_actions', $actions, $user_object);
 
@@ -600,7 +600,7 @@ class UsersListTable extends ListTable
      * @since 4.4.0
      * @access protected
      *
-     * @param WP_User $user_object The WP_User object.
+     * @param User $user_object The User object.
      * @return array An array of user roles.
      */
     protected function get_role_list($user_object)
@@ -625,7 +625,7 @@ class UsersListTable extends ListTable
          * @since 4.4.0
          *
          * @param array $role_list An array of user roles.
-         * @param WP_User $user_object A WP_User object.
+         * @param \User $user_object A User object.
          */
         return apply_filters('get_role_list', $role_list, $user_object);
     }

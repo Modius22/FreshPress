@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Entity\Comment;
+
 // don't load directly
 if (!defined('ABSPATH')) {
     die('-1');
@@ -221,7 +223,7 @@ if (!defined('ABSPATH')) {
                          *
                          * @since 3.0.0
                          *
-                         * @param WP_Comment $comment Comment object.
+                         * @param Comment $comment Comment object.
                          */
                         do_action('add_meta_boxes_comment', $comment);
 

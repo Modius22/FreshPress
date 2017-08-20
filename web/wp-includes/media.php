@@ -6,7 +6,12 @@
  * @subpackage Media
  */
 
+use Devtronic\FreshPress\Components\ImageEditor\GdImageEditor;
+use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
+use Devtronic\FreshPress\Components\ImageEditor\ImagickImageEditor;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Retrieve additional image sizes.
@@ -492,7 +497,7 @@ function wp_constrain_dimensions($current_width, $current_height, $max_width = 0
 }
 
 /**
- * Retrieves calculated resize dimensions for use in WP_Image_Editor.
+ * Retrieves calculated resize dimensions for use in ImageEditor.
  *
  * Calculates dimensions and coordinates for a resized image that fits
  * within a specified width and height.
@@ -944,7 +949,7 @@ function wp_get_attachment_image($attachment_id, $size = 'thumbnail', $icon = fa
          * @since 2.8.0
          *
          * @param array $attr Attributes for the image markup.
-         * @param WP_Post $attachment Image attachment post.
+         * @param Post $attachment Image attachment post.
          * @param string|array $size Requested size. Image size or array of width and height values
          *                                 (in that order). Default 'thumbnail'.
          */
@@ -2252,7 +2257,7 @@ function wp_get_audio_extensions()
  *
  * @since 3.9.0
  *
- * @param WP_Post $attachment The current attachment, provided for context.
+ * @param Post $attachment The current attachment, provided for context.
  * @param string $context Optional. The context. Accepts 'edit', 'display'. Default 'display'.
  * @return array Key/value pairs of field keys to labels.
  */
@@ -2278,7 +2283,7 @@ function wp_get_attachment_id3_keys($attachment, $context = 'display')
      * @since 3.9.0
      *
      * @param array $fields Key/value pairs of field keys to labels.
-     * @param WP_Post $attachment Attachment object.
+     * @param Post $attachment Attachment object.
      * @param string $context The context. Accepts 'edit', 'display'. Default 'display'.
      */
     return apply_filters('wp_get_attachment_id3_keys', $fields, $attachment, $context);
@@ -2999,15 +3004,14 @@ function wp_max_upload_size()
 }
 
 /**
- * Returns a WP_Image_Editor instance and loads file into it.
+ * Returns a ImageEditor instance and loads file into it.
  *
  * @since 3.5.0
  *
  * @param string $path Path to the file to load.
  * @param array $args Optional. Additional arguments for retrieving the image editor.
  *                     Default empty array.
- * @return WP_Image_Editor|WP_Error The WP_Image_Editor object if successful, an WP_Error
- *                                  object otherwise.
+ * @return ImageEditor|WP_Error The ImageEditor object if successful, an WP_Error object otherwise.
  */
 function wp_get_image_editor($path, $args = array())
 {
@@ -3065,18 +3069,14 @@ function wp_image_editor_supports($args = array())
  */
 function _wp_image_editor_choose($args = array())
 {
-    require_once ABSPATH . WPINC . '/class-wp-image-editor.php';
-    require_once ABSPATH . WPINC . '/class-wp-image-editor-gd.php';
-    require_once ABSPATH . WPINC . '/class-wp-image-editor-imagick.php';
     /**
      * Filters the list of image editing library classes.
      *
      * @since 3.5.0
      *
-     * @param array $image_editors List of available image editors. Defaults are
-     *                             'WP_Image_Editor_Imagick', 'WP_Image_Editor_GD'.
+     * @param array $image_editors List of available image editors. Defaults are 'ImagickImageEditor', 'GdImageEditor'.
      */
-    $implementations = apply_filters('wp_image_editors', array('WP_Image_Editor_Imagick', 'WP_Image_Editor_GD'));
+    $implementations = apply_filters('wp_image_editors', array(ImagickImageEditor::class, GdImageEditor::class));
 
     foreach ($implementations as $implementation) {
         if (!call_user_func(array($implementation, 'test'), $args)) {
@@ -3243,7 +3243,7 @@ function wp_prepare_attachment_for_js($attachment)
         'meta' => false,
     );
 
-    $author = new WP_User($attachment->post_author);
+    $author = new User($attachment->post_author);
     if ($author->exists()) {
         $response['authorName'] = html_entity_decode($author->display_name, ENT_QUOTES, get_bloginfo('charset'));
     } else {
@@ -3434,7 +3434,7 @@ function wp_prepare_attachment_for_js($attachment)
  * @param array $args {
  *     Arguments for enqueuing media scripts.
  *
- * @type int|WP_Post A post object or ID.
+ * @type int|Post A post object or ID.
  * }
  */
 function wp_enqueue_media($args = array())
@@ -3762,7 +3762,7 @@ function wp_enqueue_media($args = array())
      * @since 3.5.0
      *
      * @param array $settings List of media view settings.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     $settings = apply_filters('media_view_settings', $settings, $post);
 
@@ -3772,7 +3772,7 @@ function wp_enqueue_media($args = array())
      * @since 3.5.0
      *
      * @param array $strings List of media view strings.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     $strings = apply_filters('media_view_strings', $strings, $post);
 
@@ -3811,7 +3811,7 @@ function wp_enqueue_media($args = array())
  * @since 3.6.0
  *
  * @param string $type Mime type.
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return array Found attachments.
  */
 function get_attached_media($type, $post = 0)
@@ -3904,7 +3904,7 @@ function get_media_embedded_in_content($content, $types = null)
  *
  * @since 3.6.0
  *
- * @param int|WP_Post $post Post ID or object.
+ * @param int|Post $post Post ID or object.
  * @param bool $html Optional. Whether to return HTML or data in the array. Default true.
  * @return array A list of arrays, each containing gallery data and srcs parsed
  *               from the expanded shortcode.
@@ -3963,7 +3963,7 @@ function get_post_galleries($post, $html = true)
      * @since 3.6.0
      *
      * @param array $galleries Associative array of all found post galleries.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('get_post_galleries', $galleries, $post);
 }
@@ -3973,7 +3973,7 @@ function get_post_galleries($post, $html = true)
  *
  * @since 3.6.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @param bool $html Optional. Whether to return HTML or data. Default is true.
  * @return string|array Gallery data and srcs parsed from the expanded shortcode.
  */
@@ -3988,7 +3988,7 @@ function get_post_gallery($post = 0, $html = true)
      * @since 3.6.0
      *
      * @param array $gallery The first-found post gallery.
-     * @param int|WP_Post $post Post ID or object.
+     * @param int|Post $post Post ID or object.
      * @param array $galleries Associative array of all found post galleries.
      */
     return apply_filters('get_post_gallery', $gallery, $post, $galleries);
@@ -4001,7 +4001,7 @@ function get_post_gallery($post = 0, $html = true)
  *
  * @see get_post_galleries()
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global `$post`.
  * @return array A list of lists, each containing image srcs parsed.
  *               from an expanded shortcode
  */
@@ -4018,7 +4018,7 @@ function get_post_galleries_images($post = 0)
  *
  * @see get_post_gallery()
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global `$post`.
  * @return array A list of a gallery's image srcs in order.
  */
 function get_post_gallery_images($post = 0)
@@ -4032,7 +4032,7 @@ function get_post_gallery_images($post = 0)
  *
  * @since 3.9.0
  *
- * @param WP_Post $attachment Attachment object.
+ * @param Post $attachment Attachment object.
  */
 function wp_maybe_generate_attachment_metadata($attachment)
 {

@@ -48,10 +48,10 @@ class TextWidget extends Widget
     public function _register()
     {
 
-        // Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in WP_Customize_Widgets::print_scripts().
+        // Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_scripts().
         add_action('admin_print_scripts-widgets.php', array($this, 'enqueue_admin_scripts'));
 
-        // Note that the widgets component in the customizer will also do the 'admin_footer-widgets.php' action in WP_Customize_Widgets::print_footer_scripts().
+        // Note that the widgets component in the customizer will also do the 'admin_footer-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_footer_scripts().
         add_action('admin_footer-widgets.php', array($this, 'render_control_template_scripts'));
 
         parent::_register();

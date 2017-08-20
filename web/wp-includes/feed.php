@@ -10,6 +10,8 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Entity\Comment;
+
 /**
  * RSS container for the bloginfo function.
  *
@@ -289,7 +291,7 @@ function comments_link_feed()
  *
  * @since 2.5.0
  *
- * @param int|WP_Comment $comment_id Optional comment object or id. Defaults to global comment object.
+ * @param int|Comment $comment_id Optional comment object or id. Defaults to global comment object.
  */
 function comment_guid($comment_id = null)
 {
@@ -301,7 +303,7 @@ function comment_guid($comment_id = null)
  *
  * @since 2.5.0
  *
- * @param int|WP_Comment $comment_id Optional comment object or id. Defaults to global comment object.
+ * @param int|Comment $comment_id Optional comment object or id. Defaults to global comment object.
  * @return false|string false on failure or guid for comment on success.
  */
 function get_comment_guid($comment_id = null)
@@ -321,7 +323,7 @@ function get_comment_guid($comment_id = null)
  * @since 1.5.0
  * @since 4.4.0 Introduced the `$comment` argument.
  *
- * @param int|WP_Comment $comment Optional. Comment object or id. Defaults to global comment object.
+ * @param int|Comment $comment Optional. Comment object or id. Defaults to global comment object.
  */
 function comment_link($comment = null)
 {

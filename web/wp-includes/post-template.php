@@ -11,6 +11,7 @@
 use Devtronic\FreshPress\Components\Walker\PageDropdownWalker;
 use Devtronic\FreshPress\Components\Walker\PageWalker;
 use Devtronic\FreshPress\Components\Walker\Walker;
+use Devtronic\FreshPress\Entity\Post;
 use Hautelook\Phpass\PasswordHash;
 
 /**
@@ -81,7 +82,7 @@ function the_title($before = '', $after = '', $echo = true)
  * @type string $before Markup to prepend to the title. Default empty.
  * @type string $after Markup to append to the title. Default empty.
  * @type bool $echo Whether to echo or return the title. Default true for echo.
- * @type WP_Post $post Current post object to retrieve the title for.
+ * @type Post $post Current post object to retrieve the title for.
  * }
  * @return string|void String when echo is false.
  */
@@ -115,7 +116,7 @@ function the_title_attribute($args = '')
  *
  * @since 0.71
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return string
  */
 function get_the_title($post = 0)
@@ -137,7 +138,7 @@ function get_the_title($post = 0)
              *
              * @param string $prepend Text displayed before the post title.
              *                         Default 'Protected: %s'.
-             * @param WP_Post $post Current post object.
+             * @param Post $post Current post object.
              */
             $protected_title_format = apply_filters('protected_title_format', __('Protected: %s'), $post);
             $title = sprintf($protected_title_format, $title);
@@ -152,7 +153,7 @@ function get_the_title($post = 0)
              *
              * @param string $prepend Text displayed before the post title.
              *                         Default 'Private: %s'.
-             * @param WP_Post $post Current post object.
+             * @param Post $post Current post object.
              */
             $private_title_format = apply_filters('private_title_format', __('Private: %s'), $post);
             $title = sprintf($private_title_format, $title);
@@ -181,7 +182,7 @@ function get_the_title($post = 0)
  *
  * @since 1.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or post object. Default is global $post.
  */
 function the_guid($post = 0)
 {
@@ -212,7 +213,7 @@ function the_guid($post = 0)
  *
  * @since 1.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or post object. Default is global $post.
  * @return string
  */
 function get_the_guid($post = 0)
@@ -395,7 +396,7 @@ function the_excerpt()
  * @since 0.71
  * @since 4.5.0 Introduced the `$post` parameter.
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return string Post excerpt.
  */
 function get_the_excerpt($post = null)
@@ -420,7 +421,7 @@ function get_the_excerpt($post = null)
      * @since 4.5.0 Introduced the `$post` parameter.
      *
      * @param string $post_excerpt The post excerpt.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('get_the_excerpt', $post->post_excerpt, $post);
 }
@@ -430,7 +431,7 @@ function get_the_excerpt($post = null)
  *
  * @since 2.3.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return bool True if the post has a custom excerpt, false otherwise.
  */
 function has_excerpt($post = 0)
@@ -445,7 +446,7 @@ function has_excerpt($post = 0)
  * @since 2.7.0
  *
  * @param string|array $class One or more classes to add to the class list.
- * @param int|WP_Post $post_id Optional. Post ID or post object. Defaults to the global `$post`.
+ * @param int|Post $post_id Optional. Post ID or post object. Defaults to the global `$post`.
  */
 function post_class($class = '', $post_id = null)
 {
@@ -471,7 +472,7 @@ function post_class($class = '', $post_id = null)
  * @since 4.2.0 Custom taxonomy classes were added.
  *
  * @param string|array $class One or more classes to add to the class list.
- * @param int|WP_Post $post_id Optional. Post ID or post object.
+ * @param int|Post $post_id Optional. Post ID or post object.
  * @return array Array of classes.
  */
 function get_post_class($class = '', $post_id = null)
@@ -831,7 +832,7 @@ function get_body_class($class = '')
  *
  * @since 2.7.0
  *
- * @param int|WP_Post|null $post An optional post. Global $post used if not provided.
+ * @param int|Post|null $post An optional post. Global $post used if not provided.
  * @return bool false if a password is not required or the correct password cookie is present, true otherwise.
  */
 function post_password_required($post = null)
@@ -864,7 +865,7 @@ function post_password_required($post = null)
      *
      * @param bool $required Whether the user needs to supply a password. True if password has not been
      *                          provided or is incorrect, false if password has been supplied or is not required.
-     * @param WP_Post $post Post data.
+     * @param Post $post Post data.
      */
     return apply_filters('post_password_required', $required, $post);
 }
@@ -1189,7 +1190,7 @@ function wp_dropdown_pages($args = '')
      *
      * @param string $output HTML output for drop down list of pages.
      * @param array $r The parsed arguments array.
-     * @param array $pages List of WP_Post objects returned by `get_pages()`
+     * @param array $pages List of Post objects returned by `get_pages()`
      */
     $html = apply_filters('wp_dropdown_pages', $output, $r, $pages);
 
@@ -1317,7 +1318,7 @@ function wp_list_pages($args = '')
      *
      * @param string $output HTML output of the pages list.
      * @param array $r An array of page-listing arguments.
-     * @param array $pages List of WP_Post objects returned by `get_pages()`
+     * @param array $pages List of Post objects returned by `get_pages()`
      */
     $html = apply_filters('wp_list_pages', $output, $r, $pages);
 
@@ -1544,7 +1545,7 @@ function walk_page_dropdown_tree()
  *
  * @since 2.0.0
  *
- * @param int|WP_Post $id Optional. Post ID or post object.
+ * @param int|Post $id Optional. Post ID or post object.
  * @param bool $fullsize Optional, default is false. Whether to use full size.
  * @param bool $deprecated Deprecated. Not used.
  * @param bool $permalink Optional, default is false. Whether to include permalink.
@@ -1566,9 +1567,9 @@ function the_attachment_link($id = 0, $fullsize = false, $deprecated = false, $p
  * Retrieve an attachment page link using an image or icon, if possible.
  *
  * @since 2.5.0
- * @since 4.4.0 The `$id` parameter can now accept either a post ID or `WP_Post` object.
+ * @since 4.4.0 The `$id` parameter can now accept either a post ID or `Devtronic\FreshPress\Entity\Post` object.
  *
- * @param int|WP_Post $id Optional. Post ID or post object.
+ * @param int|Post $id Optional. Post ID or post object.
  * @param string|array $size Optional. Image size. Accepts any valid image size, or an array
  *                                of width and height values in pixels (in that order).
  *                                Default 'thumbnail'.
@@ -1695,7 +1696,7 @@ function prepend_attachment($content)
  *
  * @since 1.0.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return string HTML content for password form for password protected post.
  */
 function get_the_password_form($post = 0)
@@ -1771,7 +1772,7 @@ function is_page_template($template = '')
  * @since 3.4.0
  * @since 4.7.0 Now works with any post type, not just pages.
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return string|false Page template filename. Returns an empty string when the default page template
  *    is in use. Returns false if the post does not exist.
  */
@@ -1888,7 +1889,7 @@ function wp_post_revision_title_expanded($revision, $link = true)
      * @since 4.4.0
      *
      * @param string $revision_date_author The formatted string.
-     * @param WP_Post $revision The revision object.
+     * @param Post $revision The revision object.
      * @param bool $link Whether to link to the revisions page, as passed into
      *                                      wp_post_revision_title_expanded().
      */
@@ -1903,7 +1904,7 @@ function wp_post_revision_title_expanded($revision, $link = true)
  *
  * @since 2.6.0
  *
- * @param int|WP_Post $post_id Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post_id Optional. Post ID or Post object. Default is global $post.
  * @param string $type 'all' (default), 'revision' or 'autosave'
  */
 function wp_list_post_revisions($post_id = 0, $type = 'all')

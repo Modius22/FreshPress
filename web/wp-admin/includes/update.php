@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
 
 /**
  * Selects the first update version from the update_core option.
@@ -86,10 +87,8 @@ function find_core_auto_update()
         return false;
     }
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-
     $auto_update = false;
-    $upgrader = new WP_Automatic_Updater;
+    $upgrader = new AutomaticUpdater();
     foreach ($updates->updates as $update) {
         if ('autoupdate' != $update->response) {
             continue;
@@ -683,7 +682,7 @@ function maintenance_nag()
          * If we simply failed to update before we tried to copy any files, then assume things are
          * OK if they are now running the latest.
          *
-         * This flag is cleared whenever a successful update occurs using Core_Upgrader.
+         * This flag is cleared whenever a successful update occurs using Devtronic\FreshPress\Components\Upgrader\CoreUpgrader.
          */
         $comparison = !empty($failed['critical']) ? '>=' : '>';
         if (version_compare($failed['attempted'], $wp_version, $comparison)) {

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Creates a new user from the "Users" form using $_POST information.
@@ -301,7 +302,7 @@ function get_editable_roles()
  * @since 2.0.5
  *
  * @param int $user_id User ID.
- * @return WP_User|bool WP_User object on success, false on failure.
+ * @return User|bool User object on success, false on failure.
  */
 function get_user_to_edit($user_id)
 {
@@ -368,7 +369,7 @@ function wp_delete_user($id, $reassign = null)
     }
 
     $id = (int)$id;
-    $user = new WP_User($id);
+    $user = new User($id);
 
     if (!$user->exists()) {
         return false;
@@ -486,7 +487,7 @@ function wp_revoke_user($id)
 {
     $id = (int)$id;
 
-    $user = new WP_User($id);
+    $user = new User($id);
     $user->remove_all_caps();
 }
 

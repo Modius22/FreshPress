@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Comment;
-use WP_Post;
+use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core class used to implement displaying comments in a list table.
@@ -507,10 +507,10 @@ HTML;
     }
 
     /**
-     * @global WP_Post $post
-     * @global WP_Comment $comment
+     * @global Post $post
+     * @global Comment $comment
      *
-     * @param WP_Comment $item
+     * @param Comment $item
      */
     public function single_row($item)
     {
@@ -544,7 +544,7 @@ HTML;
      *
      * @global string $comment_status Status for the current listed comments.
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      * @param string $column_name Current column name.
      * @param string $primary Primary column name.
      * @return string|void Comment row actions output.
@@ -684,7 +684,7 @@ HTML;
 
     /**
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      */
     public function column_cb($comment)
     {
@@ -699,7 +699,7 @@ HTML;
     }
 
     /**
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      */
     public function column_comment($comment)
     {
@@ -740,7 +740,7 @@ HTML;
      *
      * @global string $comment_status
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      */
     public function column_author($comment)
     {
@@ -787,7 +787,7 @@ HTML;
     /**
      * @access public
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      */
     public function column_date($comment)
     {
@@ -815,7 +815,7 @@ HTML;
     /**
      * @access public
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      */
     public function column_response($comment)
     {
@@ -854,7 +854,7 @@ HTML;
 
     /**
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      * @param string $column_name The custom column's name.
      */
     public function column_default($comment, $column_name)

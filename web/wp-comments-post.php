@@ -5,6 +5,9 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\User;
+
 if ('POST' != $_SERVER['REQUEST_METHOD']) {
     $protocol = $_SERVER['SERVER_PROTOCOL'];
     if (!in_array($protocol, array('HTTP/1.1', 'HTTP/2', 'HTTP/2.0'))) {
@@ -43,8 +46,8 @@ $user = wp_get_current_user();
  *
  * @since 3.4.0
  *
- * @param WP_Comment $comment Comment object.
- * @param WP_User $user User object. The user may not exist.
+ * @param Comment $comment Comment object.
+ * @param User $user User object. The user may not exist.
  */
 do_action('set_comment_cookies', $comment, $user);
 
@@ -56,7 +59,7 @@ $location = empty($_POST['redirect_to']) ? get_comment_link($comment) : $_POST['
  * @since 2.0.5
  *
  * @param string $location The 'redirect_to' URI sent via $_POST.
- * @param WP_Comment $comment Comment object.
+ * @param Comment $comment Comment object.
  */
 $location = apply_filters('comment_post_redirect', $location, $comment);
 

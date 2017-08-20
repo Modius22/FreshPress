@@ -7,6 +7,9 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * WordPress XMLRPC server implementation.
@@ -242,7 +245,7 @@ class wp_xmlrpc_server extends IXR_Server
      *
      * @param string $username User's username.
      * @param string $password User's password.
-     * @return WP_User|bool WP_User object if authentication passed, false otherwise
+     * @return User|bool User object if authentication passed, false otherwise
      */
     public function login($username, $password)
     {
@@ -302,7 +305,7 @@ class wp_xmlrpc_server extends IXR_Server
              * @since 3.5.0
              *
              * @param string $error The XML-RPC error message.
-             * @param WP_User $user WP_User object.
+             * @param User $user User object.
              */
             $this->error = apply_filters('xmlrpc_login_error', $this->error, $user);
             return false;
@@ -1094,7 +1097,7 @@ class wp_xmlrpc_server extends IXR_Server
          * @since 3.4.0
          *
          * @param array $_page An array of page data.
-         * @param WP_Post $page Page object.
+         * @param Post $page Page object.
          */
         return apply_filters('xmlrpc_prepare_page', $_page, $page);
     }
@@ -1144,7 +1147,7 @@ class wp_xmlrpc_server extends IXR_Server
          * @since 3.4.0
          *
          * @param array $_comment An array of prepared comment data.
-         * @param WP_Comment $comment Comment object.
+         * @param Comment $comment Comment object.
          */
         return apply_filters('xmlrpc_prepare_comment', $_comment, $comment);
     }
@@ -1154,7 +1157,7 @@ class wp_xmlrpc_server extends IXR_Server
      *
      * @access protected
      *
-     * @param WP_User $user The unprepared user object.
+     * @param User $user The unprepared user object.
      * @param array $fields The subset of user fields to return.
      * @return array The prepared user data.
      */
@@ -1193,7 +1196,7 @@ class wp_xmlrpc_server extends IXR_Server
          * @since 3.5.0
          *
          * @param array $_user An array of user data.
-         * @param WP_User $user User object.
+         * @param User $user User object.
          * @param array $fields An array of user fields.
          */
         return apply_filters('xmlrpc_prepare_user', $_user, $user, $fields);
@@ -1344,7 +1347,7 @@ class wp_xmlrpc_server extends IXR_Server
      *
      * @see wp_insert_post()
      *
-     * @param WP_User $user The post author if post_author isn't set in $content_struct.
+     * @param User $user The post author if post_author isn't set in $content_struct.
      * @param array|IXR_Error $content_struct Post data to insert.
      * @return IXR_Error|string
      */

@@ -6,3 +6,4 @@
 !/web/wp-content/themes/index.php
 !/web/wp-content/themes/twentyseventeen
 /app/config/parameters.yml
+/app/config/config.yml

@@ -6,6 +6,10 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
+use Devtronic\FreshPress\Entity\User;
+
 /**
  * Retrieve path to a template
  *
@@ -182,7 +186,7 @@ function get_author_template()
 
     $templates = array();
 
-    if ($author instanceof WP_User) {
+    if ($author instanceof User) {
         $templates[] = "author-{$author->user_nicename}.php";
         $templates[] = "author-{$author->ID}.php";
     }
@@ -683,15 +687,15 @@ function locate_template($template_names, $load = false, $require_once = true)
  * @since 1.5.0
  *
  * @global array $posts
- * @global WP_Post $post
+ * @global Post $post
  * @global bool $wp_did_header
  * @global WP_Query $wp_query
  * @global WP_Rewrite $wp_rewrite
- * @global wpdb $wpdb
+ * @global \Devtronic\FreshPress\Core\WPDB $wpdb
  * @global string $wp_version
  * @global WP $wp
  * @global int $id
- * @global WP_Comment $comment
+ * @global Comment $comment
  * @global int $user_ID
  *
  * @param string $_template_file Path to template file.

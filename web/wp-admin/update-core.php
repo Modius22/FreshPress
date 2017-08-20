@@ -7,6 +7,10 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
+use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
+use Devtronic\FreshPress\Components\Upgrader\LanguageUpgraderSkin;
 
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
@@ -201,8 +205,7 @@ function core_upgrade_preamble()
         _e('You have the latest version of WordPress.');
 
         if (wp_http_supports(array('ssl'))) {
-            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-            $upgrader = new WP_Automatic_Updater;
+            $upgrader = new AutomaticUpdater();
             $future_minor_update = (object)array(
                 'current' => $wp_version . '.1.next.minor',
                 'version' => $wp_version . '.1.next.minor',
@@ -226,8 +229,7 @@ function core_upgrade_preamble()
     }
 
     if (isset($updates[0]) && $updates[0]->response == 'development') {
-        require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-        $upgrader = new WP_Automatic_Updater;
+        $upgrader = new AutomaticUpdater();
         if (wp_http_supports('ssl') && $upgrader->should_update('core', $updates[0], ABSPATH)) {
             echo '<div class="updated inline"><p>';
             echo '<strong>' . __('BETA TESTERS:') . '</strong> ' . __('This site is set up to install updates of future beta versions automatically.');
@@ -528,8 +530,6 @@ function do_core_upgrade($reinstall = false)
 {
     global $wp_filesystem;
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-
     if ($reinstall) {
         $url = 'update-core.php?action=do-core-reinstall';
     } else {
@@ -591,7 +591,7 @@ function do_core_upgrade($reinstall = false)
 
     add_filter('update_feedback', 'show_message');
 
-    $upgrader = new Core_Upgrader();
+    $upgrader = new CoreUpgrader();
     $result = $upgrader->upgrade($update, array(
             'allow_relaxed_file_ownership' => $allow_relaxed_file_ownership
         ));
@@ -856,14 +856,13 @@ if ('upgrade-core' == $action) {
     check_admin_referer('upgrade-translations');
 
     require_once(ABSPATH . 'wp-admin/admin-header.php');
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 
     $url = 'update-core.php?action=do-translation-upgrade';
     $nonce = 'upgrade-translations';
     $title = __('Update Translations');
     $context = WP_LANG_DIR;
 
-    $upgrader = new Language_Pack_Upgrader(new Language_Pack_Upgrader_Skin(compact('url', 'nonce', 'title', 'context')));
+    $upgrader = new LanguageUpgrader(new LanguageUpgraderSkin(compact('url', 'nonce', 'title', 'context')));
     $result = $upgrader->bulk_upgrade();
 
     wp_localize_script('updates', '_wpUpdatesItemCounts', array(

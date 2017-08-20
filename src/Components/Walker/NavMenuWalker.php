@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Walker;
 
-use WP_Post;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core class used to implement an HTML list of nav menu items.
@@ -116,7 +116,7 @@ class NavMenuWalker extends Walker
      * @see Walker::start_el()
      *
      * @param string $output Passed by reference. Used to append additional content.
-     * @param WP_Post $item Menu item data object.
+     * @param Post $item Menu item data object.
      * @param int $depth Depth of menu item. Used for padding.
      * @param \stdClass $args An object of wp_nav_menu() arguments.
      * @param int $id Current item ID.
@@ -141,7 +141,7 @@ class NavMenuWalker extends Walker
          * @since 4.4.0
          *
          * @param \stdClass $args An object of wp_nav_menu() arguments.
-         * @param WP_Post $item Menu item data object.
+         * @param Post $item Menu item data object.
          * @param int $depth Depth of menu item. Used for padding.
          */
         $args = apply_filters('nav_menu_item_args', $args, $item, $depth);
@@ -153,7 +153,7 @@ class NavMenuWalker extends Walker
          * @since 4.1.0 The `$depth` parameter was added.
          *
          * @param array $classes The CSS classes that are applied to the menu item's `<li>` element.
-         * @param WP_Post $item The current menu item.
+         * @param Post $item The current menu item.
          * @param \stdClass $args An object of wp_nav_menu() arguments.
          * @param int $depth Depth of menu item. Used for padding.
          */
@@ -167,7 +167,7 @@ class NavMenuWalker extends Walker
          * @since 4.1.0 The `$depth` parameter was added.
          *
          * @param string $menu_id The ID that is applied to the menu item's `<li>` element.
-         * @param WP_Post $item The current menu item.
+         * @param Post $item The current menu item.
          * @param \stdClass $args An object of wp_nav_menu() arguments.
          * @param int $depth Depth of menu item. Used for padding.
          */
@@ -196,7 +196,7 @@ class NavMenuWalker extends Walker
          * @type string $rel The rel attribute.
          * @type string $href The href attribute.
          * }
-         * @param WP_Post $item The current menu item.
+         * @param Post $item The current menu item.
          * @param \stdClass $args An object of wp_nav_menu() arguments.
          * @param int $depth Depth of menu item. Used for padding.
          */
@@ -219,7 +219,7 @@ class NavMenuWalker extends Walker
          * @since 4.4.0
          *
          * @param string $title The menu item's title.
-         * @param WP_Post $item The current menu item.
+         * @param Post $item The current menu item.
          * @param \stdClass $args An object of wp_nav_menu() arguments.
          * @param int $depth Depth of menu item. Used for padding.
          */
@@ -241,7 +241,7 @@ class NavMenuWalker extends Walker
          * @since 3.0.0
          *
          * @param string $item_output The menu item's starting HTML output.
-         * @param WP_Post $item Menu item data object.
+         * @param Post $item Menu item data object.
          * @param int $depth Depth of menu item. Used for padding.
          * @param \stdClass $args An object of wp_nav_menu() arguments.
          */
@@ -256,7 +256,7 @@ class NavMenuWalker extends Walker
      * @see Walker::end_el()
      *
      * @param string $output Passed by reference. Used to append additional content.
-     * @param WP_Post $item Page data object. Not used.
+     * @param Post $item Page data object. Not used.
      * @param int $depth Depth of page. Not Used.
      * @param \stdClass $args An object of wp_nav_menu() arguments.
      */

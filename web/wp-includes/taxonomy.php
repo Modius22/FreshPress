@@ -6,7 +6,10 @@
  * @subpackage Taxonomy
  */
 
+use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
+use Devtronic\FreshPress\Entity\Term;
 
 //
 // Taxonomy Registration
@@ -72,7 +75,7 @@ function create_initial_taxonomies()
         ),
         'show_in_rest' => true,
         'rest_base' => 'categories',
-        'rest_controller_class' => 'WP_REST_Terms_Controller',
+        'rest_controller_class' => TermsController::class,
     ));
 
     register_taxonomy('post_tag', 'post', array(
@@ -91,7 +94,7 @@ function create_initial_taxonomies()
         ),
         'show_in_rest' => true,
         'rest_base' => 'tags',
-        'rest_controller_class' => 'WP_REST_Terms_Controller',
+        'rest_controller_class' => TermsController::class,
     ));
 
     register_taxonomy('nav_menu', 'nav_menu_item', array(
@@ -193,7 +196,7 @@ function get_taxonomies($args = array(), $output = 'names', $operator = 'and')
  *
  * @global array $wp_taxonomies The registered taxonomies.
  *
- * @param array|string|WP_Post $object Name of the type of taxonomy object, or an object (row from posts)
+ * @param array|string|Post $object Name of the type of taxonomy object, or an object (row from posts)
  * @param string $output Optional. The type of output to return in the array. Accepts either
  *                                     taxonomy 'names' or 'objects'. Default 'names'.
  * @return array The names of all taxonomy of $object_type.
@@ -339,7 +342,7 @@ function is_taxonomy_hierarchical($taxonomy)
  *                                                set, the default is inherited from `$public` (default true).
  * @type bool $show_in_rest Whether to include the taxonomy in the REST API.
  * @type string $rest_base To change the base url of REST API route. Default is $taxonomy.
- * @type string $rest_controller_class REST API Controller class name. Default is 'WP_REST_Terms_Controller'.
+ * @type string $rest_controller_class REST API Controller class name. Default is 'TermsController'.
  * @type bool $show_tagcloud Whether to list the taxonomy in the Tag Cloud Widget controls. If not set,
  *                                                the default is inherited from `$show_ui` (default true).
  * @type bool $show_in_quick_edit Whether to show the taxonomy in the quick/bulk edit panel. It not set,
@@ -734,22 +737,22 @@ function get_tax_sql($tax_query, $primary_table, $primary_id_column)
  * @todo Better formatting for DocBlock
  *
  * @since 2.3.0
- * @since 4.4.0 Converted to return a WP_Term object if `$output` is `OBJECT`.
+ * @since 4.4.0 Converted to return a Term object if `$output` is `OBJECT`.
  *              The `$taxonomy` parameter was made optional.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  * @see sanitize_term_field() The $context param lists the available values for get_term_by() $filter param.
  *
- * @param int|WP_Term|object $term If integer, term data will be fetched from the database, or from the cache if
+ * @param int|Term|object $term If integer, term data will be fetched from the database, or from the cache if
  *                                 available. If stdClass object (as in the results of a database query), will apply
- *                                 filters and return a `WP_Term` object corresponding to the `$term` data. If `WP_Term`,
+ *                                 filters and return a `Term` object corresponding to the `$term` data. If `Term`,
  *                                 will return `$term`.
  * @param string $taxonomy Optional. Taxonomy name that $term is part of.
  * @param string $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
- *                             a WP_Term object, an associative array, or a numeric array, respectively. Default OBJECT.
+ *                             a Term object, an associative array, or a numeric array, respectively. Default OBJECT.
  * @param string $filter Optional, default is raw or no WordPress defined filter will applied.
- * @return array|WP_Term|WP_Error|null Object of the type specified by `$output` on success. When `$output` is 'OBJECT',
- *                                     a WP_Term instance is returned. If taxonomy does not exist, a WP_Error is
+ * @return array|Term|WP_Error|null Object of the type specified by `$output` on success. When `$output` is 'OBJECT',
+ *                                     a Term instance is returned. If taxonomy does not exist, a WP_Error is
  *                                     returned. Returns null for miscellaneous failure.
  */
 function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
@@ -762,17 +765,17 @@ function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
         return new WP_Error('invalid_taxonomy', __('Invalid taxonomy.'));
     }
 
-    if ($term instanceof WP_Term) {
+    if ($term instanceof Term) {
         $_term = $term;
     } elseif (is_object($term)) {
         if (empty($term->filter) || 'raw' === $term->filter) {
             $_term = sanitize_term($term, $taxonomy, 'raw');
-            $_term = new WP_Term($_term);
+            $_term = new Term($_term);
         } else {
-            $_term = WP_Term::get_instance($term->term_id);
+            $_term = Term::get_instance($term->term_id);
         }
     } else {
-        $_term = WP_Term::get_instance($term, $taxonomy);
+        $_term = Term::get_instance($term, $taxonomy);
     }
 
     if (is_wp_error($_term)) {
@@ -785,9 +788,9 @@ function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
      * Filters a term.
      *
      * @since 2.3.0
-     * @since 4.4.0 `$_term` can now also be a WP_Term object.
+     * @since 4.4.0 `$_term` can now also be a Term object.
      *
-     * @param int|WP_Term $_term Term object or ID.
+     * @param int|Term $_term Term object or ID.
      * @param string $taxonomy The taxonomy slug.
      */
     $_term = apply_filters('get_term', $_term, $taxonomy);
@@ -799,15 +802,15 @@ function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
      * to the taxonomy slug.
      *
      * @since 2.3.0
-     * @since 4.4.0 `$_term` can now also be a WP_Term object.
+     * @since 4.4.0 `$_term` can now also be a Term object.
      *
-     * @param int|WP_Term $_term Term object or ID.
+     * @param int|Term $_term Term object or ID.
      * @param string $taxonomy The taxonomy slug.
      */
     $_term = apply_filters("get_{$taxonomy}", $_term, $taxonomy);
 
     // Bail if a filter callback has changed the type of the `$_term` object.
-    if (!($_term instanceof WP_Term)) {
+    if (!($_term instanceof Term)) {
         return $_term;
     }
 
@@ -846,7 +849,7 @@ function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
  *
  * @since 2.3.0
  * @since 4.4.0 `$taxonomy` is optional if `$field` is 'term_taxonomy_id'. Converted to return
- *              a WP_Term object if `$output` is `OBJECT`.
+ *              a Term object if `$output` is `OBJECT`.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  * @see sanitize_term_field() The $context param lists the available values for get_term_by() $filter param.
@@ -855,9 +858,9 @@ function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw')
  * @param string|int $value Search for this term value
  * @param string $taxonomy Taxonomy name. Optional, if `$field` is 'term_taxonomy_id'.
  * @param string $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
- *                             a WP_Term object, an associative array, or a numeric array, respectively. Default OBJECT.
+ *                             a Term object, an associative array, or a numeric array, respectively. Default OBJECT.
  * @param string $filter Optional, default is raw or no WordPress defined filter will applied.
- * @return WP_Term|array|false WP_Term instance (or array) on success. Will return false if `$taxonomy` does not exist
+ * @return Term|array|false Term instance (or array) on success. Will return false if `$taxonomy` does not exist
  *                             or `$term` was not found.
  */
 function get_term_by($field, $value, $taxonomy = '', $output = OBJECT, $filter = 'raw')
@@ -973,12 +976,12 @@ function get_term_children($term_id, $taxonomy)
  * The function is for contextual reasons and for simplicity of usage.
  *
  * @since 2.3.0
- * @since 4.4.0 The `$taxonomy` parameter was made optional. `$term` can also now accept a WP_Term object.
+ * @since 4.4.0 The `$taxonomy` parameter was made optional. `$term` can also now accept a Term object.
  *
  * @see sanitize_term_field()
  *
  * @param string $field Term field to fetch.
- * @param int|WP_Term $term Term ID or object.
+ * @param int|Term $term Term ID or object.
  * @param string $taxonomy Optional. Taxonomy Name. Default empty.
  * @param string $context Optional, default is display. Look at sanitize_term_field() for available options.
  * @return string|int|null|WP_Error Will return an empty string if $term is not an object or if $field is not set in $term.
@@ -1062,7 +1065,7 @@ function get_term_to_edit($id, $taxonomy)
  * @since 4.2.0 Introduced 'name' and 'childless' parameters.
  * @since 4.4.0 Introduced the ability to pass 'term_id' as an alias of 'id' for the `orderby` parameter.
  *              Introduced the 'meta_query' and 'update_term_meta_cache' parameters. Converted to return
- *              a list of WP_Term objects.
+ *              a list of Term objects.
  * @since 4.5.0 Changed the function signature so that the `$args` array can be provided as the first parameter.
  *              Introduced 'meta_key' and 'meta_value' parameters. Introduced the ability to order results by metadata.
  * @since 4.8.0 Introduced 'suppress_filter' parameter.
@@ -1077,7 +1080,7 @@ function get_term_to_edit($id, $taxonomy)
  * @param array $deprecated Argument array, when using the legacy function parameter format. If present, this
  *                                 parameter will be interpreted as `$args`, and the first function parameter will
  *                                 be parsed as a taxonomy or array of taxonomies.
- * @return array|int|WP_Error List of WP_Term instances and their children. Will return WP_Error, if any of $taxonomies
+ * @return array|int|WP_Error List of Term instances and their children. Will return WP_Error, if any of $taxonomies
  *                            do not exist.
  */
 function get_terms($args = array(), $deprecated = '')
@@ -1935,7 +1938,7 @@ function wp_delete_category($cat_ID)
  * @since 4.2.0 Added support for 'taxonomy', 'parent', and 'term_taxonomy_id' values of `$orderby`.
  *              Introduced `$parent` argument.
  * @since 4.4.0 Introduced `$meta_query` and `$update_term_meta_cache` arguments. When `$fields` is 'all' or
- *              'all_with_object_id', an array of `WP_Term` objects will be returned.
+ *              'all_with_object_id', an array of `Term` objects will be returned.
  * @since 4.7.0 Refactored to use WP_Term_Query, and to support any WP_Term_Query arguments.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
@@ -3237,7 +3240,7 @@ function clean_term_cache($ids, $taxonomy = '', $clean_taxonomy = true)
  *
  * @param int $id Term object ID.
  * @param string $taxonomy Taxonomy name.
- * @return bool|array|WP_Error Array of `WP_Term` objects, if cached.
+ * @return bool|array|WP_Error Array of `Term` objects, if cached.
  *                             False if cache is empty for `$taxonomy` and `$id`.
  *                             WP_Error if get_term() returns an error object for any term.
  */
@@ -4236,7 +4239,7 @@ function get_term_link($term, $taxonomy = '')
  *     Arguments about which post to use and how to format the output. Shares all of the arguments
  *     supported by get_the_taxonomies(), in addition to the following.
  *
- * @type  int|WP_Post $post Post ID or object to get taxonomies of. Default current post.
+ * @type  int|Post $post Post ID or object to get taxonomies of. Default current post.
  * @type  string $before Displays before the taxonomies. Default empty string.
  * @type  string $sep Separates each taxonomy. Default is a space.
  * @type  string $after Displays after the taxonomies. Default empty string.
@@ -4264,7 +4267,7 @@ function the_taxonomies($args = array())
  *
  * @since 2.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @param array $args {
  *     Optional. Arguments about how to format the list of taxonomies. Default empty array.
  *
@@ -4327,7 +4330,7 @@ function get_the_taxonomies($post = 0, $args = array())
  *
  * @since 2.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return array An array of all taxonomy names for the given post.
  */
 function get_post_taxonomies($post = 0)

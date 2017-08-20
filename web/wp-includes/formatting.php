@@ -5505,9 +5505,9 @@ function _print_emoji_detection_script()
 
     if (SCRIPT_DEBUG) {
         $settings['source'] = array(
-            /** This filter is documented in wp-includes/class.wp-scripts.php */
+            /** This filter is documented in Devtronic\FreshPress\Components\Dependencies\Scripts */
             'wpemoji' => apply_filters('script_loader_src', includes_url("js/wp-emoji.js?$version"), 'wpemoji'),
-            /** This filter is documented in wp-includes/class.wp-scripts.php */
+            /** This filter is documented in Devtronic\FreshPress\Components\Dependencies\Scripts */
             'twemoji' => apply_filters('script_loader_src', includes_url("js/twemoji.js?$version"), 'twemoji'),
         ); ?>
         <script type="text/javascript">
@@ -5517,7 +5517,7 @@ function _print_emoji_detection_script()
         <?php
     } else {
         $settings['source'] = array(
-            /** This filter is documented in wp-includes/class.wp-scripts.php */
+            /** This filter is documented in Devtronic\FreshPress\Components\Dependencies\Scripts */
             'concatemoji' => apply_filters(
                 'script_loader_src',
                 includes_url("js/wp-emoji-release.min.js?$version"),

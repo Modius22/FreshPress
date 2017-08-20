@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Remove a theme
@@ -113,7 +114,7 @@ function delete_theme($stylesheet, $redirect = '')
  * @since 1.5.0
  * @since 4.7.0 Added the `$post_type` parameter.
  *
- * @param WP_Post|null $post Optional. The post being edited, provided for context.
+ * @param Post|null $post Optional. The post being edited, provided for context.
  * @param string $post_type Optional. Post type to get the templates for. Default 'page'.
  * @return array Key is the template name, value is the filename of the template
  */

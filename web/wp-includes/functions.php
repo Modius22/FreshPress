@@ -6,6 +6,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 require(ABSPATH . WPINC . '/option.php');
 
@@ -2766,7 +2767,7 @@ function wp_get_ext_types()
  *
  * @since 2.8.6
  *
- * @param int|WP_User $user Optional. User to check. Defaults to current user.
+ * @param int|User $user Optional. User to check. Defaults to current user.
  * @return array Array of mime types keyed by the file extension regex corresponding
  *               to those types.
  */
@@ -2791,7 +2792,7 @@ function get_allowed_mime_types($user = null)
      * @param array $t Mime types keyed by the file extension regex corresponding to
      *                               those types. 'swf' and 'exe' removed from full list. 'htm|html' also
      *                               removed depending on '$user' capabilities.
-     * @param int|WP_User|null $user User ID, User object or null if not provided (indicates current user).
+     * @param int|User|null $user User ID, User object or null if not provided (indicates current user).
      */
     return apply_filters('upload_mimes', $t, $user);
 }

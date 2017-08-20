@@ -55,10 +55,100 @@ $classes = array_change_key_case([
     'Walker_Nav_Menu' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuWalker',
     'Walker_Nav_Menu_Edit' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuEditWalker',
     'Walker_Nav_Menu_Checklist' => 'Devtronic\\FreshPress\\Components\\Walker\\NavMenuChecklistWalker',
+    'WP_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\Control',
+    'WP_Customize_Color_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\ColorControl',
+    'WP_Customize_Media_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\MediaControl',
+    'WP_Customize_Background_Image_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\BackgroundImageControl',
+    'WP_Customize_Image_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\ImageControl',
+    'WP_Customize_Upload_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\UploadControl',
+    'WP_Customize_Background_Position_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\BackgroundPositionControl',
+    'WP_Customize_Cropped_Image_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\CroppedImageControl',
+    'WP_Customize_Header_Image_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\HeaderImageControl',
+    'WP_Customize_Nav_Menu_Auto_Add_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuAutoAddControl',
+    'WP_Customize_Nav_Menu_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuControl',
+    'WP_Customize_Nav_Menu_Item_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuItemControl',
+    'WP_Customize_Nav_Menu_Location_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuLocationControl',
+    'WP_Customize_Nav_Menu_Name_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuNameControl',
+    'WP_Customize_New_Menu_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\NewMenuControl',
+    'WP_Customize_Site_Icon_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\SiteIconControl',
+    'WP_Customize_Theme_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\ThemeControl',
+    'WP_Widget_Area_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\WidgetAreaControl',
+    'WP_Widget_Form_Customize_Control' => 'Devtronic\\FreshPress\\Components\\Customize\\WidgetFormControl',
+    'WP_Customize_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\Setting',
+    'WP_Customize_Filter_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\FilterSetting',
+    'WP_Customize_Nav_Menu_Item_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuItemSetting',
+    'WP_Customize_Nav_Menu_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuSetting',
+    'WP_Customize_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\Section',
+    'WP_Customize_Nav_Menu_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenuSection',
+    'WP_Customize_New_Menu_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\NewMenuSection',
+    'WP_Customize_Sidebar_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\SidebarSection',
+    'WP_Customize_Themes_Section' => 'Devtronic\\FreshPress\\Components\\Customize\\ThemesSection',
+    'WP_Customize_Panel' => 'Devtronic\\FreshPress\\Components\\Customize\\Panel',
+    'WP_Customize_Nav_Menus_Panel' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenusPanel',
+    'WP_Customize_Partial' => 'Devtronic\\FreshPress\\Components\\Customize\\Partial',
+    'WP_REST_Server' => 'Devtronic\\FreshPress\\Components\\Rest\\Server',
+    'WP_REST_Request' => 'Devtronic\\FreshPress\\Components\\Rest\\Request',
+    'WP_REST_Response' => 'Devtronic\\FreshPress\\Components\\Rest\\Response',
+    'WP_REST_Attachments_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\AttachmentsController',
+    'WP_REST_Comments_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\CommentsController',
+    'WP_REST_Post_Statuses_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\PostStatusController',
+    'WP_REST_Post_Types_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\PostTypesController',
+    'WP_REST_Posts_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\PostsController',
+    'WP_REST_Revisions_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\RevisionsController',
+    'WP_REST_Settings_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\SettingsController',
+    'WP_REST_Taxonomies_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\TaxonomiesController',
+    'WP_REST_Terms_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\TermsController',
+    'WP_REST_Users_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\UsersController',
+    'WP_REST_Comment_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\CommentMetaFields',
+    'WP_REST_Post_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\PostMetaFields',
+    'WP_REST_Term_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\TermMetaFields',
+    'WP_REST_User_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\UserMetaFields',
+    'WP_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\UpgraderSkin',
+    'Plugin_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\PluginUpgraderSkin',
+    'Language_Pack_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\LanguageUpgraderSkin',
+    'Theme_Installer_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeInstallerSkin',
+    'Plugin_Installer_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\PluginInstallerSkin',
+    'WP_Ajax_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AjaxUpgraderSkin',
+    'Automatic_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AutomaticUpgraderSkin',
+    'Theme_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeUpgraderSkin',
+    'Bulk_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\BulkUpgraderSkin',
+    'Bulk_Theme_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\BulkThemeUpgraderSkin',
+    'Bulk_Plugin_Upgrader_Skin' => 'Devtronic\\FreshPress\\Components\\Upgrader\\BulkPluginUpgraderSkin',
+    'WP_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\Upgrader',
+    'Plugin_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\PluginUpgrader',
+    'Core_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\CoreUpgrader',
+    'WP_Automatic_Updater' => 'Devtronic\\FreshPress\\Components\\Upgrader\\AutomaticUpdater',
+    'Language_Pack_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\LanguageUpgrader',
+    'Theme_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\ThemeUpgrader',
+    'WP_Image_Editor_GD' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\GdImageEditor',
+    'WP_Image_Editor_Imagick' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImagickImageEditor',
+    'File_Upload_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\FileUploadUpgrader',
+    'WP_User' => 'Devtronic\\FreshPress\\Entity\\User',
+    'WP_Dependencies' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Dependencies',
+    '_WP_Dependency' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Dependency',
+    'WP_Scripts' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Scripts',
+    'WP_Styles' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Styles',
 ]);
 
 $abstractClasses = array_change_key_case([
     'WP_Widget_Media' => 'Devtronic\\FreshPress\\Components\\Widgets\\MediaWidget',
+    'WP_REST_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\Controller',
+    'WP_REST_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\MetaFields',
+    'WP_Image_Editor' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImageEditor',
+]);
+
+$finalClasses = array_change_key_case([
+    'WP_Customize_Background_Image_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\BackgroundImageSetting',
+    'WP_Customize_Custom_CSS_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\CustomCssSetting',
+    'WP_Customize_Header_Image_Setting' => 'Devtronic\\FreshPress\\Components\\Customize\\HeaderImageSetting',
+    'WP_Customize_Selective_Refresh' => 'Devtronic\\FreshPress\\Components\\Customize\\SelectiveRefresh',
+    'WP_Customize_Nav_Menus' => 'Devtronic\\FreshPress\\Components\\Customize\\NavMenus',
+    'WP_Customize_Widgets' => 'Devtronic\\FreshPress\\Components\\Customize\\Widgets',
+    'WP_Customize_Manager' => 'Devtronic\\FreshPress\\Components\\Customize\\Manager',
+    'WP_Hook' => 'Devtronic\\FreshPress\\EventDispatcher\\Hook',
+    'WP_Comment' => 'Devtronic\\FreshPress\\Entity\\Comment',
+    'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
+    'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
 ]);
 
 // Classes
@@ -74,5 +164,13 @@ spl_autoload_register(function ($oldClass) use ($abstractClasses) {
     $oldClass = strtolower($oldClass);
     if (isset($classes[$oldClass])) {
         eval(sprintf('abstract class %s extends %s {}', $oldClass, $abstractClasses[$oldClass]));
+    }
+});
+
+// Final Classes
+spl_autoload_register(function ($oldClass) use ($finalClasses) {
+    $oldClass = strtolower($oldClass);
+    if (isset($classes[$oldClass])) {
+        eval(sprintf('final class %s extends %s {}', $oldClass, $finalClasses[$oldClass]));
     }
 });

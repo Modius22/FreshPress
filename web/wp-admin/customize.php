@@ -7,6 +7,9 @@
  * @since 3.4.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
+
 define('IFRAME_REQUEST', true);
 
 /** Load WordPress Administration Bootstrap */
@@ -21,8 +24,8 @@ if (!current_user_can('customize')) {
 }
 
 /**
- * @global WP_Scripts $wp_scripts
- * @global WP_Customize_Manager $wp_customize
+ * @global Scripts $wp_scripts
+ * @global Manager $wp_customize
  */
 global $wp_scripts, $wp_customize;
 
@@ -60,7 +63,7 @@ if (!empty($autofocus) && is_array($autofocus)) {
 }
 
 $registered = $wp_scripts->registered;
-$wp_scripts = new WP_Scripts;
+$wp_scripts = new Scripts();
 $wp_scripts->registered = $registered;
 
 add_action('customize_controls_print_scripts', 'print_head_scripts', 20);

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
+use Devtronic\FreshPress\Entity\Comment;
 
 /**
  * Registers dashboard widgets.
@@ -645,9 +646,9 @@ function wp_dashboard_recent_drafts($drafts = false)
  * @access private
  * @since 2.7.0
  *
- * @global WP_Comment $comment
+ * @global Comment $comment
  *
- * @param WP_Comment $comment The current comment.
+ * @param Comment $comment The current comment.
  * @param bool $show_date Optional. Whether to display the date.
  */
 function _wp_dashboard_recent_comments_row(&$comment, $show_date = true)
@@ -712,7 +713,7 @@ function _wp_dashboard_recent_comments_row(&$comment, $show_date = true)
          * @param array $actions An array of comment actions. Default actions include:
          *                            'Approve', 'Unapprove', 'Edit', 'Reply', 'Spam',
          *                            'Delete', and 'Trash'.
-         * @param WP_Comment $comment The comment object.
+         * @param Comment $comment The comment object.
          */
         $actions = apply_filters('comment_row_actions', array_filter($actions), $comment);
 

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Entity\User;
 
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
@@ -321,7 +322,7 @@ switch ($wp_list_table->current_action()) {
                      * @since 4.0.0
                      * @since 4.5.0 The `$userids` parameter was added.
                      *
-                     * @param WP_User $current_user WP_User object for the current user.
+                     * @param User $current_user User object for the current user.
                      * @param array $userids Array of IDs for users being deleted.
                      */
                     do_action('delete_user_form', $current_user, $userids);

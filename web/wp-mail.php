@@ -7,6 +7,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Entity\User;
+
 /** Make sure that the WordPress bootstrap has run before continuing. */
 require(dirname(__FILE__) . '/wp-load.php');
 
@@ -163,7 +165,7 @@ for ($i = 1; $i <= $count; $i++) {
 
     // Set $post_status based on $author_found and on author's publish_posts capability
     if ($author_found) {
-        $user = new WP_User($post_author);
+        $user = new User($post_author);
         $post_status = ($user->has_cap('publish_posts')) ? 'publish' : 'pending';
     } else {
         // Author not found in DB, set status to pending. Author already set to admin.

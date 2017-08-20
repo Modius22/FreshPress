@@ -9,7 +9,9 @@
 
 namespace Devtronic\FreshPress\Components\Widgets;
 
-use WP_Post;
+use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
+use Devtronic\FreshPress\Components\Rest\Request;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core class that implements a media widget.
@@ -102,14 +104,14 @@ abstract class MediaWidget extends Widget
     public function _register()
     {
 
-        // Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in WP_Customize_Widgets::print_scripts().
+        // Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_scripts().
         add_action('admin_print_scripts-widgets.php', array($this, 'enqueue_admin_scripts'));
 
         if ($this->is_preview()) {
             add_action('wp_enqueue_scripts', array($this, 'enqueue_preview_scripts'));
         }
 
-        // Note that the widgets component in the customizer will also do the 'admin_footer-widgets.php' action in WP_Customize_Widgets::print_footer_scripts().
+        // Note that the widgets component in the customizer will also do the 'admin_footer-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_footer_scripts().
         add_action('admin_footer-widgets.php', array($this, 'render_control_template_scripts'));
 
         add_filter('display_media_states', array($this, 'display_media_state'), 10, 2);
@@ -123,8 +125,8 @@ abstract class MediaWidget extends Widget
      * @since  4.8.0
      * @access public
      *
-     * @see WP_REST_Controller::get_item_schema()
-     * @see WP_REST_Controller::get_additional_fields()
+     * @see Controller::get_item_schema()
+     * @see Controller::get_additional_fields()
      * @link https://core.trac.wordpress.org/ticket/35574
      * @return array Schema for properties.
      */
@@ -160,7 +162,7 @@ abstract class MediaWidget extends Widget
      * @since 4.8.0
      * @access public
      *
-     * @param int|WP_Post $attachment Attachment post ID or object.
+     * @param int|Post $attachment Attachment post ID or object.
      * @param string $mime_type MIME type.
      * @return bool Is matching MIME type.
      */
@@ -252,8 +254,8 @@ abstract class MediaWidget extends Widget
      * @access public
      *
      * @see Widget::update()
-     * @see WP_REST_Request::has_valid_params()
-     * @see WP_REST_Request::sanitize_params()
+     * @see Request::has_valid_params()
+     * @see Request::sanitize_params()
      *
      * @param array $new_instance Values just sent to be saved.
      * @param array $instance Previously saved values from database.
@@ -342,7 +344,7 @@ abstract class MediaWidget extends Widget
      * @access public
      *
      * @param array $states An array of media states.
-     * @param WP_Post $post The current attachment object.
+     * @param Post $post The current attachment object.
      * @return array
      */
     public function display_media_state($states, $post = null)

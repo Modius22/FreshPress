@@ -7,6 +7,8 @@
  * @since 4.2.0
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * Press This class.
  *
@@ -877,7 +879,7 @@ class WP_Press_This
      * @since 4.2.0
      * @access public
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     public function post_formats_html($post)
     {
@@ -927,7 +929,7 @@ class WP_Press_This
      * @since 4.2.0
      * @access public
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     public function categories_html($post)
     {
@@ -990,7 +992,7 @@ class WP_Press_This
      * @since 4.2.0
      * @access public
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     public function tags_html($post)
     {
