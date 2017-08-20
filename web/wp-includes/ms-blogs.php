@@ -8,6 +8,7 @@
  * @since MU
  */
 
+use Devtronic\FreshPress\Components\Query\NetworkQuery;
 use Devtronic\FreshPress\Components\Query\SiteQuery;
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -1235,13 +1236,13 @@ function get_last_updated($deprecated = '', $start = 0, $quantity = 40)
  *
  * @since 4.6.0
  *
- * @param string|array $args Optional. Array or string of arguments. See WP_Network_Query::parse_query()
+ * @param string|array $args Optional. Array or string of arguments. See NetworkQuery::parse_query()
  *                           for information on accepted arguments. Default empty array.
  * @return int|array List of networks or number of found networks if `$count` argument is true.
  */
 function get_networks($args = array())
 {
-    $query = new WP_Network_Query();
+    $query = new NetworkQuery();
 
     return $query->query($args);
 }

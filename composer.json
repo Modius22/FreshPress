@@ -39,7 +39,6 @@
             "web/wp-includes/class-wp-matchesmapregex.php",
             "web/wp-includes/class-wp.php",
             "web/wp-includes/class-wp-error.php",
-            "web/wp-includes/class-wp-network-query.php",
             "web/wp-includes/class-wp-locale.php",
             "web/wp-includes/class-wp-locale-switcher.php",
             "web/wp-includes/class-wp-ajax-response.php",
