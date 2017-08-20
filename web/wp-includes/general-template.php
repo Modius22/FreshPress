@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+use Devtronic\FreshPress\Components\Dependencies\Dependency;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -3122,7 +3123,7 @@ function wp_dependencies_unique_hosts()
                     continue;
                 }
 
-                /* @var _WP_Dependency $dependency */
+                /* @var Dependency $dependency */
                 $dependency = $dependencies->registered[$handle];
                 $parsed = wp_parse_url($dependency->src);
 

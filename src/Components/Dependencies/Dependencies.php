@@ -10,14 +10,12 @@
 
 namespace Devtronic\FreshPress\Components\Dependencies;
 
-use _WP_Dependency;
-
 /**
  * Core base class extended to register items.
  *
  * @package WordPress
  * @since 2.6.0
- * @uses _WP_Dependency
+ * @uses Dependency
  */
 class Dependencies
 {
@@ -31,7 +29,7 @@ class Dependencies
     public $registered = [];
 
     /**
-     * An array of queued _WP_Dependency handle objects.
+     * An array of queued Dependency handle objects.
      *
      * @access public
      * @since 2.6.8
@@ -40,7 +38,7 @@ class Dependencies
     public $queue = [];
 
     /**
-     * An array of _WP_Dependency handle objects to queue.
+     * An array of Dependency handle objects to queue.
      *
      * @access public
      * @since 2.6.0
@@ -49,7 +47,7 @@ class Dependencies
     public $to_do = [];
 
     /**
-     * An array of _WP_Dependency handle objects already queued.
+     * An array of Dependency handle objects already queued.
      *
      * @access public
      * @since 2.6.0
@@ -245,7 +243,7 @@ class Dependencies
         if (isset($this->registered[$handle])) {
             return false;
         }
-        $this->registered[$handle] = new _WP_Dependency($handle, $src, $deps, $ver, $args);
+        $this->registered[$handle] = new Dependency($handle, $src, $deps, $ver, $args);
         return true;
     }
 
@@ -369,7 +367,7 @@ class Dependencies
      *
      * @since 4.0.0
      *
-     * @param array $queue An array of queued _WP_Dependency handle objects.
+     * @param array $queue An array of queued Dependency handle objects.
      * @param string $handle Name of the item. Should be unique.
      * @return bool Whether the handle is found after recursively searching the dependency tree.
      */
@@ -399,7 +397,7 @@ class Dependencies
      *
      * @param string $handle Name of the item. Should be unique.
      * @param string $list Property name of list array.
-     * @return bool|_WP_Dependency Found, or object Item data.
+     * @return bool|Dependency Found, or object Item data.
      */
     public function query($handle, $list = 'registered')
     {

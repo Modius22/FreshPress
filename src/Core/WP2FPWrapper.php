@@ -125,6 +125,7 @@ $classes = array_change_key_case([
     'File_Upload_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\FileUploadUpgrader',
     'WP_User' => 'Devtronic\\FreshPress\\Entity\\User',
     'WP_Dependencies' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Dependencies',
+    '_WP_Dependency' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Dependency',
 ]);
 
 $abstractClasses = array_change_key_case([

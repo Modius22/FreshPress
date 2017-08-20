@@ -16,9 +16,6 @@
  * @package WordPress
  */
 
-/** WordPress Dependency Class */
-require(ABSPATH . WPINC . '/class-wp-dependency.php');
-
 /** WordPress Scripts Class */
 require(ABSPATH . WPINC . '/class.wp-scripts.php');
 

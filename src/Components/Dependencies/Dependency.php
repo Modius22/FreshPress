@@ -1,6 +1,6 @@
 <?php
 /**
- * Dependencies API: _WP_Dependency class
+ * Dependencies API: Dependency class
  *
  * @since 4.7.0
  *
@@ -8,15 +8,17 @@
  * @subpackage Dependencies
  */
 
+namespace Devtronic\FreshPress\Components\Dependencies;
+
 /**
- * Class _WP_Dependency
+ * Class Dependency
  *
  * Helper class to register a handle and associated data.
  *
  * @access private
  * @since 2.6.0
  */
-class _WP_Dependency
+class Dependency
 {
     /**
      * The handle name.
@@ -43,7 +45,7 @@ class _WP_Dependency
      * @since 2.6.0
      * @var array
      */
-    public $deps = array();
+    public $deps = [];
 
     /**
      * The handle version.
@@ -72,7 +74,7 @@ class _WP_Dependency
      * @since 2.6.0
      * @var array
      */
-    public $extra = array();
+    public $extra = [];
 
     /**
      * Setup dependencies.
@@ -83,7 +85,7 @@ class _WP_Dependency
     {
         @list($this->handle, $this->src, $this->deps, $this->ver, $this->args) = func_get_args();
         if (!is_array($this->deps)) {
-            $this->deps = array();
+            $this->deps = [];
         }
     }
 
