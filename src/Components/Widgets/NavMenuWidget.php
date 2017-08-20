@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Widgets;
 
 use Devtronic\FreshPress\Components\Customize\Manager;
-use WP_Term;
+use Devtronic\FreshPress\Entity\Term;
 
 /**
  * Core class used to implement the Custom Menu widget.
@@ -87,7 +87,7 @@ class NavMenuWidget extends Widget
          * @type callable|bool $fallback_cb Callback to fire if the menu doesn't exist. Default empty.
          * @type mixed $menu Menu ID, slug, or name.
          * }
-         * @param WP_Term $nav_menu Nav menu object for the current menu.
+         * @param Term $nav_menu Nav menu object for the current menu.
          * @param array $args Display arguments for the current widget.
          * @param array $instance Array of settings for the current widget.
          */

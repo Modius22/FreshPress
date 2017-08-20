@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
+use Devtronic\FreshPress\Entity\Term;
 
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
@@ -144,7 +145,7 @@ switch ($wp_list_table->current_action()) {
         $term_id = (int)$_REQUEST['tag_ID'];
         $term = get_term($term_id);
 
-        if (!$term instanceof WP_Term) {
+        if (!$term instanceof Term) {
             wp_die(__('You attempted to edit an item that doesn&#8217;t exist. Perhaps it was deleted?'));
         }
 

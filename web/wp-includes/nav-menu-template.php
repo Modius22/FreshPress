@@ -20,7 +20,7 @@ use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
  * @param array $args {
  *     Optional. Array of nav menu arguments.
  *
- * @type int|string|WP_Term $menu Desired menu. Accepts (matching in order) id, slug, name, menu object. Default empty.
+ * @type int|string|Term $menu Desired menu. Accepts (matching in order) id, slug, name, menu object. Default empty.
  * @type string $menu_class CSS class to use for the ul element which forms the menu. Default 'menu'.
  * @type string $menu_id The ID that is applied to the ul element which forms the menu.
  *                                               Default is the menu slug, incremented.

@@ -13,9 +13,9 @@ use Devtronic\FreshPress\Components\Rest\Fields\TermMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Term;
 use WP_Error;
 use WP_Taxonomy;
-use WP_Term;
 
 /**
  * Core class used to managed terms associated with a taxonomy via the REST API.
@@ -317,7 +317,7 @@ class TermsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return WP_Term|WP_Error Term object if ID is valid, WP_Error otherwise.
+     * @return Term|WP_Error Term object if ID is valid, WP_Error otherwise.
      */
     protected function get_term($id)
     {
@@ -465,7 +465,7 @@ class TermsController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_Term $term Inserted or updated term object.
+         * @param Term $term Inserted or updated term object.
          * @param Request $request Request object.
          * @param bool $creating True when creating a term, false when updating.
          */
@@ -668,7 +668,7 @@ class TermsController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_Term $term The deleted term.
+         * @param Term $term The deleted term.
          * @param Response $response The response data.
          * @param Request $request The request sent to the API.
          */

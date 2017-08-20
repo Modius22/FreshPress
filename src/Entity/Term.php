@@ -1,20 +1,23 @@
 <?php
 /**
- * Taxonomy API: WP_Term class
+ * Taxonomy API: Term class
  *
  * @package WordPress
  * @subpackage Taxonomy
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Entity;
+
 use Devtronic\FreshPress\Core\WPDB;
+use WP_Error;
 
 /**
- * Core class used to implement the WP_Term object.
+ * Core class used to implement the Term object.
  *
  * @since 4.4.0
  */
-final class WP_Term
+class Term
 {
 
     /**
@@ -110,7 +113,7 @@ final class WP_Term
     public $filter = 'raw';
 
     /**
-     * Retrieve WP_Term instance.
+     * Retrieve Term instance.
      *
      * @since 4.4.0
      * @access public
@@ -121,7 +124,7 @@ final class WP_Term
      * @param int $term_id Term ID.
      * @param string $taxonomy Optional. Limit matched terms to those matching `$taxonomy`. Only used for
      *                         disambiguating potentially shared terms.
-     * @return WP_Term|WP_Error|false Term object, if found. WP_Error if `$term_id` is shared between taxonomies and
+     * @return Term|WP_Error|false Term object, if found. WP_Error if `$term_id` is shared between taxonomies and
      *                                there's insufficient data to distinguish which term is intended.
      *                                False for other failures.
      */
@@ -198,7 +201,7 @@ final class WP_Term
             }
         }
 
-        $term_obj = new WP_Term($_term);
+        $term_obj = new Term($_term);
         $term_obj->filter($term_obj->filter);
 
         return $term_obj;
@@ -210,7 +213,7 @@ final class WP_Term
      * @since 4.4.0
      * @access public
      *
-     * @param WP_Term|object $term Term object.
+     * @param Term|object $term Term object.
      */
     public function __construct($term)
     {
@@ -258,8 +261,8 @@ final class WP_Term
     {
         switch ($key) {
             case 'data':
-                $data = new stdClass();
-                $columns = array(
+                $data = new \stdClass();
+                $columns = [
                     'term_id',
                     'name',
                     'slug',
@@ -269,7 +272,7 @@ final class WP_Term
                     'description',
                     'parent',
                     'count'
-                );
+                ];
                 foreach ($columns as $column) {
                     $data->{$column} = isset($this->{$column}) ? $this->{$column} : null;
                 }

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Term;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -189,8 +190,8 @@ function get_permalink($post = 0, $leavename = false)
                  *
                  * @since 3.5.0
                  *
-                 * @param WP_Term $cat The category to use in the permalink.
-                 * @param array $cats Array of all categories (WP_Term objects) associated with the post.
+                 * @param Term $cat The category to use in the permalink.
+                 * @param array $cats Array of all categories (Term objects) associated with the post.
                  * @param WP_Post $post The post in question.
                  */
                 $category_object = apply_filters('post_link_category', $cats[0], $cats, $post);
@@ -953,7 +954,7 @@ function get_edit_tag_link($tag_id, $taxonomy = 'post_tag')
  * @param string $link Optional. Anchor text. Default empty.
  * @param string $before Optional. Display before edit link. Default empty.
  * @param string $after Optional. Display after edit link. Default empty.
- * @param WP_Term $tag Optional. Term object. If null, the queried object will be inspected.
+ * @param Term $tag Optional. Term object. If null, the queried object will be inspected.
  *                        Default null.
  */
 function edit_tag_link($link = '', $before = '', $after = '', $tag = null)

@@ -56,7 +56,6 @@
             "web/wp-includes/class-wp-comment-query.php",
             "web/wp-includes/class-wp-rewrite.php",
             "web/wp-includes/class-wp-taxonomy.php",
-            "web/wp-includes/class-wp-term.php",
             "web/wp-includes/class-wp-term-query.php",
             "web/wp-includes/class-wp-tax-query.php",
             "web/wp-includes/class-wp-embed.php",

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Entity\Term;
 
 /**
  * Instantiate the admin bar object and set it up as a global for access elsewhere.
@@ -617,7 +618,7 @@ function wp_admin_bar_shortlink_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @global WP_Term $tag
+ * @global Term $tag
  * @global WP_Query $wp_the_query
  *
  * @param WP_Admin_Bar $wp_admin_bar
