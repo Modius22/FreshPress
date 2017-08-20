@@ -9,21 +9,22 @@
  */
 
 use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+use Devtronic\FreshPress\Components\Dependencies\Styles;
 
 /**
  * Initialize $wp_styles if it has not been set.
  *
- * @global WP_Styles $wp_styles
+ * @global Styles $wp_styles
  *
  * @since 4.2.0
  *
- * @return WP_Styles WP_Styles instance.
+ * @return Styles Styles instance.
  */
 function wp_styles()
 {
     global $wp_styles;
-    if (!($wp_styles instanceof WP_Styles)) {
-        $wp_styles = new WP_Styles();
+    if (!($wp_styles instanceof Styles)) {
+        $wp_styles = new Styles();
     }
     return $wp_styles;
 }
@@ -35,7 +36,7 @@ function wp_styles()
  * passing an array with one string prints that style,
  * and passing an array of strings prints those styles.
  *
- * @global WP_Styles $wp_styles The WP_Styles object for printing styles.
+ * @global Styles $wp_styles The Styles object for printing styles.
  *
  * @since 2.6.0
  *
@@ -59,7 +60,7 @@ function wp_print_styles($handles = false)
     _wp_scripts_maybe_doing_it_wrong(__FUNCTION__);
 
     global $wp_styles;
-    if (!($wp_styles instanceof WP_Styles)) {
+    if (!($wp_styles instanceof Styles)) {
         if (!$handles) {
             return array(); // No need to instantiate if nothing is there.
         }
@@ -76,7 +77,7 @@ function wp_print_styles($handles = false)
  * are added to the same stylesheet $handle, they will be printed in the order
  * they were added, i.e. the latter added styles can redeclare the previous.
  *
- * @see WP_Styles::add_inline_style()
+ * @see Styles::add_inline_style()
  *
  * @since 3.3.0
  *

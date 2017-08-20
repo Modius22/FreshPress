@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\Dependencies\Dependencies;
 use Devtronic\FreshPress\Components\Dependencies\Dependency;
+use Devtronic\FreshPress\Components\Dependencies\Styles;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -3726,7 +3727,7 @@ function register_admin_color_schemes()
 /**
  * Displays the URL of a WordPress admin CSS file.
  *
- * @see WP_Styles::_css_href and its {@see 'style_loader_src'} filter.
+ * @see Styles::_css_href and its {@see 'style_loader_src'} filter.
  *
  * @since 2.3.0
  *

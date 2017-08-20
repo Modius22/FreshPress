@@ -1,6 +1,6 @@
 <?php
 /**
- * Dependencies API: WP_Styles class
+ * Dependencies API: Styles class
  *
  * @since 2.6.0
  *
@@ -8,7 +8,7 @@
  * @subpackage Dependencies
  */
 
-use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+namespace Devtronic\FreshPress\Components\Dependencies;
 
 /**
  * Core class used to register styles.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\Dependencies\Dependencies;
  * @uses Dependencies
  * @since 2.6.0
  */
-class WP_Styles extends Dependencies
+class Styles extends Dependencies
 {
     /**
      * Base URL for styles.
@@ -122,13 +122,13 @@ class WP_Styles extends Dependencies
     public function __construct()
     {
         /**
-         * Fires when the WP_Styles instance is initialized.
+         * Fires when the Styles instance is initialized.
          *
          * @since 2.6.0
          *
-         * @param WP_Styles &$this WP_Styles instance, passed by reference.
+         * @param Styles &$this Styles instance, passed by reference.
          */
-        do_action_ref_array('wp_default_styles', array($this));
+        do_action_ref_array('wp_default_styles', [$this]);
     }
 
     /**
@@ -232,7 +232,6 @@ class WP_Styles extends Dependencies
                 $rtl_href = $this->_css_href($obj->extra['rtl'], $ver, "$handle-rtl");
             }
 
-            /** This filter is documented in wp-includes/class.wp-styles.php */
             $rtl_tag = apply_filters(
                 'style_loader_tag',
                 "<link rel='$rel' id='$handle-rtl-css' $title href='$rtl_href' type='text/css' media='$media' />\n",
@@ -293,7 +292,7 @@ class WP_Styles extends Dependencies
 
         $after = $this->get_data($handle, 'after');
         if (!$after) {
-            $after = array();
+            $after = [];
         }
 
         $after[] = $code;
@@ -374,9 +373,9 @@ class WP_Styles extends Dependencies
     public function _css_href($src, $ver, $handle)
     {
         if (!is_bool($src) && !preg_match('|^(https?:)?//|', $src) && !($this->content_url && 0 === strpos(
-            $src,
+                    $src,
                     $this->content_url
-        ))) {
+                ))) {
             $src = $this->base_url . $src;
         }
 

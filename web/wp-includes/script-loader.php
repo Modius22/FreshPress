@@ -17,12 +17,10 @@
  */
 
 use Devtronic\FreshPress\Components\Dependencies\Scripts;
+use Devtronic\FreshPress\Components\Dependencies\Styles;
 
 /** WordPress Scripts Functions */
 require(ABSPATH . WPINC . '/functions.wp-scripts.php');
-
-/** WordPress Styles Class */
-require(ABSPATH . WPINC . '/class.wp-styles.php');
 
 /** WordPress Styles Functions */
 require(ABSPATH . WPINC . '/functions.wp-styles.php');
@@ -1309,7 +1307,7 @@ function wp_default_scripts(&$scripts)
  *
  * @since 2.6.0
  *
- * @param WP_Styles $styles
+ * @param Styles $styles
  */
 function wp_default_styles(&$styles)
 {
@@ -1946,7 +1944,7 @@ function print_admin_styles()
  *
  * @since 3.3.0
  *
- * @global WP_Styles $wp_styles
+ * @global Styles $wp_styles
  * @global bool $concatenate_scripts
  *
  * @return array|void
@@ -1955,7 +1953,7 @@ function print_late_styles()
 {
     global $wp_styles, $concatenate_scripts;
 
-    if (!($wp_styles instanceof WP_Styles)) {
+    if (!($wp_styles instanceof Styles)) {
         return;
     }
 
