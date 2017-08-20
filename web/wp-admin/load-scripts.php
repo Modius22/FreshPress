@@ -5,6 +5,9 @@
  *
  * Set this to error_reporting( -1 ) for debugging.
  */
+
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
+
 error_reporting(0);
 
 /** Set ABSPATH for execution */
@@ -35,7 +38,7 @@ $force_gzip = ($compress && 'gzip' == $_GET['c']);
 $expires_offset = 31536000; // 1 year
 $out = '';
 
-$wp_scripts = new WP_Scripts();
+$wp_scripts = new Scripts();
 wp_default_scripts($wp_scripts);
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) === $wp_version) {

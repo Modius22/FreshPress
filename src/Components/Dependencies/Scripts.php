@@ -1,6 +1,6 @@
 <?php
 /**
- * Dependencies API: WP_Scripts class
+ * Dependencies API: Scripts class
  *
  * @since 2.6.0
  *
@@ -8,7 +8,7 @@
  * @subpackage Dependencies
  */
 
-use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+namespace Devtronic\FreshPress\Components\Dependencies;
 
 /**
  * Core class used to register scripts.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\Dependencies\Dependencies;
  * @uses Dependencies
  * @since 2.1.0
  */
-class WP_Scripts extends Dependencies
+class Scripts extends Dependencies
 {
     /**
      * Base URL for scripts.
@@ -55,7 +55,7 @@ class WP_Scripts extends Dependencies
      * @access public
      * @var array
      */
-    public $in_footer = array();
+    public $in_footer = [];
 
     /**
      * Holds a list of script handles which will be concatenated.
@@ -146,7 +146,7 @@ class WP_Scripts extends Dependencies
     public function __construct()
     {
         $this->init();
-        add_action('init', array($this, 'init'), 0);
+        add_action('init', [$this, 'init'], 0);
     }
 
     /**
@@ -158,13 +158,13 @@ class WP_Scripts extends Dependencies
     public function init()
     {
         /**
-         * Fires when the WP_Scripts instance is initialized.
+         * Fires when the Scripts instance is initialized.
          *
          * @since 2.6.0
          *
-         * @param WP_Scripts &$this WP_Scripts instance, passed by reference.
+         * @param Scripts &$this Scripts instance, passed by reference.
          */
-        do_action_ref_array('wp_default_scripts', array(&$this));
+        do_action_ref_array('wp_default_scripts', [&$this]);
     }
 
     /**
@@ -351,7 +351,7 @@ class WP_Scripts extends Dependencies
             $src = add_query_arg('ver', $ver, $src);
         }
 
-        /** This filter is documented in wp-includes/class.wp-scripts.php */
+        /** This filter is documented in wp-includes/Scripts.php */
         $src = esc_url(apply_filters('script_loader_src', $src, $handle));
 
         if (!$src) {

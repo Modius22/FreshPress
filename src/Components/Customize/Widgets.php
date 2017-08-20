@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
 use WP_Error;
-use WP_Scripts;
 
 /**
  * Customize Widgets class.
@@ -717,7 +717,7 @@ class Widgets
      * @since 3.9.0
      * @access public
      *
-     * @global WP_Scripts $wp_scripts
+     * @global Scripts $wp_scripts
      * @global array $wp_registered_sidebars
      * @global array $wp_registered_widgets
      */

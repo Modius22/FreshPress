@@ -9,21 +9,22 @@
  */
 
 use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
 
 /**
  * Initialize $wp_scripts if it has not been set.
  *
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  *
  * @since 4.2.0
  *
- * @return WP_Scripts WP_Scripts instance.
+ * @return Scripts Scripts instance.
  */
 function wp_scripts()
 {
     global $wp_scripts;
-    if (!($wp_scripts instanceof WP_Scripts)) {
-        $wp_scripts = new WP_Scripts();
+    if (!($wp_scripts instanceof Scripts)) {
+        $wp_scripts = new Scripts();
     }
     return $wp_scripts;
 }
@@ -55,12 +56,12 @@ function _wp_scripts_maybe_doing_it_wrong($function)
  * Prints scripts in document head that are in the $handles queue.
  *
  * Called by admin-header.php and {@see 'wp_head'} hook. Since it is called by wp_head on every page load,
- * the function does not instantiate the WP_Scripts object unless script names are explicitly passed.
+ * the function does not instantiate the Scripts object unless script names are explicitly passed.
  * Makes use of already-instantiated $wp_scripts global if present. Use provided {@see 'wp_print_scripts'}
  * hook to register/enqueue new scripts.
  *
- * @see WP_Scripts::do_items()
- * @global WP_Scripts $wp_scripts The WP_Scripts object for printing scripts.
+ * @see Scripts::do_items()
+ * @global Scripts $wp_scripts The Scripts object for printing scripts.
  *
  * @since 2.1.0
  *
@@ -82,7 +83,7 @@ function wp_print_scripts($handles = false)
     _wp_scripts_maybe_doing_it_wrong(__FUNCTION__);
 
     global $wp_scripts;
-    if (!($wp_scripts instanceof WP_Scripts)) {
+    if (!($wp_scripts instanceof Scripts)) {
         if (!$handles) {
             return array(); // No need to instantiate if nothing is there.
         }
@@ -101,7 +102,7 @@ function wp_print_scripts($handles = false)
  *
  * @since 4.5.0
  *
- * @see WP_Scripts::add_inline_script()
+ * @see Scripts::add_inline_script()
  *
  * @param string $handle Name of the script to add the inline script to.
  * @param string $data String containing the javascript to be added.
@@ -177,7 +178,7 @@ function wp_register_script($handle, $src, $deps = array(), $ver = false, $in_fo
  *
  * @see Dependencies::localize()
  * @link https://core.trac.wordpress.org/ticket/11520
- * @global WP_Scripts $wp_scripts The WP_Scripts object for printing scripts.
+ * @global Scripts $wp_scripts The Scripts object for printing scripts.
  *
  * @since 2.2.0
  *
@@ -192,7 +193,7 @@ function wp_register_script($handle, $src, $deps = array(), $ver = false, $in_fo
 function wp_localize_script($handle, $object_name, $l10n)
 {
     global $wp_scripts;
-    if (!($wp_scripts instanceof WP_Scripts)) {
+    if (!($wp_scripts instanceof Scripts)) {
         _wp_scripts_maybe_doing_it_wrong(__FUNCTION__);
         return false;
     }

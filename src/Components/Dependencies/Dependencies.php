@@ -148,7 +148,7 @@ class Dependencies
      *
      * @access public
      * @since 2.1.0
-     * @since 2.6.0 Moved from `WP_Scripts`.
+     * @since 2.6.0 Moved from `Scripts`.
      * @since 2.8.0 Added the `$group` parameter.
      *
      * @param mixed $handles Item handle and argument (string) or item handles and arguments (array of strings).
@@ -226,7 +226,7 @@ class Dependencies
      *
      * @access public
      * @since 2.1.0
-     * @since 2.6.0 Moved from `WP_Scripts`.
+     * @since 2.6.0 Moved from `Scripts`.
      *
      * @param string $handle Name of the item. Should be unique.
      * @param string $src Full URL of the item, or path of the item relative to the WordPress root directory.
@@ -299,7 +299,7 @@ class Dependencies
      *
      * @access public
      * @since 2.1.0
-     * @since 2.6.0 Moved from `WP_Scripts`.
+     * @since 2.6.0 Moved from `Scripts`.
      *
      * @param mixed $handles Item handle and argument (string) or item handles and arguments (array of strings).
      * @return void
@@ -321,7 +321,7 @@ class Dependencies
      *
      * @access public
      * @since 2.1.0
-     * @since 2.6.0 Moved from `WP_Scripts`.
+     * @since 2.6.0 Moved from `Scripts`.
      *
      * @param mixed $handles Item handle and argument (string) or item handles and arguments (array of strings).
      */
@@ -346,7 +346,7 @@ class Dependencies
      *
      * @access public
      * @since 2.1.0
-     * @since 2.6.0 Moved from `WP_Scripts`.
+     * @since 2.6.0 Moved from `Scripts`.
      *
      * @param mixed $handles Item handle and argument (string) or item handles and arguments (array of strings).
      */
@@ -393,7 +393,7 @@ class Dependencies
      *
      * @access public
      * @since 2.1.0
-     * @since 2.6.0 Moved from `WP_Scripts`.
+     * @since 2.6.0 Moved from `Scripts`.
      *
      * @param string $handle Name of the item. Should be unique.
      * @param string $list Property name of list array.

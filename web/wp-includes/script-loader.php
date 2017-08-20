@@ -16,8 +16,7 @@
  * @package WordPress
  */
 
-/** WordPress Scripts Class */
-require(ABSPATH . WPINC . '/class.wp-scripts.php');
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
 
 /** WordPress Scripts Functions */
 require(ABSPATH . WPINC . '/functions.wp-scripts.php');
@@ -37,7 +36,7 @@ require(ABSPATH . WPINC . '/functions.wp-styles.php');
  *
  * @since 2.6.0
  *
- * @param WP_Scripts $scripts WP_Scripts object.
+ * @param Scripts $scripts Scripts object.
  */
 function wp_default_scripts(&$scripts)
 {
@@ -1768,7 +1767,7 @@ function print_head_scripts()
  *
  * @since 2.8.0
  *
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  * @global bool $concatenate_scripts
  *
  * @return array
@@ -1777,7 +1776,7 @@ function print_footer_scripts()
 {
     global $wp_scripts, $concatenate_scripts;
 
-    if (!($wp_scripts instanceof WP_Scripts)) {
+    if (!($wp_scripts instanceof Scripts)) {
         return array(); // No need to run if not instantiated.
     }
     script_concat_settings();
@@ -1804,7 +1803,7 @@ function print_footer_scripts()
  *
  * @ignore
  *
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  * @global bool $compress_scripts
  */
 function _print_scripts()
@@ -1845,7 +1844,7 @@ function _print_scripts()
  *
  * @since 2.8.0
  *
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  *
  * @return array
  */
@@ -1858,7 +1857,7 @@ function wp_print_head_scripts()
 
     global $wp_scripts;
 
-    if (!($wp_scripts instanceof WP_Scripts)) {
+    if (!($wp_scripts instanceof Scripts)) {
         return array(); // no need to run if nothing is queued
     }
     return print_head_scripts();

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\Dependencies\Scripts;
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
@@ -3326,7 +3327,7 @@ function wp_ajax_query_themes()
  *
  * @global Post $post Global $post.
  * @global WP_Embed $wp_embed Embed API instance.
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  */
 function wp_ajax_parse_embed()
 {
@@ -3431,7 +3432,7 @@ function wp_ajax_parse_embed()
  * @since 4.0.0
  *
  * @global Post $post
- * @global WP_Scripts $wp_scripts
+ * @global Scripts $wp_scripts
  */
 function wp_ajax_parse_media_shortcode()
 {
