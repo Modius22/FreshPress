@@ -6,17 +6,19 @@
  * @subpackage Post_Revisions
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * Determines which fields of posts are to be saved in revisions.
  *
  * @since 2.6.0
- * @since 4.5.0 A `WP_Post` object can now be passed to the `$post` parameter.
+ * @since 4.5.0 A `Post` object can now be passed to the `$post` parameter.
  * @since 4.5.0 The optional `$autosave` parameter was deprecated and renamed to `$deprecated`.
  * @access private
  *
  * @staticvar array $fields
  *
- * @param array|WP_Post $post Optional. A post array or a WP_Post object being processed
+ * @param array|Post $post Optional. A post array or a Post object being processed
  *                                  for insertion as a post revision. Default empty array.
  * @param bool $deprecated Not used.
  * @return array Array of fields that can be versioned.
@@ -81,7 +83,7 @@ function _wp_post_revision_fields($post = array(), $deprecated = false)
  * @since 4.5.0
  * @access private
  *
- * @param array|WP_Post $post Optional. A post array or a WP_Post object to be processed
+ * @param array|Post $post Optional. A post array or a Post object to be processed
  *                                for insertion as a post revision. Default empty array.
  * @param bool $autosave Optional. Is the revision an autosave? Default false.
  * @return array Post array ready to be inserted as a post revision.
@@ -165,8 +167,8 @@ function wp_save_post_revision($post_id)
          *
          * @param bool $check_for_changes Whether to check for changes before saving a new revision.
          *                                   Default true.
-         * @param WP_Post $last_revision The last revision post object.
-         * @param WP_Post $post The post object.
+         * @param Post $last_revision The last revision post object.
+         * @param Post $post The post object.
          *
          */
         if (isset($last_revision) && apply_filters(
@@ -193,8 +195,8 @@ function wp_save_post_revision($post_id)
              * @since 4.1.0
              *
              * @param bool $post_has_changed Whether the post has changed.
-             * @param WP_Post $last_revision The last revision post object.
-             * @param WP_Post $post The post object.
+             * @param Post $last_revision The last revision post object.
+             * @param Post $post The post object.
              *
              */
             $post_has_changed = (bool)apply_filters(
@@ -253,7 +255,7 @@ function wp_save_post_revision($post_id)
  *
  * @param int $post_id The post ID.
  * @param int $user_id Optional The post author ID.
- * @return WP_Post|false The autosaved data or false on failure or when no autosave exists.
+ * @return Post|false The autosaved data or false on failure or when no autosave exists.
  */
 function wp_get_post_autosave($post_id, $user_id = 0)
 {
@@ -277,7 +279,7 @@ function wp_get_post_autosave($post_id, $user_id = 0)
  *
  * @since 2.6.0
  *
- * @param int|WP_Post $post Post ID or post object.
+ * @param int|Post $post Post ID or post object.
  * @return false|int False if not a revision, ID of revision's parent otherwise.
  */
 function wp_is_post_revision($post)
@@ -294,7 +296,7 @@ function wp_is_post_revision($post)
  *
  * @since 2.6.0
  *
- * @param int|WP_Post $post Post ID or post object.
+ * @param int|Post $post Post ID or post object.
  * @return false|int False if not a revision, ID of autosave's parent otherwise
  */
 function wp_is_post_autosave($post)
@@ -316,7 +318,7 @@ function wp_is_post_autosave($post)
  * @since 2.6.0
  * @access private
  *
- * @param int|WP_Post|array|null $post Post ID, post object OR post array.
+ * @param int|Post|array|null $post Post ID, post object OR post array.
  * @param bool $autosave Optional. Is the revision an autosave?
  * @return int|WP_Error WP_Error or 0 if error, new revision ID if success.
  */
@@ -363,11 +365,11 @@ function _wp_put_post_revision($post = null, $autosave = false)
  *
  * @since 2.6.0
  *
- * @param int|WP_Post $post The post ID or object.
+ * @param int|Post $post The post ID or object.
  * @param string $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
- *                            a WP_Post object, an associative array, or a numeric array, respectively. Default OBJECT.
+ *                            a Post object, an associative array, or a numeric array, respectively. Default OBJECT.
  * @param string $filter Optional sanitation filter. See sanitize_post().
- * @return WP_Post|array|null WP_Post (or array) on success, or null on failure.
+ * @return Post|array|null Post (or array) on success, or null on failure.
  */
 function wp_get_post_revision(&$post, $output = OBJECT, $filter = 'raw')
 {
@@ -398,7 +400,7 @@ function wp_get_post_revision(&$post, $output = OBJECT, $filter = 'raw')
  *
  * @since 2.6.0
  *
- * @param int|WP_Post $revision_id Revision ID or revision object.
+ * @param int|Post $revision_id Revision ID or revision object.
  * @param array $fields Optional. What fields to restore from. Defaults to all.
  * @return int|false|null Null if error, false if no fields to restore, (int) post ID if success.
  */
@@ -453,8 +455,8 @@ function wp_restore_post_revision($revision_id, $fields = null)
  *
  * @since 2.6.0
  *
- * @param int|WP_Post $revision_id Revision ID or revision object.
- * @return array|false|WP_Post|WP_Error|null Null or WP_Error if error, deleted post if success.
+ * @param int|Post $revision_id Revision ID or revision object.
+ * @return array|false|Post|WP_Error|null Null or WP_Error if error, deleted post if success.
  */
 function wp_delete_post_revision($revision_id)
 {
@@ -485,7 +487,7 @@ function wp_delete_post_revision($revision_id)
  *
  * @see get_children()
  *
- * @param int|WP_Post $post_id Optional. Post ID or WP_Post object. Default is global `$post`.
+ * @param int|Post $post_id Optional. Post ID or Post object. Default is global `$post`.
  * @param array|null $args Optional. Arguments for retrieving post revisions. Default null.
  * @return array An array of revisions, or an empty array if none.
  */
@@ -520,7 +522,7 @@ function wp_get_post_revisions($post_id = 0, $args = null)
  *
  * @since 3.6.0
  *
- * @param WP_Post $post The post object.
+ * @param Post $post The post object.
  * @return bool True if number of revisions to keep isn't zero, false otherwise.
  */
 function wp_revisions_enabled($post)
@@ -538,7 +540,7 @@ function wp_revisions_enabled($post)
  *
  * @since 3.6.0
  *
- * @param WP_Post $post The post object.
+ * @param Post $post The post object.
  * @return int The number of revisions to keep.
  */
 function wp_revisions_to_keep($post)
@@ -563,7 +565,7 @@ function wp_revisions_to_keep($post)
      * @since 3.6.0
      *
      * @param int $num Number of revisions to store.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     return (int)apply_filters('wp_revisions_to_keep', $num, $post);
 }
@@ -574,8 +576,8 @@ function wp_revisions_to_keep($post)
  * @since 2.7.0
  * @access private
  *
- * @param WP_Post $post
- * @return WP_Post|false
+ * @param Post $post
+ * @return Post|false
  */
 function _set_preview($post)
 {
@@ -690,7 +692,7 @@ function _wp_preview_post_thumbnail_filter($value, $post_id, $meta_key)
  * @since 3.6.0
  * @access private
  *
- * @param WP_Post $revision
+ * @param Post $revision
  * @return int|false
  */
 function _wp_get_post_revision_version($revision)
@@ -716,7 +718,7 @@ function _wp_get_post_revision_version($revision)
  *
  * @global wpdb $wpdb WordPress database abstraction object.
  *
- * @param WP_Post $post Post object
+ * @param Post $post Post object
  * @param array $revisions Current revisions of the post
  * @return bool true if the revisions were upgraded, false if problems
  */

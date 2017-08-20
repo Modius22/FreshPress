@@ -11,7 +11,7 @@ namespace Devtronic\FreshPress\Components\Widgets;
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
 use Devtronic\FreshPress\Components\Rest\Request;
-use WP_Post;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core class that implements a media widget.
@@ -162,7 +162,7 @@ abstract class MediaWidget extends Widget
      * @since 4.8.0
      * @access public
      *
-     * @param int|WP_Post $attachment Attachment post ID or object.
+     * @param int|Post $attachment Attachment post ID or object.
      * @param string $mime_type MIME type.
      * @return bool Is matching MIME type.
      */
@@ -344,7 +344,7 @@ abstract class MediaWidget extends Widget
      * @access public
      *
      * @param array $states An array of media states.
-     * @param WP_Post $post The current attachment object.
+     * @param Post $post The current attachment object.
      * @return array
      */
     public function display_media_state($states, $post = null)

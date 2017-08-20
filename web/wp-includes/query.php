@@ -12,6 +12,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Retrieve variable in the WP_Query class.
@@ -1079,7 +1080,7 @@ function wp_old_slug_redirect()
  *
  * @global WP_Query $wp_query Global WP_Query instance.
  *
- * @param WP_Post|object|int $post WP_Post instance or Post ID/object.
+ * @param Post|object|int $post Post instance or Post ID/object.
  * @return bool True when finished.
  */
 function setup_postdata($post)

@@ -14,10 +14,10 @@ use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 use WP_Comment_Query;
 use WP_Error;
-use WP_Post;
 
 /**
  * Core controller used to access comments via the REST API.
@@ -935,7 +935,7 @@ class CommentsController extends Controller
          * @since 4.7.0
          *
          * @param bool $supports_trash Whether the post type support trashing.
-         * @param WP_Post $comment The comment object being considered for trashing support.
+         * @param Post $comment The comment object being considered for trashing support.
          */
         $supports_trash = apply_filters('rest_comment_trashable', (EMPTY_TRASH_DAYS > 0), $comment);
 
@@ -1668,7 +1668,7 @@ class CommentsController extends Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      * @param Request $request Request data to check.
      * @return bool Whether post can be read.
      */

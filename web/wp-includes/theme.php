@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Returns an array of WP_Theme objects based on the arguments.
@@ -1778,7 +1779,7 @@ function wp_custom_css_cb()
  * @access public
  *
  * @param string $stylesheet Optional. A theme object stylesheet name. Defaults to the current theme.
- * @return WP_Post|null The custom_css post or null if none exists.
+ * @return Post|null The custom_css post or null if none exists.
  */
 function wp_get_custom_css_post($stylesheet = '')
 {
@@ -1874,7 +1875,7 @@ function wp_get_custom_css($stylesheet = '')
  * @type string $preprocessed Pre-processed CSS, stored in `post_content_filtered`. Normally empty string. Optional.
  * @type string $stylesheet Stylesheet (child theme) to update. Optional, defaults to current theme/stylesheet.
  * }
- * @return WP_Post|WP_Error Post on success, error on failure.
+ * @return Post|WP_Error Post on success, error on failure.
  */
 function wp_update_custom_css_post($css, $args = array())
 {
@@ -3089,7 +3090,7 @@ function _wp_customize_include()
  *
  * @param string $new_status New post status.
  * @param string $old_status Old post status.
- * @param WP_Post $changeset_post Changeset post object.
+ * @param Post $changeset_post Changeset post object.
  */
 function _wp_customize_publish_changeset($new_status, $old_status, $changeset_post)
 {
@@ -3349,7 +3350,7 @@ function is_customize_preview()
  *
  * @param string $new_status Transition to this post status.
  * @param string $old_status Previous post status.
- * @param \WP_Post $post Post data.
+ * @param Post $post Post data.
  * @global WPDB $wpdb
  */
 function _wp_keep_alive_customize_changeset_dependent_auto_drafts($new_status, $old_status, $post)

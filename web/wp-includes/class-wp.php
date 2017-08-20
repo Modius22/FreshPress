@@ -1,5 +1,6 @@
 <?php
 
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -680,7 +681,7 @@ class WP
      * @global WP_Query $wp_query
      * @global string $query_string Query string for the loop.
      * @global array $posts The found posts.
-     * @global WP_Post|null $post The current post, if available.
+     * @global Post|null $post The current post, if available.
      * @global string $request The SQL statement for the request.
      * @global int $more Only set, if single page or post.
      * @global int $single If single page or post. Only set, if single page or post.
@@ -784,7 +785,7 @@ class WP
             if (is_singular()) {
                 $p = false;
 
-                if ($wp_query->post instanceof WP_Post) {
+                if ($wp_query->post instanceof Post) {
                     $p = clone $wp_query->post;
                 }
 

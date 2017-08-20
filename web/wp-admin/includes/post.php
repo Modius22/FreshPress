@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -671,7 +672,7 @@ function bulk_edit_posts($post_data = null)
  *
  * @param string $post_type Optional. A post type string. Default 'post'.
  * @param bool $create_in_db Optional. Whether to insert the post into database. Default false.
- * @return WP_Post Post object containing all the default post data as attributes
+ * @return Post Post object containing all the default post data as attributes
  */
 function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
 {
@@ -722,7 +723,7 @@ function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
         $post->page_template = 'default';
         $post->post_parent = 0;
         $post->menu_order = 0;
-        $post = new WP_Post($post);
+        $post = new Post($post);
     }
 
     /**
@@ -731,7 +732,7 @@ function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
      * @since 1.5.0
      *
      * @param string $post_content Default post content.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     $post->post_content = apply_filters('default_content', $post_content, $post);
 
@@ -741,7 +742,7 @@ function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
      * @since 1.5.0
      *
      * @param string $post_title Default post title.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     $post->post_title = apply_filters('default_title', $post_title, $post);
 
@@ -751,7 +752,7 @@ function get_default_post_to_edit($post_type = 'post', $create_in_db = false)
      * @since 1.5.0
      *
      * @param string $post_excerpt Default post excerpt.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     $post->post_excerpt = apply_filters('default_excerpt', $post_excerpt, $post);
 
@@ -1429,7 +1430,7 @@ function get_sample_permalink($id, $title = null, $name = null)
      * @param int $post_id Post ID.
      * @param string $title Post title.
      * @param string $name Post name (slug).
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('get_sample_permalink', $permalink, $post->ID, $title, $name, $post);
 }
@@ -1516,7 +1517,7 @@ function get_sample_permalink_html($id, $new_title = null, $new_slug = null)
      * @param int $post_id Post ID.
      * @param string $new_title New sample permalink title.
      * @param string $new_slug New sample permalink slug.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     $return = apply_filters('get_sample_permalink_html', $return, $post->ID, $new_title, $new_slug, $post);
 
@@ -1566,7 +1567,7 @@ function _wp_post_thumbnail_html($thumbnail_id = null, $post = null)
          *                                   If the 'post-thumbnail' size is set, default is 'post-thumbnail'. Otherwise,
          *                                   default is an array with 266 as both the height and width values.
          * @param int $thumbnail_id Post thumbnail attachment ID.
-         * @param WP_Post $post The post object associated with the thumbnail.
+         * @param Post $post The post object associated with the thumbnail.
          */
         $size = apply_filters('admin_post_thumbnail_size', $size, $thumbnail_id, $post);
 
@@ -1691,7 +1692,7 @@ function _admin_notice_post_locked()
          * @since 3.6.0
          *
          * @param bool $display Whether to display the dialog. Default true.
-         * @param WP_Post $post Post object.
+         * @param Post $post Post object.
          * @param User|bool $user User object on success, false otherwise.
          */
         if (!apply_filters('show_post_locked_dialog', true, $post, $user)) {
@@ -1744,7 +1745,7 @@ function _admin_notice_post_locked()
                  * @since 3.6.0
                  *
                  * @param bool $override Whether to allow overriding post locks. Default true.
-                 * @param WP_Post $post Post object.
+                 * @param Post $post Post object.
                  * @param User $user User object.
                  */
                 $override = apply_filters('override_post_lock', true, $post, $user);
@@ -1767,7 +1768,7 @@ function _admin_notice_post_locked()
                      *
                      * @since 3.6.0
                      *
-                     * @param WP_Post $post Post object.
+                     * @param Post $post Post object.
                      */
                     do_action('post_locked_dialog', $post); ?>
                     <p>
@@ -1813,7 +1814,7 @@ function _admin_notice_post_locked()
                      *
                      * @since 3.6.0
                      *
-                     * @param WP_Post $post Post object.
+                     * @param Post $post Post object.
                      */
                     do_action('post_lock_lost_dialog', $post); ?>
                     <p><a class="button button-primary wp-tab-last"

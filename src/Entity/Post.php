@@ -1,16 +1,18 @@
 <?php
 /**
- * Post API: WP_Post class
+ * Post API: Post class
  *
  * @package WordPress
  * @subpackage Post
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Entity;
+
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
- * Core class used to implement the WP_Post object.
+ * Core class used to implement the Post object.
  *
  * @since 3.5.0
  *
@@ -21,7 +23,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * @property-read string $tag_input
  *
  */
-final class WP_Post
+class Post
 {
 
     /**
@@ -200,7 +202,7 @@ final class WP_Post
     public $filter;
 
     /**
-     * Retrieve WP_Post instance.
+     * Retrieve Post instance.
      *
      * @static
      * @access public
@@ -208,7 +210,7 @@ final class WP_Post
      * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $post_id Post ID.
-     * @return WP_Post|false Post object, false otherwise.
+     * @return Post|false Post object, false otherwise.
      */
     public static function get_instance($post_id)
     {
@@ -234,13 +236,13 @@ final class WP_Post
             $_post = sanitize_post($_post, 'raw');
         }
 
-        return new WP_Post($_post);
+        return new Post($_post);
     }
 
     /**
      * Constructor.
      *
-     * @param WP_Post|object $post Post object.
+     * @param Post|object $post Post object.
      */
     public function __construct($post)
     {
@@ -294,7 +296,7 @@ final class WP_Post
             }
 
             if (empty($terms)) {
-                return array();
+                return [];
             }
 
             return wp_list_pluck($terms, 'term_id');
@@ -306,7 +308,7 @@ final class WP_Post
             }
 
             if (empty($terms)) {
-                return array();
+                return [];
             }
 
             return wp_list_pluck($terms, 'name');
@@ -330,7 +332,7 @@ final class WP_Post
      * {@Missing Summary}
      *
      * @param string $filter Filter.
-     * @return self|array|bool|object|WP_Post
+     * @return self|array|bool|object|Post
      */
     public function filter($filter)
     {
@@ -354,7 +356,7 @@ final class WP_Post
     {
         $post = get_object_vars($this);
 
-        foreach (array('ancestors', 'page_template', 'post_category', 'tags_input') as $key) {
+        foreach (['ancestors', 'page_template', 'post_category', 'tags_input'] as $key) {
             if ($this->__isset($key)) {
                 $post[$key] = $this->__get($key);
             }

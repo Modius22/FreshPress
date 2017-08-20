@@ -7,6 +7,8 @@
  */
 
 // don't load directly
+use Devtronic\FreshPress\Entity\Post;
+
 if (!defined('ABSPATH')) {
     die('-1');
 }
@@ -14,7 +16,7 @@ if (!defined('ABSPATH')) {
 /**
  * @global string $post_type
  * @global WP_Post_Type $post_type_object
- * @global WP_Post $post
+ * @global Post $post
  */
 global $post_type, $post_type_object, $post;
 
@@ -341,7 +343,7 @@ if (post_type_supports($post_type, 'custom-fields')) {
  * @since 2.1.0
  * @deprecated 3.7.0 Use 'add_meta_boxes' instead.
  *
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  */
 do_action('dbx_post_advanced', $post);
 
@@ -382,7 +384,7 @@ if (post_type_supports($post_type, 'author') && current_user_can($post_type_obje
  * @since 3.0.0
  *
  * @param string $post_type Post type.
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  */
 do_action('add_meta_boxes', $post_type, $post);
 
@@ -393,7 +395,7 @@ do_action('add_meta_boxes', $post_type, $post);
  *
  * @since 3.0.0
  *
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  */
 do_action("add_meta_boxes_{$post_type}", $post);
 
@@ -406,7 +408,7 @@ do_action("add_meta_boxes_{$post_type}", $post);
  *
  * @param string $post_type Post type of the post.
  * @param string $context string  Meta box context.
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  */
 do_action('do_meta_boxes', $post_type, 'normal', $post);
 /** This action is documented in wp-admin/edit-form-advanced.php */
@@ -573,7 +575,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
      *
      * @since 3.0.0
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     do_action('post_edit_form_tag', $post);
 
@@ -613,7 +615,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
          *
          * @since 3.7.0
          *
-         * @param WP_Post $post Post object.
+         * @param Post $post Post object.
          */
         do_action('edit_form_top', $post); ?>
 
@@ -633,7 +635,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                                  * @since 3.1.0
                                  *
                                  * @param string $text Placeholder text. Default 'Enter title here'.
-                                 * @param WP_Post $post Post object.
+                                 * @param Post $post Post object.
                                  */
                                 $title_placeholder = apply_filters('enter_title_here', __('Enter title here'), $post); ?>
                                 <label class="screen-reader-text" id="title-prompt-text"
@@ -648,7 +650,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                              *
                              * @since 4.1.0
                              *
-                             * @param WP_Post $post Post object.
+                             * @param Post $post Post object.
                              */
                             do_action('edit_form_before_permalink', $post); ?>
                             <div class="inside">
@@ -687,7 +689,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                      *
                      * @since 3.5.0
                      *
-                     * @param WP_Post $post Post object.
+                     * @param Post $post Post object.
                      */
                     do_action('edit_form_after_title', $post);
 
@@ -756,7 +758,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                      *
                      * @since 3.5.0
                      *
-                     * @param WP_Post $post Post object.
+                     * @param Post $post Post object.
                      */
                     do_action('edit_form_after_editor', $post);
                     ?>
@@ -773,7 +775,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                          *
                          * @since 2.5.0
                          *
-                         * @param WP_Post $post Post object.
+                         * @param Post $post Post object.
                          */
                         do_action('submitpage_box', $post);
                     } else {
@@ -784,7 +786,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                          *
                          * @since 2.5.0
                          *
-                         * @param WP_Post $post Post object.
+                         * @param Post $post Post object.
                          */
                         do_action('submitpost_box', $post);
                     }
@@ -805,7 +807,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                          *
                          * @since 1.5.0
                          *
-                         * @param WP_Post $post Post object.
+                         * @param Post $post Post object.
                          */
                         do_action('edit_page_form', $post);
                     } else {
@@ -814,7 +816,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                          *
                          * @since 1.5.0
                          *
-                         * @param WP_Post $post Post object.
+                         * @param Post $post Post object.
                          */
                         do_action('edit_form_advanced', $post);
                     }
@@ -830,7 +832,7 @@ require_once(ABSPATH . 'wp-admin/admin-header.php');
                  *
                  * @since 2.1.0
                  *
-                 * @param WP_Post $post Post object.
+                 * @param Post $post Post object.
                  */
                 do_action('dbx_post_sidebar', $post);
 

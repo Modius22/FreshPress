@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Walker;
 
-use WP_Post;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core walker class used to create an HTML list of pages.
@@ -104,7 +104,7 @@ class PageWalker extends Walker
      * @access public
      *
      * @param string $output Used to append additional content. Passed by reference.
-     * @param WP_Post $page Page data object.
+     * @param Post $page Page data object.
      * @param int $depth Optional. Depth of page. Used for padding. Default 0.
      * @param array $args Optional. Array of arguments. Default empty array.
      * @param int $current_page Optional. Page ID. Default 0.
@@ -153,7 +153,7 @@ class PageWalker extends Walker
          *
          * @param array $css_class An array of CSS classes to be applied
          *                              to each list item.
-         * @param WP_Post $page Page data object.
+         * @param Post $page Page data object.
          * @param int $depth Depth of page, used for padding.
          * @param array $args An array of arguments.
          * @param int $current_page ID of the current page.
@@ -181,7 +181,7 @@ class PageWalker extends Walker
          *
          * @type string $href The href attribute.
          * }
-         * @param WP_Post $page Page data object.
+         * @param Post $page Page data object.
          * @param int $depth Depth of page, used for padding.
          * @param array $args An array of arguments.
          * @param int $current_page ID of the current page.
@@ -227,7 +227,7 @@ class PageWalker extends Walker
      * @see Walker::end_el()
      *
      * @param string $output Used to append additional content. Passed by reference.
-     * @param WP_Post $page Page data object. Not used.
+     * @param Post $page Page data object. Not used.
      * @param int $depth Optional. Depth of page. Default 0 (unused).
      * @param array $args Optional. Array of arguments. Default empty array.
      */

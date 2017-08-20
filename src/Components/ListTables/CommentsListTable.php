@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\ListTables;
 
 use Devtronic\FreshPress\Entity\Comment;
-use WP_Post;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core class used to implement displaying comments in a list table.
@@ -507,7 +507,7 @@ HTML;
     }
 
     /**
-     * @global WP_Post $post
+     * @global Post $post
      * @global Comment $comment
      *
      * @param Comment $item

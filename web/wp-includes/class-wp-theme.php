@@ -1,6 +1,7 @@
 <?php
 
 use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * WP_Theme Class
@@ -1247,7 +1248,7 @@ final class WP_Theme implements ArrayAccess
      * @since 4.7.0 Added the `$post_type` parameter.
      * @access public
      *
-     * @param WP_Post|null $post Optional. The post being edited, provided for context.
+     * @param Post|null $post Optional. The post being edited, provided for context.
      * @param string $post_type Optional. Post type to get the templates for. Default 'page'.
      *                                If a post is provided, its post type is used.
      * @return array Array of page templates, keyed by filename, with the value of the translated header name.
@@ -1277,7 +1278,7 @@ final class WP_Theme implements ArrayAccess
          * @param array $post_templates Array of page templates. Keys are filenames,
          *                                     values are translated names.
          * @param WP_Theme $this The theme object.
-         * @param WP_Post|null $post The post being edited, provided for context, or null.
+         * @param Post|null $post The post being edited, provided for context, or null.
          * @param string $post_type Post type to get the templates for.
          */
         return (array)apply_filters("theme_{$post_type}_templates", $post_templates, $this, $post, $post_type);

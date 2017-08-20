@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Post;
 use WP_Query;
 
 /**
@@ -826,7 +826,7 @@ class NavMenus
      * @var string $post_name Post name.
      * @var string $post_content Post content.
      * }
-     * @return WP_Post|WP_Error Inserted auto-draft post object or error.
+     * @return Post|WP_Error Inserted auto-draft post object or error.
      */
     public function insert_auto_draft_post($postarr)
     {

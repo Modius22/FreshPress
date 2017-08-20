@@ -13,9 +13,9 @@ use Devtronic\FreshPress\Components\Rest\Fields\UserMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 use WP_Error;
-use WP_Post;
 use WP_User_Query;
 
 /**
@@ -1011,7 +1011,7 @@ class UsersController extends Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_Post $user User object.
+     * @param Post $user User object.
      * @return array Links for the given user.
      */
     protected function prepare_links($user)

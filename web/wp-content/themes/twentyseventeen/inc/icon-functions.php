@@ -7,6 +7,8 @@
  * @since 1.0
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /**
  * Add SVG definitions to the footer.
  */
@@ -121,7 +123,7 @@ function twentyseventeen_get_svg($args = array())
  * Display SVG icons in social links menu.
  *
  * @param  string $item_output The menu item output.
- * @param  WP_Post $item Menu item object.
+ * @param  Post $item Menu item object.
  * @param  int $depth Depth of the menu.
  * @param  array $args wp_nav_menu() arguments.
  * @return string  $item_output The menu item output with social icon.

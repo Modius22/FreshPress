@@ -13,8 +13,8 @@ use Devtronic\FreshPress\Components\Rest\Fields\PostMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Post;
 use WP_Post_Type;
 use WP_Query;
 
@@ -402,7 +402,7 @@ class PostsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return WP_Post|WP_Error Post object if ID is valid, WP_Error otherwise.
+     * @return Post|WP_Error Post object if ID is valid, WP_Error otherwise.
      */
     protected function get_post($id)
     {
@@ -475,7 +475,7 @@ class PostsController extends Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_Post $post Post to check against.
+     * @param Post $post Post to check against.
      * @param Request $request Request data to check.
      * @return bool True if the user can access password-protected content, otherwise false.
      */
@@ -622,7 +622,7 @@ class PostsController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_Post $post Inserted or updated post object.
+         * @param Post $post Inserted or updated post object.
          * @param Request $request Request object.
          * @param bool $creating True when creating a post, false when updating.
          */
@@ -886,7 +886,7 @@ class PostsController extends Controller
          * @since 4.7.0
          *
          * @param bool $supports_trash Whether the post type support trashing.
-         * @param WP_Post $post The Post object being considered for trashing support.
+         * @param Post $post The Post object being considered for trashing support.
          */
         $supports_trash = apply_filters("rest_{$this->post_type}_trashable", $supports_trash, $post);
 
@@ -1504,7 +1504,7 @@ class PostsController extends Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      * @param Request $request Request object.
      * @return Response Response object.
      */
@@ -1709,7 +1709,7 @@ class PostsController extends Controller
          * @since 4.7.0
          *
          * @param Response $response The response object.
-         * @param WP_Post $post Post object.
+         * @param Post $post Post object.
          * @param Request $request Request object.
          */
         return apply_filters("rest_prepare_{$this->post_type}", $response, $post, $request);
@@ -1738,7 +1738,7 @@ class PostsController extends Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      * @return array Links for the given post.
      */
     protected function prepare_links($post)

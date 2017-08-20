@@ -9,7 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Post;
+use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 use WP_Post_Type;
 use WP_Query;
 
@@ -710,8 +711,8 @@ class PostsListTable extends ListTable
     }
 
     /**
-     * @global wpdb $wpdb
-     * @global WP_Post $post
+     * @global WPDB $wpdb
+     * @global Post $post
      * @param array $pages
      * @param int $pagenum
      * @param int $per_page
@@ -883,7 +884,7 @@ class PostsListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_cb($post)
     {
@@ -907,7 +908,7 @@ class PostsListTable extends ListTable
      * @since 4.3.0
      * @access protected
      *
-     * @param WP_Post $post
+     * @param Post $post
      * @param string $classes
      * @param string $data
      * @param string $primary
@@ -928,7 +929,7 @@ class PostsListTable extends ListTable
      *
      * @global string $mode List table view mode.
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_title($post)
     {
@@ -1028,7 +1029,7 @@ class PostsListTable extends ListTable
      *
      * @global string $mode List table view mode.
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_date($post)
     {
@@ -1069,7 +1070,7 @@ class PostsListTable extends ListTable
          * @since 4.8.0
          *
          * @param string $status The status text.
-         * @param WP_Post $post Post object.
+         * @param Post $post Post object.
          * @param string $column_name The column name.
          * @param string $mode The list display mode ('excerpt' or 'list').
          */
@@ -1090,7 +1091,7 @@ class PostsListTable extends ListTable
              * @since 2.5.1
              *
              * @param string $t_time The published time.
-             * @param WP_Post $post Post object.
+             * @param Post $post Post object.
              * @param string $column_name The column name.
              * @param string $mode The list display mode ('excerpt' or 'list').
              */
@@ -1109,7 +1110,7 @@ class PostsListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_comments($post)
     {
@@ -1129,7 +1130,7 @@ class PostsListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_author($post)
     {
@@ -1146,7 +1147,7 @@ class PostsListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      * @param string $column_name The current column name.
      */
     public function column_default($post, $column_name)
@@ -1232,9 +1233,9 @@ class PostsListTable extends ListTable
     }
 
     /**
-     * @global WP_Post $post
+     * @global Post $post
      *
-     * @param int|WP_Post $post
+     * @param int|Post $post
      * @param int $level
      */
     public function single_row($post, $level = 0)
@@ -1385,7 +1386,7 @@ class PostsListTable extends ListTable
              * @param array $actions An array of row action links. Defaults are
              *                         'Edit', 'Quick Edit', 'Restore, 'Trash',
              *                         'Delete Permanently', 'Preview', and 'View'.
-             * @param WP_Post $post The post object.
+             * @param Post $post The post object.
              */
             $actions = apply_filters('page_row_actions', $actions, $post);
         } else {
@@ -1400,7 +1401,7 @@ class PostsListTable extends ListTable
              * @param array $actions An array of row action links. Defaults are
              *                         'Edit', 'Quick Edit', 'Restore, 'Trash',
              *                         'Delete Permanently', 'Preview', and 'View'.
-             * @param WP_Post $post The post object.
+             * @param Post $post The post object.
              */
             $actions = apply_filters('post_row_actions', $actions, $post);
         }
@@ -1833,7 +1834,7 @@ class PostsListTable extends ListTable
                                          * @since 2.7.0
                                          *
                                          * @param string $column_name Name of the column to edit.
-                                         * @param WP_Post $post_type The post type slug.
+                                         * @param Post $post_type The post type slug.
                                          */
                     do_action('bulk_edit_custom_box', $column_name, $screen->post_type);
                 } else {

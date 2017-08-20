@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Version number for the export format.
@@ -27,7 +28,7 @@ define('WXR_VERSION', '1.2');
  * @since 2.1.0
  *
  * @global WPDB $wpdb WordPress database abstraction object.
- * @global WP_Post $post Global `$post`.
+ * @global Post $post Global `$post`.
  *
  * @param array $args {
  *     Optional. Arguments for generating the WXR export file for download. Default empty array.

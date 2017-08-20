@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Post;
 
 /**
  * Customize Setting to represent a nav_menu.
@@ -601,12 +601,12 @@ class NavMenuItemSetting extends Setting
     }
 
     /**
-     * Get the value emulated into a WP_Post and set up as a nav_menu_item.
+     * Get the value emulated into a Post and set up as a nav_menu_item.
      *
      * @since 4.3.0
      * @access public
      *
-     * @return WP_Post With wp_setup_nav_menu_item() applied.
+     * @return Post With wp_setup_nav_menu_item() applied.
      */
     public function value_as_wp_post_nav_menu_item()
     {
@@ -632,7 +632,7 @@ class NavMenuItemSetting extends Setting
 
         $item->ID = $this->post_id;
         $item->db_id = $this->post_id;
-        $post = new WP_Post((object)$item);
+        $post = new Post((object)$item);
 
         if (empty($post->post_author)) {
             $post->post_author = get_current_user_id();

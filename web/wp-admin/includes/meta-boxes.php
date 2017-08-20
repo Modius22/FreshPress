@@ -2,6 +2,7 @@
 
 // -- Post related Meta Boxes
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Displays post submit form fields.
@@ -10,7 +11,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
  *
  * @global string $action
  *
- * @param WP_Post $post Current post object.
+ * @param Post $post Current post object.
  * @param array $args {
  *     Array of arguments for building the post submit meta box.
  *
@@ -83,7 +84,7 @@ function post_submit_meta_box($post, $args = array())
                  *
                  * @since 4.4.0
                  *
-                 * @param WP_Post $post WP_Post object for the current post.
+                 * @param Post $post Post object for the current post.
                  */
                 do_action('post_submitbox_minor_actions', $post); ?>
                 <div class="clear"></div>
@@ -286,7 +287,7 @@ function post_submit_meta_box($post, $args = array())
                  * @since 2.9.0
                  * @since 4.4.0 Added the `$post` parameter.
                  *
-                 * @param WP_Post $post WP_Post object for the current post.
+                 * @param Post $post Post object for the current post.
                  */
                 do_action('post_submitbox_misc_actions', $post); ?>
             </div>
@@ -432,7 +433,7 @@ function attachment_submit_meta_box($post)
  *
  * @since 3.1.0
  *
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  * @param array $box {
  *     Post formats meta box arguments.
  *
@@ -482,7 +483,7 @@ function post_format_meta_box($post, $box)
  *
  * @todo Create taxonomy-agnostic wrapper for this.
  *
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  * @param array $box {
  *     Tags meta box arguments.
  *
@@ -559,7 +560,7 @@ function post_tags_meta_box($post, $box)
  *
  * @todo Create taxonomy-agnostic wrapper for this.
  *
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  * @param array $box {
  *     Categories meta box arguments.
  *
@@ -802,7 +803,7 @@ function post_comment_status_meta_box($post)
          *
          * @since 3.1.0
          *
-         * @param WP_Post $post WP_Post object of the current post.
+         * @param Post $post Post object of the current post.
          */
         do_action('post_comment_status_meta_box-options', $post); ?>
     </p>
@@ -944,7 +945,7 @@ function page_attributes_meta_box($post)
      * @see wp_dropdown_pages()
      *
      * @param array $dropdown_args Array of arguments used to generate the pages drop-down.
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     $dropdown_args = apply_filters('page_attributes_dropdown_pages_args', $dropdown_args, $post);
     $pages = wp_dropdown_pages($dropdown_args);
@@ -968,7 +969,7 @@ function page_attributes_meta_box($post)
              * @since 4.4.0
              *
              * @param string $template The template used for the current post.
-             * @param WP_Post $post The current post.
+             * @param Post $post The current post.
              */
             do_action('page_attributes_meta_box_template', $template, $post); ?></p>
         <select name="page_template" id="page_template">
@@ -1523,7 +1524,7 @@ function link_advanced_meta_box($link)
  *
  * @since 2.9.0
  *
- * @param WP_Post $post A post object.
+ * @param Post $post A post object.
  */
 function post_thumbnail_meta_box($post)
 {
@@ -1536,7 +1537,7 @@ function post_thumbnail_meta_box($post)
  *
  * @since 3.9.0
  *
- * @param WP_Post $post A post object.
+ * @param Post $post A post object.
  */
 function attachment_id3_data_meta_box($post)
 {

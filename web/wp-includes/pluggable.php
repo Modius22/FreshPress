@@ -2485,7 +2485,7 @@ if (!function_exists('get_avatar')) :
      * @since 4.2.0 Optional `$args` parameter added.
      *
      * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-     *                           user email, User object, WP_Post object, or Comment object.
+     *                           user email, User object, Post object, or Comment object.
      * @param int $size Optional. Height and width of the avatar image file in pixels. Default 96.
      * @param string $default Optional. URL for the default image or a default type. Accepts '404'
      *                           (return a 404 instead of a default image), 'retro' (8bit), 'monsterid'
@@ -2560,7 +2560,7 @@ if (!function_exists('get_avatar')) :
          *
          * @param string $avatar HTML for the user's avatar. Default null.
          * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-         *                            user email, User object, WP_Post object, or Comment object.
+         *                            user email, User object, Post object, or Comment object.
          * @param array $args Arguments passed to get_avatar_url(), after processing.
          */
         $avatar = apply_filters('pre_get_avatar', null, $id_or_email, $args);
@@ -2625,7 +2625,7 @@ if (!function_exists('get_avatar')) :
          *
          * @param string $avatar &lt;img&gt; tag for the user's avatar.
          * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-         *                            user email, User object, WP_Post object, or Comment object.
+         *                            user email, User object, Post object, or Comment object.
          * @param int $size Square avatar width and height in pixels to retrieve.
          * @param string $default URL for the default image or a default type. Accepts '404', 'retro', 'monsterid',
          *                            'wavatar', 'indenticon','mystery' (or 'mm', or 'mysteryman'), 'blank', or 'gravatar_default'.

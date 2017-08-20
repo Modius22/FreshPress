@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Walker;
 
-use WP_Post;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Core class used to create an HTML drop-down list of pages.
@@ -53,7 +53,7 @@ class PageDropdownWalker extends Walker
      * @see Walker::start_el()
      *
      * @param string $output Used to append additional content. Passed by reference.
-     * @param WP_Post $page Page data object.
+     * @param Post $page Page data object.
      * @param int $depth Optional. Depth of page in reference to parent pages. Used for padding.
      *                        Default 0.
      * @param array $args Optional. Uses 'selected' argument for selected page to set selected HTML

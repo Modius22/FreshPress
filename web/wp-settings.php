@@ -147,7 +147,6 @@ require(ABSPATH . WPINC . '/link-template.php');
 require(ABSPATH . WPINC . '/author-template.php');
 require(ABSPATH . WPINC . '/post.php');
 require(ABSPATH . WPINC . '/class-wp-post-type.php');
-require(ABSPATH . WPINC . '/class-wp-post.php');
 require(ABSPATH . WPINC . '/post-template.php');
 require(ABSPATH . WPINC . '/revision.php');
 require(ABSPATH . WPINC . '/post-formats.php');

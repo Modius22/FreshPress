@@ -144,6 +144,7 @@ $finalClasses = array_change_key_case([
     'WP_Hook' => 'Devtronic\\FreshPress\\EventDispatcher\\Hook',
     'WP_Comment' => 'Devtronic\\FreshPress\\Entity\\Comment',
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
+    'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
 ]);
 
 // Classes

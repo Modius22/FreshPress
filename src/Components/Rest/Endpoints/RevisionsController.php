@@ -12,8 +12,8 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Post;
 
 /**
  * Core class used to access revisions via the REST API.
@@ -145,7 +145,7 @@ class RevisionsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return WP_Post|WP_Error Post object if ID is valid, WP_Error otherwise.
+     * @return Post|WP_Error Post object if ID is valid, WP_Error otherwise.
      */
     protected function get_parent($parent)
     {
@@ -196,7 +196,7 @@ class RevisionsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return WP_Post|WP_Error Revision post object if ID is valid, WP_Error otherwise.
+     * @return Post|WP_Error Revision post object if ID is valid, WP_Error otherwise.
      */
     protected function get_revision($id)
     {
@@ -366,7 +366,7 @@ class RevisionsController extends Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_Post $post Post revision object.
+     * @param Post $post Post revision object.
      * @param Request $request Request object.
      * @return Response Response object.
      */
@@ -462,7 +462,7 @@ class RevisionsController extends Controller
          * @since 4.7.0
          *
          * @param Response $response The response object.
-         * @param WP_Post $post The original revision object.
+         * @param Post $post The original revision object.
          * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_revision', $response, $post, $request);
@@ -603,7 +603,7 @@ class RevisionsController extends Controller
      * @access protected
      *
      * @param string $excerpt The post excerpt.
-     * @param WP_Post $post Post revision object.
+     * @param Post $post Post revision object.
      * @return string Prepared excerpt or empty string.
      */
     protected function prepare_excerpt_response($excerpt, $post)

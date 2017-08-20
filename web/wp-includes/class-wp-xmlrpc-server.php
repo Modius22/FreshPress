@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -1096,7 +1097,7 @@ class wp_xmlrpc_server extends IXR_Server
          * @since 3.4.0
          *
          * @param array $_page An array of page data.
-         * @param WP_Post $page Page object.
+         * @param Post $page Page object.
          */
         return apply_filters('xmlrpc_prepare_page', $_page, $page);
     }

@@ -7,6 +7,8 @@
  */
 
 // don't load directly
+use Devtronic\FreshPress\Entity\Post;
+
 if (!defined('ABSPATH')) {
     die('-1');
 }
@@ -140,7 +142,7 @@ do_action("{$taxonomy}_pre_edit_form", $tag, $taxonomy); ?>
                          *
                          * @param string $slug The editable slug. Will be either a term slug or post URI depending
                          *                             upon the context in which it is evaluated.
-                         * @param object|WP_Post $tag Term or WP_Post object.
+                         * @param object|Post $tag Term or Post object.
                          */
                         $slug = isset($tag->slug) ? apply_filters('editable_slug', $tag->slug, $tag) : ''; ?>
                         <td><input name="slug" id="slug" type="text" value="<?php echo esc_attr($slug); ?>" size="40"/>

@@ -8,6 +8,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -27,7 +29,7 @@ if (isset($_GET['post'])) {
 /**
  * @global string $post_type
  * @global object $post_type_object
- * @global WP_Post $post
+ * @global Post $post
  */
 global $post_type, $post_type_object, $post;
 

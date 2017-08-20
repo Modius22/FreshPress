@@ -20,6 +20,7 @@ use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
+use Devtronic\FreshPress\Entity\Post;
 
 //
 // No-privilege Ajax handlers.
@@ -3035,7 +3036,7 @@ function wp_ajax_send_attachment_to_editor()
  *
  * @since 3.5.0
  *
- * @global WP_Post $post
+ * @global Post $post
  * @global WP_Embed $wp_embed
  */
 function wp_ajax_send_link_to_editor()
@@ -3323,7 +3324,7 @@ function wp_ajax_query_themes()
  *
  * @since 4.0.0
  *
- * @global WP_Post $post Global $post.
+ * @global Post $post Global $post.
  * @global WP_Embed $wp_embed Embed API instance.
  * @global WP_Scripts $wp_scripts
  */
@@ -3429,7 +3430,7 @@ function wp_ajax_parse_embed()
 /**
  * @since 4.0.0
  *
- * @global WP_Post $post
+ * @global Post $post
  * @global WP_Scripts $wp_scripts
  */
 function wp_ajax_parse_media_shortcode()

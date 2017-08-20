@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -136,7 +137,7 @@ class WP_Query
      *
      * @since 1.5.0
      * @access public
-     * @var WP_Post
+     * @var Post
      */
     public $post;
 
@@ -3059,7 +3060,7 @@ class WP_Query
             }
         }
 
-        // Convert to WP_Post objects.
+        // Convert to Post objects.
         if ($this->posts) {
             $this->posts = array_map('get_post', $this->posts);
         }
@@ -3149,7 +3150,7 @@ class WP_Query
                  *
                  * @since 2.7.0
                  *
-                 * @param WP_Post $post_preview The Post object.
+                 * @param Post $post_preview The Post object.
                  * @param WP_Query &$this The WP_Query instance (passed by reference).
                  */
                 $this->posts[0] = get_post(apply_filters_ref_array('the_preview', array($this->posts[0], &$this)));
@@ -3217,7 +3218,7 @@ class WP_Query
         }
 
         // Ensure that any posts added/modified via one of the filters above are
-        // of the type WP_Post and are filtered.
+        // of the type Post and are filtered.
         if ($this->posts) {
             $this->post_count = count($this->posts);
 
@@ -3302,7 +3303,7 @@ class WP_Query
      * @since 1.5.0
      * @access public
      *
-     * @return WP_Post Next post.
+     * @return Post Next post.
      */
     public function next_post()
     {
@@ -3321,7 +3322,7 @@ class WP_Query
      * @since 1.5.0
      * @access public
      *
-     * @global WP_Post $post
+     * @global Post $post
      */
     public function the_post()
     {
@@ -4273,14 +4274,14 @@ class WP_Query
      * @global int $more
      * @global int $numpages
      *
-     * @param WP_Post|object|int $post WP_Post instance or Post ID/object.
+     * @param Post|object|int $post Post instance or Post ID/object.
      * @return true True when finished.
      */
     public function setup_postdata($post)
     {
         global $id, $authordata, $currentday, $currentmonth, $page, $pages, $multipage, $more, $numpages;
 
-        if (!($post instanceof WP_Post)) {
+        if (!($post instanceof Post)) {
             $post = get_post($post);
         }
 
@@ -4339,7 +4340,7 @@ class WP_Query
          *
          * @param array $pages Array of "pages" derived from the post content.
          *                       of `<!-- nextpage -->` tags..
-         * @param WP_Post $post Current post object.
+         * @param Post $post Current post object.
          */
         $pages = apply_filters('content_pagination', $pages, $post);
 
@@ -4360,7 +4361,7 @@ class WP_Query
          * @since 2.8.0
          * @since 4.1.0 Introduced `$this` parameter.
          *
-         * @param WP_Post &$post The Post object (passed by reference).
+         * @param Post &$post The Post object (passed by reference).
          * @param WP_Query &$this The current Query object (passed by reference).
          */
         do_action_ref_array('the_post', array(&$post, &$this));
@@ -4374,7 +4375,7 @@ class WP_Query
      *
      * @since 3.7.0
      *
-     * @global WP_Post $post
+     * @global Post $post
      */
     public function reset_postdata()
     {

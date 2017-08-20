@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\Term;
 
 //
@@ -195,7 +196,7 @@ function get_taxonomies($args = array(), $output = 'names', $operator = 'and')
  *
  * @global array $wp_taxonomies The registered taxonomies.
  *
- * @param array|string|WP_Post $object Name of the type of taxonomy object, or an object (row from posts)
+ * @param array|string|Post $object Name of the type of taxonomy object, or an object (row from posts)
  * @param string $output Optional. The type of output to return in the array. Accepts either
  *                                     taxonomy 'names' or 'objects'. Default 'names'.
  * @return array The names of all taxonomy of $object_type.
@@ -4238,7 +4239,7 @@ function get_term_link($term, $taxonomy = '')
  *     Arguments about which post to use and how to format the output. Shares all of the arguments
  *     supported by get_the_taxonomies(), in addition to the following.
  *
- * @type  int|WP_Post $post Post ID or object to get taxonomies of. Default current post.
+ * @type  int|Post $post Post ID or object to get taxonomies of. Default current post.
  * @type  string $before Displays before the taxonomies. Default empty string.
  * @type  string $sep Separates each taxonomy. Default is a space.
  * @type  string $after Displays after the taxonomies. Default empty string.
@@ -4266,7 +4267,7 @@ function the_taxonomies($args = array())
  *
  * @since 2.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @param array $args {
  *     Optional. Arguments about how to format the list of taxonomies. Default empty array.
  *
@@ -4329,7 +4330,7 @@ function get_the_taxonomies($post = 0, $args = array())
  *
  * @since 2.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return array An array of all taxonomy names for the given post.
  */
 function get_post_taxonomies($post = 0)

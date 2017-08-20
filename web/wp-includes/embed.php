@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Registers an embed handler.
@@ -388,7 +389,7 @@ function wp_oembed_add_host_js()
  *
  * @since 4.4.0
  *
- * @param int|WP_Post $post Optional. Post ID or object. Defaults to the current post.
+ * @param int|Post $post Optional. Post ID or object. Defaults to the current post.
  * @return string|false The post embed URL on success, false if the post doesn't exist.
  */
 function get_post_embed_url($post = null)
@@ -416,7 +417,7 @@ function get_post_embed_url($post = null)
      * @since 4.4.0
      *
      * @param string $embed_url The post embed URL.
-     * @param WP_Post $post The corresponding post object.
+     * @param Post $post The corresponding post object.
      */
     return esc_url_raw(apply_filters('post_embed_url', $embed_url, $post));
 }
@@ -462,7 +463,7 @@ function get_oembed_endpoint_url($permalink = '', $format = 'json')
  *
  * @param int $width The width for the response.
  * @param int $height The height for the response.
- * @param int|WP_Post $post Optional. Post ID or object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or object. Default is global `$post`.
  * @return string|false Embed code on success, false if post doesn't exist.
  */
 function get_post_embed_html($width, $height, $post = null)
@@ -520,7 +521,7 @@ JS;
      * @since 4.4.0
      *
      * @param string $output The default HTML.
-     * @param WP_Post $post Current post object.
+     * @param Post $post Current post object.
      * @param int $width Width of the response.
      * @param int $height Height of the response.
      */
@@ -532,7 +533,7 @@ JS;
  *
  * @since 4.4.0
  *
- * @param WP_Post|int $post Post object or ID.
+ * @param Post|int $post Post object or ID.
  * @param int $width The requested width.
  * @return array|false Response data on success, false if post doesn't exist.
  */
@@ -592,7 +593,7 @@ function get_oembed_response_data($post, $width)
      * @since 4.4.0
      *
      * @param array $data The response data.
-     * @param WP_Post $post The post object.
+     * @param Post $post The post object.
      * @param int $width The requested width.
      * @param int $height The calculated height.
      */
@@ -605,7 +606,7 @@ function get_oembed_response_data($post, $width)
  * @since 4.4.0
  *
  * @param array $data The response data.
- * @param WP_Post $post The post object.
+ * @param Post $post The post object.
  * @param int $width The requested width.
  * @param int $height The calculated height.
  * @return array The modified response data.

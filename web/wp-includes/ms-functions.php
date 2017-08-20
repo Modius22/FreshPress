@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -140,7 +141,7 @@ function get_blog_count($network_id = null)
  *
  * @param int $blog_id ID of the blog.
  * @param int $post_id ID of the post you're looking for.
- * @return WP_Post|null WP_Post on success or null on failure
+ * @return Post|null Post on success or null on failure
  */
 function get_blog_post($blog_id, $post_id)
 {

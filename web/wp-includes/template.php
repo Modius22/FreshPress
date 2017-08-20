@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -686,7 +687,7 @@ function locate_template($template_names, $load = false, $require_once = true)
  * @since 1.5.0
  *
  * @global array $posts
- * @global WP_Post $post
+ * @global Post $post
  * @global bool $wp_did_header
  * @global WP_Query $wp_query
  * @global WP_Rewrite $wp_rewrite

@@ -6,13 +6,15 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Entity\Post;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
 /**
  * @global string $post_type
  * @global object $post_type_object
- * @global WP_Post $post
+ * @global Post $post
  */
 global $post_type, $post_type_object, $post;
 

@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * Check whether a comment passes internal checks to be allowed to add.
@@ -2694,11 +2695,11 @@ function do_all_pings()
  * Perform trackbacks.
  *
  * @since 1.5.0
- * @since 4.7.0 $post_id can be a WP_Post object.
+ * @since 4.7.0 $post_id can be a Post object.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param int|WP_Post $post_id Post object or ID to do trackbacks on.
+ * @param int|Post $post_id Post object or ID to do trackbacks on.
  */
 function do_trackbacks($post_id)
 {
@@ -2771,10 +2772,10 @@ function generic_ping($post_id = 0)
  * Pings back the links found in a post.
  *
  * @since 0.71
- * @since 4.7.0 $post_id can be a WP_Post object.
+ * @since 4.7.0 $post_id can be a Post object.
  *
  * @param string $content Post content to check for links. If empty will retrieve from post.
- * @param int|WP_Post $post_id Post Object or ID.
+ * @param int|Post $post_id Post Object or ID.
  */
 function pingback($content, $post_id)
 {
@@ -3106,7 +3107,7 @@ function _prime_comment_caches($comment_ids, $update_meta_cache = true)
  * @access private
  * @since 2.7.0
  *
- * @param WP_Post $posts Post data object.
+ * @param Post $posts Post data object.
  * @param WP_Query $query Query object.
  * @return array
  */

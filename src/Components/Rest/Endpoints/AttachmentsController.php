@@ -11,8 +11,8 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
+use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Post;
 
 /**
  * Core controller used to access attachments via the REST API.
@@ -184,7 +184,7 @@ class AttachmentsController extends PostsController
          *
          * @since 4.7.0
          *
-         * @param WP_Post $attachment Inserted or updated attachment
+         * @param Post $attachment Inserted or updated attachment
          *                                    object.
          * @param Request $request The request sent to the API.
          * @param bool $creating True when creating an attachment, false when updating.
@@ -309,7 +309,7 @@ class AttachmentsController extends PostsController
      * @since 4.7.0
      * @access public
      *
-     * @param WP_Post $post Attachment object.
+     * @param Post $post Attachment object.
      * @param Request $request Request object.
      * @return Response Response object.
      */
@@ -389,7 +389,7 @@ class AttachmentsController extends PostsController
          * @since 4.7.0
          *
          * @param Response $response The response object.
-         * @param WP_Post $post The original attachment post.
+         * @param Post $post The original attachment post.
          * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_attachment', $response, $post, $request);

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Entity\Comment;
+use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\Term;
 use Devtronic\FreshPress\Entity\User;
 
@@ -16,7 +17,7 @@ use Devtronic\FreshPress\Entity\User;
  * @since 1.2.0
  * @since 4.4.0 Added the `$post` parameter.
  *
- * @param int|WP_Post $post Optional. Post ID or post object. Default is the global `$post`.
+ * @param int|Post $post Optional. Post ID or post object. Default is the global `$post`.
  */
 function the_permalink($post = 0)
 {
@@ -27,7 +28,7 @@ function the_permalink($post = 0)
      * @since 4.4.0 Added the `$post` parameter.
      *
      * @param string $permalink The permalink for the current post.
-     * @param int|WP_Post $post Post ID, WP_Post object, or 0. Default 0.
+     * @param int|Post $post Post ID, Post object, or 0. Default 0.
      */
     echo esc_url(apply_filters('the_permalink', get_permalink($post), $post));
 }
@@ -105,7 +106,7 @@ function permalink_anchor($mode = 'id')
  *
  * @see get_permalink()
  *
- * @param int|WP_Post $post Optional. Post ID or post object. Default is the global `$post`.
+ * @param int|Post $post Optional. Post ID or post object. Default is the global `$post`.
  * @param bool $leavename Optional. Whether to keep post name or page name. Default false.
  *
  * @return string|false The permalink URL or false if post does not exist.
@@ -120,7 +121,7 @@ function get_the_permalink($post = 0, $leavename = false)
  *
  * @since 1.0.0
  *
- * @param int|WP_Post $post Optional. Post ID or post object. Default is the global `$post`.
+ * @param int|Post $post Optional. Post ID or post object. Default is the global `$post`.
  * @param bool $leavename Optional. Whether to keep post name or page name. Default false.
  * @return string|false The permalink URL or false if post does not exist.
  */
@@ -169,7 +170,7 @@ function get_permalink($post = 0, $leavename = false)
      * @since 3.0.0
      *
      * @param string $permalink The site's permalink structure.
-     * @param WP_Post $post The post in question.
+     * @param Post $post The post in question.
      * @param bool $leavename Whether to keep the post name.
      */
     $permalink = apply_filters('pre_post_link', $permalink, $post, $leavename);
@@ -192,7 +193,7 @@ function get_permalink($post = 0, $leavename = false)
                  *
                  * @param Term $cat The category to use in the permalink.
                  * @param array $cats Array of all categories (Term objects) associated with the post.
-                 * @param WP_Post $post The post in question.
+                 * @param Post $post The post in question.
                  */
                 $category_object = apply_filters('post_link_category', $cats[0], $cats, $post);
 
@@ -247,7 +248,7 @@ function get_permalink($post = 0, $leavename = false)
      * @since 1.5.0
      *
      * @param string $permalink The post's permalink.
-     * @param WP_Post $post The post in question.
+     * @param Post $post The post in question.
      * @param bool $leavename Whether to keep the post name.
      */
     return apply_filters('post_link', $permalink, $post, $leavename);
@@ -310,7 +311,7 @@ function get_post_permalink($id = 0, $leavename = false, $sample = false)
      * @since 3.0.0
      *
      * @param string $post_link The post's permalink.
-     * @param WP_Post $post The post in question.
+     * @param Post $post The post in question.
      * @param bool $leavename Whether to keep the post name.
      * @param bool $sample Is it a sample permalink.
      */
@@ -324,7 +325,7 @@ function get_post_permalink($id = 0, $leavename = false, $sample = false)
  *
  * @since 1.5.0
  *
- * @param int|WP_Post $post Optional. Post ID or object. Default uses the global `$post`.
+ * @param int|Post $post Optional. Post ID or object. Default uses the global `$post`.
  * @param bool $leavename Optional. Whether to keep the page name. Default false.
  * @param bool $sample Optional. Whether it should be treated as a sample permalink.
  *                               Default false.
@@ -362,7 +363,7 @@ function get_page_link($post = false, $leavename = false, $sample = false)
  *
  * @global WP_Rewrite $wp_rewrite
  *
- * @param int|WP_Post $post Optional. Post ID or object. Default uses the global `$post`.
+ * @param int|Post $post Optional. Post ID or object. Default uses the global `$post`.
  * @param bool $leavename Optional. Whether to keep the page name. Default false.
  * @param bool $sample Optional. Whether it should be treated as a sample permalink.
  *                               Default false.
@@ -1300,7 +1301,7 @@ function get_post_type_archive_feed_link($post_type, $feed = '')
  *
  * @since 4.4.0
  *
- * @param int|WP_Post $post Optional. Post ID or `WP_Post` object. Defaults to global `$post`.
+ * @param int|Post $post Optional. Post ID or `Devtronic\FreshPress\Entity\Post` object. Defaults to global `$post`.
  * @param array $query_args Optional. Array of additional query args to be appended to the link.
  *                                  Default empty array.
  * @param string $preview_link Optional. Base preview link to be used if it should differ from the
@@ -1331,7 +1332,7 @@ function get_preview_post_link($post = null, $query_args = array(), $preview_lin
      * @since 4.0.0 Added the `$post` parameter.
      *
      * @param string $preview_link URL used for the post preview.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('preview_post_link', $preview_link, $post);
 }
@@ -1661,7 +1662,7 @@ function get_edit_user_link($user_id = null)
  * @param bool $in_same_term Optional. Whether post should be in a same taxonomy term. Default false.
  * @param array|string $excluded_terms Optional. Array or comma-separated list of excluded term IDs. Default empty.
  * @param string $taxonomy Optional. Taxonomy, if $in_same_term is true. Default 'category'.
- * @return null|string|WP_Post Post object if successful. Null if global $post is not set. Empty string if no
+ * @return null|string|Post Post object if successful. Null if global $post is not set. Empty string if no
  *                             corresponding post exists.
  */
 function get_previous_post($in_same_term = false, $excluded_terms = '', $taxonomy = 'category')
@@ -1677,7 +1678,7 @@ function get_previous_post($in_same_term = false, $excluded_terms = '', $taxonom
  * @param bool $in_same_term Optional. Whether post should be in a same taxonomy term. Default false.
  * @param array|string $excluded_terms Optional. Array or comma-separated list of excluded term IDs. Default empty.
  * @param string $taxonomy Optional. Taxonomy, if $in_same_term is true. Default 'category'.
- * @return null|string|WP_Post Post object if successful. Null if global $post is not set. Empty string if no
+ * @return null|string|Post Post object if successful. Null if global $post is not set. Empty string if no
  *                             corresponding post exists.
  */
 function get_next_post($in_same_term = false, $excluded_terms = '', $taxonomy = 'category')
@@ -1698,7 +1699,7 @@ function get_next_post($in_same_term = false, $excluded_terms = '', $taxonomy = 
  * @param array|string $excluded_terms Optional. Array or comma-separated list of excluded term IDs. Default empty.
  * @param bool $previous Optional. Whether to retrieve previous post. Default true
  * @param string $taxonomy Optional. Taxonomy, if $in_same_term is true. Default 'category'.
- * @return null|string|WP_Post Post object if successful. Null if global $post is not set. Empty string if no
+ * @return null|string|Post Post object if successful. Null if global $post is not set. Empty string if no
  *                             corresponding post exists.
  */
 function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previous = true, $taxonomy = 'category')
@@ -1818,7 +1819,7 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
      * @param bool $in_same_term Whether post should be in a same taxonomy term.
      * @param array $excluded_terms Array of excluded term IDs.
      * @param string $taxonomy Taxonomy. Used to identify the term used when `$in_same_term` is true.
-     * @param WP_Post $post WP_Post object.
+     * @param Post $post Post object.
      */
     $join = apply_filters("get_{$adjacent}_post_join", $join, $in_same_term, $excluded_terms, $taxonomy, $post);
 
@@ -1835,7 +1836,7 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
      * @param bool $in_same_term Whether post should be in a same taxonomy term.
      * @param array $excluded_terms Array of excluded term IDs.
      * @param string $taxonomy Taxonomy. Used to identify the term used when `$in_same_term` is true.
-     * @param WP_Post $post WP_Post object.
+     * @param Post $post Post object.
      */
     $where = apply_filters(
         "get_{$adjacent}_post_where",
@@ -1856,7 +1857,7 @@ function get_adjacent_post($in_same_term = false, $excluded_terms = '', $previou
      * @since 4.4.0 Added the `$post` parameter.
      *
      * @param string $order_by The `ORDER BY` clause in the SQL.
-     * @param WP_Post $post WP_Post object.
+     * @param Post $post Post object.
      */
     $sort = apply_filters("get_{$adjacent}_post_sort", "ORDER BY p.post_date $order LIMIT 1", $post);
 
@@ -2235,7 +2236,7 @@ function get_adjacent_post_link(
      * @param string $output The adjacent post link.
      * @param string $format Link anchor format.
      * @param string $link Link permalink format.
-     * @param WP_Post $post The adjacent post.
+     * @param Post $post The adjacent post.
      * @param string $adjacent Whether the post is previous or next.
      */
     return apply_filters("{$adjacent}_post_link", $output, $format, $link, $post, $adjacent);
@@ -3860,7 +3861,7 @@ function get_edit_profile_url($user_id = 0, $scheme = 'admin')
  *
  * @since 4.6.0
  *
- * @param int|WP_Post $post Optional. Post ID or object. Default is global `$post`.
+ * @param int|Post $post Optional. Post ID or object. Default is global `$post`.
  * @return string|false The canonical URL, or false if the post does not exist or has not
  *                      been published yet.
  */
@@ -3901,7 +3902,7 @@ function wp_get_canonical_url($post = null)
      * @since 4.6.0
      *
      * @param string $canonical_url The post's canonical URL.
-     * @param WP_Post $post Post object.
+     * @param Post $post Post object.
      */
     return apply_filters('get_canonical_url', $canonical_url, $post);
 }
@@ -4102,7 +4103,7 @@ function the_shortlink($text = '', $title = '', $before = '', $after = '')
  * @since 4.2.0
  *
  * @param mixed $id_or_email The Gravatar to retrieve a URL for. Accepts a user_id, gravatar md5 hash,
- *                           user email, User object, WP_Post object, or Comment object.
+ *                           user email, User object, Post object, or Comment object.
  * @param array $args {
  *     Optional. Arguments to return instead of the default arguments.
  *
@@ -4135,7 +4136,7 @@ function get_avatar_url($id_or_email, $args = null)
  * @since 4.2.0
  *
  * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
- *                            user email, User object, WP_Post object, or Comment object.
+ *                            user email, User object, Post object, or Comment object.
  * @param array $args {
  *     Optional. Arguments to return instead of the default arguments.
  *
@@ -4238,7 +4239,7 @@ function get_avatar_data($id_or_email, $args = null)
      *
      * @param array $args Arguments passed to get_avatar_data(), after processing.
      * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-     *                            user email, User object, WP_Post object, or Comment object.
+     *                            user email, User object, Post object, or Comment object.
      */
     $args = apply_filters('pre_get_avatar_data', $args, $id_or_email);
 
@@ -4268,7 +4269,7 @@ function get_avatar_data($id_or_email, $args = null)
     } elseif ($id_or_email instanceof User) {
         // User Object
         $user = $id_or_email;
-    } elseif ($id_or_email instanceof WP_Post) {
+    } elseif ($id_or_email instanceof Post) {
         // Post Object
         $user = get_user_by('id', (int)$id_or_email->post_author);
     } elseif ($id_or_email instanceof Comment) {
@@ -4339,7 +4340,7 @@ function get_avatar_data($id_or_email, $args = null)
      *
      * @param string $url The URL of the avatar.
      * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-     *                            user email, User object, WP_Post object, or Comment object.
+     *                            user email, User object, Post object, or Comment object.
      * @param array $args Arguments passed to get_avatar_data(), after processing.
      */
     $args['url'] = apply_filters('get_avatar_url', $url, $id_or_email, $args);
@@ -4351,7 +4352,7 @@ function get_avatar_data($id_or_email, $args = null)
      *
      * @param array $args Arguments passed to get_avatar_data(), after processing.
      * @param mixed $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
-     *                            user email, User object, WP_Post object, or Comment object.
+     *                            user email, User object, Post object, or Comment object.
      */
     return apply_filters('get_avatar_data', $args, $id_or_email);
 }

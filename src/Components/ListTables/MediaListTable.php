@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Post;
+use Devtronic\FreshPress\Entity\Post;
 use WP_Query;
 
 /**
@@ -363,7 +363,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_cb($post)
     {
@@ -383,7 +383,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_title($post)
     {
@@ -428,7 +428,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_author($post)
     {
@@ -445,7 +445,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_desc($post)
     {
@@ -458,7 +458,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_date($post)
     {
@@ -487,7 +487,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_parent($post)
     {
@@ -549,7 +549,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      */
     public function column_comments($post)
     {
@@ -572,7 +572,7 @@ class MediaListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Post $post The current WP_Post object.
+     * @param Post $post The current Post object.
      * @param string $column_name Current column name.
      */
     public function column_default($post, $column_name)
@@ -626,7 +626,7 @@ class MediaListTable extends ListTable
 
     /**
      *
-     * @global WP_Post $post
+     * @global Post $post
      */
     public function display_rows()
     {
@@ -669,7 +669,7 @@ class MediaListTable extends ListTable
     }
 
     /**
-     * @param WP_Post $post
+     * @param Post $post
      * @param string $att_title
      *
      * @return array
@@ -784,7 +784,7 @@ class MediaListTable extends ListTable
          *
          * @param array $actions An array of action links for each attachment.
          *                          Default 'Edit', 'Delete Permanently', 'View'.
-         * @param WP_Post $post WP_Post object for the current attachment.
+         * @param Post $post Post object for the current attachment.
          * @param bool $detached Whether the list table contains media not attached
          *                          to any posts. Default true.
          */

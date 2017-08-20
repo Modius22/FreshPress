@@ -11,8 +11,8 @@ namespace Devtronic\FreshPress\Components\Customize;
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Post;
 use WP_Query;
 use WP_Theme;
 
@@ -1161,7 +1161,7 @@ class Manager
                 }
 
                 $r = $this->nav_menus->insert_auto_draft_post($posts[$post_symbol]);
-                if ($r instanceof WP_Post) {
+                if ($r instanceof Post) {
                     $posts[$post_symbol]['ID'] = $r->ID;
                 }
             }
@@ -2646,8 +2646,8 @@ class Manager
      * @access private
      *
      * @param bool $post_has_changed Whether the post has changed.
-     * @param WP_Post $last_revision The last revision post object.
-     * @param WP_Post $post The post object.
+     * @param Post $last_revision The last revision post object.
+     * @param Post $post The post object.
      *
      * @return bool Whether a revision should be made.
      */

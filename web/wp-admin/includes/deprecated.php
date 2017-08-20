@@ -15,6 +15,7 @@
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
+use Devtronic\FreshPress\Entity\Post;
 
 /**
  * @since 2.1.0
@@ -1182,7 +1183,7 @@ function get_post_to_edit($id)
  * @deprecated 3.5.0 Use get_default_post_to_edit()
  * @see get_default_post_to_edit()
  *
- * @return WP_Post Post object containing all the default post data as attributes
+ * @return Post Post object containing all the default post data as attributes
  */
 function get_default_page_to_edit()
 {

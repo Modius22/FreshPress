@@ -13,6 +13,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\Walker\CategoryChecklistWalker;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Post;
 
 /** WP_Internal_Pointers class */
 require_once(ABSPATH . 'wp-admin/includes/class-wp-internal-pointers.php');
@@ -274,7 +275,7 @@ function wp_link_category_checklist($link_id = 0)
  *
  * @since 2.7.0
  *
- * @param WP_Post $post Post object.
+ * @param Post $post Post object.
  */
 function get_inline_data($post)
 {
@@ -586,7 +587,7 @@ function _list_meta_row($entry, &$count)
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param WP_Post $post Optional. The post being edited.
+ * @param Post $post Optional. The post being edited.
  */
 function meta_form($post = null)
 {
@@ -602,7 +603,7 @@ function meta_form($post = null)
      * @since 4.4.0
      *
      * @param array|null $keys Pre-defined meta keys to be used in place of a postmeta query. Default null.
-     * @param WP_Post    $post The current post object.
+     * @param Post    $post The current post object.
      */
     $keys = apply_filters('postmeta_form_keys', null, $post);
 
@@ -805,7 +806,7 @@ function page_template_dropdown($default = '', $post_type = 'page')
  * @param int         $default Optional. The default page ID to be pre-selected. Default 0.
  * @param int         $parent  Optional. The parent page ID. Default 0.
  * @param int         $level   Optional. Page depth level. Default 0.
- * @param int|WP_Post $post    Post ID or WP_Post object.
+ * @param int|Post $post    Post ID or Post object.
  *
  * @return null|false Boolean False if page has no children, otherwise print out html elements
  */
@@ -1637,7 +1638,7 @@ function the_post_password()
  *
  * @since 2.7.0
  *
- * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
+ * @param int|Post $post Optional. Post ID or Post object. Default is global $post.
  * @return string The post title if set.
  */
 function _draft_or_post_title($post = 0)
@@ -1782,7 +1783,7 @@ function iframe_footer()
 
 /**
  *
- * @param WP_Post $post
+ * @param Post $post
  */
 function _post_states($post)
 {
@@ -1830,7 +1831,7 @@ function _post_states($post)
      * @since 3.6.0 Added the `$post` parameter.
      *
      * @param array   $post_states An array of post display states.
-     * @param WP_Post $post        The current post object.
+     * @param Post $post        The current post object.
      */
     $post_states = apply_filters('display_post_states', $post_states, $post);
 
@@ -1848,7 +1849,7 @@ function _post_states($post)
 
 /**
  *
- * @param WP_Post $post
+ * @param Post $post
  */
 function _media_states($post)
 {
@@ -1908,7 +1909,7 @@ function _media_states($post)
      *
      * @param array   $media_states An array of media states. Default 'Header Image',
      *                              'Background Image', 'Site Icon', 'Logo'.
-     * @param WP_Post $post         The current attachment object.
+     * @param Post $post         The current attachment object.
      */
     $media_states = apply_filters('display_media_states', $media_states, $post);
 
