@@ -8,6 +8,7 @@
  * @since MU
  */
 
+use Devtronic\FreshPress\Components\Query\SiteQuery;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -637,7 +638,7 @@ function update_site_cache($sites)
  * @since 4.6.0
  * @since 4.8.0 Introduced the 'lang_id', 'lang__in', and 'lang__not_in' parameters.
  *
- * @see WP_Site_Query::parse_query()
+ * @see SiteQuery::parse_query()
  *
  * @param string|array $args {
  *     Optional. Array or query string of site query parameters. Default empty.
@@ -688,7 +689,7 @@ function update_site_cache($sites)
  */
 function get_sites($args = array())
 {
-    $query = new WP_Site_Query();
+    $query = new SiteQuery();
 
     return $query->query($args);
 }

@@ -129,6 +129,7 @@ $classes = array_change_key_case([
     'WP_Scripts' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Scripts',
     'WP_Styles' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Styles',
     'WP_Query' => 'Devtronic\\FreshPress\\Components\\Query\\Query',
+    'WP_Site_Query' => 'Devtronic\\FreshPress\\Components\\Query\\SiteQuery',
 ]);
 
 $abstractClasses = array_change_key_case([
