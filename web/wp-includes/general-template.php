@@ -6,6 +6,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Dependencies\Dependencies;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -3115,7 +3116,7 @@ function wp_dependencies_unique_hosts()
     $unique_hosts = array();
 
     foreach (array($wp_scripts, $wp_styles) as $dependencies) {
-        if ($dependencies instanceof WP_Dependencies && !empty($dependencies->queue)) {
+        if ($dependencies instanceof Dependencies && !empty($dependencies->queue)) {
             foreach ($dependencies->queue as $handle) {
                 if (!isset($dependencies->registered[$handle])) {
                     continue;

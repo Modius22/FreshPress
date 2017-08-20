@@ -8,6 +8,8 @@
  * @subpackage Dependencies
  */
 
+use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+
 /**
  * Initialize $wp_styles if it has not been set.
  *
@@ -38,7 +40,7 @@ function wp_styles()
  * @since 2.6.0
  *
  * @param string|bool|array $handles Styles to be printed. Default 'false'.
- * @return array On success, a processed array of WP_Dependencies items; otherwise, an empty array.
+ * @return array On success, a processed array of Dependencies items; otherwise, an empty array.
  */
 function wp_print_styles($handles = false)
 {
@@ -102,7 +104,7 @@ function wp_add_inline_style($handle, $data)
 /**
  * Register a CSS stylesheet.
  *
- * @see WP_Dependencies::add()
+ * @see Dependencies::add()
  * @link https://www.w3.org/TR/CSS2/media.html#media-types List of CSS media types.
  *
  * @since 2.6.0
@@ -130,7 +132,7 @@ function wp_register_style($handle, $src, $deps = array(), $ver = false, $media 
 /**
  * Remove a registered stylesheet.
  *
- * @see WP_Dependencies::remove()
+ * @see Dependencies::remove()
  *
  * @since 2.1.0
  *
@@ -148,8 +150,8 @@ function wp_deregister_style($handle)
  *
  * Registers the style if source provided (does NOT overwrite) and enqueues.
  *
- * @see WP_Dependencies::add()
- * @see WP_Dependencies::enqueue()
+ * @see Dependencies::add()
+ * @see Dependencies::enqueue()
  * @link https://www.w3.org/TR/CSS2/media.html#media-types List of CSS media types.
  *
  * @since 2.6.0
@@ -182,7 +184,7 @@ function wp_enqueue_style($handle, $src = '', $deps = array(), $ver = false, $me
 /**
  * Remove a previously enqueued CSS stylesheet.
  *
- * @see WP_Dependencies::dequeue()
+ * @see Dependencies::dequeue()
  *
  * @since 3.1.0
  *

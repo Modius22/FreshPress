@@ -1,12 +1,16 @@
 <?php
 /**
- * Dependencies API: WP_Dependencies base class
+ * Dependencies API: Dependencies base class
  *
  * @since 2.6.0
  *
  * @package WordPress
  * @subpackage Dependencies
  */
+
+namespace Devtronic\FreshPress\Components\Dependencies;
+
+use _WP_Dependency;
 
 /**
  * Core base class extended to register items.
@@ -15,7 +19,7 @@
  * @since 2.6.0
  * @uses _WP_Dependency
  */
-class WP_Dependencies
+class Dependencies
 {
     /**
      * An array of registered handle objects.
@@ -24,7 +28,7 @@ class WP_Dependencies
      * @since 2.6.8
      * @var array
      */
-    public $registered = array();
+    public $registered = [];
 
     /**
      * An array of queued _WP_Dependency handle objects.
@@ -33,7 +37,7 @@ class WP_Dependencies
      * @since 2.6.8
      * @var array
      */
-    public $queue = array();
+    public $queue = [];
 
     /**
      * An array of _WP_Dependency handle objects to queue.
@@ -42,7 +46,7 @@ class WP_Dependencies
      * @since 2.6.0
      * @var array
      */
-    public $to_do = array();
+    public $to_do = [];
 
     /**
      * An array of _WP_Dependency handle objects already queued.
@@ -51,7 +55,7 @@ class WP_Dependencies
      * @since 2.6.0
      * @var array
      */
-    public $done = array();
+    public $done = [];
 
     /**
      * An array of additional arguments passed when a handle is registered.
@@ -62,7 +66,7 @@ class WP_Dependencies
      * @since 2.6.0
      * @var array
      */
-    public $args = array();
+    public $args = [];
 
     /**
      * An array of handle groups to enqueue.
@@ -71,7 +75,7 @@ class WP_Dependencies
      * @since 2.8.0
      * @var array
      */
-    public $groups = array();
+    public $groups = [];
 
     /**
      * A handle group to enqueue.
@@ -181,16 +185,16 @@ class WP_Dependencies
                 $keep_going = false;
             } // Item doesn't exist.
             elseif ($this->registered[$handle]->deps && array_diff(
-                $this->registered[$handle]->deps,
+                    $this->registered[$handle]->deps,
                     array_keys($this->registered)
-            )) {
+                )) {
                 $keep_going = false;
             } // Item requires dependencies that don't exist.
             elseif ($this->registered[$handle]->deps && !$this->all_deps(
-                $this->registered[$handle]->deps,
-                true,
+                    $this->registered[$handle]->deps,
+                    true,
                     $new_group
-            )) {
+                )) {
                 $keep_going = false;
             } // Item requires dependencies that don't exist.
 
@@ -236,7 +240,7 @@ class WP_Dependencies
      * @param mixed $args Optional. Custom property of the item. NOT the class property $args. Examples: $media, $in_footer.
      * @return bool Whether the item has been registered. True on success, false on failure.
      */
-    public function add($handle, $src, $deps = array(), $ver = false, $args = null)
+    public function add($handle, $src, $deps = [], $ver = false, $args = null)
     {
         if (isset($this->registered[$handle])) {
             return false;

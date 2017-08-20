@@ -19,9 +19,6 @@
 /** WordPress Dependency Class */
 require(ABSPATH . WPINC . '/class-wp-dependency.php');
 
-/** WordPress Dependencies Class */
-require(ABSPATH . WPINC . '/class.wp-dependencies.php');
-
 /** WordPress Scripts Class */
 require(ABSPATH . WPINC . '/class.wp-scripts.php');
 

@@ -8,14 +8,16 @@
  * @subpackage Dependencies
  */
 
+use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+
 /**
  * Core class used to register scripts.
  *
  * @package WordPress
- * @uses WP_Dependencies
+ * @uses Dependencies
  * @since 2.1.0
  */
-class WP_Scripts extends WP_Dependencies
+class WP_Scripts extends Dependencies
 {
     /**
      * Base URL for scripts.
@@ -243,7 +245,7 @@ class WP_Scripts extends WP_Dependencies
      * @since 2.8.0 Added the `$group` parameter.
      * @access public
      *
-     * @see WP_Dependencies::do_item()
+     * @see Dependencies::do_item()
      *
      * @param string $handle The script's registered handle.
      * @param int|false $group Optional. Group level: (int) level, (false) no groups. Default false.
@@ -487,7 +489,7 @@ class WP_Scripts extends WP_Dependencies
      * @since 2.8.0
      * @access public
      *
-     * @see WP_Dependencies::set_group()
+     * @see Dependencies::set_group()
      *
      * @param string $handle Name of the item. Should be unique.
      * @param bool $recursion Internal flag that calling function was called recursively.
@@ -515,7 +517,7 @@ class WP_Scripts extends WP_Dependencies
      * @since 2.1.0
      * @access public
      *
-     * @see WP_Dependencies::all_deps()
+     * @see Dependencies::all_deps()
      *
      * @param mixed $handles Item handle and argument (string) or item handles and arguments (array of strings).
      * @param bool $recursion Internal flag that function is calling itself.
@@ -544,7 +546,7 @@ class WP_Scripts extends WP_Dependencies
      * @since 2.8.0
      * @access public
      *
-     * @see WP_Dependencies::do_items()
+     * @see Dependencies::do_items()
      *
      * @return array Handles of items that have been processed.
      */
@@ -560,7 +562,7 @@ class WP_Scripts extends WP_Dependencies
      * @since 2.8.0
      * @access public
      *
-     * @see WP_Dependencies::do_items()
+     * @see Dependencies::do_items()
      *
      * @return array Handles of items that have been processed.
      */

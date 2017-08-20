@@ -8,6 +8,8 @@
  * @subpackage Dependencies
  */
 
+use Devtronic\FreshPress\Components\Dependencies\Dependencies;
+
 /**
  * Initialize $wp_scripts if it has not been set.
  *
@@ -63,7 +65,7 @@ function _wp_scripts_maybe_doing_it_wrong($function)
  * @since 2.1.0
  *
  * @param string|bool|array $handles Optional. Scripts to be printed. Default 'false'.
- * @return array On success, a processed array of WP_Dependencies items; otherwise, an empty array.
+ * @return array On success, a processed array of Dependencies items; otherwise, an empty array.
  */
 function wp_print_scripts($handles = false)
 {
@@ -129,8 +131,8 @@ function wp_add_inline_script($handle, $data, $position = 'after')
  *
  * Registers a script to be enqueued later using the wp_enqueue_script() function.
  *
- * @see WP_Dependencies::add()
- * @see WP_Dependencies::add_data()
+ * @see Dependencies::add()
+ * @see Dependencies::add_data()
  *
  * @since 2.1.0
  * @since 4.3.0 A return value was added.
@@ -173,7 +175,7 @@ function wp_register_script($handle, $src, $deps = array(), $ver = false, $in_fo
  *     }
  *
  *
- * @see WP_Dependencies::localize()
+ * @see Dependencies::localize()
  * @link https://core.trac.wordpress.org/ticket/11520
  * @global WP_Scripts $wp_scripts The WP_Scripts object for printing scripts.
  *
@@ -204,7 +206,7 @@ function wp_localize_script($handle, $object_name, $l10n)
  * Note: there are intentional safeguards in place to prevent critical admin scripts,
  * such as jQuery core, from being unregistered.
  *
- * @see WP_Dependencies::remove()
+ * @see Dependencies::remove()
  *
  * @since 2.1.0
  *
@@ -270,9 +272,9 @@ function wp_deregister_script($handle)
  *
  * Registers the script if $src provided (does NOT overwrite), and enqueues it.
  *
- * @see WP_Dependencies::add()
- * @see WP_Dependencies::add_data()
- * @see WP_Dependencies::enqueue()
+ * @see Dependencies::add()
+ * @see Dependencies::add_data()
+ * @see Dependencies::enqueue()
  *
  * @since 2.1.0
  *
@@ -312,7 +314,7 @@ function wp_enqueue_script($handle, $src = '', $deps = array(), $ver = false, $i
 /**
  * Remove a previously enqueued script.
  *
- * @see WP_Dependencies::dequeue()
+ * @see Dependencies::dequeue()
  *
  * @since 3.1.0
  *
