@@ -13,8 +13,8 @@ use Devtronic\FreshPress\Components\Rest\Fields\CommentMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\User;
-use WP_Comment;
 use WP_Comment_Query;
 use WP_Error;
 use WP_Post;
@@ -345,7 +345,7 @@ class CommentsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return WP_Comment|WP_Error Comment object if ID is valid, WP_Error otherwise.
+     * @return Comment|WP_Error Comment object if ID is valid, WP_Error otherwise.
      */
     protected function get_comment($id)
     {
@@ -705,7 +705,7 @@ class CommentsController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_Comment $comment Inserted or updated comment object.
+         * @param Comment $comment Inserted or updated comment object.
          * @param Request $request Request object.
          * @param bool $creating True when creating a comment, false
          *                                  when updating.
@@ -978,7 +978,7 @@ class CommentsController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_Comment $comment The deleted comment data.
+         * @param Comment $comment The deleted comment data.
          * @param Response $response The response returned from the API.
          * @param Request $request The request sent to the API.
          */
@@ -993,7 +993,7 @@ class CommentsController extends Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_Comment $comment Comment object.
+     * @param Comment $comment Comment object.
      * @param Request $request Request object.
      * @return Response Response object.
      */
@@ -1048,7 +1048,7 @@ class CommentsController extends Controller
          * @since 4.7.0
          *
          * @param Response $response The response object.
-         * @param WP_Comment $comment The original comment object.
+         * @param Comment $comment The original comment object.
          * @param Request $request Request used to generate the response.
          */
         return apply_filters('rest_prepare_comment', $response, $comment, $request);
@@ -1060,7 +1060,7 @@ class CommentsController extends Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_Comment $comment Comment object.
+     * @param Comment $comment Comment object.
      * @return array Links for the given comment.
      */
     protected function prepare_links($comment)
@@ -1710,7 +1710,7 @@ class CommentsController extends Controller
      * @since 4.7.0
      * @access protected
      *
-     * @param WP_Comment $comment Comment object.
+     * @param Comment $comment Comment object.
      * @param Request $request Request data to check.
      * @return bool Whether the comment can be read.
      */

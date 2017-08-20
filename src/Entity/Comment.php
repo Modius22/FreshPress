@@ -1,11 +1,13 @@
 <?php
 /**
- * Comment API: WP_Comment class
+ * Comment API: Comment class
  *
  * @package WordPress
  * @subpackage Comments
  * @since 4.4.0
  */
+
+namespace Devtronic\FreshPress\Entity;
 
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -14,7 +16,7 @@ use Devtronic\FreshPress\Core\WPDB;
  *
  * @since 4.4.0
  */
-final class WP_Comment
+class Comment
 {
 
     /**
@@ -177,7 +179,7 @@ final class WP_Comment
      * @access protected
      * @var array
      */
-    protected $post_fields = array(
+    protected $post_fields = [
         'post_author',
         'post_date',
         'post_date_gmt',
@@ -199,10 +201,10 @@ final class WP_Comment
         'post_type',
         'post_mime_type',
         'comment_count'
-    );
+    ];
 
     /**
-     * Retrieves a WP_Comment instance.
+     * Retrieves a Comment instance.
      *
      * @since 4.4.0
      * @access public
@@ -211,7 +213,7 @@ final class WP_Comment
      * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $id Comment ID.
-     * @return WP_Comment|false Comment object, otherwise false.
+     * @return Comment|false Comment object, otherwise false.
      */
     public static function get_instance($id)
     {
@@ -237,7 +239,7 @@ final class WP_Comment
             wp_cache_add($_comment->comment_ID, $_comment, 'comment');
         }
 
-        return new WP_Comment($_comment);
+        return new Comment($_comment);
     }
 
     /**
@@ -248,7 +250,7 @@ final class WP_Comment
      * @since 4.4.0
      * @access public
      *
-     * @param WP_Comment $comment Comment object.
+     * @param Comment $comment Comment object.
      */
     public function __construct($comment)
     {
@@ -286,7 +288,7 @@ final class WP_Comment
      *                                 Default 'all'.
      * @type string $hierarchical Whether to include comment descendants in the results.
      *                                 'threaded' returns a tree, with each comment's children
-     *                                 stored in a `children` property on the `WP_Comment` object.
+     *                                 stored in a `children` property on the `Comment` object.
      *                                 'flat' returns a flat array of found comments plus their children.
      *                                 Pass `false` to leave out descendants.
      *                                 The parameter is ignored (forced to `false`) when `$fields` is 'ids' or 'counts'.
@@ -305,37 +307,37 @@ final class WP_Comment
      *                                 `$meta_query`. Also accepts false, an empty array, or
      *                                 'none' to disable `ORDER BY` clause.
      * }
-     * @return array Array of `WP_Comment` objects.
+     * @return array Array of `Comment` objects.
      */
-    public function get_children($args = array())
+    public function get_children($args = [])
     {
-        $defaults = array(
+        $defaults = [
             'format' => 'tree',
             'status' => 'all',
             'hierarchical' => 'threaded',
             'orderby' => '',
-        );
+        ];
 
         $_args = wp_parse_args($args, $defaults);
         $_args['parent'] = $this->comment_ID;
 
         if (is_null($this->children)) {
             if ($this->populated_children) {
-                $this->children = array();
+                $this->children = [];
             } else {
                 $this->children = get_comments($_args);
             }
         }
 
         if ('flat' === $_args['format']) {
-            $children = array();
+            $children = [];
             foreach ($this->children as $child) {
                 $child_args = $_args;
                 $child_args['format'] = 'flat';
                 // get_children() resets this value automatically.
                 unset($child_args['parent']);
 
-                $children = array_merge($children, array($child), $child->get_children($child_args));
+                $children = array_merge($children, [$child], $child->get_children($child_args));
             }
         } else {
             $children = $this->children;
@@ -352,9 +354,9 @@ final class WP_Comment
      * @since 4.4.0
      * @access public
      *
-     * @param WP_Comment $child Child comment.
+     * @param Comment $child Child comment.
      */
-    public function add_child(WP_Comment $child)
+    public function add_child(Comment $child)
     {
         $this->children[$child->comment_ID] = $child;
     }
@@ -366,7 +368,7 @@ final class WP_Comment
      * @access public
      *
      * @param int $child_id ID of the child.
-     * @return WP_Comment|bool Returns the comment object if found, otherwise false.
+     * @return Comment|bool Returns the comment object if found, otherwise false.
      */
     public function get_child($child_id)
     {

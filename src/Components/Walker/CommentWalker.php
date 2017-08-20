@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Walker;
 
-use WP_Comment;
+use Devtronic\FreshPress\Entity\Comment;
 
 /**
  * Core walker class used to create an HTML list of comments.
@@ -130,7 +130,7 @@ class CommentWalker extends Walker
      * @see Walker::display_element()
      * @see wp_list_comments()
      *
-     * @param WP_Comment $element Comment data object.
+     * @param Comment $element Comment data object.
      * @param array $children_elements List of elements to continue traversing. Passed by reference.
      * @param int $max_depth Max depth to traverse.
      * @param int $depth Depth of the current element.
@@ -171,10 +171,10 @@ class CommentWalker extends Walker
      * @see Walker::start_el()
      * @see wp_list_comments()
      * @global int $comment_depth
-     * @global WP_Comment $comment
+     * @global Comment $comment
      *
      * @param string $output Used to append additional content. Passed by reference.
-     * @param WP_Comment $comment Comment data object.
+     * @param Comment $comment Comment data object.
      * @param int $depth Optional. Depth of the current comment in reference to parents. Default 0.
      * @param array $args Optional. An array of arguments. Default empty array.
      * @param int $id Optional. ID of the current comment. Default 0 (unused).
@@ -217,7 +217,7 @@ class CommentWalker extends Walker
      * @see wp_list_comments()
      *
      * @param string $output Used to append additional content. Passed by reference.
-     * @param WP_Comment $comment The current comment object. Default current comment.
+     * @param Comment $comment The current comment object. Default current comment.
      * @param int $depth Optional. Depth of the current comment. Default 0.
      * @param array $args Optional. An array of arguments. Default empty array.
      */
@@ -244,7 +244,7 @@ class CommentWalker extends Walker
      *
      * @see wp_list_comments()
      *
-     * @param WP_Comment $comment The comment object.
+     * @param Comment $comment The comment object.
      * @param int $depth Depth of the current comment.
      * @param array $args An array of arguments.
      */
@@ -268,7 +268,7 @@ class CommentWalker extends Walker
      *
      * @see wp_list_comments()
      *
-     * @param WP_Comment $comment Comment to display.
+     * @param Comment $comment Comment to display.
      * @param int $depth Depth of the current comment.
      * @param array $args An array of arguments.
      */
@@ -342,7 +342,7 @@ class CommentWalker extends Walker
      *
      * @see wp_list_comments()
      *
-     * @param WP_Comment $comment Comment to display.
+     * @param Comment $comment Comment to display.
      * @param int $depth Depth of the current comment.
      * @param array $args An array of arguments.
      */

@@ -142,6 +142,7 @@ $finalClasses = array_change_key_case([
     'WP_Customize_Widgets' => 'Devtronic\\FreshPress\\Components\\Customize\\Widgets',
     'WP_Customize_Manager' => 'Devtronic\\FreshPress\\Components\\Customize\\Manager',
     'WP_Hook' => 'Devtronic\\FreshPress\\EventDispatcher\\Hook',
+    'WP_Comment' => 'Devtronic\\FreshPress\\Entity\\Comment',
 ]);
 
 // Classes

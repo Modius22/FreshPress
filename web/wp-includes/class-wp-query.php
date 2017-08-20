@@ -7,6 +7,7 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -2690,7 +2691,7 @@ class WP_Query
             $corderby = (!empty($corderby)) ? 'ORDER BY ' . $corderby : '';
 
             $comments = (array)$wpdb->get_results("SELECT $distinct {$wpdb->comments}.* FROM {$wpdb->comments} $cjoin $cwhere $cgroupby $corderby $climits");
-            // Convert to WP_Comment
+            // Convert to Comment
             $this->comments = array_map('get_comment', $comments);
             $this->comment_count = count($this->comments);
 
@@ -3101,7 +3102,7 @@ class WP_Query
 
             $comments_request = "SELECT {$wpdb->comments}.* FROM {$wpdb->comments} $cjoin $cwhere $cgroupby $corderby $climits";
             $comments = $wpdb->get_results($comments_request);
-            // Convert to WP_Comment
+            // Convert to Comment
             $this->comments = array_map('get_comment', $comments);
             $this->comment_count = count($this->comments);
         }
@@ -3388,12 +3389,12 @@ class WP_Query
     }
 
     /**
-     * Iterate current comment index and return WP_Comment object.
+     * Iterate current comment index and return Comment object.
      *
      * @since 2.2.0
      * @access public
      *
-     * @return WP_Comment Comment object.
+     * @return Comment Comment object.
      */
     public function next_comment()
     {
@@ -3408,7 +3409,7 @@ class WP_Query
      *
      * @since 2.2.0
      * @access public
-     * @global WP_Comment $comment Current comment.
+     * @global Comment $comment Current comment.
      */
     public function the_comment()
     {

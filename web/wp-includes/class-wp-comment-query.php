@@ -249,7 +249,7 @@ class WP_Comment_Query
      * @type int $user_id Include comments for a specific user ID. Default empty.
      * @type bool|string $hierarchical Whether to include comment descendants in the results.
      *                                                   'threaded' returns a tree, with each comment's children
-     *                                                   stored in a `children` property on the `WP_Comment`
+     *                                                   stored in a `children` property on the `Comment`
      *                                                   object. 'flat' returns a flat array of found comments plus
      *                                                   their children. Pass `false` to leave out descendants.
      *                                                   The parameter is ignored (forced to `false`) when
@@ -469,7 +469,7 @@ class WP_Comment_Query
          */
         $_comments = apply_filters_ref_array('the_comments', array($_comments, &$this));
 
-        // Convert to WP_Comment instances
+        // Convert to Comment instances
         $comments = array_map('get_comment', $_comments);
 
         if ($this->query_vars['hierarchical']) {

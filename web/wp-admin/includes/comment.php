@@ -7,6 +7,8 @@
  * @since 2.3.0
  */
 
+use Devtronic\FreshPress\Entity\Comment;
+
 /**
  * Determine if a comment exists based on author and date.
  *
@@ -96,12 +98,12 @@ function edit_comment()
 }
 
 /**
- * Returns a WP_Comment object based on comment ID.
+ * Returns a Comment object based on comment ID.
  *
  * @since 2.0.0
  *
  * @param int $id ID of comment to retrieve.
- * @return WP_Comment|false Comment if found. False on failure.
+ * @return Comment|false Comment if found. False on failure.
  */
 function get_comment_to_edit($id)
 {

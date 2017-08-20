@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\User;
 
 /**
@@ -1145,7 +1146,7 @@ class wp_xmlrpc_server extends IXR_Server
          * @since 3.4.0
          *
          * @param array $_comment An array of prepared comment data.
-         * @param WP_Comment $comment Comment object.
+         * @param Comment $comment Comment object.
          */
         return apply_filters('xmlrpc_prepare_comment', $_comment, $comment);
     }
