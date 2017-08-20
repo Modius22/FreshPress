@@ -17,6 +17,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -2752,17 +2753,17 @@ function wp_ajax_query_attachments()
     }
 
     /**
-     * Filters the arguments passed to WP_Query during an Ajax
+     * Filters the arguments passed to Query during an Ajax
      * call for querying attachments.
      *
      * @since 3.7.0
      *
-     * @see WP_Query::parse_query()
+     * @see Query::parse_query()
      *
      * @param array $query An array of query variables.
      */
     $query = apply_filters('ajax_query_attachments_args', $query);
-    $query = new WP_Query($query);
+    $query = new Query($query);
 
     $posts = array_map('wp_prepare_attachment_for_js', $query->posts);
     $posts = array_filter($posts);

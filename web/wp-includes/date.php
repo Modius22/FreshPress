@@ -3,15 +3,13 @@
 /**
  * Class for generating SQL clauses that filter a primary query according to date.
  *
- * WP_Date_Query is a helper that allows primary query classes, such as WP_Query, to filter
+ * WP_Date_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query, to filter
  * their results by date columns, by generating `WHERE` subclauses to be attached to the
  * primary SQL query string.
  *
  * Attempting to filter by an invalid date value (eg month=13) will generate SQL that will
  * return no results. In these cases, a _doing_it_wrong() error notice is also thrown.
  * See WP_Date_Query::validate_date_values().
- *
- * @link https://codex.wordpress.org/Function_Reference/WP_Query Codex page.
  *
  * @since 3.7.0
  */

@@ -15,7 +15,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * Used for generating SQL clauses that filter a primary query according to object
  * taxonomy terms.
  *
- * WP_Tax_Query is a helper that allows primary query classes, such as WP_Query, to filter
+ * WP_Tax_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query, to filter
  * their results by object metadata, by generating `JOIN` and `WHERE` subclauses to be
  * attached to the primary SQL query string.
  *
@@ -68,7 +68,7 @@ class WP_Tax_Query
      * Terms and taxonomies fetched by this query.
      *
      * We store this data in a flat array because they are referenced in a
-     * number of places by WP_Query.
+     * number of places by Devtronic\FreshPress\Components\Query\Query.
      *
      * @since 4.1.0
      * @access public
@@ -168,7 +168,7 @@ class WP_Tax_Query
 
                 /*
                  * Keep a copy of the clause in the flate
-                 * $queried_terms array, for use in WP_Query.
+                 * $queried_terms array, for use in Devtronic\FreshPress\Components\Query\Query.
                  */
                 if (!empty($cleaned_clause['taxonomy']) && 'NOT IN' !== $cleaned_clause['operator']) {
                     $taxonomy = $cleaned_clause['taxonomy'];

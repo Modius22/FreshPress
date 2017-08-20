@@ -5,6 +5,7 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -1023,10 +1024,10 @@ function wp_remote_fopen($uri)
  * @since 2.0.0
  *
  * @global WP $wp_locale
- * @global WP_Query $wp_query
- * @global WP_Query $wp_the_query
+ * @global Query $wp_query
+ * @global Query $wp_the_query
  *
- * @param string|array $query_vars Default WP_Query arguments.
+ * @param string|array $query_vars Default Devtronic\FreshPress\Components\Query\Query arguments.
  */
 function wp($query_vars = '')
 {
@@ -1296,7 +1297,7 @@ function bool_from_yn($yn)
  *
  * @since 2.1.0
  *
- * @global WP_Query $wp_query Used to tell if the use a comment feed.
+ * @global Query $wp_query Used to tell if the use a comment feed.
  */
 function do_feed()
 {

@@ -12,7 +12,7 @@
  *
  * Used for generating SQL clauses that filter a primary query according to metadata keys and values.
  *
- * WP_Meta_Query is a helper that allows primary query classes, such as WP_Query and WP_User_Query,
+ * WP_Meta_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query and WP_User_Query,
  *
  * to filter their results by object metadata, by generating `JOIN` and `WHERE` subclauses to be attached
  * to the primary SQL query string.
@@ -262,7 +262,7 @@ class WP_Meta_Query
             }
         }
 
-        // WP_Query sets 'meta_value' = '' by default.
+        // Devtronic\FreshPress\Components\Query\Query sets 'meta_value' = '' by default.
         if (isset($qv['meta_value']) && '' !== $qv['meta_value'] && (!is_array($qv['meta_value']) || $qv['meta_value'])) {
             $primary_meta_query['value'] = $qv['meta_value'];
         }

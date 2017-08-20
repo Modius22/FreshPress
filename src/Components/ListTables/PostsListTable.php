@@ -9,10 +9,10 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 use WP_Post_Type;
-use WP_Query;
 
 /**
  * Core class used to implement displaying posts in a list table.
@@ -145,7 +145,7 @@ class PostsListTable extends ListTable
     /**
      *
      * @global array $avail_post_stati
-     * @global WP_Query $wp_query
+     * @global Query $wp_query
      * @global int $per_page
      * @global string $mode
      */
@@ -668,7 +668,7 @@ class PostsListTable extends ListTable
     }
 
     /**
-     * @global WP_Query $wp_query
+     * @global Query $wp_query
      * @global int $per_page
      * @param array $posts
      * @param int $level

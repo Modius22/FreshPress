@@ -1,5 +1,6 @@
 <?php
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 
@@ -678,7 +679,7 @@ class WP
      * @since 2.0.0
      * @access public
      *
-     * @global WP_Query $wp_query
+     * @global Query $wp_query
      * @global string $query_string Query string for the loop.
      * @global array $posts The found posts.
      * @global Post|null $post The current post, if available.
@@ -728,7 +729,7 @@ class WP
      * @since 2.0.0
      * @access public
      *
-     * @global WP_Query $wp_the_query
+     * @global Query $wp_the_query
      */
     public function query_posts()
     {
@@ -753,7 +754,7 @@ class WP
      * @since 2.0.0
      * @access public
      *
-     * @global WP_Query $wp_query
+     * @global Query $wp_query
      */
     public function handle_404()
     {
@@ -768,7 +769,7 @@ class WP
          * @since 4.5.0
          *
          * @param bool $preempt Whether to short-circuit default header status handling. Default false.
-         * @param WP_Query $wp_query WordPress Query object.
+         * @param Query $wp_query WordPress Query object.
          */
         if (false !== apply_filters('pre_handle_404', false, $wp_query)) {
             return;

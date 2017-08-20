@@ -6,6 +6,7 @@
  * @subpackage Post
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Rest\Endpoints\AttachmentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
 use Devtronic\FreshPress\Core\WPDB;
@@ -1767,18 +1768,18 @@ function is_post_type_viewable($post_type)
  *
  * @since 1.2.0
  *
- * @see WP_Query::parse_query()
+ * @see Query::parse_query()
  *
  * @param array $args {
- *     Optional. Arguments to retrieve posts. See WP_Query::parse_query() for all
+ *     Optional. Arguments to retrieve posts. See Query::parse_query() for all
  *     available arguments.
  *
  * @type int $numberposts Total number of posts to retrieve. Is an alias of $posts_per_page
- *                                        in WP_Query. Accepts -1 for all. Default 5.
+ *                                        in Query. Accepts -1 for all. Default 5.
  * @type int|string $category Category ID or comma-separated list of IDs (this or any children).
- *                                        Is an alias of $cat in WP_Query. Default 0.
+ *                                        Is an alias of $cat in Query. Default 0.
  * @type array $include An array of post IDs to retrieve, sticky posts will be included.
- *                                        Is an alias of $post__in in WP_Query. Default empty array.
+ *                                        Is an alias of $post__in in Query. Default empty array.
  * @type array $exclude An array of post IDs not to retrieve. Default empty array.
  * @type bool $suppress_filters Whether to suppress filters. Default true.
  * }
@@ -1820,7 +1821,7 @@ function get_posts($args = null)
     $r['ignore_sticky_posts'] = true;
     $r['no_found_rows'] = true;
 
-    $get_posts = new WP_Query;
+    $get_posts = new Query;
     return $get_posts->query($r);
 }
 

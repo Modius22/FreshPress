@@ -6,6 +6,7 @@
  * @subpackage Comment
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
@@ -975,7 +976,7 @@ function separate_comments(&$comments)
  *
  * @uses CommentWalker
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param array $comments Optional array of Comment objects. Defaults to $wp_query->comments
  * @param int $per_page Optional comments per page.
@@ -3108,7 +3109,7 @@ function _prime_comment_caches($comment_ids, $update_meta_cache = true)
  * @since 2.7.0
  *
  * @param Post $posts Post data object.
- * @param WP_Query $query Query object.
+ * @param Query $query Query object.
  * @return array
  */
 function _close_comments_for_old_posts($posts, $query)

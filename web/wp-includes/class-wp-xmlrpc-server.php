@@ -3558,7 +3558,7 @@ class wp_xmlrpc_server extends IXR_Server
      * - 'status' - Default is ''. Filter by status (e.g., 'approve', 'hold')
      * - 'post_id' - Default is ''. The post where the comment is posted. Empty string shows all comments.
      * - 'number' - Default is 10. Total number of media items to retrieve.
-     * - 'offset' - Default is 0. See WP_Query::query() for more.
+     * - 'offset' - Default is 0. See Devtronic\FreshPress\Components\Query\Query::query() for more.
      *
      * @since 2.7.0
      *
@@ -4316,7 +4316,7 @@ class wp_xmlrpc_server extends IXR_Server
      *
      * The defaults are as follows:
      * - 'number' - Default is 5. Total number of media items to retrieve.
-     * - 'offset' - Default is 0. See WP_Query::query() for more.
+     * - 'offset' - Default is 0. See Devtronic\FreshPress\Components\Query\Query::query() for more.
      * - 'parent_id' - Default is ''. The post where the media item is attached. Empty string shows all media items. 0 shows unattached media items.
      * - 'mime_type' - Default is ''. Filter by mime type (e.g., 'image/jpeg', 'application/pdf')
      *

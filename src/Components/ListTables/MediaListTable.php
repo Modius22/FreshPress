@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Query;
 
 /**
  * Core class used to implement displaying media items in a list table.
@@ -71,7 +71,7 @@ class MediaListTable extends ListTable
 
     /**
      *
-     * @global WP_Query $wp_query
+     * @global Query $wp_query
      * @global array $post_mime_types
      * @global array $avail_post_mime_types
      * @global string $mode

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -1809,7 +1810,7 @@ function wp_get_custom_css_post($stylesheet = '')
 
         // `-1` indicates no post exists; no query necessary.
         if (!$post && -1 !== $post_id) {
-            $query = new WP_Query($custom_css_query_vars);
+            $query = new Query($custom_css_query_vars);
             $post = $query->post;
             /*
              * Cache the lookup. See wp_update_custom_css_post().
@@ -1818,7 +1819,7 @@ function wp_get_custom_css_post($stylesheet = '')
             set_theme_mod('custom_css_post_id', $post ? $post->ID : -1);
         }
     } else {
-        $query = new WP_Query($custom_css_query_vars);
+        $query = new Query($custom_css_query_vars);
         $post = $query->post;
     }
 

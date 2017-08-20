@@ -9,9 +9,9 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Query;
 
 /**
  * Customize Nav Menus class.
@@ -335,7 +335,7 @@ class NavMenus
         // Prepend list of posts with nav_menus_created_posts search results on first page.
         $nav_menus_created_posts_setting = $this->manager->get_setting('nav_menus_created_posts');
         if (1 === $args['pagenum'] && $nav_menus_created_posts_setting && count($nav_menus_created_posts_setting) > 0) {
-            $stub_post_query = new WP_Query(array_merge(
+            $stub_post_query = new Query(array_merge(
                 $query,
                 [
                     'post_status' => 'auto-draft',
@@ -347,7 +347,7 @@ class NavMenus
         }
 
         // Query posts.
-        $get_posts = new WP_Query($query);
+        $get_posts = new Query($query);
         $posts = array_merge($posts, $get_posts->posts);
 
         // Create items for posts.

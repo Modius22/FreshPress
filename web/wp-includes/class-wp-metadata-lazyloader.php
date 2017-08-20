@@ -10,7 +10,7 @@
 /**
  * Core class used for lazy-loading object metadata.
  *
- * When loading many objects of a given type, such as posts in a WP_Query loop, it often makes
+ * When loading many objects of a given type, such as posts in a Devtronic\FreshPress\Components\Query\Query loop, it often makes
  * sense to prime various metadata caches at the beginning of the loop. This means fetching all
  * relevant metadata with a single database query, a technique that has the potential to improve
  * performance dramatically in some cases.
@@ -161,7 +161,7 @@ class WP_Metadata_Lazyloader
      * Lazy-loads comment meta for queued comments.
      *
      * This method is public so that it can be used as a filter callback. As a rule, there is no need to invoke it
-     * directly, from either inside or outside the `WP_Query` object.
+     * directly, from either inside or outside the `Devtronic\FreshPress\Components\Query\Query` object.
      *
      * @since 4.5.0
      *

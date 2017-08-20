@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Rest\Fields\PostMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
@@ -16,7 +17,6 @@ use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
 use WP_Post_Type;
-use WP_Query;
 
 /**
  * Core class to access posts via the REST API.
@@ -195,7 +195,7 @@ class PostsController extends Controller
 
         /*
          * This array defines mappings between public API query parameters whose
-         * values are accepted as-passed, and their internal WP_Query parameter
+         * values are accepted as-passed, and their internal Query parameter
          * name equivalents (some are the same). Only values which are also
          * present in $registered will be set.
          */
@@ -262,7 +262,7 @@ class PostsController extends Controller
 
                 /*
                  * If we intersected, but there are no post ids in common,
-                 * WP_Query won't return "no posts" for post__in = array()
+                 * Query won't return "no posts" for post__in = array()
                  * so we have to fake it a bit.
                  */
                 if (!$args['post__in']) {
@@ -322,7 +322,7 @@ class PostsController extends Controller
             }
         }
 
-        $posts_query = new WP_Query();
+        $posts_query = new Query();
         $query_result = $posts_query->query($query_args);
 
         // Allow access to all password protected posts if the context is edit.
@@ -353,7 +353,7 @@ class PostsController extends Controller
             // Out-of-bounds, run the query again without LIMIT for total count.
             unset($query_args['paged']);
 
-            $count_query = new WP_Query();
+            $count_query = new Query();
             $count_query->query($query_args);
             $total_posts = $count_query->found_posts;
         }
@@ -955,12 +955,12 @@ class PostsController extends Controller
 
     /**
      * Determines the allowed query_vars for a get_items() response and prepares
-     * them for WP_Query.
+     * them for Devtronic\FreshPress\Components\Query\Query.
      *
      * @since 4.7.0
      * @access protected
      *
-     * @param array $prepared_args Optional. Prepared WP_Query arguments. Default empty array.
+     * @param array $prepared_args Optional. Prepared Query arguments. Default empty array.
      * @param Request $request Optional. Full details about the request.
      * @return array Items query arguments.
      */
@@ -985,7 +985,7 @@ class PostsController extends Controller
             $query_args['ignore_sticky_posts'] = true;
         }
 
-        // Map to proper WP_Query orderby param.
+        // Map to proper Query orderby param.
         if (isset($query_args['orderby']) && isset($request['orderby'])) {
             $orderby_mappings = [
                 'id' => 'ID',
@@ -2384,8 +2384,8 @@ class PostsController extends Controller
          * type slug for the controller.
          *
          * This filter registers the collection parameter, but does not map the
-         * collection parameter to an internal WP_Query parameter. Use the
-         * `rest_{$this->post_type}_query` filter to set WP_Query parameters.
+         * collection parameter to an internal Query parameter. Use the
+         * `rest_{$this->post_type}_query` filter to set Query parameters.
          *
          * @since 4.7.0
          *

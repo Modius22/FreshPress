@@ -9,11 +9,11 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
 use WP_Error;
-use WP_Query;
 use WP_Theme;
 
 /**
@@ -800,7 +800,7 @@ class Manager
             return $changeset_post_id;
         }
 
-        $changeset_post_query = new WP_Query([
+        $changeset_post_query = new Query([
             'post_type' => 'customize_changeset',
             'post_status' => get_post_stati(),
             'name' => $uuid,
@@ -1023,7 +1023,7 @@ class Manager
         // Re-use auto-draft starter content posts referenced in the current customized state.
         $existing_starter_content_posts = [];
         if (!empty($starter_content_auto_draft_post_ids)) {
-            $existing_posts_query = new WP_Query([
+            $existing_posts_query = new Query([
                 'post__in' => $starter_content_auto_draft_post_ids,
                 'post_status' => 'auto-draft',
                 'post_type' => $post_types,
@@ -1040,7 +1040,7 @@ class Manager
 
         // Re-use non-auto-draft posts.
         if (!empty($all_post_slugs)) {
-            $existing_posts_query = new WP_Query([
+            $existing_posts_query = new Query([
                 'post_name__in' => $all_post_slugs,
                 'post_status' => array_diff(get_post_stati(), ['auto-draft']),
                 'post_type' => 'any',

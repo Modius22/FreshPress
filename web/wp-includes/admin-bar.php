@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Term;
 
 /**
@@ -619,7 +620,7 @@ function wp_admin_bar_shortlink_menu($wp_admin_bar)
  * @since 3.1.0
  *
  * @global Term $tag
- * @global WP_Query $wp_the_query
+ * @global Query $wp_the_query
  *
  * @param WP_Admin_Bar $wp_admin_bar
  */

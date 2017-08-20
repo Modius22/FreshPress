@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -1438,7 +1439,7 @@ function get_attachment_fields_to_edit($post, $errors = null)
  *
  * @since 2.5.0
  *
- * @global WP_Query $wp_the_query
+ * @global Query $wp_the_query
  *
  * @param int $post_id Optional. Post ID.
  * @param array $errors Errors for attachment, if any.
@@ -2563,7 +2564,7 @@ function media_upload_gallery_form($errors)
  * @since 2.5.0
  *
  * @global WPDB $wpdb
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global WP_Locale $wp_locale
  * @global string $type
  * @global string $tab

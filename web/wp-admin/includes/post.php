@@ -1292,7 +1292,7 @@ function wp_edit_attachments_query_vars($q = false)
 }
 
 /**
- * Executes a query for attachments. An array of WP_Query arguments
+ * Executes a query for attachments. An array of Query arguments
  * can be passed in, which will override the arguments set by this function.
  *
  * @since 2.5.0

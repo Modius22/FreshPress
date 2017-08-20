@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Widgets;
 
-use WP_Query;
+use Devtronic\FreshPress\Components\Query\Query;
 
 /**
  * Core class used to implement a Recent Posts widget.
@@ -70,11 +70,11 @@ class RecentPostsWidget extends Widget
          *
          * @since 3.4.0
          *
-         * @see WP_Query::get_posts()
+         * @see Query::get_posts()
          *
          * @param array $args An array of arguments used to retrieve the recent posts.
          */
-        $r = new WP_Query(apply_filters('widget_posts_args', array(
+        $r = new Query(apply_filters('widget_posts_args', array(
             'posts_per_page' => $number,
             'no_found_rows' => true,
             'post_status' => 'publish',

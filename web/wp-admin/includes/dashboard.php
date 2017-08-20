@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Comment;
 
 /**
@@ -882,10 +883,10 @@ function wp_dashboard_recent_posts($args)
      *
      * @since 4.2.0
      *
-     * @param array $query_args The arguments passed to WP_Query to produce the list of posts.
+     * @param array $query_args The arguments passed to Query to produce the list of posts.
      */
     $query_args = apply_filters('dashboard_recent_posts_query_args', $query_args);
-    $posts = new WP_Query($query_args);
+    $posts = new Query($query_args);
 
     if ($posts->have_posts()) {
         echo '<div id="' . $args['id'] . '" class="activity-block">';

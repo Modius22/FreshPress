@@ -8,6 +8,7 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
 /**
@@ -279,15 +280,15 @@ do_action('sanitize_comment_cookies');
 
 /**
  * WordPress Query object
- * @global WP_Query $wp_the_query
+ * @global Query $wp_the_query
  * @since 2.0.0
  */
-$GLOBALS['wp_the_query'] = new WP_Query();
+$GLOBALS['wp_the_query'] = new Query();
 
 /**
  * Holds the reference to @see $wp_the_query
  * Use this global for WordPress queries
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @since 1.5.0
  */
 $GLOBALS['wp_query'] = $GLOBALS['wp_the_query'];

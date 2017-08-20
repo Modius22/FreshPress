@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\PageDropdownWalker;
 use Devtronic\FreshPress\Components\Walker\PageWalker;
 use Devtronic\FreshPress\Components\Walker\Walker;
@@ -597,7 +598,7 @@ function body_class($class = '')
  *
  * @since 2.8.0
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param string|array $class One or more classes to add to the class list.
  * @return array Array of classes.
@@ -1208,7 +1209,7 @@ function wp_dropdown_pages($args = '')
  *
  * @see get_pages()
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param array|string $args {
  *     Array or string of arguments. Optional.

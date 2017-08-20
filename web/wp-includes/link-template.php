@@ -6,6 +6,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\Term;
@@ -2402,7 +2403,7 @@ function next_posts($max_page = 0, $echo = true)
  * @since 2.7.0
  *
  * @global int $paged
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param string $label Content for link text.
  * @param int $max_page Optional. Max pages. Default 0.
@@ -2554,7 +2555,7 @@ function previous_posts_link($label = null)
  *
  * @since 2.8.0
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param string|array $args {
  *     Optional. Arguments to build the post pages link navigation.
@@ -2686,7 +2687,7 @@ function the_post_navigation($args = array())
  *
  * @since 4.1.0
  *
- * @global WP_Query $wp_query WordPress Query object.
+ * @global Query $wp_query WordPress Query object.
  *
  * @param array $args {
  *     Optional. Default posts navigation arguments. Default empty array.
@@ -2901,7 +2902,7 @@ function get_comments_pagenum_link($pagenum = 1, $max_page = 0)
  *
  * @since 2.7.1
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param string $label Optional. Label for link text. Default empty.
  * @param int $max_page Optional. Max page. Default 0.

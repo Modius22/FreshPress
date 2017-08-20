@@ -9,6 +9,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -72,9 +73,9 @@ function the_post_thumbnail($size = 'post-thumbnail', $attr = '')
  *
  * @since 3.2.0
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
- * @param WP_Query $wp_query Optional. A WP_Query instance. Defaults to the $wp_query global.
+ * @param Query $wp_query Optional. A Query instance. Defaults to the $wp_query global.
  */
 function update_post_thumbnail_cache($wp_query = null)
 {

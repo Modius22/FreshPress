@@ -186,7 +186,7 @@ class TermsController extends Controller
 
         /*
          * This array defines mappings between public API query parameters whose
-         * values are accepted as-passed, and their internal WP_Query parameter
+         * values are accepted as-passed, and their internal Query parameter
          * name equivalents (some are the same). Only values which are also
          * present in $registered will be set.
          */
