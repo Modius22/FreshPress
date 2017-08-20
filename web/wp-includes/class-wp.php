@@ -1,5 +1,7 @@
 <?php
 
+use Devtronic\FreshPress\Entity\User;
+
 /**
  * WordPress environment setup class.
  *
@@ -682,7 +684,7 @@ class WP
      * @global string $request The SQL statement for the request.
      * @global int $more Only set, if single page or post.
      * @global int $single If single page or post. Only set, if single page or post.
-     * @global WP_User $authordata Only set, if author archive.
+     * @global User $authordata Only set, if author archive.
      */
     public function register_globals()
     {

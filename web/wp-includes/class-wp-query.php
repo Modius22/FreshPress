@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Entity\User;
+
 /**
  * The WordPress Query class.
  *
@@ -4261,7 +4263,7 @@ class WP_Query
      * @since 4.4.0 Added the ability to pass a post ID to `$post`.
      *
      * @global int $id
-     * @global WP_User $authordata
+     * @global User $authordata
      * @global string|int|bool $currentday
      * @global string|int|bool $currentmonth
      * @global int $page

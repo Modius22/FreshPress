@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Rename $_POST data from form names to DB post columns.
@@ -807,7 +808,7 @@ function post_exists($title, $content = '', $date = '')
  *
  * @since 2.1.0
  *
- * @global WP_User $current_user
+ * @global User $current_user
  *
  * @return int|WP_Error
  */
@@ -1691,7 +1692,7 @@ function _admin_notice_post_locked()
          *
          * @param bool $display Whether to display the dialog. Default true.
          * @param WP_Post $post Post object.
-         * @param WP_User|bool $user WP_User object on success, false otherwise.
+         * @param User|bool $user User object on success, false otherwise.
          */
         if (!apply_filters('show_post_locked_dialog', true, $post, $user)) {
             return;
@@ -1744,7 +1745,7 @@ function _admin_notice_post_locked()
                  *
                  * @param bool $override Whether to allow overriding post locks. Default true.
                  * @param WP_Post $post Post object.
-                 * @param WP_User $user User object.
+                 * @param User $user User object.
                  */
                 $override = apply_filters('override_post_lock', true, $post, $user);
                 $tab_last = $override ? '' : ' wp-tab-last'; ?>

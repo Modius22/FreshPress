@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_User;
+use User;
 use WP_User_Query;
 
 /**
@@ -238,7 +238,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      */
     public function column_cb($user)
     {
@@ -260,7 +260,7 @@ class MSUsersListTable extends ListTable
      * @since 4.4.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param \User $user The current User object.
      */
     public function column_id($user)
     {
@@ -273,7 +273,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      */
     public function column_username($user)
     {
@@ -299,7 +299,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      */
     public function column_name($user)
     {
@@ -312,7 +312,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      */
     public function column_email($user)
     {
@@ -327,7 +327,7 @@ class MSUsersListTable extends ListTable
      *
      * @global string $mode List table view mode.
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      */
     public function column_registered($user)
     {
@@ -344,7 +344,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access protected
      *
-     * @param WP_User $user
+     * @param User $user
      * @param string $classes
      * @param string $data
      * @param string $primary
@@ -363,7 +363,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      */
     public function column_blogs($user)
     {
@@ -433,7 +433,7 @@ class MSUsersListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_User $user The current WP_User object.
+     * @param User $user The current User object.
      * @param string $column_name The current column name.
      */
     public function column_default($user, $column_name)
@@ -519,7 +519,7 @@ class MSUsersListTable extends ListTable
          *
          * @param array $actions An array of action links to be displayed.
          *                         Default 'Edit', 'Delete'.
-         * @param WP_User $user WP_User object.
+         * @param User $user User object.
          */
         $actions = apply_filters('ms_user_row_actions', $actions, $user);
         return $this->row_actions($actions);

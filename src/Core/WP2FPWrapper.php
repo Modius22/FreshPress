@@ -123,6 +123,7 @@ $classes = array_change_key_case([
     'WP_Image_Editor_GD' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\GdImageEditor',
     'WP_Image_Editor_Imagick' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImagickImageEditor',
     'File_Upload_Upgrader' => 'Devtronic\\FreshPress\\Components\\Upgrader\\FileUploadUpgrader',
+    'WP_User' => 'Devtronic\\FreshPress\\Entity\\User',
 ]);
 
 $abstractClasses = array_change_key_case([

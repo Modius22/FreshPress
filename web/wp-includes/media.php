@@ -10,6 +10,7 @@ use Devtronic\FreshPress\Components\ImageEditor\GdImageEditor;
 use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
 use Devtronic\FreshPress\Components\ImageEditor\ImagickImageEditor;
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Retrieve additional image sizes.
@@ -3241,7 +3242,7 @@ function wp_prepare_attachment_for_js($attachment)
         'meta' => false,
     );
 
-    $author = new WP_User($attachment->post_author);
+    $author = new User($attachment->post_author);
     if ($author->exists()) {
         $response['authorName'] = html_entity_decode($author->display_name, ENT_QUOTES, get_bloginfo('charset'));
     } else {

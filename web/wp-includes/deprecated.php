@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 /*
  * Deprecated functions come here to die.
@@ -3002,7 +3003,7 @@ function sanitize_user_object($user, $context = 'display')
         if (!isset($user->ID)) {
             $user->ID = 0;
         }
-        if (!($user instanceof WP_User)) {
+        if (!($user instanceof User)) {
             $vars = get_object_vars($user);
             foreach (array_keys($vars) as $field) {
                 if (is_string($user->$field) || is_numeric($user->$field)) {

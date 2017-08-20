@@ -1,16 +1,18 @@
 <?php
 /**
- * User API: WP_User class
+ * User API: User class
  *
  * @package WordPress
  * @subpackage Users
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Entity;
+
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
- * Core class used to implement the WP_User object.
+ * Core class used to implement the User object.
  *
  * @since 2.0.0
  *
@@ -35,7 +37,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * @property string $deleted
  * @property string $locale
  */
-class WP_User
+class User
 {
     /**
      * User data container.
@@ -61,7 +63,7 @@ class WP_User
      * @access public
      * @var array
      */
-    public $caps = array();
+    public $caps = [];
 
     /**
      * User metadata option name.
@@ -79,7 +81,7 @@ class WP_User
      * @access public
      * @var array
      */
-    public $roles = array();
+    public $roles = [];
 
     /**
      * All capabilities the user has, including individual and role based.
@@ -88,7 +90,7 @@ class WP_User
      * @access public
      * @var array
      */
-    public $allcaps = array();
+    public $allcaps = [];
 
     /**
      * The filter context applied to user data fields.
@@ -110,14 +112,14 @@ class WP_User
     /**
      * Constructor.
      *
-     * Retrieves the userdata and passes it to WP_User::init().
+     * Retrieves the userdata and passes it to User::init().
      *
      * @since 2.0.0
      * @access public
      *
      * @global WPDB $wpdb WordPress database abstraction object.
      *
-     * @param int|string|stdClass|WP_User $id User's ID, a WP_User object, or a user object from the DB.
+     * @param int|string|\stdClass|User $id User's ID, a User object, or a user object from the DB.
      * @param string $name Optional. User's username
      * @param int $blog_id Optional Site ID, defaults to current site.
      */
@@ -125,17 +127,17 @@ class WP_User
     {
         if (!isset(self::$back_compat_keys)) {
             $prefix = $GLOBALS['wpdb']->prefix;
-            self::$back_compat_keys = array(
+            self::$back_compat_keys = [
                 'user_firstname' => 'first_name',
                 'user_lastname' => 'last_name',
                 'user_description' => 'description',
                 'user_level' => $prefix . 'user_level',
                 $prefix . 'usersettings' => $prefix . 'user-settings',
                 $prefix . 'usersettingstime' => $prefix . 'user-settings-time',
-            );
+            ];
         }
 
-        if ($id instanceof WP_User) {
+        if ($id instanceof User) {
             $this->init($id->data, $blog_id);
             return;
         } elseif (is_object($id)) {
@@ -157,7 +159,7 @@ class WP_User
         if ($data) {
             $this->init($data, $blog_id);
         } else {
-            $this->data = new stdClass;
+            $this->data = new \stdClass();
         }
     }
 
@@ -271,7 +273,7 @@ class WP_User
     public function __call($name, $arguments)
     {
         if ('_init_caps' === $name) {
-            return call_user_func_array(array($this, $name), $arguments);
+            return call_user_func_array([$this, $name], $arguments);
         }
         return false;
     }
@@ -289,12 +291,12 @@ class WP_User
     {
         if ('id' == $key) {
             _deprecated_argument(
-                'WP_User->id',
+                'User->id',
                 '2.1.0',
                 sprintf(
-                /* translators: %s: WP_User->ID */
+                /* translators: %s: User->ID */
                     __('Use %s instead.'),
-                    '<code>WP_User->ID</code>'
+                    '<code>User->ID</code>'
                 )
             );
             $key = 'ID';
@@ -324,12 +326,12 @@ class WP_User
     {
         if ('id' == $key) {
             _deprecated_argument(
-                'WP_User->id',
+                'User->id',
                 '2.1.0',
                 sprintf(
-                /* translators: %s: WP_User->ID */
+                /* translators: %s: User->ID */
                     __('Use %s instead.'),
-                    '<code>WP_User->ID</code>'
+                    '<code>User->ID</code>'
                 )
             );
             return $this->ID;
@@ -355,7 +357,7 @@ class WP_User
      * Magic method for setting custom user fields.
      *
      * This method does not update custom fields in the database. It only stores
-     * the value on the WP_User instance.
+     * the value on the User instance.
      *
      * @since 3.3.0
      * @access public
@@ -367,12 +369,12 @@ class WP_User
     {
         if ('id' == $key) {
             _deprecated_argument(
-                'WP_User->id',
+                'User->id',
                 '2.1.0',
                 sprintf(
-                /* translators: %s: WP_User->ID */
+                /* translators: %s: User->ID */
                     __('Use %s instead.'),
-                    '<code>WP_User->ID</code>'
+                    '<code>User->ID</code>'
                 )
             );
             $this->ID = $value;
@@ -394,12 +396,12 @@ class WP_User
     {
         if ('id' == $key) {
             _deprecated_argument(
-                'WP_User->id',
+                'User->id',
                 '2.1.0',
                 sprintf(
-                /* translators: %s: WP_User->ID */
+                /* translators: %s: User->ID */
                     __('Use %s instead.'),
-                    '<code>WP_User->ID</code>'
+                    '<code>User->ID</code>'
                 )
             );
         }
@@ -496,7 +498,7 @@ class WP_User
         $this->caps = get_user_meta($this->ID, $this->cap_key, true);
 
         if (!is_array($this->caps)) {
-            $this->caps = array();
+            $this->caps = [];
         }
 
         $this->get_role_caps();
@@ -521,11 +523,11 @@ class WP_User
 
         //Filter out caps that are not role names and assign to $this->roles
         if (is_array($this->caps)) {
-            $this->roles = array_filter(array_keys($this->caps), array($wp_roles, 'is_role'));
+            $this->roles = array_filter(array_keys($this->caps), [$wp_roles, 'is_role']);
         }
 
         //Build $allcaps from role caps, overlay user's $caps
-        $this->allcaps = array();
+        $this->allcaps = [];
         foreach ((array)$this->roles as $role) {
             $the_role = $wp_roles->get_role($role);
             $this->allcaps = array_merge((array)$this->allcaps, (array)$the_role->capabilities);
@@ -621,7 +623,7 @@ class WP_User
         $old_roles = $this->roles;
         if (!empty($role)) {
             $this->caps[$role] = true;
-            $this->roles = array($role => true);
+            $this->roles = [$role => true];
         } else {
             $this->roles = false;
         }
@@ -686,7 +688,7 @@ class WP_User
     public function update_user_level_from_caps()
     {
         global $wpdb;
-        $this->user_level = array_reduce(array_keys($this->allcaps), array($this, 'level_reduction'), 0);
+        $this->user_level = array_reduce(array_keys($this->allcaps), [$this, 'level_reduction'], 0);
         update_user_meta($this->ID, $wpdb->get_blog_prefix() . 'user_level', $this->user_level);
     }
 
@@ -737,7 +739,7 @@ class WP_User
     public function remove_all_caps()
     {
         global $wpdb;
-        $this->caps = array();
+        $this->caps = [];
         delete_user_meta($this->ID, $this->cap_key);
         delete_user_meta($this->ID, $wpdb->get_blog_prefix() . 'user_level');
         $this->get_role_caps();
@@ -775,7 +777,7 @@ class WP_User
         }
 
         $args = array_slice(func_get_args(), 1);
-        $args = array_merge(array($cap, $this->ID), $args);
+        $args = array_merge([$cap, $this->ID], $args);
         $caps = call_user_func_array('map_meta_cap', $args);
 
         // Multisite super admin has all caps by definition, Unless specifically denied.
@@ -795,7 +797,7 @@ class WP_User
          * @param array $allcaps An array of all the user's capabilities.
          * @param array $caps Actual capabilities for meta capability.
          * @param array $args Optional parameters passed to has_cap(), typically object ID.
-         * @param WP_User $user The user object.
+         * @param User $user The user object.
          */
         $capabilities = apply_filters('user_has_cap', $this->allcaps, $caps, $args, $this);
 

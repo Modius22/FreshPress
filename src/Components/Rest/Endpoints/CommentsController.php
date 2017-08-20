@@ -13,11 +13,11 @@ use Devtronic\FreshPress\Components\Rest\Fields\CommentMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\User;
 use WP_Comment;
 use WP_Comment_Query;
 use WP_Error;
 use WP_Post;
-use WP_User;
 
 /**
  * Core controller used to access comments via the REST API.
@@ -1222,7 +1222,7 @@ class CommentsController extends Controller
         }
 
         if (isset($request['author'])) {
-            $user = new WP_User($request['author']);
+            $user = new User($request['author']);
 
             if ($user->exists()) {
                 $prepared_comment['user_id'] = $user->ID;

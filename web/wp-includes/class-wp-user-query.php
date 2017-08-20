@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Core\WPDB;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Core class used for querying users.
@@ -643,13 +644,13 @@ class WP_User_Query
 
             $r = array();
             foreach ($this->results as $userid) {
-                $r[$userid] = new WP_User($userid, '', $qv['blog_id']);
+                $r[$userid] = new User($userid, '', $qv['blog_id']);
             }
 
             $this->results = $r;
         } elseif ('all' == $qv['fields']) {
             foreach ($this->results as $key => $user) {
-                $this->results[$key] = new WP_User($user, '', $qv['blog_id']);
+                $this->results[$key] = new User($user, '', $qv['blog_id']);
             }
         }
     }

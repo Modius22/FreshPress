@@ -7,6 +7,7 @@
  * @since 1.2.0
  */
 
+use Devtronic\FreshPress\Entity\User;
 use POMO\MO;
 use POMO\Translations\NOOPTranslations;
 use POMO\Translations\Translations;
@@ -88,7 +89,7 @@ function get_locale()
  *
  * @since 4.7.0
  *
- * @param int|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
+ * @param int|User $user_id User's ID or a User object. Defaults to current user.
  * @return string The locale of the user.
  */
 function get_user_locale($user_id = 0)
@@ -96,7 +97,7 @@ function get_user_locale($user_id = 0)
     $user = false;
     if (0 === $user_id && function_exists('wp_get_current_user')) {
         $user = wp_get_current_user();
-    } elseif ($user_id instanceof WP_User) {
+    } elseif ($user_id instanceof User) {
         $user = $user_id;
     } elseif ($user_id && is_numeric($user_id)) {
         $user = get_user_by('id', $user_id);

@@ -13,9 +13,9 @@ use Devtronic\FreshPress\Components\Rest\Fields\UserMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Entity\User;
 use WP_Error;
 use WP_Post;
-use WP_User;
 use WP_User_Query;
 
 /**
@@ -364,7 +364,7 @@ class UsersController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return WP_User|WP_Error True if ID is valid, WP_Error otherwise.
+     * @return User|WP_Error True if ID is valid, WP_Error otherwise.
      */
     protected function get_user($id)
     {
@@ -570,7 +570,7 @@ class UsersController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_User $user Inserted or updated user object.
+         * @param User $user Inserted or updated user object.
          * @param Request $request Request object.
          * @param bool $creating True when creating a user, false when updating.
          */
@@ -854,7 +854,7 @@ class UsersController extends Controller
          *
          * @since 4.7.0
          *
-         * @param WP_User $user The user data.
+         * @param User $user The user data.
          * @param Response $response The response returned from the API.
          * @param Request $request The request sent to the API.
          */
@@ -901,7 +901,7 @@ class UsersController extends Controller
      * @since 4.7.0
      * @access public
      *
-     * @param WP_User $user User object.
+     * @param User $user User object.
      * @param Request $request Request object.
      * @return Response Response object.
      */
