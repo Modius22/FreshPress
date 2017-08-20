@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Query\UserQuery;
 use Devtronic\FreshPress\Components\Rest\Fields\UserMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
@@ -16,7 +17,6 @@ use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 use WP_Error;
-use WP_User_Query;
 
 /**
  * Core class used to manage users via the REST API.
@@ -291,18 +291,16 @@ class UsersController extends Controller
             $prepared_args['search'] = '*' . $prepared_args['search'] . '*';
         }
         /**
-         * Filters WP_User_Query arguments when querying users via the REST API.
-         *
-         * @link https://developer.wordpress.org/reference/classes/wp_user_query/
+         * Filters UserQuery arguments when querying users via the REST API.
          *
          * @since 4.7.0
          *
-         * @param array $prepared_args Array of arguments for WP_User_Query.
+         * @param array $prepared_args Array of arguments for UserQuery.
          * @param Request $request The current request.
          */
         $prepared_args = apply_filters('rest_user_query', $prepared_args, $request);
 
-        $query = new WP_User_Query($prepared_args);
+        $query = new UserQuery($prepared_args);
 
         $users = [];
 
@@ -324,7 +322,7 @@ class UsersController extends Controller
         if ($total_users < 1) {
             // Out-of-bounds, run the query again without LIMIT for total count.
             unset($prepared_args['number'], $prepared_args['offset']);
-            $count_query = new WP_User_Query($prepared_args);
+            $count_query = new UserQuery($prepared_args);
             $total_users = $count_query->get_total();
         }
 
@@ -1489,8 +1487,8 @@ class UsersController extends Controller
          * Filter collection parameters for the users controller.
          *
          * This filter registers the collection parameter, but does not map the
-         * collection parameter to an internal WP_User_Query parameter.  Use the
-         * `rest_user_query` filter to set WP_User_Query arguments.
+         * collection parameter to an internal UserQuery parameter.  Use the
+         * `rest_user_query` filter to set UserQuery arguments.
          *
          * @since 4.7.0
          *

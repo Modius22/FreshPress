@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
+use Devtronic\FreshPress\Components\Query\UserQuery;
 use Devtronic\FreshPress\Entity\User;
-use WP_User_Query;
 
 /**
  * Core class used to implement displaying users in a list table.
@@ -144,13 +144,13 @@ class UsersListTable extends ListTable
          *
          * @since 4.4.0
          *
-         * @param array $args Arguments passed to WP_User_Query to retrieve items for the current
+         * @param array $args Arguments passed to UserQuery to retrieve items for the current
          *                    users list table.
          */
         $args = apply_filters('users_list_table_query_args', $args);
 
         // Query the user IDs for this page
-        $wp_user_search = new WP_User_Query($args);
+        $wp_user_search = new UserQuery($args);
 
         $this->items = $wp_user_search->get_results();
 

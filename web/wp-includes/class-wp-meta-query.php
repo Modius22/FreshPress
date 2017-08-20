@@ -12,7 +12,7 @@
  *
  * Used for generating SQL clauses that filter a primary query according to metadata keys and values.
  *
- * WP_Meta_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query and WP_User_Query,
+ * WP_Meta_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query and Devtronic\FreshPress\Components\Query\UserQuery,
  *
  * to filter their results by object metadata, by generating `JOIN` and `WHERE` subclauses to be attached
  * to the primary SQL query string.

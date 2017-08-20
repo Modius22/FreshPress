@@ -45,7 +45,6 @@
             "web/wp-includes/class-wp-roles.php",
             "web/wp-includes/class-wp-role.php",
             "web/wp-includes/class-wp-theme.php",
-            "web/wp-includes/class-wp-user-query.php",
             "web/wp-includes/class-wp-session-tokens.php",
             "web/wp-includes/class-wp-user-meta-session-tokens.php",
             "web/wp-includes/class-wp-meta-query.php",

@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use User;
-use WP_User_Query;
+use Devtronic\FreshPress\Components\Query\UserQuery;
+use Devtronic\FreshPress\Entity\User;
 
 /**
  * Core class used to implement displaying users in a list table for the network admin.
@@ -106,7 +106,7 @@ class MSUsersListTable extends ListTable
         $args = apply_filters('users_list_table_query_args', $args);
 
         // Query the user IDs for this page
-        $wp_user_search = new WP_User_Query($args);
+        $wp_user_search = new UserQuery($args);
 
         $this->items = $wp_user_search->get_results();
 
