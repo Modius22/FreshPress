@@ -1,14 +1,15 @@
 <?php
 
 /**
- * Taxonomy API: WP_Term_Query class.
+ * Taxonomy API: TermQuery class.
  *
  * @package WordPress
  * @subpackage Taxonomy
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Query\MetaQuery;
+namespace Devtronic\FreshPress\Components\Query;
+
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -16,9 +17,9 @@ use Devtronic\FreshPress\Core\WPDB;
  *
  * @since 4.6.0
  *
- * @see WP_Term_Query::__construct() for accepted arguments.
+ * @see TermQuery::__construct() for accepted arguments.
  */
-class WP_Term_Query
+class TermQuery
 {
 
     /**
@@ -55,13 +56,13 @@ class WP_Term_Query
      * @access protected
      * @var array
      */
-    protected $sql_clauses = array(
+    protected $sql_clauses = [
         'select' => '',
         'from' => '',
-        'where' => array(),
+        'where' => [],
         'orderby' => '',
         'limits' => '',
-    );
+    ];
 
     /**
      * Query vars set by the user.
@@ -187,15 +188,15 @@ class WP_Term_Query
      */
     public function __construct($query = '')
     {
-        $this->query_var_defaults = array(
+        $this->query_var_defaults = [
             'taxonomy' => null,
             'object_ids' => null,
             'orderby' => 'name',
             'order' => 'ASC',
             'hide_empty' => true,
-            'include' => array(),
-            'exclude' => array(),
-            'exclude_tree' => array(),
+            'include' => [],
+            'exclude' => [],
+            'exclude_tree' => [],
             'number' => '',
             'offset' => '',
             'fields' => 'all',
@@ -219,7 +220,7 @@ class WP_Term_Query
             'meta_value' => '',
             'meta_type' => '',
             'meta_compare' => '',
-        );
+        ];
 
         if (!empty($query)) {
             $this->query($query);
@@ -232,7 +233,7 @@ class WP_Term_Query
      * @since 4.6.0
      * @access public
      *
-     * @param string|array $query WP_Term_Query arguments. See WP_Term_Query::__construct()
+     * @param string|array $query TermQuery arguments. See TermQuery::__construct()
      */
     public function parse_query($query = '')
     {
@@ -281,7 +282,7 @@ class WP_Term_Query
          *
          * @since 4.6.0
          *
-         * @param WP_Term_Query $this Current instance of WP_Term_Query.
+         * @param TermQuery $this Current instance of TermQuery.
          */
         do_action('parse_term_query', $this);
     }
@@ -327,7 +328,7 @@ class WP_Term_Query
          *
          * @since 4.6.0
          *
-         * @param WP_Term_Query $this Current instance of WP_Term_Query.
+         * @param TermQuery $this Current instance of TermQuery.
          */
         do_action('pre_get_terms', $this);
 
@@ -394,7 +395,7 @@ class WP_Term_Query
             }
 
             if (!$in_hierarchy) {
-                return array();
+                return [];
             }
         }
 
@@ -413,9 +414,9 @@ class WP_Term_Query
 
         if ($taxonomies) {
             $this->sql_clauses['where']['taxonomy'] = "tt.taxonomy IN ('" . implode(
-                "', '",
+                    "', '",
                     array_map('esc_sql', $taxonomies)
-            ) . "')";
+                ) . "')";
         }
 
         $exclude = $args['exclude'];
@@ -433,18 +434,18 @@ class WP_Term_Query
             $this->sql_clauses['where']['inclusions'] = 't.term_id IN ( ' . $inclusions . ' )';
         }
 
-        $exclusions = array();
+        $exclusions = [];
         if (!empty($exclude_tree)) {
             $exclude_tree = wp_parse_id_list($exclude_tree);
             $excluded_children = $exclude_tree;
             foreach ($exclude_tree as $extrunk) {
                 $excluded_children = array_merge(
                     $excluded_children,
-                    (array)get_terms($taxonomies[0], array(
+                    (array)get_terms($taxonomies[0], [
                         'child_of' => intval($extrunk),
                         'fields' => 'ids',
                         'hide_empty' => 0
-                    ))
+                    ])
                 );
             }
             $exclusions = array_merge($excluded_children, $exclusions);
@@ -540,7 +541,7 @@ class WP_Term_Query
         if (!empty($args['object_ids'])) {
             $object_ids = $args['object_ids'];
             if (!is_array($object_ids)) {
-                $object_ids = array($object_ids);
+                $object_ids = [$object_ids];
             }
 
             $object_ids = implode(', ', array_map('intval', $object_ids));
@@ -602,34 +603,34 @@ class WP_Term_Query
             $distinct .= "DISTINCT";
         }
 
-        $selects = array();
+        $selects = [];
         switch ($args['fields']) {
             case 'all':
             case 'all_with_object_id':
             case 'tt_ids':
             case 'slugs':
-                $selects = array('t.*', 'tt.*');
+                $selects = ['t.*', 'tt.*'];
                 if ('all_with_object_id' === $args['fields'] && !empty($args['object_ids'])) {
                     $selects[] = 'tr.object_id';
                 }
                 break;
             case 'ids':
             case 'id=>parent':
-                $selects = array('t.term_id', 'tt.parent', 'tt.count', 'tt.taxonomy');
+                $selects = ['t.term_id', 'tt.parent', 'tt.count', 'tt.taxonomy'];
                 break;
             case 'names':
-                $selects = array('t.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy');
+                $selects = ['t.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy'];
                 break;
             case 'count':
                 $orderby = '';
                 $order = '';
-                $selects = array('COUNT(*)');
+                $selects = ['COUNT(*)'];
                 break;
             case 'id=>name':
-                $selects = array('t.term_id', 't.name', 'tt.count', 'tt.taxonomy');
+                $selects = ['t.term_id', 't.name', 'tt.count', 'tt.taxonomy'];
                 break;
             case 'id=>slug':
-                $selects = array('t.term_id', 't.slug', 'tt.count', 'tt.taxonomy');
+                $selects = ['t.term_id', 't.slug', 'tt.count', 'tt.taxonomy'];
                 break;
         }
 
@@ -698,9 +699,9 @@ class WP_Term_Query
 
         // $args can be anything. Only use the args defined in defaults to compute the key.
         $key = md5(serialize(wp_array_slice_assoc(
-            $args,
+                $args,
                 array_keys($this->query_var_defaults)
-        )) . serialize($taxonomies) . $this->request);
+            )) . serialize($taxonomies) . $this->request);
         $last_changed = wp_cache_get_last_changed('terms');
         $cache_key = "get_terms:$key:$last_changed";
         $cache = wp_cache_get($cache_key, 'terms');
@@ -731,8 +732,8 @@ class WP_Term_Query
         }
 
         if (empty($terms)) {
-            wp_cache_add($cache_key, array(), 'terms', DAY_IN_SECONDS);
-            return array();
+            wp_cache_add($cache_key, [], 'terms', DAY_IN_SECONDS);
+            return [];
         }
 
         if ($child_of) {
@@ -778,7 +779,7 @@ class WP_Term_Query
          * removed.
          */
         if (!empty($args['object_ids']) && 'all_with_object_id' != $_fields) {
-            $_tt_ids = $_terms = array();
+            $_tt_ids = $_terms = [];
             foreach ($terms as $term) {
                 if (isset($_tt_ids[$term->term_id])) {
                     continue;
@@ -791,7 +792,7 @@ class WP_Term_Query
             $terms = $_terms;
         }
 
-        $_terms = array();
+        $_terms = [];
         if ('id=>parent' == $_fields) {
             foreach ($terms as $term) {
                 $_terms[$term->term_id] = $term->parent;
@@ -829,7 +830,7 @@ class WP_Term_Query
         // Hierarchical queries are not limited, so 'offset' and 'number' must be handled now.
         if ($hierarchical && $number && is_array($terms)) {
             if ($offset >= count($terms)) {
-                $terms = array();
+                $terms = [];
             } else {
                 $terms = array_slice($terms, $offset, $number, true);
             }
@@ -861,9 +862,9 @@ class WP_Term_Query
         $_orderby = strtolower($orderby_raw);
         $maybe_orderby_meta = false;
 
-        if (in_array($_orderby, array('term_id', 'name', 'slug', 'term_group'), true)) {
+        if (in_array($_orderby, ['term_id', 'name', 'slug', 'term_group'], true)) {
             $orderby = "t.$_orderby";
-        } elseif (in_array($_orderby, array('count', 'parent', 'taxonomy', 'term_taxonomy_id', 'description'), true)) {
+        } elseif (in_array($_orderby, ['count', 'parent', 'taxonomy', 'term_taxonomy_id', 'description'], true)) {
             $orderby = "tt.$_orderby";
         } elseif ('term_order' === $_orderby) {
             $orderby = 'tr.term_order';
@@ -909,7 +910,7 @@ class WP_Term_Query
      * @since 4.6.0
      * @access protected
      *
-     * @param string $orderby_raw Raw 'orderby' value passed to WP_Term_Query.
+     * @param string $orderby_raw Raw 'orderby' value passed to TermQuery.
      * @return string ORDER BY clause.
      */
     protected function parse_orderby_meta($orderby_raw)
@@ -923,7 +924,7 @@ class WP_Term_Query
             return $orderby;
         }
 
-        $allowed_keys = array();
+        $allowed_keys = [];
         $primary_meta_key = null;
         $primary_meta_query = reset($meta_clauses);
         if (!empty($primary_meta_query['key'])) {

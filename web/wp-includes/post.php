@@ -3048,7 +3048,7 @@ function wp_untrash_post_comments($post = null)
  * @param int $post_id Optional. The Post ID. Does not default to the ID of the
  *                       global $post. Default 0.
  * @param array $args Optional. Category query parameters. Default empty array.
- *                       See WP_Term_Query::__construct() for supported arguments.
+ *                       See Devtronic\FreshPress\Components\Query\TermQuery::__construct() for supported arguments.
  * @return array|WP_Error List of categories. If the `$fields` argument passed via `$args` is 'all' or
  *                        'all_with_object_id', an array of Devtronic\FreshPress\Entity\Term objects will be returned. If `$fields`
  *                        is 'ids', an array of category ids. If `$fields` is 'names', an array of category names.
@@ -3077,7 +3077,7 @@ function wp_get_post_categories($post_id = 0, $args = array())
  * @param int $post_id Optional. The Post ID. Does not default to the ID of the
  *                       global $post. Default 0.
  * @param array $args Optional. Tag query parameters. Default empty array.
- *                       See WP_Term_Query::__construct() for supported arguments.
+ *                       See Devtronic\FreshPress\Components\Query\TermQuery::__construct() for supported arguments.
  * @return array|WP_Error Array of Devtronic\FreshPress\Entity\Term objects on success or empty array if no tags were found.
  *                        WP_Error object if 'post_tag' taxonomy doesn't exist.
  */
@@ -3099,7 +3099,7 @@ function wp_get_post_tags($post_id = 0, $args = array())
  *                         global $post. Default 0.
  * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
  * @param array $args Optional. Term query parameters. Default empty array.
- *                         See WP_Term_Query::__construct() for supported arguments.
+ *                         See Devtronic\FreshPress\Components\Query\TermQuery::__construct() for supported arguments.
  * @return array|WP_Error  Array of Devtronic\FreshPress\Entity\Term objects on success or empty array if no terms were found.
  *                         WP_Error object if `$taxonomy` doesn't exist.
  */
