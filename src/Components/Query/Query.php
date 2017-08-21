@@ -13,7 +13,6 @@ use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 use WP_Date_Query;
-use WP_Tax_Query;
 
 /**
  * The WordPress Query class.
@@ -47,7 +46,7 @@ class Query
      *
      * @since 3.1.0
      * @access public
-     * @var object WP_Tax_Query
+     * @var object TaxQuery
      */
     public $tax_query;
 
@@ -764,8 +763,7 @@ class Query
      * @type array $tag_slug__and An array of tag slugs (AND in).
      * @type array $tag_slug__in An array of tag slugs (OR in). unless 'ignore_sticky_posts' is
      *                                                 true. Note: a string of comma-separated IDs will NOT work.
-     * @type array $tax_query An associative array of WP_Tax_Query arguments.
-     *                                                 See WP_Tax_Query->queries.
+     * @type array $tax_query An associative array of TaxQuery arguments. See TaxQuery->queries.
      * @type string $title Post title.
      * @type bool $update_post_meta_cache Whether to update the post meta cache. Default true.
      * @type bool $update_post_term_cache Whether to update the post term cache. Default true.
@@ -1344,7 +1342,7 @@ class Query
             ];
         }
 
-        $this->tax_query = new WP_Tax_Query($tax_query);
+        $this->tax_query = new TaxQuery($tax_query);
 
         /**
          * Fires after taxonomy-related query vars have been parsed.

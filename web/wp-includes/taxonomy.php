@@ -6,6 +6,7 @@
  * @subpackage Taxonomy
  */
 
+use Devtronic\FreshPress\Components\Query\TaxQuery;
 use Devtronic\FreshPress\Components\Query\TermQuery;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
 use Devtronic\FreshPress\Core\WPDB;
@@ -697,7 +698,7 @@ function get_objects_in_term($term_ids, $taxonomies, $args = array())
  *
  * @since 3.1.0
  *
- * @see WP_Tax_Query
+ * @see TaxQuery
  *
  * @param array $tax_query A compact tax query
  * @param string $primary_table
@@ -706,7 +707,7 @@ function get_objects_in_term($term_ids, $taxonomies, $args = array())
  */
 function get_tax_sql($tax_query, $primary_table, $primary_id_column)
 {
-    $tax_query_obj = new WP_Tax_Query($tax_query);
+    $tax_query_obj = new TaxQuery($tax_query);
     return $tax_query_obj->get_sql($primary_table, $primary_id_column);
 }
 
