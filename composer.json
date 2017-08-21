@@ -48,7 +48,6 @@
             "web/wp-includes/class-wp-session-tokens.php",
             "web/wp-includes/class-wp-user-meta-session-tokens.php",
             "web/wp-includes/class-wp-metadata-lazyloader.php",
-            "web/wp-includes/class-wp-comment-query.php",
             "web/wp-includes/class-wp-rewrite.php",
             "web/wp-includes/class-wp-taxonomy.php",
             "web/wp-includes/class-wp-term-query.php",

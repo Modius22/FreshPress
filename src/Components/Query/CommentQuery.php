@@ -1,23 +1,25 @@
 <?php
 /**
- * Comment API: WP_Comment_Query class
+ * Comment API: CommentQuery class
  *
  * @package WordPress
  * @subpackage Comments
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Query\MetaQuery;
+namespace Devtronic\FreshPress\Components\Query;
+
 use Devtronic\FreshPress\Core\WPDB;
+use WP_Date_Query;
 
 /**
  * Core class used for querying comments.
  *
  * @since 3.1.0
  *
- * @see WP_Comment_Query::__construct() for accepted arguments.
+ * @see CommentQuery::__construct() for accepted arguments.
  */
-class WP_Comment_Query
+class CommentQuery
 {
 
     /**
@@ -54,14 +56,14 @@ class WP_Comment_Query
      * @access protected
      * @var array
      */
-    protected $sql_clauses = array(
+    protected $sql_clauses = [
         'select' => '',
         'from' => '',
-        'where' => array(),
+        'where' => [],
         'groupby' => '',
         'orderby' => '',
         'limits' => '',
-    );
+    ];
 
     /**
      * SQL WHERE clause.
@@ -141,7 +143,7 @@ class WP_Comment_Query
     public function __call($name, $arguments)
     {
         if ('get_search_sql' === $name) {
-            return call_user_func_array(array($this, $name), $arguments);
+            return call_user_func_array([$this, $name], $arguments);
         }
         return false;
     }
@@ -266,7 +268,7 @@ class WP_Comment_Query
      */
     public function __construct($query = '')
     {
-        $this->query_var_defaults = array(
+        $this->query_var_defaults = [
             'author_email' => '',
             'author_url' => '',
             'author__in' => '',
@@ -311,7 +313,7 @@ class WP_Comment_Query
             'cache_domain' => 'core',
             'update_comment_meta_cache' => true,
             'update_comment_post_cache' => false,
-        );
+        ];
 
         if (!empty($query)) {
             $this->query($query);
@@ -321,11 +323,11 @@ class WP_Comment_Query
     /**
      * Parse arguments passed to the comment query with default query parameters.
      *
-     * @since 4.2.0 Extracted from WP_Comment_Query::query().
+     * @since 4.2.0 Extracted from CommentQuery::query().
      *
      * @access public
      *
-     * @param string|array $query WP_Comment_Query arguments. See WP_Comment_Query::__construct()
+     * @param string|array $query CommentQuery arguments. See CommentQuery::__construct()
      */
     public function parse_query($query = '')
     {
@@ -340,9 +342,9 @@ class WP_Comment_Query
          *
          * @since 4.2.0
          *
-         * @param WP_Comment_Query &$this The WP_Comment_Query instance (passed by reference).
+         * @param CommentQuery &$this The CommentQuery instance (passed by reference).
          */
-        do_action_ref_array('parse_comment_query', array(&$this));
+        do_action_ref_array('parse_comment_query', [&$this]);
     }
 
     /**
@@ -353,7 +355,7 @@ class WP_Comment_Query
      *              'post_author__not_in', 'author__in', 'author__not_in', 'post__in',
      *              'post__not_in', 'include_unapproved', 'type__in', and 'type__not_in'
      *              arguments to $query_vars.
-     * @since 4.2.0 Moved parsing to WP_Comment_Query::parse_query().
+     * @since 4.2.0 Moved parsing to CommentQuery::parse_query().
      * @access public
      *
      * @param string|array $query Array or URL query string of parameters.
@@ -390,9 +392,9 @@ class WP_Comment_Query
          *
          * @since 3.1.0
          *
-         * @param WP_Comment_Query &$this Current instance of WP_Comment_Query, passed by reference.
+         * @param CommentQuery &$this Current instance of CommentQuery, passed by reference.
          */
-        do_action_ref_array('pre_get_comments', array(&$this));
+        do_action_ref_array('pre_get_comments', [&$this]);
 
         // Reparse query vars, in case they were modified in a 'pre_get_comments' callback.
         $this->meta_query->parse_query_vars($this->query_vars);
@@ -413,10 +415,10 @@ class WP_Comment_Query
                 $this->set_found_comments();
             }
 
-            $cache_value = array(
+            $cache_value = [
                 'comment_ids' => $comment_ids,
                 'found_comments' => $this->found_comments,
-            );
+            ];
             wp_cache_add($cache_key, $cache_value, 'comment');
         } else {
             $comment_ids = $cache_value['comment_ids'];
@@ -443,7 +445,7 @@ class WP_Comment_Query
         _prime_comment_caches($comment_ids, $this->query_vars['update_comment_meta_cache']);
 
         // Fetch full comment objects from the primed cache.
-        $_comments = array();
+        $_comments = [];
         foreach ($comment_ids as $comment_id) {
             if ($_comment = get_comment($comment_id)) {
                 $_comments[] = $_comment;
@@ -452,7 +454,7 @@ class WP_Comment_Query
 
         // Prime comment post caches.
         if ($this->query_vars['update_comment_post_cache']) {
-            $comment_post_ids = array();
+            $comment_post_ids = [];
             foreach ($_comments as $_comment) {
                 $comment_post_ids[] = $_comment->comment_post_ID;
             }
@@ -466,9 +468,9 @@ class WP_Comment_Query
          * @since 3.1.0
          *
          * @param array $results An array of comments.
-         * @param WP_Comment_Query &$this Current instance of WP_Comment_Query, passed by reference.
+         * @param CommentQuery &$this Current instance of CommentQuery, passed by reference.
          */
-        $_comments = apply_filters_ref_array('the_comments', array($_comments, &$this));
+        $_comments = apply_filters_ref_array('the_comments', [$_comments, &$this]);
 
         // Convert to Comment instances
         $comments = array_map('get_comment', $_comments);
@@ -494,10 +496,10 @@ class WP_Comment_Query
         global $wpdb;
 
         // Assemble clauses related to 'comment_approved'.
-        $approved_clauses = array();
+        $approved_clauses = [];
 
         // 'status' accepts an array or a comma-separated string.
-        $status_clauses = array();
+        $status_clauses = [];
         $statuses = $this->query_vars['status'];
         if (!is_array($statuses)) {
             $statuses = preg_split('/[\s,]+/', $statuses);
@@ -540,7 +542,7 @@ class WP_Comment_Query
                 $include_unapproved = preg_split('/[\s,]+/', $include_unapproved);
             }
 
-            $unapproved_ids = $unapproved_emails = array();
+            $unapproved_ids = $unapproved_emails = [];
             foreach ($include_unapproved as $unapproved_identifier) {
                 // Numeric values are assumed to be user ids.
                 if (is_numeric($unapproved_identifier)) {
@@ -571,14 +573,14 @@ class WP_Comment_Query
         $order = ('ASC' == strtoupper($this->query_vars['order'])) ? 'ASC' : 'DESC';
 
         // Disable ORDER BY with 'none', an empty array, or boolean false.
-        if (in_array($this->query_vars['orderby'], array('none', array(), false), true)) {
+        if (in_array($this->query_vars['orderby'], ['none', [], false], true)) {
             $orderby = '';
         } elseif (!empty($this->query_vars['orderby'])) {
             $ordersby = is_array($this->query_vars['orderby']) ?
                 $this->query_vars['orderby'] :
                 preg_split('/[,\s]/', $this->query_vars['orderby']);
 
-            $orderby_array = array();
+            $orderby_array = [];
             $found_orderby_comment_ID = false;
             foreach ($ordersby as $_key => $_value) {
                 if (!$_value) {
@@ -593,7 +595,7 @@ class WP_Comment_Query
                     $_order = $_value;
                 }
 
-                if (!$found_orderby_comment_ID && in_array($_orderby, array('comment_ID', 'comment__in'))) {
+                if (!$found_orderby_comment_ID && in_array($_orderby, ['comment_ID', 'comment__in'])) {
                     $found_orderby_comment_ID = true;
                 }
 
@@ -679,49 +681,49 @@ class WP_Comment_Query
         // Parse comment IDs for an IN clause.
         if (!empty($this->query_vars['comment__in'])) {
             $this->sql_clauses['where']['comment__in'] = "$wpdb->comments.comment_ID IN ( " . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['comment__in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Parse comment IDs for a NOT IN clause.
         if (!empty($this->query_vars['comment__not_in'])) {
             $this->sql_clauses['where']['comment__not_in'] = "$wpdb->comments.comment_ID NOT IN ( " . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['comment__not_in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Parse comment parent IDs for an IN clause.
         if (!empty($this->query_vars['parent__in'])) {
             $this->sql_clauses['where']['parent__in'] = 'comment_parent IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['parent__in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Parse comment parent IDs for a NOT IN clause.
         if (!empty($this->query_vars['parent__not_in'])) {
             $this->sql_clauses['where']['parent__not_in'] = 'comment_parent NOT IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['parent__not_in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Parse comment post IDs for an IN clause.
         if (!empty($this->query_vars['post__in'])) {
             $this->sql_clauses['where']['post__in'] = 'comment_post_ID IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['post__in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Parse comment post IDs for a NOT IN clause.
         if (!empty($this->query_vars['post__not_in'])) {
             $this->sql_clauses['where']['post__not_in'] = 'comment_post_ID NOT IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['post__not_in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         if ('' !== $this->query_vars['author_email']) {
@@ -743,12 +745,12 @@ class WP_Comment_Query
         }
 
         // Filtering by comment_type: 'type', 'type__in', 'type__not_in'.
-        $raw_types = array(
+        $raw_types = [
             'IN' => array_merge((array)$this->query_vars['type'], (array)$this->query_vars['type__in']),
             'NOT IN' => (array)$this->query_vars['type__not_in'],
-        );
+        ];
 
-        $comment_types = array();
+        $comment_types = [];
         foreach ($raw_types as $operator => $_raw_types) {
             $_raw_types = array_unique($_raw_types);
 
@@ -796,9 +798,9 @@ class WP_Comment_Query
 
         if (is_array($this->query_vars['user_id'])) {
             $this->sql_clauses['where']['user_id'] = 'user_id IN (' . implode(
-                ',',
+                    ',',
                     array_map('absint', $this->query_vars['user_id'])
-            ) . ')';
+                ) . ')';
         } elseif ('' !== $this->query_vars['user_id']) {
             $this->sql_clauses['where']['user_id'] = $wpdb->prepare('user_id = %d', $this->query_vars['user_id']);
         }
@@ -807,13 +809,13 @@ class WP_Comment_Query
         if (strlen($this->query_vars['search'])) {
             $search_sql = $this->get_search_sql(
                 $this->query_vars['search'],
-                array(
+                [
                     'comment_author',
                     'comment_author_email',
                     'comment_author_url',
                     'comment_author_IP',
                     'comment_content'
-                )
+                ]
             );
 
             // Strip leading 'AND'.
@@ -822,7 +824,7 @@ class WP_Comment_Query
 
         // If any post-related query vars are passed, join the posts table.
         $join_posts_table = false;
-        $plucked = wp_array_slice_assoc($this->query_vars, array('post_author', 'post_name', 'post_parent'));
+        $plucked = wp_array_slice_assoc($this->query_vars, ['post_author', 'post_name', 'post_parent']);
         $post_fields = array_filter($plucked);
 
         if (!empty($post_fields)) {
@@ -831,15 +833,15 @@ class WP_Comment_Query
                 // $field_value may be an array.
                 $esses = array_fill(0, count((array)$field_value), '%s');
                 $this->sql_clauses['where'][$field_name] = $wpdb->prepare(" {$wpdb->posts}.{$field_name} IN (" . implode(
-                    ',',
+                        ',',
                         $esses
-                ) . ')', $field_value);
+                    ) . ')', $field_value);
             }
         }
 
         // 'post_status' and 'post_type' are handled separately, due to the specialized behavior of 'any'.
-        foreach (array('post_status', 'post_type') as $field_name) {
-            $q_values = array();
+        foreach (['post_status', 'post_type'] as $field_name) {
+            $q_values = [];
             if (!empty($this->query_vars[$field_name])) {
                 $q_values = $this->query_vars[$field_name];
                 if (!is_array($q_values)) {
@@ -855,44 +857,44 @@ class WP_Comment_Query
 
                 $esses = array_fill(0, count($q_values), '%s');
                 $this->sql_clauses['where'][$field_name] = $wpdb->prepare(" {$wpdb->posts}.{$field_name} IN (" . implode(
-                    ',',
+                        ',',
                         $esses
-                ) . ")", $q_values);
+                    ) . ")", $q_values);
             }
         }
 
         // Comment author IDs for an IN clause.
         if (!empty($this->query_vars['author__in'])) {
             $this->sql_clauses['where']['author__in'] = 'user_id IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['author__in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Comment author IDs for a NOT IN clause.
         if (!empty($this->query_vars['author__not_in'])) {
             $this->sql_clauses['where']['author__not_in'] = 'user_id NOT IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['author__not_in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Post author IDs for an IN clause.
         if (!empty($this->query_vars['post_author__in'])) {
             $join_posts_table = true;
             $this->sql_clauses['where']['post_author__in'] = 'post_author IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['post_author__in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         // Post author IDs for a NOT IN clause.
         if (!empty($this->query_vars['post_author__not_in'])) {
             $join_posts_table = true;
             $this->sql_clauses['where']['post_author__not_in'] = 'post_author NOT IN ( ' . implode(
-                ',',
+                    ',',
                     wp_parse_id_list($this->query_vars['post_author__not_in'])
-            ) . ' )';
+                ) . ' )';
         }
 
         $join = '';
@@ -923,16 +925,16 @@ class WP_Comment_Query
 
         $where = implode(' AND ', $this->sql_clauses['where']);
 
-        $pieces = array('fields', 'join', 'where', 'orderby', 'limits', 'groupby');
+        $pieces = ['fields', 'join', 'where', 'orderby', 'limits', 'groupby'];
         /**
          * Filters the comment query clauses.
          *
          * @since 3.1.0
          *
          * @param array $pieces A compacted array of comment query clauses.
-         * @param WP_Comment_Query &$this Current instance of WP_Comment_Query, passed by reference.
+         * @param CommentQuery &$this Current instance of CommentQuery, passed by reference.
          */
-        $clauses = apply_filters_ref_array('comments_clauses', array(compact($pieces), &$this));
+        $clauses = apply_filters_ref_array('comments_clauses', [compact($pieces), &$this]);
 
         $fields = isset($clauses['fields']) ? $clauses['fields'] : '';
         $join = isset($clauses['join']) ? $clauses['join'] : '';
@@ -996,7 +998,7 @@ class WP_Comment_Query
              * @since 4.4.0
              *
              * @param string $found_comments_query SQL query. Default 'SELECT FOUND_ROWS()'.
-             * @param WP_Comment_Query $comment_query The `WP_Comment_Query` instance.
+             * @param CommentQuery $comment_query The `CommentQuery` instance.
              */
             $found_comments_query = apply_filters('found_comments_query', 'SELECT FOUND_ROWS()', $this);
 
@@ -1019,19 +1021,19 @@ class WP_Comment_Query
     {
         global $wpdb;
 
-        $levels = array(
+        $levels = [
             0 => wp_list_pluck($comments, 'comment_ID'),
-        );
+        ];
 
         $key = md5(serialize(wp_array_slice_assoc($this->query_vars, array_keys($this->query_var_defaults))));
         $last_changed = wp_cache_get_last_changed('comment');
 
         // Fetch an entire level of the descendant tree at a time.
         $level = 0;
-        $exclude_keys = array('parent', 'parent__in', 'parent__not_in');
+        $exclude_keys = ['parent', 'parent__in', 'parent__not_in'];
         do {
             // Parent-child relationships may be cached. Only query for those that are not.
-            $child_ids = $uncached_parent_ids = array();
+            $child_ids = $uncached_parent_ids = [];
             $_parent_ids = $levels[$level];
             foreach ($_parent_ids as $parent_id) {
                 $cache_key = "get_comment_child_ids:$parent_id:$key:$last_changed";
@@ -1058,7 +1060,7 @@ class WP_Comment_Query
                 $level_comments = get_comments($parent_query_args);
 
                 // Cache parent-child relationships.
-                $parent_map = array_fill_keys($uncached_parent_ids, array());
+                $parent_map = array_fill_keys($uncached_parent_ids, []);
                 foreach ($level_comments as $level_comment) {
                     $parent_map[$level_comment->comment_parent][] = $level_comment->comment_ID;
                     $child_ids[] = $level_comment->comment_ID;
@@ -1075,7 +1077,7 @@ class WP_Comment_Query
         } while ($child_ids);
 
         // Prime comment caches for non-top-level comments.
-        $descendant_ids = array();
+        $descendant_ids = [];
         for ($i = 1, $c = count($levels); $i < $c; $i++) {
             $descendant_ids = array_merge($descendant_ids, $levels[$i]);
         }
@@ -1090,7 +1092,7 @@ class WP_Comment_Query
 
         // If a threaded representation was requested, build the tree.
         if ('threaded' === $this->query_vars['hierarchical']) {
-            $threaded_comments = $ref = array();
+            $threaded_comments = $ref = [];
             foreach ($all_comments as $k => $c) {
                 $_c = get_comment($c->comment_ID);
 
@@ -1137,7 +1139,7 @@ class WP_Comment_Query
 
         $like = '%' . $wpdb->esc_like($string) . '%';
 
-        $searches = array();
+        $searches = [];
         foreach ($cols as $col) {
             $searches[] = $wpdb->prepare("$col LIKE %s", $like);
         }
@@ -1160,7 +1162,7 @@ class WP_Comment_Query
     {
         global $wpdb;
 
-        $allowed_keys = array(
+        $allowed_keys = [
             'comment_agent',
             'comment_approved',
             'comment_author',
@@ -1176,7 +1178,7 @@ class WP_Comment_Query
             'comment_post_ID',
             'comment_type',
             'user_id',
-        );
+        ];
 
         if (!empty($this->query_vars['meta_key'])) {
             $allowed_keys[] = $this->query_vars['meta_key'];

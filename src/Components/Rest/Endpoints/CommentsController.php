@@ -9,6 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
+use Devtronic\FreshPress\Components\Query\CommentQuery;
 use Devtronic\FreshPress\Components\Rest\Fields\CommentMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
@@ -16,7 +17,6 @@ use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
-use WP_Comment_Query;
 use WP_Error;
 
 /**
@@ -270,18 +270,16 @@ class CommentsController extends Controller
         }
 
         /**
-         * Filters arguments, before passing to WP_Comment_Query, when querying comments via the REST API.
+         * Filters arguments, before passing to CommentQuery, when querying comments via the REST API.
          *
          * @since 4.7.0
          *
-         * @link https://developer.wordpress.org/reference/classes/wp_comment_query/
-         *
-         * @param array $prepared_args Array of arguments for WP_Comment_Query.
+         * @param array $prepared_args Array of arguments for CommentQuery.
          * @param Request $request The current request.
          */
         $prepared_args = apply_filters('rest_comment_query', $prepared_args, $request);
 
-        $query = new WP_Comment_Query;
+        $query = new CommentQuery;
         $query_result = $query->query($prepared_args);
 
         $comments = [];
@@ -302,7 +300,7 @@ class CommentsController extends Controller
             // Out-of-bounds, run the query again without LIMIT for total count.
             unset($prepared_args['number'], $prepared_args['offset']);
 
-            $query = new WP_Comment_Query;
+            $query = new CommentQuery;
             $prepared_args['count'] = true;
 
             $total_comments = $query->query($prepared_args);
@@ -1602,8 +1600,8 @@ class CommentsController extends Controller
          * Filter collection parameters for the comments controller.
          *
          * This filter registers the collection parameter, but does not map the
-         * collection parameter to an internal WP_Comment_Query parameter. Use the
-         * `rest_comment_query` filter to set WP_Comment_Query parameters.
+         * collection parameter to an internal CommentQuery parameter. Use the
+         * `rest_comment_query` filter to set CommentQuery parameters.
          *
          * @since 4.7.0
          *
