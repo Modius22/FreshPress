@@ -12,7 +12,6 @@ namespace Devtronic\FreshPress\Components\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 use WP_Date_Query;
-use WP_Meta_Query;
 
 /**
  * Core class used for querying users.
@@ -56,7 +55,7 @@ class UserQuery
      *
      * @since 4.2.0
      * @access public
-     * @var WP_Meta_Query
+     * @var MetaQuery
      */
     public $meta_query = false;
 
@@ -338,7 +337,7 @@ class UserQuery
         }
 
         // Meta query.
-        $this->meta_query = new WP_Meta_Query();
+        $this->meta_query = new MetaQuery();
         $this->meta_query->parse_query_vars($qv);
 
         if (isset($qv['who']) && 'authors' == $qv['who'] && $blog_id) {

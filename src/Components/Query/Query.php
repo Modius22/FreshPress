@@ -13,7 +13,6 @@ use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
 use WP_Date_Query;
-use WP_Meta_Query;
 use WP_Tax_Query;
 
 /**
@@ -57,7 +56,7 @@ class Query
      *
      * @since 3.2.0
      * @access public
-     * @var object WP_Meta_Query
+     * @var object MetaQuery
      */
     public $meta_query = false;
 
@@ -702,7 +701,7 @@ class Query
      *                                                 numbers 1-12. Default empty.
      * @type string $meta_compare Comparison operator to test the 'meta_value'.
      * @type string $meta_key Custom field key.
-     * @type array $meta_query An associative array of WP_Meta_Query arguments. See WP_Meta_Query.
+     * @type array $meta_query An associative array of MetaQuery arguments. See MetaQuery.
      * @type string $meta_value Custom field value.
      * @type int $meta_value_num Custom field value number.
      * @type int $menu_order The menu order of the posts.
@@ -1804,7 +1803,7 @@ class Query
         $q = $this->fill_query_vars($q);
 
         // Parse meta query
-        $this->meta_query = new WP_Meta_Query();
+        $this->meta_query = new MetaQuery();
         $this->meta_query->parse_query_vars($q);
 
         // Set a flag if a pre_get_posts hook changed the query vars.

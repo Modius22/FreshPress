@@ -1,18 +1,22 @@
 <?php
 /**
- * Meta API: WP_Meta_Query class
+ * Meta API: MetaQuery class
  *
  * @package WordPress
  * @subpackage Meta
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Query;
+
+use Devtronic\FreshPress\Core\WPDB;
+
 /**
  * Core class used to implement meta queries for the Meta API.
  *
  * Used for generating SQL clauses that filter a primary query according to metadata keys and values.
  *
- * WP_Meta_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query and Devtronic\FreshPress\Components\Query\UserQuery,
+ * MetaQuery is a helper that allows primary query classes, such as Query and UserQuery,
  *
  * to filter their results by object metadata, by generating `JOIN` and `WHERE` subclauses to be attached
  * to the primary SQL query string.
@@ -21,18 +25,18 @@
  * @package WordPress
  * @subpackage Meta
  */
-class WP_Meta_Query
+class MetaQuery
 {
     /**
      * Array of metadata queries.
      *
-     * See WP_Meta_Query::__construct() for information on meta query arguments.
+     * See MetaQuery::__construct() for information on meta query arguments.
      *
      * @since 3.2.0
      * @access public
      * @var array
      */
-    public $queries = array();
+    public $queries = [];
 
     /**
      * The relation between the queries. Can be one of 'AND' or 'OR'.
@@ -86,7 +90,7 @@ class WP_Meta_Query
      * @access protected
      * @var array
      */
-    protected $table_aliases = array();
+    protected $table_aliases = [];
 
     /**
      * A flat list of clauses, keyed by clause 'name'.
@@ -95,7 +99,7 @@ class WP_Meta_Query
      * @access protected
      * @var array
      */
-    protected $clauses = array();
+    protected $clauses = [];
 
     /**
      * Whether the query contains any OR relations.
@@ -165,7 +169,7 @@ class WP_Meta_Query
      */
     public function sanitize_query($queries)
     {
-        $clean_queries = array();
+        $clean_queries = [];
 
         if (!is_array($queries)) {
             return $clean_queries;
@@ -179,7 +183,7 @@ class WP_Meta_Query
 
                 // First-order clause.
             } elseif ($this->is_first_order_clause($query)) {
-                if (isset($query['value']) && array() === $query['value']) {
+                if (isset($query['value']) && [] === $query['value']) {
                     unset($query['value']);
                 }
 
@@ -247,7 +251,7 @@ class WP_Meta_Query
      */
     public function parse_query_vars($qv)
     {
-        $meta_query = array();
+        $meta_query = [];
 
         /*
          * For orderby=meta_value to work correctly, simple query needs to be
@@ -255,8 +259,8 @@ class WP_Meta_Query
          * needs to be its own clause (so it doesn't interfere with the logic of
          * the rest of the meta_query).
          */
-        $primary_meta_query = array();
-        foreach (array('key', 'compare', 'type') as $key) {
+        $primary_meta_query = [];
+        foreach (['key', 'compare', 'type'] as $key) {
             if (!empty($qv["meta_$key"])) {
                 $primary_meta_query[$key] = $qv["meta_$key"];
             }
@@ -267,18 +271,18 @@ class WP_Meta_Query
             $primary_meta_query['value'] = $qv['meta_value'];
         }
 
-        $existing_meta_query = isset($qv['meta_query']) && is_array($qv['meta_query']) ? $qv['meta_query'] : array();
+        $existing_meta_query = isset($qv['meta_query']) && is_array($qv['meta_query']) ? $qv['meta_query'] : [];
 
         if (!empty($primary_meta_query) && !empty($existing_meta_query)) {
-            $meta_query = array(
+            $meta_query = [
                 'relation' => 'AND',
                 $primary_meta_query,
                 $existing_meta_query,
-            );
+            ];
         } elseif (!empty($primary_meta_query)) {
-            $meta_query = array(
+            $meta_query = [
                 $primary_meta_query,
-            );
+            ];
         } elseif (!empty($existing_meta_query)) {
             $meta_query = $existing_meta_query;
         }
@@ -340,7 +344,7 @@ class WP_Meta_Query
             return false;
         }
 
-        $this->table_aliases = array();
+        $this->table_aliases = [];
 
         $this->meta_table = $meta_table;
         $this->meta_id_column = sanitize_key($type . '_id');
@@ -372,14 +376,14 @@ class WP_Meta_Query
          */
         return apply_filters_ref_array(
             'get_meta_sql',
-            array($sql, $this->queries, $type, $primary_table, $primary_id_column, $context)
+            [$sql, $this->queries, $type, $primary_table, $primary_id_column, $context]
         );
     }
 
     /**
      * Generate SQL clauses to be appended to a main query.
      *
-     * Called by the public WP_Meta_Query::get_sql(), this method is abstracted
+     * Called by the public MetaQuery::get_sql(), this method is abstracted
      * out to maintain parity with the other Query classes.
      *
      * @since 4.1.0
@@ -429,15 +433,15 @@ class WP_Meta_Query
      */
     protected function get_sql_for_query(&$query, $depth = 0)
     {
-        $sql_chunks = array(
-            'join' => array(),
-            'where' => array(),
-        );
+        $sql_chunks = [
+            'join' => [],
+            'where' => [],
+        ];
 
-        $sql = array(
+        $sql = [
             'join' => '',
             'where' => '',
-        );
+        ];
 
         $indent = '';
         for ($i = 0; $i < $depth; $i++) {
@@ -489,9 +493,9 @@ class WP_Meta_Query
         // Generate a single WHERE clause with proper brackets and indentation.
         if (!empty($sql_chunks['where'])) {
             $sql['where'] = '( ' . "\n  " . $indent . implode(
-                ' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
+                    ' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
                     $sql_chunks['where']
-            ) . "\n" . $indent . ')';
+                ) . "\n" . $indent . ')';
         }
 
         return $sql;
@@ -505,7 +509,7 @@ class WP_Meta_Query
      * @since 4.1.0
      * @access public
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
+     * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param array $clause Query clause, passed by reference.
      * @param array $parent_query Parent query array.
@@ -522,10 +526,10 @@ class WP_Meta_Query
     {
         global $wpdb;
 
-        $sql_chunks = array(
-            'where' => array(),
-            'join' => array(),
-        );
+        $sql_chunks = [
+            'where' => [],
+            'join' => [],
+        ];
 
         if (isset($clause['compare'])) {
             $clause['compare'] = strtoupper($clause['compare']);
@@ -533,7 +537,7 @@ class WP_Meta_Query
             $clause['compare'] = isset($clause['value']) && is_array($clause['value']) ? 'IN' : '=';
         }
 
-        if (!in_array($clause['compare'], array(
+        if (!in_array($clause['compare'], [
             '=',
             '!=',
             '>',
@@ -551,7 +555,7 @@ class WP_Meta_Query
             'REGEXP',
             'NOT REGEXP',
             'RLIKE'
-        ))) {
+        ])) {
             $clause['compare'] = '=';
         }
 
@@ -625,7 +629,7 @@ class WP_Meta_Query
         if (array_key_exists('value', $clause)) {
             $meta_value = $clause['value'];
 
-            if (in_array($meta_compare, array('IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'))) {
+            if (in_array($meta_compare, ['IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'])) {
                 if (!is_array($meta_value)) {
                     $meta_value = preg_split('/[,\s]+/', $meta_value);
                 }
@@ -683,7 +687,7 @@ class WP_Meta_Query
          * be joined in parentheses.
          */
         if (1 < count($sql_chunks['where'])) {
-            $sql_chunks['where'] = array('( ' . implode(' AND ', $sql_chunks['where']) . ' )');
+            $sql_chunks['where'] = ['( ' . implode(' AND ', $sql_chunks['where']) . ' )'];
         }
 
         return $sql_chunks;
@@ -716,7 +720,7 @@ class WP_Meta_Query
      * An existing alias is compatible if (a) it is a sibling of `$clause`
      * (ie, it's under the scope of the same relation), and (b) the combination
      * of operator and relation between the clauses allows for a shared table join.
-     * In the case of WP_Meta_Query, this only applies to 'IN' clauses that are
+     * In the case of MetaQuery, this only applies to 'IN' clauses that are
      * connected by the relation 'OR'.
      *
      * @since 4.1.0
@@ -741,15 +745,15 @@ class WP_Meta_Query
                 continue;
             }
 
-            $compatible_compares = array();
+            $compatible_compares = [];
 
             // Clauses connected by OR can share joins as long as they have "positive" operators.
             if ('OR' === $parent_query['relation']) {
-                $compatible_compares = array('=', 'IN', 'BETWEEN', 'LIKE', 'REGEXP', 'RLIKE', '>', '>=', '<', '<=');
+                $compatible_compares = ['=', 'IN', 'BETWEEN', 'LIKE', 'REGEXP', 'RLIKE', '>', '>=', '<', '<='];
 
                 // Clauses joined by AND with "negative" operators share a join only if they also share a key.
             } elseif (isset($sibling['key']) && isset($clause['key']) && $sibling['key'] === $clause['key']) {
-                $compatible_compares = array('!=', 'NOT IN', 'NOT LIKE');
+                $compatible_compares = ['!=', 'NOT IN', 'NOT LIKE'];
             }
 
             $clause_compare = strtoupper($clause['compare']);
@@ -768,7 +772,7 @@ class WP_Meta_Query
          * @param string|bool $alias Table alias, or false if none was found.
          * @param array $clause First-order query clause.
          * @param array $parent_query Parent of $clause.
-         * @param object $this WP_Meta_Query object.
+         * @param object $this MetaQuery object.
          */
         return apply_filters('meta_query_find_compatible_table_alias', $alias, $clause, $parent_query, $this);
     }

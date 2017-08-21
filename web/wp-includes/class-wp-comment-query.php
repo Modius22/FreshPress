@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Query\MetaQuery;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -33,7 +34,7 @@ class WP_Comment_Query
      *
      * @since 3.5.0
      * @access public
-     * @var object WP_Meta_Query
+     * @var object MetaQuery
      */
     public $meta_query = false;
 
@@ -184,7 +185,7 @@ class WP_Comment_Query
      * @type string $meta_value Include comments with a matching comment meta value.
      *                                                   Requires `$meta_key` to be set. Default empty.
      * @type array $meta_query Meta query clauses to limit retrieved comments by.
-     *                                                   See WP_Meta_Query. Default empty.
+     *                                                   See MetaQuery. Default empty.
      * @type int $number Maximum number of comments to retrieve.
      *                                                   Default empty (no limit).
      * @type int $offset Number of comments to offset the query. Used to build
@@ -381,7 +382,7 @@ class WP_Comment_Query
         $this->parse_query();
 
         // Parse meta query
-        $this->meta_query = new WP_Meta_Query();
+        $this->meta_query = new MetaQuery();
         $this->meta_query->parse_query_vars($this->query_vars);
 
         /**

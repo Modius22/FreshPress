@@ -8,6 +8,7 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Query\MetaQuery;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -34,7 +35,7 @@ class WP_Term_Query
      *
      * @since 4.6.0
      * @access public
-     * @var object WP_Meta_Query
+     * @var object MetaQuery
      */
     public $meta_query = false;
 
@@ -174,7 +175,7 @@ class WP_Term_Query
      *                                                an object cache. Default is 'core'.
      * @type bool $update_term_meta_cache Whether to prime meta caches for matched terms. Default true.
      * @type array $meta_query Optional. Meta query clauses to limit retrieved terms by.
-     *                                                See `WP_Meta_Query`. Default empty.
+     *                                                See `MetaQuery`. Default empty.
      * @type string $meta_key Limit terms to those matching a specific metadata key.
      *                                                Can be used in conjunction with `$meta_value`. Default empty.
      * @type string $meta_value Limit terms to those matching a specific metadata value.
@@ -318,7 +319,7 @@ class WP_Term_Query
         $args = &$this->query_vars;
 
         // Set up meta_query so it's available to 'pre_get_terms'.
-        $this->meta_query = new WP_Meta_Query();
+        $this->meta_query = new MetaQuery();
         $this->meta_query->parse_query_vars($args);
 
         /**

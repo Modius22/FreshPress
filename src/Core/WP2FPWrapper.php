@@ -132,6 +132,7 @@ $classes = array_change_key_case([
     'WP_Site_Query' => 'Devtronic\\FreshPress\\Components\\Query\\SiteQuery',
     'WP_Network_Query' => 'Devtronic\\FreshPress\\Components\\Query\\NetworkQuery',
     'WP_User_Query' => 'Devtronic\\FreshPress\\Components\\Query\\UserQuery',
+    'WP_Meta_Query' => 'Devtronic\\FreshPress\\Components\\Query\\MetaQuery',
 ]);
 
 $abstractClasses = array_change_key_case([

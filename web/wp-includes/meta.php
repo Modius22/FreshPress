@@ -10,6 +10,7 @@
  * @subpackage Meta
  */
 
+use Devtronic\FreshPress\Components\Query\MetaQuery;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -920,7 +921,7 @@ function wp_metadata_lazyloader()
  *
  * @since 3.2.0
  *
- * @see WP_Meta_Query
+ * @see MetaQuery
  *
  * @param array $meta_query A meta query.
  * @param string $type Type of meta.
@@ -931,7 +932,7 @@ function wp_metadata_lazyloader()
  */
 function get_meta_sql($meta_query, $type, $primary_table, $primary_id_column, $context = null)
 {
-    $meta_query_obj = new WP_Meta_Query($meta_query);
+    $meta_query_obj = new MetaQuery($meta_query);
     return $meta_query_obj->get_sql($type, $primary_table, $primary_id_column, $context);
 }
 
