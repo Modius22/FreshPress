@@ -7,6 +7,7 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Admin\SiteIcon;
 use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Components\Dependencies\Scripts;
 use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
@@ -3588,8 +3589,7 @@ function wp_ajax_crop_image()
 
     switch ($context) {
         case 'site-icon':
-            require_once ABSPATH . '/wp-admin/includes/class-wp-site-icon.php';
-            $wp_site_icon = new WP_Site_Icon();
+            $wp_site_icon = new SiteIcon();
 
             // Skip creating a new attachment if the attachment is a Site Icon.
             if (get_post_meta($attachment_id, '_wp_attachment_context', true) == $context) {
