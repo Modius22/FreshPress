@@ -38,6 +38,7 @@ use Devtronic\FreshPress\Components\Widgets\TagCloudWidget;
 use Devtronic\FreshPress\Components\Widgets\TextWidget;
 use Devtronic\FreshPress\Components\Widgets\VideoWidget;
 use Devtronic\FreshPress\Components\Widgets\Widget;
+use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 
 /** @ignore */
 global $wp_registered_sidebars, $wp_registered_widgets, $wp_registered_widget_controls, $wp_registered_widget_updates;
@@ -120,7 +121,7 @@ $GLOBALS['_wp_deprecated_widgets_callbacks'] = array(
  *
  * @see Widget
  *
- * @global WP_Widget_Factory $wp_widget_factory
+ * @global WidgetFactory $wp_widget_factory
  *
  * @param string $widget_class The name of a class that extends Widget
  */
@@ -128,7 +129,7 @@ function register_widget($widget_class)
 {
     global $wp_widget_factory;
 
-    /** @var WP_Widget_Factory $wp_widget_factory */
+    /** @var WidgetFactory $wp_widget_factory */
     $wp_widget_factory->register($widget_class);
 }
 
@@ -142,7 +143,7 @@ function register_widget($widget_class)
  *
  * @see Widget
  *
- * @global WP_Widget_Factory $wp_widget_factory
+ * @global WidgetFactory $wp_widget_factory
  *
  * @param string $widget_class The name of a class that extends Widget.
  */
@@ -150,7 +151,7 @@ function unregister_widget($widget_class)
 {
     global $wp_widget_factory;
 
-    /** @var WP_Widget_Factory $wp_widget_factory */
+    /** @var WidgetFactory $wp_widget_factory */
     $wp_widget_factory->unregister($widget_class);
 }
 
@@ -1106,7 +1107,7 @@ function wp_convert_widget_settings($base_name, $option_name, $settings)
  *
  * @since 2.8.0
  *
- * @global WP_Widget_Factory $wp_widget_factory
+ * @global WidgetFactory $wp_widget_factory
  *
  * @param string $widget The widget's PHP class name (see Widget).
  * @param array $instance Optional. The widget's instance settings. Default empty array.

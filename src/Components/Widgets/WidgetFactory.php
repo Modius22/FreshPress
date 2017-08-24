@@ -1,13 +1,13 @@
 <?php
 /**
- * Widget API: WP_Widget_Factory class
+ * Widget API: WidgetFactory class
  *
  * @package WordPress
  * @subpackage Widgets
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Widgets\Widget;
+namespace Devtronic\FreshPress\Components\Widgets;
 
 /**
  * Singleton that registers and instantiates Widget classes.
@@ -15,7 +15,7 @@ use Devtronic\FreshPress\Components\Widgets\Widget;
  * @since 2.8.0
  * @since 4.4.0 Moved to its own file from wp-includes/widgets.php
  */
-class WP_Widget_Factory
+class WidgetFactory
 {
 
     /**
@@ -25,7 +25,7 @@ class WP_Widget_Factory
      * @access public
      * @var array
      */
-    public $widgets = array();
+    public $widgets = [];
 
     /**
      * PHP5 constructor.
@@ -35,19 +35,7 @@ class WP_Widget_Factory
      */
     public function __construct()
     {
-        add_action('widgets_init', array($this, '_register_widgets'), 100);
-    }
-
-    /**
-     * PHP4 constructor.
-     *
-     * @since 2.8.0
-     * @access public
-     */
-    public function WP_Widget_Factory()
-    {
-        _deprecated_constructor('WP_Widget_Factory', '4.2.0');
-        self::__construct();
+        add_action('widgets_init', [$this, '_register_widgets'], 100);
     }
 
     /**
@@ -60,9 +48,9 @@ class WP_Widget_Factory
      * @access private
      * @var array
      *
-     * @see WP_Widget_Factory::hash_object()
+     * @see WidgetFactory::hash_object()
      */
-    private $hashed_class_counts = array();
+    private $hashed_class_counts = [];
 
     /**
      * Hashes an object, doing fallback of `spl_object_hash()` if not available.

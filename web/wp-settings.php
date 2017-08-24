@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
 /**
@@ -308,10 +309,10 @@ $GLOBALS['wp'] = new WP();
 
 /**
  * WordPress Widget Factory Object
- * @global WP_Widget_Factory $wp_widget_factory
+ * @global WidgetFactory $wp_widget_factory
  * @since 2.8.0
  */
-$GLOBALS['wp_widget_factory'] = new WP_Widget_Factory();
+$GLOBALS['wp_widget_factory'] = new WidgetFactory();
 
 /**
  * WordPress User Roles
