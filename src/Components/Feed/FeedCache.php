@@ -1,20 +1,24 @@
 <?php
 /**
- * Feed API: WP_Feed_Cache class
+ * Feed API: FeedCache class
  *
  * @package WordPress
  * @subpackage Feed
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Feed;
+
+use WP_Feed_Cache_Transient;
+
 /**
  * Core class used to implement a feed cache.
  *
  * @since 2.8.0
  *
- * @see SimplePie_Cache
+ * @see \SimplePie_Cache
  */
-class WP_Feed_Cache extends SimplePie_Cache
+class FeedCache extends \SimplePie_Cache
 {
 
     /**

@@ -138,6 +138,7 @@ $classes = array_change_key_case([
     'WP_Tax_Query' => 'Devtronic\\FreshPress\\Components\\Query\\TaxQuery',
     'WP_Site_Icon' => 'Devtronic\\FreshPress\\Components\\Admin\\SiteIcon',
     'WP_Date_Query' => 'Devtronic\\FreshPress\\Components\\Query\\DateQuery',
+    'WP_Feed_Cache' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedCache',
 ]);
 
 $abstractClasses = array_change_key_case([

@@ -10,6 +10,7 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Feed\FeedCache;
 use Devtronic\FreshPress\Entity\Comment;
 
 /**
@@ -738,7 +739,6 @@ function feed_content_type($type = '')
  */
 function fetch_feed($url)
 {
-    require_once(ABSPATH . WPINC . '/class-wp-feed-cache.php');
     require_once(ABSPATH . WPINC . '/class-wp-feed-cache-transient.php');
     require_once(ABSPATH . WPINC . '/class-wp-simplepie-file.php');
     require_once(ABSPATH . WPINC . '/class-wp-simplepie-sanitize-kses.php');
@@ -750,7 +750,7 @@ function fetch_feed($url)
     // constructor sets it before we have a chance to set the sanitization class
     $feed->sanitize = new WP_SimplePie_Sanitize_KSES();
 
-    $feed->set_cache_class('WP_Feed_Cache');
+    $feed->set_cache_class(FeedCache::class);
     $feed->set_file_class('WP_SimplePie_File');
 
     $feed->set_feed_url($url);
