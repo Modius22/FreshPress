@@ -11,7 +11,6 @@ namespace Devtronic\FreshPress\Components\Query;
 
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
-use WP_Date_Query;
 
 /**
  * Core class used for querying users.
@@ -585,7 +584,7 @@ class UserQuery
 
         // Date queries are allowed for the user_registered field.
         if (!empty($qv['date_query']) && is_array($qv['date_query'])) {
-            $date_query = new WP_Date_Query($qv['date_query'], 'user_registered');
+            $date_query = new DateQuery($qv['date_query'], 'user_registered');
             $this->query_where .= $date_query->get_sql();
         }
 

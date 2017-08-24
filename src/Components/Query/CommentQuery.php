@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Query;
 
 use Devtronic\FreshPress\Core\WPDB;
-use WP_Date_Query;
 
 /**
  * Core class used for querying comments.
@@ -81,7 +80,7 @@ class CommentQuery
      *
      * @since 3.7.0
      * @access public
-     * @var object WP_Date_Query
+     * @var object DateQuery
      */
     public $date_query = false;
 
@@ -172,7 +171,7 @@ class CommentQuery
      * @type array $comment__not_in Array of comment IDs to exclude. Default empty.
      * @type bool $count Whether to return a comment count (true) or array of
      *                                                   comment objects (false). Default false.
-     * @type array $date_query Date query clauses to limit comments by. See WP_Date_Query.
+     * @type array $date_query Date query clauses to limit comments by. See DateQuery.
      *                                                   Default null.
      * @type string $fields Comment fields to return. Accepts 'ids' for comment IDs
      *                                                   only or empty for all fields. Default empty.
@@ -308,7 +307,7 @@ class CommentQuery
             'meta_key' => '',
             'meta_value' => '',
             'meta_query' => '',
-            'date_query' => null, // See WP_Date_Query
+            'date_query' => null, // See DateQuery
             'hierarchical' => false,
             'cache_domain' => 'core',
             'update_comment_meta_cache' => true,
@@ -919,7 +918,7 @@ class CommentQuery
         }
 
         if (!empty($this->query_vars['date_query']) && is_array($this->query_vars['date_query'])) {
-            $this->date_query = new WP_Date_Query($this->query_vars['date_query'], 'comment_date');
+            $this->date_query = new DateQuery($this->query_vars['date_query'], 'comment_date');
             $this->sql_clauses['where']['date_query'] = preg_replace('/^\s*AND\s*/', '', $this->date_query->get_sql());
         }
 

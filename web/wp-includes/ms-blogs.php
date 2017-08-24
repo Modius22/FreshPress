@@ -648,7 +648,7 @@ function update_site_cache($sites)
  * @type array $site__not_in Array of site IDs to exclude. Default empty.
  * @type bool $count Whether to return a site count (true) or array of site objects.
  *                                           Default false.
- * @type array $date_query Date query clauses to limit sites by. See WP_Date_Query.
+ * @type array $date_query Date query clauses to limit sites by. See DateQuery.
  *                                           Default null.
  * @type string $fields Site fields to return. Accepts 'ids' (returns an array of site IDs)
  *                                           or empty (returns an array of complete site objects). Default empty.

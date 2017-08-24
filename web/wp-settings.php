@@ -138,7 +138,6 @@ wp_not_installed();
 require(ABSPATH . WPINC . '/formatting.php');
 require(ABSPATH . WPINC . '/capabilities.php');
 require(ABSPATH . WPINC . '/query.php');
-require(ABSPATH . WPINC . '/date.php');
 require(ABSPATH . WPINC . '/theme.php');
 require(ABSPATH . WPINC . '/template.php');
 require(ABSPATH . WPINC . '/user.php');

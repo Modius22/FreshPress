@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Query;
 
 use Devtronic\FreshPress\Core\WPDB;
-use WP_Date_Query;
 
 /**
  * Core class used for querying sites.
@@ -52,7 +51,7 @@ class SiteQuery
      *
      * @since 4.6.0
      * @access public
-     * @var object WP_Date_Query
+     * @var object DateQuery
      */
     public $date_query = false;
 
@@ -115,8 +114,7 @@ class SiteQuery
      * @type array $site__not_in Array of site IDs to exclude. Default empty.
      * @type bool $count Whether to return a site count (true) or array of site objects.
      *                                           Default false.
-     * @type array $date_query Date query clauses to limit sites by. See WP_Date_Query.
-     *                                           Default null.
+     * @type array $date_query Date query clauses to limit sites by. See DateQuery. Default null.
      * @type string $fields Site fields to return. Accepts 'ids' (returns an array of site IDs)
      *                                           or empty (returns an array of complete site objects). Default empty.
      * @type int $ID A site ID to only return that site. Default empty.
@@ -186,7 +184,7 @@ class SiteQuery
             'search' => '',
             'search_columns' => [],
             'count' => false,
-            'date_query' => null, // See WP_Date_Query
+            'date_query' => null, // See DateQuery
             'update_site_cache' => true,
         ];
 
@@ -564,7 +562,7 @@ class SiteQuery
 
         $date_query = $this->query_vars['date_query'];
         if (!empty($date_query) && is_array($date_query)) {
-            $this->date_query = new WP_Date_Query($date_query, 'registered');
+            $this->date_query = new DateQuery($date_query, 'registered');
             $this->sql_clauses['where']['date_query'] = preg_replace('/^\s*AND\s*/', '', $this->date_query->get_sql());
         }
 

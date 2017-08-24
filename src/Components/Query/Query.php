@@ -12,7 +12,6 @@ namespace Devtronic\FreshPress\Components\Query;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
-use WP_Date_Query;
 
 /**
  * The WordPress Query class.
@@ -64,7 +63,7 @@ class Query
      *
      * @since 3.7.0
      * @access public
-     * @var object WP_Date_Query
+     * @var object DateQuery
      */
     public $date_query = false;
 
@@ -685,8 +684,7 @@ class Query
      * @type string $comment_status Comment status.
      * @type int $comments_per_page The number of comments to return per page.
      *                                                 Default 'comments_per_page' option.
-     * @type array $date_query An associative array of WP_Date_Query arguments.
-     *                                                 See WP_Date_Query::__construct().
+     * @type array $date_query An associative array of DateQuery arguments. See DateQuery::__construct().
      * @type int $day Day of the month. Default empty. Accepts numbers 1-31.
      * @type bool $exact Whether to search by exact keyword. Default false.
      * @type string|array $fields Which fields to return. Single field or all fields (string),
@@ -1999,14 +1997,14 @@ class Query
         }
 
         if ($date_parameters) {
-            $date_query = new WP_Date_Query([$date_parameters]);
+            $date_query = new DateQuery([$date_parameters]);
             $where .= $date_query->get_sql();
         }
         unset($date_parameters, $date_query);
 
         // Handle complex date queries
         if (!empty($q['date_query'])) {
-            $this->date_query = new WP_Date_Query($q['date_query']);
+            $this->date_query = new DateQuery($q['date_query']);
             $where .= $this->date_query->get_sql();
         }
 

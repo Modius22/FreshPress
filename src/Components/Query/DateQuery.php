@@ -1,30 +1,32 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Query;
+
 /**
  * Class for generating SQL clauses that filter a primary query according to date.
  *
- * WP_Date_Query is a helper that allows primary query classes, such as Devtronic\FreshPress\Components\Query\Query, to filter
+ * DateQuery is a helper that allows primary query classes, such as Query, to filter
  * their results by date columns, by generating `WHERE` subclauses to be attached to the
  * primary SQL query string.
  *
  * Attempting to filter by an invalid date value (eg month=13) will generate SQL that will
  * return no results. In these cases, a _doing_it_wrong() error notice is also thrown.
- * See WP_Date_Query::validate_date_values().
+ * See DateQuery::validate_date_values().
  *
  * @since 3.7.0
  */
-class WP_Date_Query
+class DateQuery
 {
     /**
      * Array of date queries.
      *
-     * See WP_Date_Query::__construct() for information on date query arguments.
+     * See DateQuery::__construct() for information on date query arguments.
      *
      * @since 3.7.0
      * @access public
      * @var array
      */
-    public $queries = array();
+    public $queries = [];
 
     /**
      * The default relation between top-level queries. Can be either 'AND' or 'OR'.
@@ -60,7 +62,7 @@ class WP_Date_Query
      * @access public
      * @var array
      */
-    public $time_keys = array(
+    public $time_keys = [
         'after',
         'before',
         'year',
@@ -75,7 +77,7 @@ class WP_Date_Query
         'hour',
         'minute',
         'second'
-    );
+    ];
 
     /**
      * Constructor.
@@ -179,7 +181,7 @@ class WP_Date_Query
 
         // Support for passing time-based keys in the top level of the $date_query array.
         if (!isset($date_query[0]) && !empty($date_query)) {
-            $date_query = array($date_query);
+            $date_query = [$date_query];
         }
 
         if (empty($date_query)) {
@@ -216,13 +218,13 @@ class WP_Date_Query
      */
     public function sanitize_query($queries, $parent_query = null)
     {
-        $cleaned_query = array();
+        $cleaned_query = [];
 
-        $defaults = array(
+        $defaults = [
             'column' => 'post_date',
             'compare' => '=',
             'relation' => 'AND',
-        );
+        ];
 
         // Numeric keys should always have array values.
         foreach ($queries as $qkey => $qvalue) {
@@ -291,10 +293,9 @@ class WP_Date_Query
      */
     public function get_compare($query)
     {
-        if (!empty($query['compare']) && in_array(
-            $query['compare'],
-                array('=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN')
-        )) {
+        if (!empty($query['compare']) &&
+            in_array($query['compare'], ['=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'])
+        ) {
             return strtoupper($query['compare']);
         }
 
@@ -314,7 +315,7 @@ class WP_Date_Query
      * @param  array $date_query The date_query array.
      * @return bool  True if all values in the query are valid, false if one or more fail.
      */
-    public function validate_date_values($date_query = array())
+    public function validate_date_values($date_query = [])
     {
         if (empty($date_query)) {
             return false;
@@ -336,7 +337,7 @@ class WP_Date_Query
         }
 
         // Array containing all min-max checks.
-        $min_max_checks = array();
+        $min_max_checks = [];
 
         // Days per year.
         if (array_key_exists('year', $date_query)) {
@@ -356,28 +357,28 @@ class WP_Date_Query
             $max_days_of_year = 366;
         }
 
-        $min_max_checks['dayofyear'] = array(
+        $min_max_checks['dayofyear'] = [
             'min' => 1,
             'max' => $max_days_of_year
-        );
+        ];
 
         // Days per week.
-        $min_max_checks['dayofweek'] = array(
+        $min_max_checks['dayofweek'] = [
             'min' => 1,
             'max' => 7
-        );
+        ];
 
         // Days per week.
-        $min_max_checks['dayofweek_iso'] = array(
+        $min_max_checks['dayofweek_iso'] = [
             'min' => 1,
             'max' => 7
-        );
+        ];
 
         // Months per year.
-        $min_max_checks['month'] = array(
+        $min_max_checks['month'] = [
             'min' => 1,
             'max' => 12
-        );
+        ];
 
         // Weeks per year.
         if (isset($_year)) {
@@ -391,34 +392,34 @@ class WP_Date_Query
             $week_count = 53;
         }
 
-        $min_max_checks['week'] = array(
+        $min_max_checks['week'] = [
             'min' => 1,
             'max' => $week_count
-        );
+        ];
 
         // Days per month.
-        $min_max_checks['day'] = array(
+        $min_max_checks['day'] = [
             'min' => 1,
             'max' => 31
-        );
+        ];
 
         // Hours per day.
-        $min_max_checks['hour'] = array(
+        $min_max_checks['hour'] = [
             'min' => 0,
             'max' => 23
-        );
+        ];
 
         // Minutes per hour.
-        $min_max_checks['minute'] = array(
+        $min_max_checks['minute'] = [
             'min' => 0,
             'max' => 59
-        );
+        ];
 
         // Seconds per minute.
-        $min_max_checks['second'] = array(
+        $min_max_checks['second'] = [
             'min' => 0,
             'max' => 59
-        );
+        ];
 
         // Concatenate and throw a notice for each invalid value.
         foreach ($min_max_checks as $key => $check) {
@@ -523,7 +524,7 @@ class WP_Date_Query
     {
         global $wpdb;
 
-        $valid_columns = array(
+        $valid_columns = [
             'post_date',
             'post_date_gmt',
             'post_modified',
@@ -533,7 +534,7 @@ class WP_Date_Query
             'user_registered',
             'registered',
             'last_updated',
-        );
+        ];
 
         // Attempt to detect a table prefix.
         if (false === strpos($column, '.')) {
@@ -552,25 +553,25 @@ class WP_Date_Query
                 $column = 'post_date';
             }
 
-            $known_columns = array(
-                $wpdb->posts => array(
+            $known_columns = [
+                $wpdb->posts => [
                     'post_date',
                     'post_date_gmt',
                     'post_modified',
                     'post_modified_gmt',
-                ),
-                $wpdb->comments => array(
+                ],
+                $wpdb->comments => [
                     'comment_date',
                     'comment_date_gmt',
-                ),
-                $wpdb->users => array(
+                ],
+                $wpdb->users => [
                     'user_registered',
-                ),
-                $wpdb->blogs => array(
+                ],
+                $wpdb->blogs => [
                     'registered',
                     'last_updated',
-                ),
-            );
+                ],
+            ];
 
             // If it's a known column name, add the appropriate table prefix.
             foreach ($known_columns as $table_name => $table_columns) {
@@ -605,7 +606,7 @@ class WP_Date_Query
          * @since 3.7.0
          *
          * @param string $where WHERE clause of the date query.
-         * @param WP_Date_Query $this The WP_Date_Query instance.
+         * @param DateQuery $this The DateQuery instance.
          */
         return apply_filters('get_date_sql', $where, $this);
     }
@@ -613,7 +614,7 @@ class WP_Date_Query
     /**
      * Generate SQL clauses to be appended to a main query.
      *
-     * Called by the public WP_Date_Query::get_sql(), this method is abstracted
+     * Called by the public DateQuery::get_sql(), this method is abstracted
      * out to maintain parity with the other Query classes.
      *
      * @since 4.1.0
@@ -658,15 +659,15 @@ class WP_Date_Query
      */
     protected function get_sql_for_query($query, $depth = 0)
     {
-        $sql_chunks = array(
-            'join' => array(),
-            'where' => array(),
-        );
+        $sql_chunks = [
+            'join' => [],
+            'where' => [],
+        ];
 
-        $sql = array(
+        $sql = [
             'join' => '',
             'where' => '',
-        );
+        ];
 
         $indent = '';
         for ($i = 0; $i < $depth; $i++) {
@@ -718,9 +719,9 @@ class WP_Date_Query
         // Generate a single WHERE clause with proper brackets and indentation.
         if (!empty($sql_chunks['where'])) {
             $sql['where'] = '( ' . "\n  " . $indent . implode(
-                ' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
+                    ' ' . "\n  " . $indent . $relation . ' ' . "\n  " . $indent,
                     $sql_chunks['where']
-            ) . "\n" . $indent . ')';
+                ) . "\n" . $indent . ')';
         }
 
         return $sql;
@@ -768,7 +769,7 @@ class WP_Date_Query
         global $wpdb;
 
         // The sub-parts of a $where part.
-        $where_parts = array();
+        $where_parts = [];
 
         $column = (!empty($query['column'])) ? esc_sql($query['column']) : $this->column;
 
@@ -834,7 +835,7 @@ class WP_Date_Query
 
         if (isset($query['hour']) || isset($query['minute']) || isset($query['second'])) {
             // Avoid notices.
-            foreach (array('hour', 'minute', 'second') as $unit) {
+            foreach (['hour', 'minute', 'second'] as $unit) {
                 if (!isset($query[$unit])) {
                     $query[$unit] = null;
                 }
@@ -855,10 +856,10 @@ class WP_Date_Query
          * Return an array of 'join' and 'where' for compatibility
          * with other query classes.
          */
-        return array(
+        return [
             'where' => $where_parts,
-            'join' => array(),
-        );
+            'join' => [],
+        ];
     }
 
     /**
@@ -894,7 +895,7 @@ class WP_Date_Query
             case 'BETWEEN':
             case 'NOT BETWEEN':
                 if (!is_array($value) || 2 != count($value)) {
-                    $value = array($value, $value);
+                    $value = [$value, $value];
                 } else {
                     $value = array_values($value);
                 }
@@ -948,31 +949,31 @@ class WP_Date_Query
              */
             if (preg_match('/^(\d{4})$/', $datetime, $matches)) {
                 // Y
-                $datetime = array(
+                $datetime = [
                     'year' => intval($matches[1]),
-                );
+                ];
             } elseif (preg_match('/^(\d{4})\-(\d{2})$/', $datetime, $matches)) {
                 // Y-m
-                $datetime = array(
+                $datetime = [
                     'year' => intval($matches[1]),
                     'month' => intval($matches[2]),
-                );
+                ];
             } elseif (preg_match('/^(\d{4})\-(\d{2})\-(\d{2})$/', $datetime, $matches)) {
                 // Y-m-d
-                $datetime = array(
+                $datetime = [
                     'year' => intval($matches[1]),
                     'month' => intval($matches[2]),
                     'day' => intval($matches[3]),
-                );
+                ];
             } elseif (preg_match('/^(\d{4})\-(\d{2})\-(\d{2}) (\d{2}):(\d{2})$/', $datetime, $matches)) {
                 // Y-m-d H:i
-                $datetime = array(
+                $datetime = [
                     'year' => intval($matches[1]),
                     'month' => intval($matches[2]),
                     'day' => intval($matches[3]),
                     'hour' => intval($matches[4]),
                     'minute' => intval($matches[5]),
-                );
+                ];
             }
 
             // If no match is found, we don't support default_to_max.
@@ -1049,8 +1050,8 @@ class WP_Date_Query
         }
 
         // Complex combined queries aren't supported for multi-value queries
-        if (in_array($compare, array('IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'))) {
-            $return = array();
+        if (in_array($compare, ['IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'])) {
+            $return = [];
 
             if (isset($hour) && false !== ($value = $this->build_value($compare, $hour))) {
                 $return[] = "HOUR( $column ) $compare $value";
@@ -1069,19 +1070,19 @@ class WP_Date_Query
 
         // Cases where just one unit is set
         if (isset($hour) && !isset($minute) && !isset($second) && false !== ($value = $this->build_value(
-            $compare,
+                $compare,
                 $hour
-        ))) {
+            ))) {
             return "HOUR( $column ) $compare $value";
         } elseif (!isset($hour) && isset($minute) && !isset($second) && false !== ($value = $this->build_value(
-            $compare,
+                $compare,
                 $minute
-        ))) {
+            ))) {
             return "MINUTE( $column ) $compare $value";
         } elseif (!isset($hour) && !isset($minute) && isset($second) && false !== ($value = $this->build_value(
-            $compare,
+                $compare,
                 $second
-        ))) {
+            ))) {
             return "SECOND( $column ) $compare $value";
         }
 
