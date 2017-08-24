@@ -739,7 +739,6 @@ function feed_content_type($type = '')
  */
 function fetch_feed($url)
 {
-    require_once(ABSPATH . WPINC . '/class-wp-feed-cache-transient.php');
     require_once(ABSPATH . WPINC . '/class-wp-simplepie-file.php');
     require_once(ABSPATH . WPINC . '/class-wp-simplepie-sanitize-kses.php');
 
@@ -754,7 +753,7 @@ function fetch_feed($url)
     $feed->set_file_class('WP_SimplePie_File');
 
     $feed->set_feed_url($url);
-    /** This filter is documented in wp-includes/class-wp-feed-cache-transient.php */
+    /** This filter is documented in Devtronic\FreshPress\Components\Feed\FeedCacheTransient */
     $feed->set_cache_duration(apply_filters('wp_feed_cache_transient_lifetime', 12 * HOUR_IN_SECONDS, $url));
     /**
      * Fires just before processing the SimplePie feed object.

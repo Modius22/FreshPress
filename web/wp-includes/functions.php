@@ -4316,7 +4316,6 @@ function _deprecated_file($file, $version, $replacement = null, $message = '')
         <p>{$message}</p>
     </div>
 HTML;
-
     }
 }
 

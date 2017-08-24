@@ -1317,7 +1317,8 @@ function wp_ajax_edit_comment()
 
     $position = (isset($_POST['position']) && (int)$_POST['position']) ? (int)$_POST['position'] : '-1';
     $checkbox = (isset($_POST['checkbox']) && true == $_POST['checkbox']) ? 1 : 0;
-    $wp_list_table = _get_list_table($checkbox ? CommentsListTable::class : '_Post_Comments_List_Table',
+    $wp_list_table = _get_list_table(
+        $checkbox ? CommentsListTable::class : '_Post_Comments_List_Table',
         array('screen' => 'edit-comments')
     );
 

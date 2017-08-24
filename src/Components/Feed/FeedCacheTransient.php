@@ -1,18 +1,20 @@
 <?php
 /**
- * Feed API: WP_Feed_Cache_Transient class
+ * Feed API: FeedCacheTransient class
  *
  * @package WordPress
  * @subpackage Feed
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Feed;
+
 /**
  * Core class used to implement feed cache transients.
  *
  * @since 2.8.0
  */
-class WP_Feed_Cache_Transient
+class FeedCacheTransient
 {
 
     /**
@@ -78,12 +80,12 @@ class WP_Feed_Cache_Transient
      * @since 2.8.0
      * @access public
      *
-     * @param SimplePie $data Data to save.
+     * @param \SimplePie $data Data to save.
      * @return true Always true.
      */
     public function save($data)
     {
-        if ($data instanceof SimplePie) {
+        if ($data instanceof \SimplePie) {
             $data = $data->data;
         }
 

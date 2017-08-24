@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Feed;
 
-use WP_Feed_Cache_Transient;
-
 /**
  * Core class used to implement a feed cache.
  *
@@ -30,10 +28,10 @@ class FeedCache extends \SimplePie_Cache
      * @param string $location URL location (scheme is used to determine handler).
      * @param string $filename Unique identifier for cache object.
      * @param string $extension 'spi' or 'spc'.
-     * @return WP_Feed_Cache_Transient Feed cache handler object that uses transients.
+     * @return FeedCacheTransient Feed cache handler object that uses transients.
      */
     public function create($location, $filename, $extension)
     {
-        return new WP_Feed_Cache_Transient($location, $filename, $extension);
+        return new FeedCacheTransient($location, $filename, $extension);
     }
 }

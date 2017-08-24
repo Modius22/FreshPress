@@ -9,7 +9,6 @@
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
 
-
 /**
  * Retrieve translations from WordPress Translation API.
  *
