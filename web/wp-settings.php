@@ -172,7 +172,6 @@ require(ABSPATH . WPINC . '/embed.php');
 require(ABSPATH . WPINC . '/class-oembed.php');
 require(ABSPATH . WPINC . '/media.php');
 require(ABSPATH . WPINC . '/http.php');
-require(ABSPATH . WPINC . '/class-http.php');
 require(ABSPATH . WPINC . '/widgets.php');
 require(ABSPATH . WPINC . '/nav-menu.php');
 require(ABSPATH . WPINC . '/nav-menu-template.php');
