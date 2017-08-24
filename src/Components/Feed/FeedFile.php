@@ -1,20 +1,22 @@
 <?php
 /**
- * Feed API: WP_SimplePie_File class
+ * Feed API: CustomSimplePieFile class
  *
  * @package WordPress
  * @subpackage Feed
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Feed;
+
 /**
  * Core class for fetching remote files and reading local files with SimplePie.
  *
  * @since 2.8.0
  *
- * @see SimplePie_File
+ * @see \SimplePie_File
  */
-class WP_SimplePie_File extends SimplePie_File
+class FeedFile extends \SimplePie_File
 {
 
     /**
@@ -51,10 +53,10 @@ class WP_SimplePie_File extends SimplePie_File
         $this->method = SIMPLEPIE_FILE_SOURCE_REMOTE;
 
         if (preg_match('/^http(s)?:\/\//i', $url)) {
-            $args = array(
+            $args = [
                 'timeout' => $this->timeout,
                 'redirection' => $this->redirects,
-            );
+            ];
 
             if (!empty($this->headers)) {
                 $args['headers'] = $this->headers;
