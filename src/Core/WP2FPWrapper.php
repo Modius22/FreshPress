@@ -141,6 +141,7 @@ $classes = array_change_key_case([
     'WP_Feed_Cache' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedCache',
     'WP_Feed_Cache_Transient' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedCacheTransient',
     'WP_SimplePie_File' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedFile',
+    'WP_SimplePie_Sanitize_KSES' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedSanitize',
 ]);
 
 $abstractClasses = array_change_key_case([

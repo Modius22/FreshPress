@@ -12,6 +12,7 @@
 
 use Devtronic\FreshPress\Components\Feed\FeedCache;
 use Devtronic\FreshPress\Components\Feed\FeedFile;
+use Devtronic\FreshPress\Components\Feed\FeedSanitize;
 use Devtronic\FreshPress\Entity\Comment;
 
 /**
@@ -740,14 +741,12 @@ function feed_content_type($type = '')
  */
 function fetch_feed($url)
 {
-    require_once(ABSPATH . WPINC . '/class-wp-simplepie-sanitize-kses.php');
-
     $feed = new SimplePie();
 
-    $feed->set_sanitize_class('WP_SimplePie_Sanitize_KSES');
+    $feed->set_sanitize_class(FeedSanitize::class);
     // We must manually overwrite $feed->sanitize because SimplePie's
     // constructor sets it before we have a chance to set the sanitization class
-    $feed->sanitize = new WP_SimplePie_Sanitize_KSES();
+    $feed->sanitize = new FeedSanitize();
 
     $feed->set_cache_class(FeedCache::class);
     $feed->set_file_class(FeedFile::class);

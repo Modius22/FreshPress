@@ -1,23 +1,25 @@
 <?php
 /**
- * Feed API: WP_SimplePie_Sanitize_KSES class
+ * Feed API: FeedSanitize class
  *
  * @package WordPress
  * @subpackage Feed
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Feed;
+
 /**
- * Core class used to implement SimpliePie feed sanitization.
+ * Core class used to implement SimplePie feed sanitization.
  *
- * Extends the SimplePie_Sanitize class to use KSES, because
+ * Extends the \SimplePie_Sanitize class to use KSES, because
  * we cannot universally count on DOMDocument being available.
  *
  * @since 3.5.0
  *
- * @see SimplePie_Sanitize
+ * @see \SimplePie_Sanitize
  */
-class WP_SimplePie_Sanitize_KSES extends SimplePie_Sanitize
+class FeedSanitize extends \SimplePie_Sanitize
 {
 
     /**
@@ -53,7 +55,7 @@ class WP_SimplePie_Sanitize_KSES extends SimplePie_Sanitize
         if ($type & (SIMPLEPIE_CONSTRUCT_HTML | SIMPLEPIE_CONSTRUCT_XHTML)) {
             $data = wp_kses_post($data);
             if ($this->output_encoding !== 'UTF-8') {
-                $data = $this->registry->call('Misc', 'change_encoding', array($data, 'UTF-8', $this->output_encoding));
+                $data = $this->registry->call('Misc', 'change_encoding', [$data, 'UTF-8', $this->output_encoding]);
             }
             return $data;
         } else {
