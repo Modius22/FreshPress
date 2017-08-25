@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Http\Cookie;
+
 /**
  * Core wrapper object for a Requests_Response for standardisation.
  *
@@ -179,13 +181,13 @@ class WP_HTTP_Requests_Response extends WP_HTTP_Response
      * @since 4.6.0
      * @access public
      *
-     * @return WP_HTTP_Cookie[] List of cookie objects.
+     * @return Cookie[] List of cookie objects.
      */
     public function get_cookies()
     {
         $cookies = array();
         foreach ($this->response->cookies as $cookie) {
-            $cookies[] = new WP_Http_Cookie(array(
+            $cookies[] = new Cookie(array(
                 'name' => $cookie->name,
                 'value' => urldecode($cookie->value),
                 'expires' => isset($cookie->attributes['expires']) ? $cookie->attributes['expires'] : null,
@@ -198,12 +200,12 @@ class WP_HTTP_Requests_Response extends WP_HTTP_Response
     }
 
     /**
-     * Converts the object to a WP_Http response array.
+     * Converts the object to a Devtronic\FreshPress\Components\Http\Http response array.
      *
      * @since 4.6.0
      * @access public
      *
-     * @return array WP_Http response array, per WP_Http::request().
+     * @return array Devtronic\FreshPress\Components\Http\Http response array, per Devtronic\FreshPress\Components\Http\Http::request().
      */
     public function to_array()
     {

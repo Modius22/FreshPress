@@ -1,24 +1,26 @@
 <?php
 /**
- * HTTP API: WP_Http_Cookie class
+ * HTTP API: Cookie class
  *
  * @package WordPress
  * @subpackage HTTP
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Http;
+
 /**
  * Core class used to encapsulate a single cookie object for internal use.
  *
  * Returned cookies are represented using this class, and when cookies are set, if they are not
- * already a WP_Http_Cookie() object, then they are turned into one.
+ * already a Cookie() object, then they are turned into one.
  *
  * @todo The WordPress convention is to use underscores instead of camelCase for function and method
  * names. Need to switch to use underscores instead for the methods.
  *
  * @since 2.8.0
  */
-class WP_Http_Cookie
+class Cookie
 {
 
     /**
@@ -118,7 +120,7 @@ class WP_Http_Cookie
                     continue;
                 }
 
-                list($key, $val) = strpos($pair, '=') ? explode('=', $pair) : array($pair, '');
+                list($key, $val) = strpos($pair, '=') ? explode('=', $pair) : [$pair, ''];
                 $key = strtolower(trim($key));
                 if ('expires' == $key) {
                     $val = strtotime($val);
@@ -131,7 +133,7 @@ class WP_Http_Cookie
             }
 
             // Set properties based directly on parameters.
-            foreach (array('name', 'value', 'path', 'domain', 'port') as $field) {
+            foreach (['name', 'value', 'path', 'domain', 'port'] as $field) {
                 if (isset($data[$field])) {
                     $this->$field = $data[$field];
                 }
@@ -253,10 +255,10 @@ class WP_Http_Cookie
      */
     public function get_attributes()
     {
-        return array(
+        return [
             'expires' => $this->expires,
             'path' => $this->path,
             'domain' => $this->domain,
-        );
+        ];
     }
 }

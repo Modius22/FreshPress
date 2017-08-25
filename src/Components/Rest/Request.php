@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Rest;
 
+use Devtronic\FreshPress\Components\Http\Http;
 use WP_Error;
-use WP_Http;
 
 /**
  * Core class used to implement a REST request object.
@@ -721,7 +721,7 @@ class Request implements \ArrayAccess
             $this->parsed_json = false;
 
             $error_data = [
-                'status' => WP_Http::BAD_REQUEST,
+                'status' => Http::BAD_REQUEST,
             ];
             if (function_exists('json_last_error')) {
                 $error_data['json_error_code'] = json_last_error();

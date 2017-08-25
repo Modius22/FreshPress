@@ -9,22 +9,25 @@
  * @subpackage HTTP
  */
 
+use Devtronic\FreshPress\Components\Http\Cookie;
+use Devtronic\FreshPress\Components\Http\Http;
+
 /**
- * Returns the initialized WP_Http Object
+ * Returns the initialized Http Object
  *
  * @since 2.7.0
  * @access private
  *
- * @staticvar WP_Http $http
+ * @staticvar Http $http
  *
- * @return WP_Http HTTP Transport object.
+ * @return Http HTTP Transport object.
  */
 function _wp_http_get_object()
 {
     static $http = null;
 
     if (is_null($http)) {
-        $http = new WP_Http();
+        $http = new Http();
     }
     return $http;
 }
@@ -38,7 +41,7 @@ function _wp_http_get_object()
  * @since 3.6.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -60,7 +63,7 @@ function wp_safe_remote_request($url, $args = array())
  * @since 3.6.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -82,7 +85,7 @@ function wp_safe_remote_get($url, $args = array())
  * @since 3.6.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -104,7 +107,7 @@ function wp_safe_remote_post($url, $args = array())
  * @since 3.6.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -147,7 +150,7 @@ function wp_safe_remote_head($url, $args = array())
  *
  * @since 2.7.0
  *
- * @see WP_Http::request() For additional information on default arguments.
+ * @see Http::request() For additional information on default arguments.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -165,7 +168,7 @@ function wp_remote_request($url, $args = array())
  * @since 2.7.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -183,7 +186,7 @@ function wp_remote_get($url, $args = array())
  * @since 2.7.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -201,7 +204,7 @@ function wp_remote_post($url, $args = array())
  * @since 2.7.0
  *
  * @see wp_remote_request() For more information on the response array format.
- * @see WP_Http::request() For default arguments information.
+ * @see Http::request() For default arguments information.
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
@@ -316,7 +319,7 @@ function wp_remote_retrieve_body($response)
  * @since 4.4.0
  *
  * @param array $response HTTP response.
- * @return array An array of `WP_Http_Cookie` objects from the response. Empty array if there are none, or the response is a WP_Error.
+ * @return array An array of `Cookie` objects from the response. Empty array if there are none, or the response is a WP_Error.
  */
 function wp_remote_retrieve_cookies($response)
 {
@@ -334,7 +337,7 @@ function wp_remote_retrieve_cookies($response)
  *
  * @param array $response HTTP response.
  * @param string $name The name of the cookie to retrieve.
- * @return WP_Http_Cookie|string The `WP_Http_Cookie` object. Empty string if the cookie isn't present in the response.
+ * @return Cookie|string The `Cookie` object. Empty string if the cookie isn't present in the response.
  */
 function wp_remote_retrieve_cookie($response, $name)
 {
@@ -366,7 +369,7 @@ function wp_remote_retrieve_cookie_value($response, $name)
 {
     $cookie = wp_remote_retrieve_cookie($response, $name);
 
-    if (!is_a($cookie, 'WP_Http_Cookie')) {
+    if (!is_a($cookie, Cookie::class)) {
         return '';
     }
 

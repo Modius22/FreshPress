@@ -8,6 +8,7 @@
  * @subpackage Deprecated
  */
 
+use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
@@ -4084,8 +4085,8 @@ function post_permalink($post_id = 0)
  * the file to that path.
  *
  * @since 2.5.0
- * @deprecated 4.4.0 Use WP_Http
- * @see WP_Http
+ * @deprecated 4.4.0 Use Http
+ * @see Http
  *
  * @param string $url URL to fetch.
  * @param string|bool $file_path Optional. File path to write request to. Default false.
@@ -4095,7 +4096,7 @@ function post_permalink($post_id = 0)
  */
 function wp_get_http($url, $file_path = false, $red = 1)
 {
-    _deprecated_function(__FUNCTION__, '4.4.0', 'WP_Http');
+    _deprecated_function(__FUNCTION__, '4.4.0', Http::class);
 
     @set_time_limit(60);
 
@@ -4121,7 +4122,7 @@ function wp_get_http($url, $file_path = false, $red = 1)
     $headers = wp_remote_retrieve_headers($response);
     $headers['response'] = wp_remote_retrieve_response_code($response);
 
-    // WP_HTTP no longer follows redirects for HEAD requests.
+    // Http no longer follows redirects for HEAD requests.
     if ('HEAD' == $options['method'] && in_array(
         $headers['response'],
             array(301, 302)

@@ -24,9 +24,9 @@ class WP_HTTP_Requests_Hooks extends Requests_Hooks
     protected $url;
 
     /**
-     * WordPress WP_HTTP request data.
+     * WordPress Http request data.
      *
-     * @var array Request data in WP_Http format.
+     * @var array Request data in Devtronic\FreshPress\Components\Http\Http format.
      */
     protected $request = array();
 
@@ -34,7 +34,7 @@ class WP_HTTP_Requests_Hooks extends Requests_Hooks
      * Constructor.
      *
      * @param string $url URL to request.
-     * @param array $request Request data in WP_Http format.
+     * @param array $request Request data in Devtronic\FreshPress\Components\Http\Http format.
      */
     public function __construct($url, $request)
     {
@@ -69,7 +69,7 @@ class WP_HTTP_Requests_Hooks extends Requests_Hooks
          * @see https://github.com/rmccue/Requests/blob/master/docs/hooks.md
          *
          * @param array $parameters Parameters from Requests internal hook.
-         * @param array $request Request data in WP_Http format.
+         * @param array $request Request data in Devtronic\FreshPress\Components\Http\Http format.
          * @param string $url URL to request.
          */
         do_action_ref_array("requests-{$hook}", $parameters, $this->request, $this->url);

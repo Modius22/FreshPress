@@ -144,6 +144,7 @@ $classes = array_change_key_case([
     'WP_SimplePie_Sanitize_KSES' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedSanitize',
     'WP_Widget_Factory' => 'Devtronic\\FreshPress\\Components\\Widgets\\WidgetFactory',
     'WP_Http' => 'Devtronic\\FreshPress\\Components\\Http\\Http',
+    'WP_Http_Cookie' => 'Devtronic\\FreshPress\\Components\\Http\\Cookie',
 ]);
 
 $abstractClasses = array_change_key_case([

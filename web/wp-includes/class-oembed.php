@@ -11,6 +11,8 @@
  * @subpackage oEmbed
  */
 
+use Devtronic\FreshPress\Components\Http\Http;
+
 /**
  * Core class used to implement oEmbed functionality.
  *
@@ -484,7 +486,7 @@ class WP_oEmbed
          *
          * @since 4.0.0
          *
-         * @see WP_Http::request()
+         * @see Http::request()
          *
          * @param array $args oEmbed remote get arguments.
          * @param string $url URL to be inspected.
