@@ -252,7 +252,7 @@
 
 /* higher specificity */
 .wp-core-ui .media-modal-icon {
-	background-image: url(../images/uploader-icons.png);
+	background-image: url(../assets/images/uploader-icons.png);
 	background-repeat: no-repeat;
 }
 
@@ -1586,7 +1586,7 @@
  * Spinner
  */
 .media-frame .spinner {
-	background: url(../images/spinner.gif) no-repeat;
+	background: url(../assets/images/spinner.gif) no-repeat;
 	-webkit-background-size: 20px 20px;
 	background-size: 20px 20px;
 	float: right;
@@ -2657,13 +2657,13 @@
   (min-resolution: 120dpi) {
 
 	.wp-core-ui .media-modal-icon {
-		background-image: url(../images/uploader-icons-2x.png);
+		background-image: url(../assets/images/uploader-icons-2x.png);
 		-webkit-background-size: 134px 15px;
 		background-size: 134px 15px;
 	}
 
 	.media-frame .spinner {
-		background-image: url(../images/spinner-2x.gif);
+		background-image: url(../assets/images/spinner-2x.gif);
 	}
 }
 

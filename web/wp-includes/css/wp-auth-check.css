@@ -63,7 +63,7 @@
 	left: 50%;
 	top: 50%;
 	margin: -10px 0 0 -10px;
-	background: url(../images/spinner.gif) no-repeat center;
+	background: url(../assets/images/spinner.gif) no-repeat center;
 	-webkit-background-size: 20px 20px;
 	background-size: 20px 20px;
 	-webkit-transform: translateZ(0);
@@ -75,7 +75,7 @@
   (min-resolution: 120dpi) {
 
 	#wp-auth-check-form.loading:before {
-		background-image: url(../images/spinner-2x.gif);
+		background-image: url(../assets/images/spinner-2x.gif);
 	}
 
 }

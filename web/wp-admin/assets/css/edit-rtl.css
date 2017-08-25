@@ -334,14 +334,14 @@ form#tags-filter {
 }
 
 #content-resize-handle {
-	background: transparent url(../images/resize.gif) no-repeat scroll left bottom;
+	background: transparent url(../assets/images/resize.gif) no-repeat scroll left bottom;
 	width: 12px;
 	cursor: row-resize;
 }
 
 /*rtl:ignore*/
 .rtl #content-resize-handle {
-	background-image: url(../images/resize-rtl.gif);
+	background-image: url(../assets/images/resize-rtl.gif);
 	background-position: left bottom;
 }
 
@@ -1311,7 +1311,7 @@ table.links-table {
   (min-resolution: 120dpi) {
 	#content-resize-handle,
 	#post-body .wp_themeSkin .mceStatusbar a.mceResize {
-		background: transparent url(../images/resize-2x.gif) no-repeat scroll left bottom;
+		background: transparent url(../assets/images/resize-2x.gif) no-repeat scroll left bottom;
 		-webkit-background-size: 11px 11px;
 		background-size: 11px 11px;
 	}
@@ -1319,7 +1319,7 @@ table.links-table {
 	/*rtl:ignore*/
 	.rtl #content-resize-handle,
 	.rtl #post-body .wp_themeSkin .mceStatusbar a.mceResize {
-		background-image: url(../images/resize-rtl-2x.gif);
+		background-image: url(../assets/images/resize-rtl-2x.gif);
 		background-position: left bottom;
 	}
 }

@@ -25,10 +25,11 @@ if (is_file(__DIR__ . '/../app/config/parameters.yml')) {
 }
 
 $configFile = __DIR__ . '/../app/config/config.yml';
-if (is_file($configFile)) {
-    $mapper = new ConfigMapper();
-    $mapper->mapConfiguration($configFile);
+if (!is_file($configFile)) {
+    $configFile = __DIR__ . '/../app/config/config.dist.yml';
 }
+$mapper = new ConfigMapper();
+$mapper->mapConfiguration($configFile);
 
 $serviceContainer->loadYAML(__DIR__ . '/../app/config/services.yml');
 /** @var Twig_Environment $twig */

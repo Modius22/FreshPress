@@ -7,7 +7,7 @@
  * @since 2.7.0
  */
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**

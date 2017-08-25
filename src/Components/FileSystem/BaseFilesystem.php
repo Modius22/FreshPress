@@ -6,7 +6,7 @@
  * @subpackage Filesystem
  */
 
-namespace Devtronic\FreshPress\Components\Filesystem;
+namespace Devtronic\FreshPress\Components\FileSystem;
 
 use WP_Error;
 
@@ -487,7 +487,7 @@ class BaseFilesystem
      * @since 2.5.0
      * @abstract
      *
-     * @return bool True on success or false on failure (always true for Devtronic\FreshPress\Components\Filesystem\DirectFilesystem).
+     * @return bool True on success or false on failure (always true for Devtronic\FreshPress\Components\FileSystem\DirectFilesystem).
      */
     public function connect()
     {
@@ -901,4 +901,4 @@ class BaseFilesystem
     {
         return false;
     }
-} // Devtronic\FreshPress\Components\Filesystem\BaseFilesystem
+} // Devtronic\FreshPress\Components\FileSystem\BaseFilesystem

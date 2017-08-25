@@ -6,7 +6,7 @@
  * @subpackage Administration
  */
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
 
 /**
  * Parses the plugin contents to retrieve plugin's metadata.

@@ -6,7 +6,7 @@
  * @subpackage Administration
  */
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
 use Devtronic\FreshPress\Entity\Post;
 
 /**

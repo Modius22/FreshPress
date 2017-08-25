@@ -6,7 +6,7 @@
  * @subpackage Filesystem
  */
 
-namespace Devtronic\FreshPress\Components\Filesystem;
+namespace Devtronic\FreshPress\Components\FileSystem;
 
 use WP_Error;
 
