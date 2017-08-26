@@ -17,7 +17,6 @@ use Requests_Proxy_HTTP;
 use Requests_Response;
 use WP_Error;
 use WP_HTTP_Proxy;
-use WP_HTTP_Requests_Hooks;
 use WP_HTTP_Requests_Response;
 
 /**
@@ -317,7 +316,7 @@ class Http
             'timeout' => $r['timeout'],
             'useragent' => $r['user-agent'],
             'blocking' => $r['blocking'],
-            'hooks' => new WP_HTTP_Requests_Hooks($url, $r),
+            'hooks' => new Hooks($url, $r),
         ];
 
         // Ensure redirects follow browser behaviour.

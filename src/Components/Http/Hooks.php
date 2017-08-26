@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Http;
+
 /**
  * Bridge to connect Requests internal hooks to WordPress actions.
  *
@@ -14,7 +16,7 @@
  * @subpackage HTTP
  * @since 4.7.0
  */
-class WP_HTTP_Requests_Hooks extends Requests_Hooks
+class Hooks extends \Requests_Hooks
 {
     /**
      * Requested URL.

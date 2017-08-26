@@ -58,8 +58,7 @@
             "web/wp-includes/class-wp-http-proxy.php",
             "web/wp-includes/class-wp-http-encoding.php",
             "web/wp-includes/class-wp-http-response.php",
-            "web/wp-includes/class-wp-http-requests-response.php",
-            "web/wp-includes/class-wp-http-requests-hooks.php"
+            "web/wp-includes/class-wp-http-requests-response.php"
         ]
     }
 }
