@@ -1,15 +1,15 @@
 <?php
 /**
- * HTTP API: WP_Http_Streams class
+ * HTTP API: Streams class
  *
  * @package WordPress
  * @subpackage HTTP
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Http\Http;
-use Devtronic\FreshPress\Components\Http\Proxy;
-use Devtronic\FreshPress\Components\Http\Encoding;
+namespace Devtronic\FreshPress\Components\Http;
+
+use WP_Error;
 
 /**
  * Core class used to integrate PHP Streams as an HTTP transport.
@@ -17,7 +17,7 @@ use Devtronic\FreshPress\Components\Http\Encoding;
  * @since 2.7.0
  * @since 3.7.0 Combined with the fsockopen transport and switched to `stream_socket_client()`.
  */
-class WP_Http_Streams
+class Streams
 {
     /**
      * Send a HTTP request to a URI using PHP Streams.
@@ -394,7 +394,7 @@ class WP_Http_Streams
      * @since 3.7.0
      * @static
      *
-     * @param stream $stream The PHP Stream which the SSL request is being made over
+     * @param resource $stream The PHP Stream which the SSL request is being made over
      * @param string $host The hostname being requested
      * @return bool If the cerficiate presented in $stream is valid for $host
      */
@@ -490,20 +490,4 @@ class WP_Http_Streams
          */
         return apply_filters('use_streams_transport', true, $args);
     }
-}
-
-/**
- * Deprecated HTTP Transport method which used fsockopen.
- *
- * This class is not used, and is included for backward compatibility only.
- * All code should make use of Http directly through its API.
- *
- * @see Http::request
- *
- * @since 2.7.0
- * @deprecated 3.7.0 Please use Http::request() directly
- */
-class WP_HTTP_Fsockopen extends WP_HTTP_Streams
-{
-    // For backward compatibility for users who are using the class directly.
 }
