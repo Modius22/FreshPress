@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Http\Response as HttpResponse;
 use Devtronic\FreshPress\Components\Rest\Endpoints\CommentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
@@ -493,15 +494,15 @@ function rest_ensure_request($request)
 /**
  * Ensures a REST response is a response object (for consistency).
  *
- * This implements WP_HTTP_Response, allowing usage of `set_status`/`header`/etc
+ * This implements HttpResponse, allowing usage of `set_status`/`header`/etc
  * without needing to double-check the object. Will also allow WP_Error to indicate error
  * responses, so users should immediately check for this value.
  *
  * @since 4.4.0
  *
- * @param WP_Error|WP_HTTP_Response|mixed $response Response to check.
+ * @param WP_Error|HttpResponse|mixed $response Response to check.
  * @return Response|mixed If response generated an error, WP_Error, if response
- *                                is already an instance, WP_HTTP_Response, otherwise
+ *                                is already an instance, HttpResponse, otherwise
  *                                returns a new Response instance.
  */
 function rest_ensure_response($response)
@@ -510,7 +511,7 @@ function rest_ensure_response($response)
         return $response;
     }
 
-    if ($response instanceof WP_HTTP_Response) {
+    if ($response instanceof HttpResponse) {
         return $response;
     }
 

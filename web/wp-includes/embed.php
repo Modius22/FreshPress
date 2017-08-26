@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Http\Response;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
@@ -676,7 +677,7 @@ function wp_oembed_ensure_format($format)
  * @since 4.4.0
  *
  * @param bool $served Whether the request has already been served.
- * @param WP_HTTP_Response $result Result to send to the client. Usually a Devtronic\FreshPress\Components\Rest\Response.
+ * @param Response $result Result to send to the client. Usually a Response.
  * @param Request $request Request used to generate the response.
  * @param Server $server Server instance.
  * @return true

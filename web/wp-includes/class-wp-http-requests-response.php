@@ -8,15 +8,16 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Cookie;
+use Devtronic\FreshPress\Components\Http\Response;
 
 /**
  * Core wrapper object for a Requests_Response for standardisation.
  *
  * @since 4.6.0
  *
- * @see WP_HTTP_Response
+ * @see Response
  */
-class WP_HTTP_Requests_Response extends WP_HTTP_Response
+class WP_HTTP_Requests_Response extends Response
 {
     /**
      * Requests Response object.

@@ -8,6 +8,7 @@
  */
 
 namespace Devtronic\FreshPress\Components\Http;
+
 /**
  * Core class used to implement HTTP API proxy support.
  *

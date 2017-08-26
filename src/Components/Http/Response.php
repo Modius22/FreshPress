@@ -1,18 +1,20 @@
 <?php
 /**
- * HTTP API: WP_HTTP_Response class
+ * HTTP API: Response class
  *
  * @package WordPress
  * @subpackage HTTP
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Http;
+
 /**
  * Core class used to prepare HTTP responses.
  *
  * @since 4.4.0
  */
-class WP_HTTP_Response
+class Response
 {
 
     /**
