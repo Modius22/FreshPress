@@ -149,6 +149,7 @@ $classes = array_change_key_case([
     'WP_HTTP_Proxy' => 'Devtronic\\FreshPress\\Components\\Http\\Proxy',
     'WP_Http_Curl' => 'Devtronic\\FreshPress\\Components\\Http\\Curl',
     'WP_HTTP_Response' => 'Devtronic\\FreshPress\\Components\\Http\\Response',
+    'WP_HTTP_Requests_Response' => 'Devtronic\\FreshPress\\Components\\Http\\RequestsResponse',
 ]);
 
 $abstractClasses = array_change_key_case([

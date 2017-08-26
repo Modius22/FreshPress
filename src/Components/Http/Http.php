@@ -16,7 +16,6 @@ use Requests_Exception;
 use Requests_Proxy_HTTP;
 use Requests_Response;
 use WP_Error;
-use WP_HTTP_Requests_Response;
 
 /**
  * Core class used for managing HTTP transports and making HTTP requests.
@@ -386,7 +385,7 @@ class Http
             $requests_response = Requests::request($url, $headers, $data, $type, $options);
 
             // Convert the response into an array
-            $http_response = new WP_HTTP_Requests_Response($requests_response, $r['filename']);
+            $http_response = new RequestsResponse($requests_response, $r['filename']);
             $response = $http_response->to_array();
 
             // Add the original object to the array.

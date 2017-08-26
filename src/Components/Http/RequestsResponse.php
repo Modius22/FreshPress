@@ -1,14 +1,17 @@
 <?php
 /**
- * HTTP API: WP_HTTP_Requests_Response class
+ * HTTP API: RequestsResponse class
  *
  * @package WordPress
  * @subpackage HTTP
  * @since 4.6.0
  */
 
-use Devtronic\FreshPress\Components\Http\Cookie;
-use Devtronic\FreshPress\Components\Http\Response;
+namespace Devtronic\FreshPress\Components\Http;
+
+use Requests_Response;
+use Requests_Response_Headers;
+use Requests_Utility_CaseInsensitiveDictionary;
 
 /**
  * Core wrapper object for a Requests_Response for standardisation.
@@ -17,7 +20,7 @@ use Devtronic\FreshPress\Components\Http\Response;
  *
  * @see Response
  */
-class WP_HTTP_Requests_Response extends Response
+class RequestsResponse extends Response
 {
     /**
      * Requests Response object.
