@@ -153,6 +153,9 @@ $classes = array_change_key_case([
     'WP_Http_Encoding' => 'Devtronic\\FreshPress\\Components\\Http\\Encoding',
     'WP_Http_Streams' => 'Devtronic\\FreshPress\\Components\\Http\\Streams',
     'WP_HTTP_Fsockopen' => 'Devtronic\\FreshPress\\Components\\Http\\Streams',
+    'AtomEntry' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomEntry',
+    'AtomFeed' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomFeed',
+    'AtomParser' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomParser',
 ]);
 
 $abstractClasses = array_change_key_case([
