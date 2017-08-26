@@ -1,14 +1,16 @@
 <?php
 /**
- * HTTP API: WP_Http_Curl class
+ * HTTP API: Curl class
  *
  * @package WordPress
  * @subpackage HTTP
  * @since 4.4.0
  */
 
-use Devtronic\FreshPress\Components\Http\Http;
-use Devtronic\FreshPress\Components\Http\Proxy;
+namespace Devtronic\FreshPress\Components\Http;
+
+use WP_Error;
+use WP_Http_Encoding;
 
 /**
  * Core class used to integrate Curl as an HTTP transport.
@@ -19,7 +21,7 @@ use Devtronic\FreshPress\Components\Http\Proxy;
  *
  * @since 2.7.0
  */
-class WP_Http_Curl
+class Curl
 {
 
     /**
