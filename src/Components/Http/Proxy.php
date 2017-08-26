@@ -1,12 +1,13 @@
 <?php
 /**
- * HTTP API: WP_HTTP_Proxy class
+ * HTTP API: Proxy class
  *
  * @package WordPress
  * @subpackage HTTP
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Http;
 /**
  * Core class used to implement HTTP API proxy support.
  *
@@ -41,7 +42,7 @@
  *
  * @since 2.8.0
  */
-class WP_HTTP_Proxy
+class Proxy
 {
 
     /**

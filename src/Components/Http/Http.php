@@ -16,7 +16,6 @@ use Requests_Exception;
 use Requests_Proxy_HTTP;
 use Requests_Response;
 use WP_Error;
-use WP_HTTP_Proxy;
 use WP_HTTP_Requests_Response;
 
 /**
@@ -369,7 +368,7 @@ class Http
         $options['verify'] = apply_filters('https_ssl_verify', $options['verify']);
 
         // Check for proxies.
-        $proxy = new WP_HTTP_Proxy();
+        $proxy = new Proxy();
         if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) {
             $options['proxy'] = new Requests_Proxy_HTTP($proxy->host() . ':' . $proxy->port());
 

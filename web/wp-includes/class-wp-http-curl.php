@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Http;
+use Devtronic\FreshPress\Components\Http\Proxy;
 
 /**
  * Core class used to integrate Curl as an HTTP transport.
@@ -105,7 +106,7 @@ class WP_Http_Curl
         $handle = curl_init();
 
         // cURL offers really easy proxy support.
-        $proxy = new WP_HTTP_Proxy();
+        $proxy = new Proxy();
 
         if ($proxy->is_enabled() && $proxy->send_through_proxy($url)) {
             curl_setopt($handle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);

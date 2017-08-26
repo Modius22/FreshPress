@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Http;
+use Devtronic\FreshPress\Components\Http\Proxy;
 
 /**
  * Core class used to integrate PHP Streams as an HTTP transport.
@@ -117,7 +118,7 @@ class WP_Http_Streams
             $ssl_verify = apply_filters('https_ssl_verify', $ssl_verify);
         }
 
-        $proxy = new WP_HTTP_Proxy();
+        $proxy = new Proxy();
 
         $context = stream_context_create(array(
             'ssl' => array(
