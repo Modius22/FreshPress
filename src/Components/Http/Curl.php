@@ -10,7 +10,6 @@
 namespace Devtronic\FreshPress\Components\Http;
 
 use WP_Error;
-use WP_Http_Encoding;
 
 /**
  * Core class used to integrate Curl as an HTTP transport.
@@ -315,8 +314,8 @@ class Curl
             return $redirect_response;
         }
 
-        if (true === $r['decompress'] && true === WP_Http_Encoding::should_decode($theHeaders['headers'])) {
-            $theBody = WP_Http_Encoding::decompress($theBody);
+        if (true === $r['decompress'] && true === Encoding::should_decode($theHeaders['headers'])) {
+            $theBody = Encoding::decompress($theBody);
         }
 
         $response['body'] = $theBody;

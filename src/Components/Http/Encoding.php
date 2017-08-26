@@ -7,6 +7,8 @@
  * @since 4.4.0
  */
 
+namespace Devtronic\FreshPress\Components\Http;
+
 /**
  * Core class used to implement deflate and gzip transfer encoding support for HTTP requests.
  *
@@ -14,7 +16,7 @@
  *
  * @since 2.8.0
  */
-class WP_Http_Encoding
+class Encoding
 {
 
     /**

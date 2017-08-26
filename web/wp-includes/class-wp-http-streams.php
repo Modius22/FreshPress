@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Components\Http\Proxy;
+use Devtronic\FreshPress\Components\Http\Encoding;
 
 /**
  * Core class used to integrate PHP Streams as an HTTP transport.
@@ -367,8 +368,8 @@ class WP_Http_Streams
             $process['body'] = Http::chunkTransferDecode($process['body']);
         }
 
-        if (true === $r['decompress'] && true === WP_Http_Encoding::should_decode($arrHeaders['headers'])) {
-            $process['body'] = WP_Http_Encoding::decompress($process['body']);
+        if (true === $r['decompress'] && true === Encoding::should_decode($arrHeaders['headers'])) {
+            $process['body'] = Encoding::decompress($process['body']);
         }
 
         if (isset($r['limit_response_size']) && strlen($process['body']) > $r['limit_response_size']) {
