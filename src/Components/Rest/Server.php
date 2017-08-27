@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Rest;
 
-use WP_Error;
 use Devtronic\FreshPress\Components\Http\Response;
+use WP_Error;
 
 /**
  * Core class used to implement the WordPress REST API server.

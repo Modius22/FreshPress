@@ -7,13 +7,15 @@
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Text;
+
 /**
  * Better word splitting than the PEAR package provides.
  *
  * @since 2.6.0
- * @uses Text_Diff_Renderer_inline Extends
+ * @uses InlineRenderer Extends
  */
-class WP_Text_Diff_Renderer_inline extends Text_Diff_Renderer_inline
+class CustomInlineRenderer extends InlineRenderer
 {
 
     /**

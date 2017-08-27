@@ -1,5 +1,13 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Text\Engine;
+
+use Devtronic\FreshPress\Components\Text\Diff;
+use Devtronic\FreshPress\Components\Text\DiffOpAdd;
+use Devtronic\FreshPress\Components\Text\DiffOpChange;
+use Devtronic\FreshPress\Components\Text\DiffOpCopy;
+use Devtronic\FreshPress\Components\Text\DiffOpDelete;
+
 /**
  * Class used internally by Diff to actually compute the diffs.
  *
@@ -15,7 +23,7 @@
  * @package Text_Diff
  * @since   0.3.0
  */
-class Text_Diff_Engine_shell
+class ShellEngine
 {
 
     /**
@@ -35,14 +43,14 @@ class Text_Diff_Engine_shell
      */
     public function diff($from_lines, $to_lines)
     {
-        array_walk($from_lines, array('Text_Diff', 'trimNewlines'));
-        array_walk($to_lines, array('Text_Diff', 'trimNewlines'));
+        array_walk($from_lines, array(Diff::class, 'trimNewlines'));
+        array_walk($to_lines, array(Diff::class, 'trimNewlines'));
 
-        $temp_dir = Text_Diff::_getTempDir();
+        $temp_dir = Diff::_getTempDir();
 
         // Execute gnu diff or similar to get a standard diff file.
-        $from_file = tempnam($temp_dir, 'Text_Diff');
-        $to_file = tempnam($temp_dir, 'Text_Diff');
+        $from_file = tempnam($temp_dir, Diff::class);
+        $to_file = tempnam($temp_dir, Diff::class);
         $fp = fopen($from_file, 'w');
         fwrite($fp, implode("\n", $from_lines));
         fclose($fp);
@@ -55,7 +63,7 @@ class Text_Diff_Engine_shell
 
         if (is_null($diff)) {
             // No changes were made
-            return array(new Text_Diff_Op_copy($from_lines));
+            return array(new DiffOpCopy($from_lines));
         }
 
         $from_line_no = 1;
@@ -92,7 +100,7 @@ class Text_Diff_Engine_shell
                 assert('$match[1] - $from_line_no == $match[4] - $to_line_no');
                 array_push(
                     $edits,
-                    new Text_Diff_Op_copy(
+                    new DiffOpCopy(
                         $this->_getLines($from_lines, $from_line_no, $match[1] - 1),
                         $this->_getLines($to_lines, $to_line_no, $match[4] - 1)
                     )
@@ -104,7 +112,7 @@ class Text_Diff_Engine_shell
                     // deleted lines
                     array_push(
                         $edits,
-                        new Text_Diff_Op_delete(
+                        new DiffOpDelete(
                             $this->_getLines($from_lines, $from_line_no, $match[2])
                         )
                     );
@@ -115,7 +123,7 @@ class Text_Diff_Engine_shell
                     // changed lines
                     array_push(
                         $edits,
-                        new Text_Diff_Op_change(
+                        new DiffOpChange(
                             $this->_getLines($from_lines, $from_line_no, $match[2]),
                             $this->_getLines($to_lines, $to_line_no, $match[5])
                         )
@@ -126,7 +134,7 @@ class Text_Diff_Engine_shell
                     // added lines
                     array_push(
                         $edits,
-                        new Text_Diff_Op_add(
+                        new DiffOpAdd(
                             $this->_getLines($to_lines, $to_line_no, $match[5])
                         )
                     );
@@ -139,7 +147,7 @@ class Text_Diff_Engine_shell
             // Some lines might still be pending. Add them as copied
             array_push(
                 $edits,
-                new Text_Diff_Op_copy(
+                new DiffOpCopy(
                     $this->_getLines(
                         $from_lines,
                         $from_line_no,

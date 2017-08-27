@@ -6,6 +6,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Text\Diff;
+use Devtronic\FreshPress\Components\Text\TableRenderer;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\User;
@@ -2657,8 +2659,8 @@ if (!function_exists('wp_text_diff')) :
      * @since 2.6.0
      *
      * @see  wp_parse_args() Used to change defaults to user defined settings.
-     * @uses Text_Diff
-     * @uses WP_Text_Diff_Renderer_Table
+     * @uses Diff
+     * @uses TableRenderer
      *
      * @param string $left_string "old" (left) version of string
      * @param string $right_string "new" (right) version of string
@@ -2670,17 +2672,13 @@ if (!function_exists('wp_text_diff')) :
         $defaults = array('title' => '', 'title_left' => '', 'title_right' => '');
         $args = wp_parse_args($args, $defaults);
 
-        if (!class_exists('WP_Text_Diff_Renderer_Table', false)) {
-            require(ABSPATH . WPINC . '/wp-diff.php');
-        }
-
         $left_string = normalize_whitespace($left_string);
         $right_string = normalize_whitespace($right_string);
 
         $left_lines = explode("\n", $left_string);
         $right_lines = explode("\n", $right_string);
-        $text_diff = new Text_Diff($left_lines, $right_lines);
-        $renderer = new WP_Text_Diff_Renderer_Table($args);
+        $text_diff = new Diff($left_lines, $right_lines);
+        $renderer = new TableRenderer($args);
         $diff = $renderer->render($text_diff);
 
         if (!$diff) {

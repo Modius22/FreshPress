@@ -1,12 +1,20 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Text\Engine;
+
+use Devtronic\FreshPress\Components\Text\DiffOpAdd;
+use Devtronic\FreshPress\Components\Text\DiffOpChange;
+use Devtronic\FreshPress\Components\Text\DiffOpCopy;
+use Devtronic\FreshPress\Components\Text\DiffOpDelete;
+use PEAR;
+
 /**
  * Parses unified or context diffs output from eg. the diff utility.
  *
  * Example:
  * <code>
  * $patch = file_get_contents('example.patch');
- * $diff = new Text_Diff('string', array($patch));
+ * $diff = new Diff('string', array($patch));
  * $renderer = new Text_Diff_Renderer_inline();
  * echo $renderer->render($diff);
  * </code>
@@ -21,7 +29,7 @@
  * @package Text_Diff
  * @since   0.2.0
  */
-class Text_Diff_Engine_string
+class StringEngine
 {
 
     /**
@@ -101,7 +109,7 @@ class Text_Diff_Engine_string
                     do {
                         $diff1[] = substr($diff[$i], 1);
                     } while (++$i < $end && substr($diff[$i], 0, 1) == ' ');
-                    $edits[] = new Text_Diff_Op_copy($diff1);
+                    $edits[] = new DiffOpCopy($diff1);
                     break;
 
                 case '+':
@@ -109,7 +117,7 @@ class Text_Diff_Engine_string
                     do {
                         $diff1[] = substr($diff[$i], 1);
                     } while (++$i < $end && substr($diff[$i], 0, 1) == '+');
-                    $edits[] = new Text_Diff_Op_add($diff1);
+                    $edits[] = new DiffOpAdd($diff1);
                     break;
 
                 case '-':
@@ -123,9 +131,9 @@ class Text_Diff_Engine_string
                         $diff2[] = substr($diff[$i++], 1);
                     }
                     if (count($diff2) == 0) {
-                        $edits[] = new Text_Diff_Op_delete($diff1);
+                        $edits[] = new DiffOpDelete($diff1);
                     } else {
-                        $edits[] = new Text_Diff_Op_change($diff1, $diff2);
+                        $edits[] = new DiffOpChange($diff1, $diff2);
                     }
                     break;
 
@@ -199,7 +207,7 @@ class Text_Diff_Engine_string
                 $array[] = substr($diff[$j++], 2);
             }
             if (count($array) > 0) {
-                $edits[] = new Text_Diff_Op_copy($array);
+                $edits[] = new DiffOpCopy($array);
             }
 
             if ($i < $max_i) {
@@ -213,21 +221,21 @@ class Text_Diff_Engine_string
                                 $diff2[] = substr($diff[$j++], 2);
                             }
                         } while (++$i < $max_i && substr($diff[$i], 0, 1) == '!');
-                        $edits[] = new Text_Diff_Op_change($diff1, $diff2);
+                        $edits[] = new DiffOpChange($diff1, $diff2);
                         break;
 
                     case '+':
                         do {
                             $diff1[] = substr($diff[$i], 2);
                         } while (++$i < $max_i && substr($diff[$i], 0, 1) == '+');
-                        $edits[] = new Text_Diff_Op_add($diff1);
+                        $edits[] = new DiffOpAdd($diff1);
                         break;
 
                     case '-':
                         do {
                             $diff1[] = substr($diff[$i], 2);
                         } while (++$i < $max_i && substr($diff[$i], 0, 1) == '-');
-                        $edits[] = new Text_Diff_Op_delete($diff1);
+                        $edits[] = new DiffOpDelete($diff1);
                         break;
                 }
             }
@@ -239,14 +247,14 @@ class Text_Diff_Engine_string
                         do {
                             $diff2[] = substr($diff[$j++], 2);
                         } while ($j < $max_j && substr($diff[$j], 0, 1) == '+');
-                        $edits[] = new Text_Diff_Op_add($diff2);
+                        $edits[] = new DiffOpAdd($diff2);
                         break;
 
                     case '-':
                         do {
                             $diff2[] = substr($diff[$j++], 2);
                         } while ($j < $max_j && substr($diff[$j], 0, 1) == '-');
-                        $edits[] = new Text_Diff_Op_delete($diff2);
+                        $edits[] = new DiffOpDelete($diff2);
                         break;
                 }
             }

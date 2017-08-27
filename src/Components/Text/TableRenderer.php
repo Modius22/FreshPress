@@ -7,13 +7,15 @@
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Text;
+
 /**
  * Table renderer to display the diff lines.
  *
  * @since 2.6.0
- * @uses Text_Diff_Renderer Extends
+ * @uses Renderer Extends
  */
-class WP_Text_Diff_Renderer_Table extends Text_Diff_Renderer
+class TableRenderer extends Renderer
 {
 
     /**
@@ -48,7 +50,7 @@ class WP_Text_Diff_Renderer_Table extends Text_Diff_Renderer
      * @access protected
      * @since 2.6.0
      */
-    protected $inline_diff_renderer = 'WP_Text_Diff_Renderer_inline';
+    protected $inline_diff_renderer = CustomInlineRenderer::class;
 
     /**
      * Should we show the split view or not
@@ -197,7 +199,6 @@ class WP_Text_Diff_Renderer_Table extends Text_Diff_Renderer
             if ($encode) {
                 $processed_line = htmlspecialchars($line);
 
-                /** This filter is documented in wp-includes/wp-diff.php */
                 $line = apply_filters('process_text_diff_html', $processed_line, $line, 'deleted');
             }
             if ($this->_show_split_view) {
@@ -224,7 +225,6 @@ class WP_Text_Diff_Renderer_Table extends Text_Diff_Renderer
             if ($encode) {
                 $processed_line = htmlspecialchars($line);
 
-                /** This filter is documented in wp-includes/wp-diff.php */
                 $line = apply_filters('process_text_diff_html', $processed_line, $line, 'unchanged');
             }
             if ($this->_show_split_view) {
@@ -269,7 +269,7 @@ class WP_Text_Diff_Renderer_Table extends Text_Diff_Renderer
         // Compute word diffs for each matched pair using the inline diff
         foreach ($orig_matches as $o => $f) {
             if (is_numeric($o) && is_numeric($f)) {
-                $text_diff = new Text_Diff('auto', array(array($orig[$o]), array($final[$f])));
+                $text_diff = new Diff('auto', array(array($orig[$o]), array($final[$f])));
                 $renderer = new $this->inline_diff_renderer;
                 $diff = $renderer->render($text_diff);
 

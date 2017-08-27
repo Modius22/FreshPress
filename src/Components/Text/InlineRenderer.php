@@ -11,10 +11,7 @@
  * @package Text_Diff
  */
 
-/** Text_Diff_Renderer */
-
-// WP #7391
-require_once dirname(dirname(__FILE__)) . '/Renderer.php';
+namespace Devtronic\FreshPress\Components\Text;
 
 /**
  * "Inline" diff renderer.
@@ -24,7 +21,7 @@ require_once dirname(dirname(__FILE__)) . '/Renderer.php';
  * @author  Ciprian Popovici
  * @package Text_Diff
  */
-class Text_Diff_Renderer_inline extends Text_Diff_Renderer
+class InlineRenderer extends Renderer
 {
 
     /**
@@ -158,7 +155,7 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         $nl = "\0";
 
         if ($this->_split_characters) {
-            $diff = new Text_Diff(
+            $diff = new Diff(
                 'native',
                 array(
                     preg_split('//', $text1),
@@ -169,7 +166,7 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
             /* We want to split on word boundaries, but we need to preserve
              * whitespace as well. Therefore we split on words, but include
              * all blocks of whitespace in the wordlist. */
-            $diff = new Text_Diff(
+            $diff = new Diff(
                 'native',
                 array(
                     $this->_splitOnWords($text1, $nl),
@@ -179,7 +176,7 @@ class Text_Diff_Renderer_inline extends Text_Diff_Renderer
         }
 
         /* Get the diff in inline format. */
-        $renderer = new Text_Diff_Renderer_inline(array_merge(
+        $renderer = new InlineRenderer(array_merge(
             $this->getParams(),
             array('split_level' => $this->_split_characters ? 'characters' : 'words')
         ));

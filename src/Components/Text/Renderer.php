@@ -1,5 +1,7 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Text;
+
 /**
  * A class to render Diffs in different formats.
  *
@@ -13,7 +15,7 @@
  *
  * @package Text_Diff
  */
-class Text_Diff_Renderer
+class Renderer
 {
 
     /**
@@ -73,7 +75,7 @@ class Text_Diff_Renderer
     /**
      * Renders a diff.
      *
-     * @param Text_Diff $diff A Text_Diff object.
+     * @param Diff $diff A Text_Diff object.
      *
      * @return string  The formatted output.
      */
@@ -93,7 +95,7 @@ class Text_Diff_Renderer
             /* If these are unchanged (copied) lines, and we want to keep
              * leading or trailing context lines, extract them from the copy
              * block. */
-            if (is_a($edit, 'Text_Diff_Op_copy')) {
+            if (is_a($edit, DiffOpCopy::class)) {
                 /* Do we have any diff blocks yet? */
                 if (is_array($block)) {
                     /* How many lines to keep as context from the copy
@@ -108,7 +110,7 @@ class Text_Diff_Renderer
                             /* Create a new block with as many lines as we need
                              * for the trailing context. */
                             $context = array_slice($edit->orig, 0, $ntrail);
-                            $block[] = new Text_Diff_Op_copy($context);
+                            $block[] = new DiffOpCopy($context);
                         }
                         /* @todo */
                         $output .= $this->_block(
@@ -132,7 +134,7 @@ class Text_Diff_Renderer
                     $y0 = $yi - count($context);
                     $block = array();
                     if ($context) {
-                        $block[] = new Text_Diff_Op_copy($context);
+                        $block[] = new DiffOpCopy($context);
                     }
                 }
                 $block[] = $edit;
@@ -165,19 +167,16 @@ class Text_Diff_Renderer
 
         foreach ($edits as $edit) {
             switch (strtolower(get_class($edit))) {
-                case 'text_diff_op_copy':
+                case DiffOpCopy::class:
                     $output .= $this->_context($edit->orig);
                     break;
-
-                case 'text_diff_op_add':
+                case DiffOpAdd::class:
                     $output .= $this->_added($edit->final);
                     break;
-
-                case 'text_diff_op_delete':
+                case DiffOpDelete::class:
                     $output .= $this->_deleted($edit->orig);
                     break;
-
-                case 'text_diff_op_change':
+                case DiffOpChange::class:
                     $output .= $this->_changed($edit->orig, $edit->final);
                     break;
             }

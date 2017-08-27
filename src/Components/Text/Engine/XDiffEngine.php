@@ -1,5 +1,12 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Text\Engine;
+
+use Devtronic\FreshPress\Components\Text\Diff;
+use Devtronic\FreshPress\Components\Text\DiffOpAdd;
+use Devtronic\FreshPress\Components\Text\DiffOpCopy;
+use Devtronic\FreshPress\Components\Text\DiffOpDelete;
+
 /**
  * Class used internally by Diff to actually compute the diffs.
  *
@@ -14,15 +21,15 @@
  * @author  Jon Parise <jon@horde.org>
  * @package Text_Diff
  */
-class Text_Diff_Engine_xdiff
+class XDiffEngine
 {
 
     /**
      */
     public function diff($from_lines, $to_lines)
     {
-        array_walk($from_lines, array('Text_Diff', 'trimNewlines'));
-        array_walk($to_lines, array('Text_Diff', 'trimNewlines'));
+        array_walk($from_lines, array(Diff::class, 'trimNewlines'));
+        array_walk($to_lines, array(Diff::class, 'trimNewlines'));
 
         /* Convert the two input arrays into strings for xdiff processing. */
         $from_string = implode("\n", $from_lines);
@@ -47,15 +54,15 @@ class Text_Diff_Engine_xdiff
             }
             switch ($line[0]) {
                 case ' ':
-                    $edits[] = new Text_Diff_Op_copy(array(substr($line, 1)));
+                    $edits[] = new DiffOpCopy(array(substr($line, 1)));
                     break;
 
                 case '+':
-                    $edits[] = new Text_Diff_Op_add(array(substr($line, 1)));
+                    $edits[] = new DiffOpAdd(array(substr($line, 1)));
                     break;
 
                 case '-':
-                    $edits[] = new Text_Diff_Op_delete(array(substr($line, 1)));
+                    $edits[] = new DiffOpDelete(array(substr($line, 1)));
                     break;
             }
         }

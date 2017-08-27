@@ -1,5 +1,13 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Text\Engine;
+
+use Devtronic\FreshPress\Components\Text\Diff;
+use Devtronic\FreshPress\Components\Text\DiffOpAdd;
+use Devtronic\FreshPress\Components\Text\DiffOpChange;
+use Devtronic\FreshPress\Components\Text\DiffOpCopy;
+use Devtronic\FreshPress\Components\Text\DiffOpDelete;
+
 /**
  * Class used internally by Text_Diff to actually compute the diffs.
  *
@@ -27,12 +35,12 @@
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  * @package Text_Diff
  */
-class Text_Diff_Engine_native
+class NativeEngine
 {
     public function diff($from_lines, $to_lines)
     {
-        array_walk($from_lines, array('Text_Diff', 'trimNewlines'));
-        array_walk($to_lines, array('Text_Diff', 'trimNewlines'));
+        array_walk($from_lines, array(Diff::class, 'trimNewlines'));
+        array_walk($to_lines, array(Diff::class, 'trimNewlines'));
 
         $n_from = count($from_lines);
         $n_to = count($to_lines);
@@ -106,7 +114,7 @@ class Text_Diff_Engine_native
                 ++$yi;
             }
             if ($copy) {
-                $edits[] = new Text_Diff_Op_copy($copy);
+                $edits[] = new DiffOpCopy($copy);
             }
 
             // Find deletes & adds.
@@ -121,11 +129,11 @@ class Text_Diff_Engine_native
             }
 
             if ($delete && $add) {
-                $edits[] = new Text_Diff_Op_change($delete, $add);
+                $edits[] = new DiffOpChange($delete, $add);
             } elseif ($delete) {
-                $edits[] = new Text_Diff_Op_delete($delete);
+                $edits[] = new DiffOpDelete($delete);
             } elseif ($add) {
-                $edits[] = new Text_Diff_Op_add($add);
+                $edits[] = new DiffOpAdd($add);
             }
         }
 

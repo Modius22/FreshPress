@@ -156,6 +156,21 @@ $classes = array_change_key_case([
     'AtomEntry' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomEntry',
     'AtomFeed' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomFeed',
     'AtomParser' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomParser',
+    'Text_Diff' => 'Devtronic\\FreshPress\\Components\\Text\\Diff',
+    'Text_MappedDiff' => 'Devtronic\\FreshPress\\Components\\Text\\MappedDiff',
+    'Text_Diff_Op' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOp',
+    'Text_Diff_Op_add' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpAdd',
+    'Text_Diff_Op_delete' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpDelete',
+    'Text_Diff_Op_change' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpChange',
+    'Text_Diff_Op_copy' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpCopy',
+    'Text_Diff_Engine_native' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\NativeEngine',
+    'Text_Diff_Engine_shell' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\ShellEngine',
+    'Text_Diff_Engine_string' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\StringEngine',
+    'Text_Diff_Engine_xdiff' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\XDiffEngine',
+    'Text_Diff_Renderer' => 'Devtronic\\FreshPress\\Components\\Text\\Renderer',
+    'Text_Diff_Renderer_inline' => 'Devtronic\\FreshPress\\Components\\Text\\InlineRenderer',
+    'WP_Text_Diff_Renderer_inline' => 'Devtronic\\FreshPress\\Components\\Text\\CustomInlineRenderer',
+    'WP_Text_Diff_Renderer_Table' => 'Devtronic\\FreshPress\\Components\\Text\\TableRenderer',
 ]);
 
 $abstractClasses = array_change_key_case([
