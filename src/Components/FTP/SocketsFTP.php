@@ -12,6 +12,8 @@
  * @license LGPL http://www.opensource.org/licenses/lgpl-license.html
  */
 
+namespace Devtronic\FreshPress\Components\FTP;
+
 /**
  * Socket Based FTP implementation
  *
@@ -25,7 +27,7 @@
  * @link http://www.phpclasses.org/browse/package/1743.html Site
  * @license LGPL http://www.opensource.org/licenses/lgpl-license.html
  */
-class ftp_sockets extends ftp_base
+class SocketsFTP extends BaseFTP
 {
     public function __construct($verb = false, $le = false)
     {
@@ -38,12 +40,12 @@ class ftp_sockets extends ftp_base
 
     public function _settimeout($sock)
     {
-        if (!@socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array("sec" => $this->_timeout, "usec" => 0))) {
+        if (!@socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, ["sec" => $this->_timeout, "usec" => 0])) {
             $this->PushError('_connect', 'socket set receive timeout', socket_strerror(socket_last_error($sock)));
             @socket_close($sock);
             return false;
         }
-        if (!@socket_set_option($sock, SOL_SOCKET, SO_SNDTIMEO, array("sec" => $this->_timeout, "usec" => 0))) {
+        if (!@socket_set_option($sock, SOL_SOCKET, SO_SNDTIMEO, ["sec" => $this->_timeout, "usec" => 0])) {
             $this->PushError('_connect', 'socket set send timeout', socket_strerror(socket_last_error($sock)));
             @socket_close($sock);
             return false;
@@ -207,10 +209,10 @@ class ftp_sockets extends ftp_base
                 return false;
             }
             if (!$this->_exec('PORT ' . str_replace(
-                '.',
-                ',',
+                    '.',
+                    ',',
                     $this->_datahost . '.' . ($this->_dataport >> 8) . '.' . ($this->_dataport & 0x00FF)
-            ), "_port")) {
+                ), "_port")) {
                 $this->_data_close();
                 return false;
             }

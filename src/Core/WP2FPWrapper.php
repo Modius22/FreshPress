@@ -171,6 +171,9 @@ $classes = array_change_key_case([
     'Text_Diff_Renderer_inline' => 'Devtronic\\FreshPress\\Components\\Text\\InlineRenderer',
     'WP_Text_Diff_Renderer_inline' => 'Devtronic\\FreshPress\\Components\\Text\\CustomInlineRenderer',
     'WP_Text_Diff_Renderer_Table' => 'Devtronic\\FreshPress\\Components\\Text\\TableRenderer',
+    'ftp_base' => 'Devtronic\\FreshPress\\Components\\FTP\\BaseFTP',
+    'ftp_pure' => 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP',
+    'ftp_sockets' => 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP',
 ]);
 
 $abstractClasses = array_change_key_case([
@@ -193,6 +196,13 @@ $finalClasses = array_change_key_case([
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
     'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
 ]);
+
+// Only for compatibility, remove in 2.x
+$mod_sockets = extension_loaded('sockets');
+$classes['ftp'] = 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP';
+if ($mod_sockets) {
+    $classes['ftp'] = 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP';
+}
 
 // Classes
 spl_autoload_register(function ($oldClass) use ($classes) {

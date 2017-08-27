@@ -12,6 +12,8 @@
  * @license LGPL http://www.opensource.org/licenses/lgpl-license.html
  */
 
+namespace Devtronic\FreshPress\Components\FTP;
+
 /**
  * Defines the newline characters, if not defined already.
  *
@@ -90,7 +92,7 @@ define('FTP_OS_Mac', 'm');
  * PemFTP base class
  *
  */
-class ftp_base
+class BaseFTP
 {
     /* Public variables */
     public $LocalEcho;
@@ -137,11 +139,11 @@ class ftp_base
         $this->LocalEcho = $le;
         $this->Verbose = $verb;
         $this->_lastaction = null;
-        $this->_error_array = array();
-        $this->_eol_code = array(FTP_OS_Unix => "\n", FTP_OS_Mac => "\r", FTP_OS_Windows => "\r\n");
-        $this->AuthorizedTransferMode = array(FTP_AUTOASCII, FTP_ASCII, FTP_BINARY);
-        $this->OS_FullName = array(FTP_OS_Unix => 'UNIX', FTP_OS_Windows => 'WINDOWS', FTP_OS_Mac => 'MACOS');
-        $this->AutoAsciiExt = array(
+        $this->_error_array = [];
+        $this->_eol_code = [FTP_OS_Unix => "\n", FTP_OS_Mac => "\r", FTP_OS_Windows => "\r\n"];
+        $this->AuthorizedTransferMode = [FTP_AUTOASCII, FTP_ASCII, FTP_BINARY];
+        $this->OS_FullName = [FTP_OS_Unix => 'UNIX', FTP_OS_Windows => 'WINDOWS', FTP_OS_Mac => 'MACOS'];
+        $this->AutoAsciiExt = [
             "ASP",
             "BAT",
             "C",
@@ -162,7 +164,7 @@ class ftp_base
             "SH",
             "SQL",
             "TXT"
-        );
+        ];
         $this->_port_available = ($port_mode == true);
         $this->SendMSG("Staring FTP client class" . ($this->_port_available ? "" : " without PORT mode support"));
         $this->_connected = false;
@@ -178,10 +180,10 @@ class ftp_base
         $this->Passive(!$this->_port_available);
         $this->_login = "anonymous";
         $this->_password = "anon@ftp.com";
-        $this->_features = array();
+        $this->_features = [];
         $this->OS_local = FTP_OS_Unix;
         $this->OS_remote = FTP_OS_Unix;
-        $this->features = array();
+        $this->features = [];
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $this->OS_local = FTP_OS_Windows;
         } elseif (strtoupper(substr(PHP_OS, 0, 3)) === 'MAC') {
@@ -202,11 +204,11 @@ class ftp_base
     {
         $is_windows = ($this->OS_remote == FTP_OS_Windows);
         if ($is_windows && preg_match(
-            "/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/",
+                "/([0-9]{2})-([0-9]{2})-([0-9]{2}) +([0-9]{2}):([0-9]{2})(AM|PM) +([0-9]+|<DIR>) +(.+)/",
                 $line,
-            $lucifer
-        )) {
-            $b = array();
+                $lucifer
+            )) {
+            $b = [];
             if ($lucifer[3] < 70) {
                 $lucifer[3] += 2000;
             } else {
@@ -241,7 +243,7 @@ class ftp_base
                 if ($lcount < 8) {
                     return '';
                 }
-                $b = array();
+                $b = [];
                 $b['isdir'] = $lucifer[0]{0} === "d";
                 $b['islink'] = $lucifer[0]{0} === "l";
                 if ($b['isdir']) {
@@ -648,7 +650,7 @@ class ftp_base
             return false;
         }
         $DATA = explode(" ", $this->_message);
-        return array($DATA[1], $DATA[3]);
+        return [$DATA[1], $DATA[3]];
     }
 
     public function delete($pathname)
@@ -714,7 +716,7 @@ class ftp_base
             -1,
             PREG_SPLIT_NO_EMPTY
         );
-        $this->_features = array();
+        $this->_features = [];
         foreach ($f as $k => $v) {
             $v = explode(" ", trim($v));
             $this->_features[array_shift($v)] = $v;
@@ -763,9 +765,9 @@ class ftp_base
         }
         $pi = pathinfo($remotefile);
         if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
-            strtoupper($pi["extension"]),
+                    strtoupper($pi["extension"]),
                     $this->AutoAsciiExt
-        ))) {
+                ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -813,9 +815,9 @@ class ftp_base
         }
         $pi = pathinfo($remotefile);
         if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
-            strtoupper($pi["extension"]),
+                    strtoupper($pi["extension"]),
                     $this->AutoAsciiExt
-        ))) {
+                ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -856,9 +858,9 @@ class ftp_base
         }
         $pi = pathinfo($remotefile);
         if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
-            strtoupper($pi["extension"]),
+                    strtoupper($pi["extension"]),
                     $this->AutoAsciiExt
-        ))) {
+                ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -908,9 +910,9 @@ class ftp_base
         }
         $pi = pathinfo($localfile);
         if ($this->_type == FTP_ASCII or ($this->_type == FTP_AUTOASCII and in_array(
-            strtoupper($pi["extension"]),
+                    strtoupper($pi["extension"]),
                     $this->AutoAsciiExt
-        ))) {
+                ))) {
             $mode = FTP_ASCII;
         } else {
             $mode = FTP_BINARY;
@@ -960,7 +962,7 @@ class ftp_base
             return false;
         }
         if ($handle = opendir($local)) {
-            $list = array();
+            $list = [];
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != "..") {
                     $list[] = $file;
@@ -1171,7 +1173,7 @@ class ftp_base
         $out = null;
         $chunks = explode(';', $pattern);
         foreach ($chunks as $pattern) {
-            $escape = array('$', '^', '.', '{', '}', '(', ')', '[', ']', '|');
+            $escape = ['$', '^', '.', '{', '}', '(', ')', '[', ']', '|'];
             while (strpos($pattern, '**') !== false) {
                 $pattern = str_replace('**', '*', $pattern);
             }
@@ -1226,7 +1228,7 @@ class ftp_base
             return false;
         }
 
-        $dirlist = array();
+        $dirlist = [];
         foreach ($list as $k => $v) {
             $entry = $this->parselisting($v);
             if (empty($entry)) {
@@ -1288,7 +1290,7 @@ class ftp_base
     // Gnre une erreur pour traitement externe  la classe
     public function PushError($fctname, $msg, $desc = false)
     {
-        $error = array();
+        $error = [];
         $error['time'] = time();
         $error['fctname'] = $fctname;
         $error['msg'] = $msg;
@@ -1310,24 +1312,5 @@ class ftp_base
         } else {
             return (false);
         }
-    }
-}
-
-$mod_sockets = extension_loaded('sockets');
-if (!$mod_sockets && function_exists('dl') && is_callable('dl')) {
-    $prefix = (PHP_SHLIB_SUFFIX == 'dll') ? 'php_' : '';
-    @dl($prefix . 'sockets.' . PHP_SHLIB_SUFFIX);
-    $mod_sockets = extension_loaded('sockets');
-}
-
-require_once dirname(__FILE__) . "/class-ftp-" . ($mod_sockets ? "sockets" : "pure") . ".php";
-
-if ($mod_sockets) {
-    class ftp extends ftp_sockets
-    {
-    }
-} else {
-    class ftp extends ftp_pure
-    {
     }
 }

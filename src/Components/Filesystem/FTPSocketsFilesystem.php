@@ -36,11 +36,13 @@ class FTPSocketsFilesystem extends BaseFilesystem
         $this->method = 'ftpsockets';
         $this->errors = new WP_Error();
 
-        // Check if possible to use ftp functions.
-        if (!@include_once(ABSPATH . 'wp-admin/includes/class-ftp.php')) {
-            return;
+        $mod_sockets = extension_loaded('sockets');
+        $ftpClass = 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP';
+        if ($mod_sockets) {
+            $ftpClass = 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP';
         }
-        $this->ftp = new \ftp();
+
+        $this->ftp = new $ftpClass();
 
         if (empty($opt['port'])) {
             $this->options['port'] = 21;

@@ -12,6 +12,8 @@
  * @license LGPL http://www.opensource.org/licenses/lgpl-license.html
  */
 
+namespace Devtronic\FreshPress\Components\FTP;
+
 /**
  * FTP implementation using fsockopen to connect.
  *
@@ -25,7 +27,7 @@
  * @link http://www.phpclasses.org/browse/package/1743.html Site
  * @license LGPL http://www.opensource.org/licenses/lgpl-license.html
  */
-class ftp_pure extends ftp_base
+class PureFTP extends BaseFTP
 {
     public function __construct($verb = false, $le = false)
     {
