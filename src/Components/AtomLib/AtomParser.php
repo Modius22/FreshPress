@@ -54,14 +54,6 @@ class AtomParser
     }
 
     /**
-     * PHP4 constructor.
-     */
-    public function AtomParser()
-    {
-        self::__construct();
-    }
-
-    /**
      * Map attributes to key="val"
      *
      * @param string $k Key
