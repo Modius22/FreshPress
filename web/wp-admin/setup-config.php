@@ -14,7 +14,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /** Include FreshPress Bootstrap */
 require_once(__DIR__ . '/../../src/Bootstrap.php');
-
 /**
  * We are installing.
  */
@@ -283,7 +282,7 @@ if ($step == -1 && wp_can_install_language_pack() && empty($language) && ($langu
     } else {
         $configFile = ABSPATH . '../app/config/config.yml';
         $configTemplateFile = ABSPATH . '../app/config/config.dist.yml';
-        if(!is_file($configFile) && is_file($configTemplateFile)){
+        if (!is_file($configFile) && is_file($configTemplateFile)) {
             copy($configTemplateFile, $configFile);
         }
         $handle = fopen($parametersFile, 'w');

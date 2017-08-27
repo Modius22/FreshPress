@@ -9,9 +9,9 @@
 
 namespace Devtronic\FreshPress\Components\Rest\Fields;
 
+use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Components\Rest\Request;
 use WP_Error;
-use WP_Http;
 
 /**
  * Core class to manage meta values for an object via the REST API.
@@ -201,7 +201,7 @@ abstract class MetaFields
             return new WP_Error(
                 'rest_meta_database_error',
                 __('Could not delete meta value from database.'),
-                ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
+                ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
             );
         }
 
@@ -265,7 +265,7 @@ abstract class MetaFields
                 return new WP_Error(
                     'rest_meta_database_error',
                     __('Could not update meta value in database.'),
-                    ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
+                    ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
                 );
             }
         }
@@ -275,7 +275,7 @@ abstract class MetaFields
                 return new WP_Error(
                     'rest_meta_database_error',
                     __('Could not update meta value in database.'),
-                    ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
+                    ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
                 );
             }
         }
@@ -323,7 +323,7 @@ abstract class MetaFields
             return new WP_Error(
                 'rest_meta_database_error',
                 __('Could not update meta value in database.'),
-                ['key' => $name, 'status' => WP_Http::INTERNAL_SERVER_ERROR]
+                ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
             );
         }
 

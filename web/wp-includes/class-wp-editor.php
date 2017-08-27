@@ -1,4 +1,7 @@
 <?php
+
+use Devtronic\FreshPress\Components\Query\Query;
+
 /**
  * Facilitates adding of the WordPress editor as used on the Write and Edit screens.
  *
@@ -1697,16 +1700,16 @@ final class _WP_Editors
          *
          * Allows modification of the link query arguments before querying.
          *
-         * @see WP_Query for a full list of arguments
+         * @see Query for a full list of arguments
          *
          * @since 3.7.0
          *
-         * @param array $query An array of WP_Query arguments.
+         * @param array $query An array of Query arguments.
          */
         $query = apply_filters('wp_link_query_args', $query);
 
         // Do main query.
-        $get_posts = new WP_Query;
+        $get_posts = new Query;
         $posts = $get_posts->query($query);
         // Check if any posts were found.
         if (!$get_posts->post_count) {
@@ -1750,7 +1753,7 @@ final class _WP_Editors
          *                                 the 'singular_name' post type label otherwise.
          *     }
          * }
-         * @param array $query An array of WP_Query arguments.
+         * @param array $query An array of Query arguments.
          */
         return apply_filters('wp_link_query', $results, $query);
     }

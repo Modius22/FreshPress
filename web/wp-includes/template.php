@@ -6,6 +6,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
@@ -689,7 +690,7 @@ function locate_template($template_names, $load = false, $require_once = true)
  * @global array $posts
  * @global Post $post
  * @global bool $wp_did_header
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global WP_Rewrite $wp_rewrite
  * @global \Devtronic\FreshPress\Core\WPDB $wpdb
  * @global string $wp_version

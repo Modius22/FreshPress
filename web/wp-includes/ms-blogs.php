@@ -8,6 +8,8 @@
  * @since MU
  */
 
+use Devtronic\FreshPress\Components\Query\NetworkQuery;
+use Devtronic\FreshPress\Components\Query\SiteQuery;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -637,7 +639,7 @@ function update_site_cache($sites)
  * @since 4.6.0
  * @since 4.8.0 Introduced the 'lang_id', 'lang__in', and 'lang__not_in' parameters.
  *
- * @see WP_Site_Query::parse_query()
+ * @see SiteQuery::parse_query()
  *
  * @param string|array $args {
  *     Optional. Array or query string of site query parameters. Default empty.
@@ -646,7 +648,7 @@ function update_site_cache($sites)
  * @type array $site__not_in Array of site IDs to exclude. Default empty.
  * @type bool $count Whether to return a site count (true) or array of site objects.
  *                                           Default false.
- * @type array $date_query Date query clauses to limit sites by. See WP_Date_Query.
+ * @type array $date_query Date query clauses to limit sites by. See DateQuery.
  *                                           Default null.
  * @type string $fields Site fields to return. Accepts 'ids' (returns an array of site IDs)
  *                                           or empty (returns an array of complete site objects). Default empty.
@@ -688,7 +690,7 @@ function update_site_cache($sites)
  */
 function get_sites($args = array())
 {
-    $query = new WP_Site_Query();
+    $query = new SiteQuery();
 
     return $query->query($args);
 }
@@ -1234,13 +1236,13 @@ function get_last_updated($deprecated = '', $start = 0, $quantity = 40)
  *
  * @since 4.6.0
  *
- * @param string|array $args Optional. Array or string of arguments. See WP_Network_Query::parse_query()
+ * @param string|array $args Optional. Array or string of arguments. See NetworkQuery::parse_query()
  *                           for information on accepted arguments. Default empty array.
  * @return int|array List of networks or number of found networks if `$count` argument is true.
  */
 function get_networks($args = array())
 {
-    $query = new WP_Network_Query();
+    $query = new NetworkQuery();
 
     return $query->query($args);
 }

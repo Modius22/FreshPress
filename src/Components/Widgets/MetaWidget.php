@@ -29,11 +29,11 @@ class MetaWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'classname' => 'widget_meta',
             'description' => __('Login, RSS, &amp; WordPress.org links.'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('meta', __('Meta'), $widget_ops);
     }
 
@@ -118,7 +118,7 @@ HTML;
      */
     public function form($instance)
     {
-        $instance = wp_parse_args((array)$instance, array('title' => ''));
+        $instance = wp_parse_args((array)$instance, ['title' => '']);
         $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input
                     class="widefat" id="<?php echo $this->get_field_id('title'); ?>"

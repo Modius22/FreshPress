@@ -349,7 +349,7 @@ class Comment
     /**
      * Add a child to the comment.
      *
-     * Used by `WP_Comment_Query` when bulk-filling descendants.
+     * Used by `Devtronic\FreshPress\Components\Query\CommentQuery` when bulk-filling descendants.
      *
      * @since 4.4.0
      * @access public

@@ -26,7 +26,7 @@ class AttachmentsController extends PostsController
 
     /**
      * Determines the allowed query_vars for a get_items() response and
-     * prepares for WP_Query.
+     * prepares for Query.
      *
      * @since 4.7.0
      * @access protected

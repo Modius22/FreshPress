@@ -8,6 +8,8 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Query\CommentQuery;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\CommentWalker;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
@@ -1339,7 +1341,7 @@ function wp_comment_form_unfiltered_html_nonce()
  *
  * @since 1.5.0
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global Post $post
  * @global WPDB $wpdb
  * @global int $id
@@ -1427,7 +1429,7 @@ function comments_template($file = '/comments.php', $separate_comments = false)
             $comment_args['offset'] = 0;
         } else {
             // If fetching the first page of 'newest', we need a top-level comment count.
-            $top_level_query = new WP_Comment_Query();
+            $top_level_query = new CommentQuery();
             $top_level_args = array(
                 'count' => true,
                 'orderby' => false,
@@ -1454,10 +1456,10 @@ function comments_template($file = '/comments.php', $separate_comments = false)
      *
      * @since 4.5.0
      *
-     * @see WP_Comment_Query::__construct()
+     * @see CommentQuery::__construct()
      *
      * @param array $comment_args {
-     *     Array of WP_Comment_Query arguments.
+     *     Array of CommentQuery arguments.
      *
      * @type string|array $orderby Field(s) to order by.
      * @type string $order Order of results. Accepts 'ASC' or 'DESC'.
@@ -1473,7 +1475,7 @@ function comments_template($file = '/comments.php', $separate_comments = false)
      * }
      */
     $comment_args = apply_filters('comments_template_query_args', $comment_args);
-    $comment_query = new WP_Comment_Query($comment_args);
+    $comment_query = new CommentQuery($comment_args);
     $_comments = $comment_query->comments;
 
     // Trees must be flattened before they're passed to the walker.
@@ -1995,9 +1997,9 @@ function comment_form_title($noreplytext = false, $replytext = false, $linktopar
  *
  * @since 2.7.0
  *
- * @see WP_Query->comments
+ * @see Query->comments
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global int $comment_alt
  * @global int $comment_depth
  * @global int $comment_thread_alt

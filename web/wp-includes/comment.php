@@ -6,6 +6,8 @@
  * @subpackage Comment
  */
 
+use Devtronic\FreshPress\Components\Query\CommentQuery;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
@@ -163,10 +165,10 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
  * Retrieve the approved comments for post $post_id.
  *
  * @since 2.0.0
- * @since 4.1.0 Refactored to leverage WP_Comment_Query over a direct query.
+ * @since 4.1.0 Refactored to leverage CommentQuery over a direct query.
  *
  * @param  int $post_id The ID of the post.
- * @param  array $args Optional. See WP_Comment_Query::query() for information on accepted arguments.
+ * @param  array $args Optional. See CommentQuery::query() for information on accepted arguments.
  * @return int|array $comments The approved comments, or number of comments if `$count`
  *                             argument is true.
  */
@@ -183,7 +185,7 @@ function get_approved_comments($post_id, $args = array())
     );
     $r = wp_parse_args($args, $defaults);
 
-    $query = new WP_Comment_Query;
+    $query = new CommentQuery;
     return $query->query($r);
 }
 
@@ -247,13 +249,13 @@ function get_comment(&$comment = null, $output = OBJECT)
  *
  * @since 2.7.0
  *
- * @param string|array $args Optional. Array or string of arguments. See WP_Comment_Query::parse_query()
+ * @param string|array $args Optional. Array or string of arguments. See CommentQuery::parse_query()
  *                           for information on accepted arguments. Default empty.
  * @return int|array List of comments or number of found comments if `$count` argument is true.
  */
 function get_comments($args = '')
 {
-    $query = new WP_Comment_Query;
+    $query = new CommentQuery;
     return $query->query($args);
 }
 
@@ -975,7 +977,7 @@ function separate_comments(&$comments)
  *
  * @uses CommentWalker
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  *
  * @param array $comments Optional array of Comment objects. Defaults to $wp_query->comments
  * @param int $per_page Optional comments per page.
@@ -1109,7 +1111,7 @@ function get_page_of_comment($comment_ID, $args = array())
             ),
         );
 
-        $comment_query = new WP_Comment_Query();
+        $comment_query = new CommentQuery();
         $older_comment_count = $comment_query->query($comment_args);
 
         // No older comments? Then it's page #1.
@@ -3108,7 +3110,7 @@ function _prime_comment_caches($comment_ids, $update_meta_cache = true)
  * @since 2.7.0
  *
  * @param Post $posts Post data object.
- * @param WP_Query $query Query object.
+ * @param Query $query Query object.
  * @return array
  */
 function _close_comments_for_old_posts($posts, $query)

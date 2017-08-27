@@ -27,10 +27,10 @@ class LinksWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'description' => __('Your blogroll'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('links', __('Links'), $widget_ops);
     }
 
@@ -57,7 +57,7 @@ class LinksWidget extends Widget
 
         $before_widget = preg_replace('/id="[^"]*"/', 'id="%id"', $args['before_widget']);
 
-        $widget_links_args = array(
+        $widget_links_args = [
             'title_before' => $args['before_title'],
             'title_after' => $args['after_title'],
             'category_before' => $before_widget,
@@ -71,7 +71,7 @@ class LinksWidget extends Widget
             'orderby' => $orderby,
             'order' => $order,
             'limit' => $limit,
-        );
+        ];
 
         /**
          * Filters the arguments for the Links widget.
@@ -100,7 +100,7 @@ class LinksWidget extends Widget
     public function update($new_instance, $old_instance)
     {
         $new_instance = (array)$new_instance;
-        $instance = array('images' => 0, 'name' => 0, 'description' => 0, 'rating' => 0);
+        $instance = ['images' => 0, 'name' => 0, 'description' => 0, 'rating' => 0];
         foreach ($instance as $field => $val) {
             if (isset($new_instance[$field])) {
                 $instance[$field] = 1;
@@ -108,7 +108,7 @@ class LinksWidget extends Widget
         }
 
         $instance['orderby'] = 'name';
-        if (in_array($new_instance['orderby'], array('name', 'rating', 'id', 'rand'))) {
+        if (in_array($new_instance['orderby'], ['name', 'rating', 'id', 'rand'])) {
             $instance['orderby'] = $new_instance['orderby'];
         }
 
@@ -130,7 +130,7 @@ class LinksWidget extends Widget
     {
 
         //Defaults
-        $instance = wp_parse_args((array)$instance, array(
+        $instance = wp_parse_args((array)$instance, [
             'images' => true,
             'name' => true,
             'description' => false,
@@ -138,7 +138,7 @@ class LinksWidget extends Widget
             'category' => false,
             'orderby' => 'name',
             'limit' => -1
-        ));
+        ]);
         $link_cats = get_terms('link_category');
         if (!$limit = intval($instance['limit'])) {
             $limit = -1;

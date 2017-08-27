@@ -6,6 +6,7 @@
  * @subpackage Rewrite
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -347,7 +348,7 @@ function _wp_filter_taxonomy_base($base)
 /**
  * Resolve numeric slugs that collide with date permalinks.
  *
- * Permalinks of posts with numeric slugs can sometimes look to WP_Query::parse_query()
+ * Permalinks of posts with numeric slugs can sometimes look to Query::parse_query()
  * like a date archive, as when your permalink structure is `/%year%/%postname%/` and
  * a post with post_name '05' has the URL `/2015/05/`.
  *
@@ -618,7 +619,7 @@ function url_to_postid($url)
             $query = wp_resolve_numeric_slug_conflicts($query);
 
             // Do the query
-            $query = new WP_Query($query);
+            $query = new Query($query);
             if (!empty($query->posts) && $query->is_singular) {
                 return $query->post->ID;
             } else {

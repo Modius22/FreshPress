@@ -29,12 +29,12 @@ class AudioWidget extends MediaWidget
      */
     public function __construct()
     {
-        parent::__construct('media_audio', __('Audio'), array(
+        parent::__construct('media_audio', __('Audio'), [
             'description' => __('Displays an audio player.'),
             'mime_type' => 'audio',
-        ));
+        ]);
 
-        $this->l10n = array_merge($this->l10n, array(
+        $this->l10n = array_merge($this->l10n, [
             'no_media_selected' => __('No audio selected'),
             'add_media' => _x('Add Audio', 'label for button in the audio widget'),
             'replace_media' => _x(
@@ -54,7 +54,7 @@ class AudioWidget extends MediaWidget
             'media_library_state_multi' => _n_noop('Audio Widget (%d)', 'Audio Widget (%d)'),
             'media_library_state_single' => __('Audio Widget'),
             'unsupported_file_type' => __('Looks like this isn&#8217;t the correct kind of file. Please link to an audio file instead.'),
-        ));
+        ]);
     }
 
     /**
@@ -72,29 +72,29 @@ class AudioWidget extends MediaWidget
     {
         $schema = array_merge(
             parent::get_instance_schema(),
-            array(
-                'preload' => array(
+            [
+                'preload' => [
                     'type' => 'string',
-                    'enum' => array('none', 'auto', 'metadata'),
+                    'enum' => ['none', 'auto', 'metadata'],
                     'default' => 'none',
                     'description' => __('Preload'),
-                ),
-                'loop' => array(
+                ],
+                'loop' => [
                     'type' => 'boolean',
                     'default' => false,
                     'description' => __('Loop'),
-                ),
-            )
+                ],
+            ]
         );
 
         foreach (wp_get_audio_extensions() as $audio_extension) {
-            $schema[$audio_extension] = array(
+            $schema[$audio_extension] = [
                 'type' => 'string',
                 'default' => '',
                 'format' => 'uri',
                 /* translators: placeholder is audio extension */
                 'description' => sprintf(__('URL to the %s audio source file'), $audio_extension),
-            );
+            ];
         }
 
         return $schema;
@@ -168,11 +168,11 @@ class AudioWidget extends MediaWidget
         $handle = 'media-audio-widget';
         wp_enqueue_script($handle);
 
-        $exported_schema = array();
+        $exported_schema = [];
         foreach ($this->get_instance_schema() as $field => $field_schema) {
             $exported_schema[$field] = wp_array_slice_assoc(
                 $field_schema,
-                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update')
+                ['type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update']
             );
         }
         wp_add_inline_script(

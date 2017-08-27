@@ -8,6 +8,8 @@
  * @version 1.0
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
+
 global $twentyseventeencounter;
 
 ?>
@@ -51,7 +53,7 @@ global $twentyseventeencounter;
             if (get_the_ID() === (int)get_option('page_for_posts')) : ?>
 
                 <?php // Show four most recent posts.
-                $recent_posts = new WP_Query(array(
+                $recent_posts = new Query(array(
                     'posts_per_page' => 3,
                     'post_status' => 'publish',
                     'ignore_sticky_posts' => true,

@@ -8,6 +8,8 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
 /**
@@ -137,7 +139,6 @@ wp_not_installed();
 require(ABSPATH . WPINC . '/formatting.php');
 require(ABSPATH . WPINC . '/capabilities.php');
 require(ABSPATH . WPINC . '/query.php');
-require(ABSPATH . WPINC . '/date.php');
 require(ABSPATH . WPINC . '/theme.php');
 require(ABSPATH . WPINC . '/template.php');
 require(ABSPATH . WPINC . '/user.php');
@@ -171,7 +172,6 @@ require(ABSPATH . WPINC . '/embed.php');
 require(ABSPATH . WPINC . '/class-oembed.php');
 require(ABSPATH . WPINC . '/media.php');
 require(ABSPATH . WPINC . '/http.php');
-require(ABSPATH . WPINC . '/class-http.php');
 require(ABSPATH . WPINC . '/widgets.php');
 require(ABSPATH . WPINC . '/nav-menu.php');
 require(ABSPATH . WPINC . '/nav-menu-template.php');
@@ -279,15 +279,15 @@ do_action('sanitize_comment_cookies');
 
 /**
  * WordPress Query object
- * @global WP_Query $wp_the_query
+ * @global Query $wp_the_query
  * @since 2.0.0
  */
-$GLOBALS['wp_the_query'] = new WP_Query();
+$GLOBALS['wp_the_query'] = new Query();
 
 /**
  * Holds the reference to @see $wp_the_query
  * Use this global for WordPress queries
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @since 1.5.0
  */
 $GLOBALS['wp_query'] = $GLOBALS['wp_the_query'];
@@ -308,10 +308,10 @@ $GLOBALS['wp'] = new WP();
 
 /**
  * WordPress Widget Factory Object
- * @global WP_Widget_Factory $wp_widget_factory
+ * @global WidgetFactory $wp_widget_factory
  * @since 2.8.0
  */
-$GLOBALS['wp_widget_factory'] = new WP_Widget_Factory();
+$GLOBALS['wp_widget_factory'] = new WidgetFactory();
 
 /**
  * WordPress User Roles

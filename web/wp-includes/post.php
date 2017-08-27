@@ -6,6 +6,7 @@
  * @subpackage Post
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Rest\Endpoints\AttachmentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
 use Devtronic\FreshPress\Core\WPDB;
@@ -1767,18 +1768,18 @@ function is_post_type_viewable($post_type)
  *
  * @since 1.2.0
  *
- * @see WP_Query::parse_query()
+ * @see Query::parse_query()
  *
  * @param array $args {
- *     Optional. Arguments to retrieve posts. See WP_Query::parse_query() for all
+ *     Optional. Arguments to retrieve posts. See Query::parse_query() for all
  *     available arguments.
  *
  * @type int $numberposts Total number of posts to retrieve. Is an alias of $posts_per_page
- *                                        in WP_Query. Accepts -1 for all. Default 5.
+ *                                        in Query. Accepts -1 for all. Default 5.
  * @type int|string $category Category ID or comma-separated list of IDs (this or any children).
- *                                        Is an alias of $cat in WP_Query. Default 0.
+ *                                        Is an alias of $cat in Query. Default 0.
  * @type array $include An array of post IDs to retrieve, sticky posts will be included.
- *                                        Is an alias of $post__in in WP_Query. Default empty array.
+ *                                        Is an alias of $post__in in Query. Default empty array.
  * @type array $exclude An array of post IDs not to retrieve. Default empty array.
  * @type bool $suppress_filters Whether to suppress filters. Default true.
  * }
@@ -1820,7 +1821,7 @@ function get_posts($args = null)
     $r['ignore_sticky_posts'] = true;
     $r['no_found_rows'] = true;
 
-    $get_posts = new WP_Query;
+    $get_posts = new Query;
     return $get_posts->query($r);
 }
 
@@ -3047,7 +3048,7 @@ function wp_untrash_post_comments($post = null)
  * @param int $post_id Optional. The Post ID. Does not default to the ID of the
  *                       global $post. Default 0.
  * @param array $args Optional. Category query parameters. Default empty array.
- *                       See WP_Term_Query::__construct() for supported arguments.
+ *                       See Devtronic\FreshPress\Components\Query\TermQuery::__construct() for supported arguments.
  * @return array|WP_Error List of categories. If the `$fields` argument passed via `$args` is 'all' or
  *                        'all_with_object_id', an array of Devtronic\FreshPress\Entity\Term objects will be returned. If `$fields`
  *                        is 'ids', an array of category ids. If `$fields` is 'names', an array of category names.
@@ -3076,7 +3077,7 @@ function wp_get_post_categories($post_id = 0, $args = array())
  * @param int $post_id Optional. The Post ID. Does not default to the ID of the
  *                       global $post. Default 0.
  * @param array $args Optional. Tag query parameters. Default empty array.
- *                       See WP_Term_Query::__construct() for supported arguments.
+ *                       See Devtronic\FreshPress\Components\Query\TermQuery::__construct() for supported arguments.
  * @return array|WP_Error Array of Devtronic\FreshPress\Entity\Term objects on success or empty array if no tags were found.
  *                        WP_Error object if 'post_tag' taxonomy doesn't exist.
  */
@@ -3098,7 +3099,7 @@ function wp_get_post_tags($post_id = 0, $args = array())
  *                         global $post. Default 0.
  * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
  * @param array $args Optional. Term query parameters. Default empty array.
- *                         See WP_Term_Query::__construct() for supported arguments.
+ *                         See Devtronic\FreshPress\Components\Query\TermQuery::__construct() for supported arguments.
  * @return array|WP_Error  Array of Devtronic\FreshPress\Entity\Term objects on success or empty array if no terms were found.
  *                         WP_Error object if `$taxonomy` doesn't exist.
  */
@@ -5759,7 +5760,7 @@ function wp_mime_type_icon($mime = 0)
              *
              * @param string $path Icon directory absolute path.
              */
-            $icon_dir = apply_filters('icon_dir', ABSPATH . WPINC . '/images/media');
+            $icon_dir = apply_filters('icon_dir', ABSPATH . WPINC . '/assets/images/media');
 
             /**
              * Filters the icon directory URI.
@@ -5768,7 +5769,7 @@ function wp_mime_type_icon($mime = 0)
              *
              * @param string $uri Icon directory URI.
              */
-            $icon_dir_uri = apply_filters('icon_dir_uri', includes_url('images/media'));
+            $icon_dir_uri = apply_filters('icon_dir_uri', includes_url('assets/images/media'));
 
             /**
              * Filters the list of icon directory URIs.

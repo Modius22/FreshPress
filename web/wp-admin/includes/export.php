@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -538,7 +539,7 @@ function export_wp($args = array())
 
             <?php if ($post_ids) {
                 /**
-                 * @global WP_Query $wp_query
+                 * @global Query $wp_query
                  */
                 global $wp_query;
 

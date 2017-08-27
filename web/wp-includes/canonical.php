@@ -9,6 +9,7 @@
  * @since 2.3.0
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -32,7 +33,7 @@ use Devtronic\FreshPress\Core\WPDB;
  *
  * @global WP_Rewrite $wp_rewrite
  * @global bool $is_IIS
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $requested_url Optional. The URL that was requested, used to

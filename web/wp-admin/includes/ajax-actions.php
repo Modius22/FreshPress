@@ -7,9 +7,10 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Admin\SiteIcon;
 use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Components\Dependencies\Scripts;
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginInstallListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
@@ -17,6 +18,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -1315,7 +1317,8 @@ function wp_ajax_edit_comment()
 
     $position = (isset($_POST['position']) && (int)$_POST['position']) ? (int)$_POST['position'] : '-1';
     $checkbox = (isset($_POST['checkbox']) && true == $_POST['checkbox']) ? 1 : 0;
-    $wp_list_table = _get_list_table($checkbox ? CommentsListTable::class : '_Post_Comments_List_Table',
+    $wp_list_table = _get_list_table(
+        $checkbox ? CommentsListTable::class : '_Post_Comments_List_Table',
         array('screen' => 'edit-comments')
     );
 
@@ -2752,17 +2755,17 @@ function wp_ajax_query_attachments()
     }
 
     /**
-     * Filters the arguments passed to WP_Query during an Ajax
+     * Filters the arguments passed to Query during an Ajax
      * call for querying attachments.
      *
      * @since 3.7.0
      *
-     * @see WP_Query::parse_query()
+     * @see Query::parse_query()
      *
      * @param array $query An array of query variables.
      */
     $query = apply_filters('ajax_query_attachments_args', $query);
-    $query = new WP_Query($query);
+    $query = new Query($query);
 
     $posts = array_map('wp_prepare_attachment_for_js', $query->posts);
     $posts = array_filter($posts);
@@ -3587,8 +3590,7 @@ function wp_ajax_crop_image()
 
     switch ($context) {
         case 'site-icon':
-            require_once ABSPATH . '/wp-admin/includes/class-wp-site-icon.php';
-            $wp_site_icon = new WP_Site_Icon();
+            $wp_site_icon = new SiteIcon();
 
             // Skip creating a new attachment if the attachment is a Site Icon.
             if (get_post_meta($attachment_id, '_wp_attachment_context', true) == $context) {

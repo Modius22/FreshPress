@@ -7,6 +7,7 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -5007,7 +5008,7 @@ function _links_add_base($m)
         (
             preg_match('#^(\w{1,20}):#', $m[3], $protocol) && in_array($protocol[1], wp_allowed_protocols()) ?
             $m[3] :
-            WP_Http::make_absolute_url($m[3], $_links_add_base)
+            Http::make_absolute_url($m[3], $_links_add_base)
         )
         . $m[2];
 }

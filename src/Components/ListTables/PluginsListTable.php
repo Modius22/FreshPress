@@ -33,14 +33,14 @@ class PluginsListTable extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         global $status, $page;
 
-        parent::__construct(array(
+        parent::__construct([
             'plural' => 'plugins',
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
 
         $status = 'all';
         if (isset($_REQUEST['plugin_status']) && in_array(
@@ -62,7 +62,7 @@ class PluginsListTable extends ListTable
      */
     protected function get_table_classes()
     {
-        return array('widefat', $this->_args['plural']);
+        return ['widefat', $this->_args['plural']];
     }
 
     /**
@@ -87,7 +87,7 @@ class PluginsListTable extends ListTable
     {
         global $status, $plugins, $totals, $page, $orderby, $order, $s;
 
-        wp_reset_vars(array('orderby', 'order'));
+        wp_reset_vars(['orderby', 'order']);
 
         /**
          * Filters the full array of plugins to list in the Plugins list table.
@@ -100,16 +100,16 @@ class PluginsListTable extends ListTable
          */
         $all_plugins = apply_filters('all_plugins', get_plugins());
 
-        $plugins = array(
+        $plugins = [
             'all' => $all_plugins,
-            'search' => array(),
-            'active' => array(),
-            'inactive' => array(),
-            'recently_activated' => array(),
-            'upgrade' => array(),
-            'mustuse' => array(),
-            'dropins' => array(),
-        );
+            'search' => [],
+            'active' => [],
+            'inactive' => [],
+            'recently_activated' => [],
+            'upgrade' => [],
+            'mustuse' => [],
+            'dropins' => [],
+        ];
 
         $screen = $this->screen;
 
@@ -171,9 +171,9 @@ class PluginsListTable extends ListTable
         set_transient('plugin_slugs', array_keys($plugins['all']), DAY_IN_SECONDS);
 
         if ($screen->in_admin('network')) {
-            $recently_activated = get_site_option('recently_activated', array());
+            $recently_activated = get_site_option('recently_activated', []);
         } else {
-            $recently_activated = get_option('recently_activated', array());
+            $recently_activated = get_option('recently_activated', []);
         }
 
         foreach ($recently_activated as $key => $time) {
@@ -252,19 +252,19 @@ class PluginsListTable extends ListTable
 
         if (strlen($s)) {
             $status = 'search';
-            $plugins['search'] = array_filter($plugins['all'], array($this, '_search_callback'));
+            $plugins['search'] = array_filter($plugins['all'], [$this, '_search_callback']);
         }
 
-        $totals = array();
+        $totals = [];
         foreach ($plugins as $type => $list) {
             $totals[$type] = count($list);
         }
 
-        if (empty($plugins[$status]) && !in_array($status, array('all', 'search'))) {
+        if (empty($plugins[$status]) && !in_array($status, ['all', 'search'])) {
             $status = 'all';
         }
 
-        $this->items = array();
+        $this->items = [];
         foreach ($plugins[$status] as $plugin_file => $plugin_data) {
             // Translate, Don't Apply Markup, Sanitize HTML
             $this->items[$plugin_file] = _get_plugin_data_markup_translate($plugin_file, $plugin_data, false, true);
@@ -272,15 +272,15 @@ class PluginsListTable extends ListTable
 
         $total_this_page = $totals[$status];
 
-        $js_plugins = array();
+        $js_plugins = [];
         foreach ($plugins as $key => $list) {
             $js_plugins[$key] = array_keys((array)$list);
         }
 
-        wp_localize_script('updates', '_wpUpdatesItemCounts', array(
+        wp_localize_script('updates', '_wpUpdatesItemCounts', [
             'plugins' => $js_plugins,
             'totals' => wp_get_update_data(),
-        ));
+        ]);
 
         if (!$orderby) {
             $orderby = 'Name';
@@ -290,7 +290,7 @@ class PluginsListTable extends ListTable
 
         $order = strtoupper($order);
 
-        uasort($this->items, array($this, '_order_callback'));
+        uasort($this->items, [$this, '_order_callback']);
 
         $plugins_per_page = $this->get_items_per_page(str_replace('-', '_', $screen->id . '_per_page'), 999);
 
@@ -300,10 +300,10 @@ class PluginsListTable extends ListTable
             $this->items = array_slice($this->items, $start, $plugins_per_page);
         }
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $total_this_page,
             'per_page' => $plugins_per_page,
-        ));
+        ]);
     }
 
     /**
@@ -402,7 +402,7 @@ class PluginsListTable extends ListTable
             <input type="search" id="<?php echo esc_attr($input_id); ?>" class="wp-filter-search" name="s"
                    value="<?php _admin_search_query(); ?>"
                    placeholder="<?php esc_attr_e('Search installed plugins...'); ?>"/>
-            <?php submit_button($text, 'hide-if-js', '', false, array('id' => 'search-submit')); ?>
+            <?php submit_button($text, 'hide-if-js', '', false, ['id' => 'search-submit']); ?>
         </p>
         <?php
     }
@@ -416,11 +416,11 @@ class PluginsListTable extends ListTable
     {
         global $status;
 
-        return array(
-            'cb' => !in_array($status, array('mustuse', 'dropins')) ? '<input type="checkbox" />' : '',
+        return [
+            'cb' => !in_array($status, ['mustuse', 'dropins']) ? '<input type="checkbox" />' : '',
             'name' => __('Plugin'),
             'description' => __('Description'),
-        );
+        ];
     }
 
     /**
@@ -428,7 +428,7 @@ class PluginsListTable extends ListTable
      */
     protected function get_sortable_columns()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -441,7 +441,7 @@ class PluginsListTable extends ListTable
     {
         global $totals, $status;
 
-        $status_links = array();
+        $status_links = [];
         foreach ($totals as $type => $count) {
             if (!$count) {
                 continue;
@@ -522,7 +522,7 @@ class PluginsListTable extends ListTable
     {
         global $status;
 
-        $actions = array();
+        $actions = [];
 
         if ('active' != $status) {
             $actions['activate-selected'] = $this->screen->in_admin('network') ? __('Network Activate') : __('Activate');
@@ -552,7 +552,7 @@ class PluginsListTable extends ListTable
     {
         global $status;
 
-        if (in_array($status, array('mustuse', 'dropins'))) {
+        if (in_array($status, ['mustuse', 'dropins'])) {
             return;
         }
 
@@ -567,7 +567,7 @@ class PluginsListTable extends ListTable
     {
         global $status;
 
-        if (!in_array($status, array('recently_activated', 'mustuse', 'dropins'))) {
+        if (!in_array($status, ['recently_activated', 'mustuse', 'dropins'])) {
             return;
         }
 
@@ -611,12 +611,12 @@ class PluginsListTable extends ListTable
     {
         global $status;
 
-        if (is_multisite() && !$this->screen->in_admin('network') && in_array($status, array('mustuse', 'dropins'))) {
+        if (is_multisite() && !$this->screen->in_admin('network') && in_array($status, ['mustuse', 'dropins'])) {
             return;
         }
 
         foreach ($this->items as $plugin_file => $plugin_data) {
-            $this->single_row(array($plugin_file, $plugin_data));
+            $this->single_row([$plugin_file, $plugin_data]);
         }
     }
 
@@ -637,13 +637,13 @@ class PluginsListTable extends ListTable
         $screen = $this->screen;
 
         // Pre-order.
-        $actions = array(
+        $actions = [
             'deactivate' => '',
             'activate' => '',
             'details' => '',
             'edit' => '',
             'delete' => '',
-        );
+        ];
 
         // Do not restrict by default
         $restrict_network_active = false;
@@ -721,13 +721,13 @@ class PluginsListTable extends ListTable
                 }
             } else {
                 if ($restrict_network_active) {
-                    $actions = array(
+                    $actions = [
                         'network_active' => __('Network Active'),
-                    );
+                    ];
                 } elseif ($restrict_network_only) {
-                    $actions = array(
+                    $actions = [
                         'network_only' => __('Network Only'),
-                    );
+                    ];
                 } elseif ($is_active) {
                     /* translators: %s: plugin name */
                     $actions['deactivate'] = '<a href="' . wp_nonce_url(
@@ -863,7 +863,7 @@ class PluginsListTable extends ListTable
 
         $class = $is_active ? 'active' : 'inactive';
         $checkbox_id = "checkbox_" . md5($plugin_data['Name']);
-        if ($restrict_network_active || $restrict_network_only || in_array($status, array('mustuse', 'dropins'))) {
+        if ($restrict_network_active || $restrict_network_only || in_array($status, ['mustuse', 'dropins'])) {
             $checkbox = '';
         } else {
             $checkbox = "<label class='screen-reader-text' for='" . $checkbox_id . "' >" .
@@ -911,7 +911,7 @@ class PluginsListTable extends ListTable
 						<div class='plugin-description'>$description</div>
 						<div class='$class second plugin-version-author-uri'>";
 
-                    $plugin_meta = array();
+                    $plugin_meta = [];
                     if (!empty($plugin_data['Version'])) {
                         $plugin_meta[] = sprintf(__('Version %s'), $plugin_data['Version']);
                     }

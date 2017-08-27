@@ -27,11 +27,11 @@ class ArchivesWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'classname' => 'widget_archive',
             'description' => __('A monthly archive of your site&#8217;s Posts.'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('archives', __('Archives'), $widget_ops);
     }
 
@@ -76,12 +76,12 @@ class ArchivesWidget extends Widget
              *
              * @param array $args An array of Archives widget drop-down arguments.
              */
-            $dropDownArgs = apply_filters('widget_archives_dropdown_args', array(
+            $dropDownArgs = apply_filters('widget_archives_dropdown_args', [
                 'type' => 'monthly',
                 'format' => 'option',
                 'echo' => false,
                 'show_post_count' => $c
-            ));
+            ]);
 
             $label = 'Select Post';
             $labelMap = [
@@ -117,10 +117,10 @@ HTML;
                  *
                  * @param array $args An array of Archives option arguments.
                  */
-                wp_get_archives(apply_filters('widget_archives_args', array(
+                wp_get_archives(apply_filters('widget_archives_args', [
                     'type' => 'monthly',
                     'show_post_count' => $c
-                ))); ?>
+                ])); ?>
             </ul>
             <?php
         }
@@ -141,7 +141,7 @@ HTML;
     public function update($new_instance, $old_instance)
     {
         $instance = $old_instance;
-        $new_instance = wp_parse_args((array)$new_instance, array('title' => '', 'count' => 0, 'dropdown' => ''));
+        $new_instance = wp_parse_args((array)$new_instance, ['title' => '', 'count' => 0, 'dropdown' => '']);
         $instance['title'] = sanitize_text_field($new_instance['title']);
         $instance['count'] = $new_instance['count'] ? 1 : 0;
         $instance['dropdown'] = $new_instance['dropdown'] ? 1 : 0;
@@ -159,7 +159,7 @@ HTML;
      */
     public function form($instance)
     {
-        $instance = wp_parse_args((array)$instance, array('title' => '', 'count' => 0, 'dropdown' => ''));
+        $instance = wp_parse_args((array)$instance, ['title' => '', 'count' => 0, 'dropdown' => '']);
         $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input
                     class="widefat" id="<?php echo $this->get_field_id('title'); ?>"

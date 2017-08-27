@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
+use Devtronic\FreshPress\Components\Query\UserQuery;
 use Devtronic\FreshPress\Entity\User;
-use WP_User_Query;
 
 /**
  * Core class used to implement displaying users in a list table.
@@ -51,13 +51,13 @@ class UsersListTable extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'singular' => 'user',
             'plural' => 'users',
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
 
         $this->is_site_users = 'site-users-network' === $this->screen->id;
 
@@ -106,21 +106,21 @@ class UsersListTable extends ListTable
         $paged = $this->get_pagenum();
 
         if ('none' === $role) {
-            $args = array(
+            $args = [
                 'number' => $users_per_page,
                 'offset' => ($paged - 1) * $users_per_page,
                 'include' => wp_get_users_with_no_role(),
                 'search' => $usersearch,
                 'fields' => 'all_with_meta'
-            );
+            ];
         } else {
-            $args = array(
+            $args = [
                 'number' => $users_per_page,
                 'offset' => ($paged - 1) * $users_per_page,
                 'role' => $role,
                 'search' => $usersearch,
                 'fields' => 'all_with_meta'
-            );
+            ];
         }
 
         if ('' !== $args['search']) {
@@ -144,20 +144,20 @@ class UsersListTable extends ListTable
          *
          * @since 4.4.0
          *
-         * @param array $args Arguments passed to WP_User_Query to retrieve items for the current
+         * @param array $args Arguments passed to UserQuery to retrieve items for the current
          *                    users list table.
          */
         $args = apply_filters('users_list_table_query_args', $args);
 
         // Query the user IDs for this page
-        $wp_user_search = new WP_User_Query($args);
+        $wp_user_search = new UserQuery($args);
 
         $this->items = $wp_user_search->get_results();
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $wp_user_search->get_total(),
             'per_page' => $users_per_page,
-        ));
+        ]);
     }
 
     /**
@@ -206,7 +206,7 @@ class UsersListTable extends ListTable
         unset($users_of_blog);
 
         $class = empty($role) ? ' class="current"' : '';
-        $role_links = array();
+        $role_links = [];
         $role_links['all'] = "<a href='$url'$class>" . sprintf(
                 _nx(
                     'All <span class="count">(%s)</span>',
@@ -268,7 +268,7 @@ class UsersListTable extends ListTable
      */
     protected function get_bulk_actions()
     {
-        $actions = array();
+        $actions = [];
 
         if (is_multisite()) {
             if (current_user_can('remove_users')) {
@@ -351,14 +351,14 @@ class UsersListTable extends ListTable
      */
     public function get_columns()
     {
-        $c = array(
+        $c = [
             'cb' => '<input type="checkbox" />',
             'username' => __('Username'),
             'name' => __('Name'),
             'email' => __('Email'),
             'role' => __('Role'),
             'posts' => __('Posts')
-        );
+        ];
 
         if ($this->is_site_users) {
             unset($c['posts']);
@@ -377,10 +377,10 @@ class UsersListTable extends ListTable
      */
     protected function get_sortable_columns()
     {
-        $c = array(
+        $c = [
             'username' => 'login',
             'email' => 'email',
-        );
+        ];
 
         return $c;
     }
@@ -439,7 +439,7 @@ class UsersListTable extends ListTable
         $user_roles = $this->get_role_list($user_object);
 
         // Set up the hover actions for this user
-        $actions = array();
+        $actions = [];
         $checkbox = '';
         // Check if the user for this row is editable
         if (current_user_can('list_users')) {
@@ -607,7 +607,7 @@ class UsersListTable extends ListTable
     {
         $wp_roles = wp_roles();
 
-        $role_list = array();
+        $role_list = [];
 
         foreach ($user_object->roles as $role) {
             if (isset($wp_roles->role_names[$role])) {

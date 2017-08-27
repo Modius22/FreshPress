@@ -147,7 +147,7 @@ class CategoryWalker extends Walker
                     $category->term_id,
                     $category->taxonomy,
                     $args['feed_type']
-                    )) . '"';
+                )) . '"';
 
             if (empty($args['feed'])) {
                 $alt = ' alt="' . sprintf(__('Feed for all posts filed under %s'), $cat_name) . '"';

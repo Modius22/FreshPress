@@ -17,6 +17,7 @@ if (!defined('ABSPATH')) {
 
 define('WPINC', 'wp-includes');
 
+require(ABSPATH . '../src/Bootstrap.php');
 require(ABSPATH . 'wp-admin/includes/noop.php');
 require(ABSPATH . WPINC . '/script-loader.php');
 require(ABSPATH . WPINC . '/version.php');
@@ -71,12 +72,12 @@ foreach ($load as $handle) {
     $content = get_file($path) . "\n";
 
     if (strpos($style->src, '/' . WPINC . '/css/') === 0) {
-        $content = str_replace('../images/', '../' . WPINC . '/images/', $content);
+        $content = str_replace('../assets/images/', '../' . WPINC . '/assets/images/', $content);
         $content = str_replace('../js/tinymce/', '../' . WPINC . '/js/tinymce/', $content);
         $content = str_replace('../fonts/', '../' . WPINC . '/fonts/', $content);
         $out .= $content;
     } else {
-        $out .= str_replace('../images/', 'images/', $content);
+        $out .= str_replace('../assets/images/', 'assets/images/', $content);
     }
 }
 

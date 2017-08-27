@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -1438,7 +1439,7 @@ function get_attachment_fields_to_edit($post, $errors = null)
  *
  * @since 2.5.0
  *
- * @global WP_Query $wp_the_query
+ * @global Query $wp_the_query
  *
  * @param int $post_id Optional. Post ID.
  * @param array $errors Errors for attachment, if any.
@@ -2336,7 +2337,7 @@ function media_upload_type_url_form($type = null, $errors = null, $id = null)
                     document.getElementById('go_button').style.color = '#bbb';
                     if (!document.forms[0].src.value)
                         document.getElementById('status_img').innerHTML = '';
-                    else document.getElementById('status_img').innerHTML = '<img src="<?php echo esc_url(admin_url('images/no.png')); ?>" alt="" />';
+                    else document.getElementById('status_img').innerHTML = '<img src="<?php echo esc_url(admin_url('assets/images/no.png')); ?>" alt="" />';
                 },
 
                 updateImageData: function () {
@@ -2345,7 +2346,7 @@ function media_upload_type_url_form($type = null, $errors = null, $id = null)
                     t.width = t.preloadImg.width;
                     t.height = t.preloadImg.height;
                     document.getElementById('go_button').style.color = '#333';
-                    document.getElementById('status_img').innerHTML = '<img src="<?php echo esc_url(admin_url('images/yes.png')); ?>" alt="" />';
+                    document.getElementById('status_img').innerHTML = '<img src="<?php echo esc_url(admin_url('assets/images/yes.png')); ?>" alt="" />';
                 },
 
                 getImageData: function () {
@@ -2359,7 +2360,7 @@ function media_upload_type_url_form($type = null, $errors = null, $id = null)
                         return false;
                     }
 
-                    document.getElementById('status_img').innerHTML = '<img src="<?php echo esc_url(admin_url('images/spinner-2x.gif')); ?>" alt="" width="16" height="16" />';
+                    document.getElementById('status_img').innerHTML = '<img src="<?php echo esc_url(admin_url('assets/images/spinner-2x.gif')); ?>" alt="" width="16" height="16" />';
                     t.preloadImg = new Image();
                     t.preloadImg.onload = t.updateImageData;
                     t.preloadImg.onerror = t.resetImageData;
@@ -2563,7 +2564,7 @@ function media_upload_gallery_form($errors)
  * @since 2.5.0
  *
  * @global WPDB $wpdb
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global WP_Locale $wp_locale
  * @global string $type
  * @global string $tab

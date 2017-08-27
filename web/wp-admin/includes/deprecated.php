@@ -357,7 +357,7 @@ if (!class_exists('WP_User_Search', false)) :
      * WordPress User Search class.
      *
      * @since 2.1.0
-     * @deprecated 3.1.0 Use WP_User_Query
+     * @deprecated 3.1.0 Use Devtronic\FreshPress\Components\Query\UserQuery
      */
     class WP_User_Search
     {
@@ -518,7 +518,7 @@ if (!class_exists('WP_User_Search', false)) :
          */
         public function __construct($search_term = '', $page = '', $role = '')
         {
-            _deprecated_function(__FUNCTION__, '3.1.0', 'WP_User_Query');
+            _deprecated_function(__FUNCTION__, '3.1.0', 'Devtronic\FreshPress\Components\Query\UserQuery');
 
             $this->search_term = wp_unslash($search_term);
             $this->raw_page = ('' == $page) ? false : (int)$page;

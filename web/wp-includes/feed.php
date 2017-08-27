@@ -10,6 +10,9 @@
  * @since 2.1.0
  */
 
+use Devtronic\FreshPress\Components\Feed\FeedCache;
+use Devtronic\FreshPress\Components\Feed\FeedFile;
+use Devtronic\FreshPress\Components\Feed\FeedSanitize;
 use Devtronic\FreshPress\Entity\Comment;
 
 /**
@@ -738,23 +741,18 @@ function feed_content_type($type = '')
  */
 function fetch_feed($url)
 {
-    require_once(ABSPATH . WPINC . '/class-wp-feed-cache.php');
-    require_once(ABSPATH . WPINC . '/class-wp-feed-cache-transient.php');
-    require_once(ABSPATH . WPINC . '/class-wp-simplepie-file.php');
-    require_once(ABSPATH . WPINC . '/class-wp-simplepie-sanitize-kses.php');
-
     $feed = new SimplePie();
 
-    $feed->set_sanitize_class('WP_SimplePie_Sanitize_KSES');
+    $feed->set_sanitize_class(FeedSanitize::class);
     // We must manually overwrite $feed->sanitize because SimplePie's
     // constructor sets it before we have a chance to set the sanitization class
-    $feed->sanitize = new WP_SimplePie_Sanitize_KSES();
+    $feed->sanitize = new FeedSanitize();
 
-    $feed->set_cache_class('WP_Feed_Cache');
-    $feed->set_file_class('WP_SimplePie_File');
+    $feed->set_cache_class(FeedCache::class);
+    $feed->set_file_class(FeedFile::class);
 
     $feed->set_feed_url($url);
-    /** This filter is documented in wp-includes/class-wp-feed-cache-transient.php */
+    /** This filter is documented in Devtronic\FreshPress\Components\Feed\FeedCacheTransient */
     $feed->set_cache_duration(apply_filters('wp_feed_cache_transient_lifetime', 12 * HOUR_IN_SECONDS, $url));
     /**
      * Fires just before processing the SimplePie feed object.

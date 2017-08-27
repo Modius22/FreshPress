@@ -29,12 +29,12 @@ class ImageWidget extends MediaWidget
      */
     public function __construct()
     {
-        parent::__construct('media_image', __('Image'), array(
+        parent::__construct('media_image', __('Image'), [
             'description' => __('Displays an image.'),
             'mime_type' => 'image',
-        ));
+        ]);
 
-        $this->l10n = array_merge($this->l10n, array(
+        $this->l10n = array_merge($this->l10n, [
             'no_media_selected' => __('No image selected'),
             'add_media' => _x('Add Image', 'label for button in the image widget'),
             'replace_media' => _x(
@@ -53,7 +53,7 @@ class ImageWidget extends MediaWidget
             /* translators: %d is widget count */
             'media_library_state_multi' => _n_noop('Image Widget (%d)', 'Image Widget (%d)'),
             'media_library_state_single' => __('Image Widget'),
-        ));
+        ]);
     }
 
     /**
@@ -71,94 +71,94 @@ class ImageWidget extends MediaWidget
     {
         return array_merge(
             parent::get_instance_schema(),
-            array(
-                'size' => array(
+            [
+                'size' => [
                     'type' => 'string',
-                    'enum' => array_merge(get_intermediate_image_sizes(), array('full', 'custom')),
+                    'enum' => array_merge(get_intermediate_image_sizes(), ['full', 'custom']),
                     'default' => 'medium',
                     'description' => __('Size'),
-                ),
-                'width' => array( // Via 'customWidth', only when size=custom; otherwise via 'width'.
+                ],
+                'width' => [ // Via 'customWidth', only when size=custom; otherwise via 'width'.
                     'type' => 'integer',
                     'minimum' => 0,
                     'default' => 0,
                     'description' => __('Width'),
-                ),
-                'height' => array( // Via 'customHeight', only when size=custom; otherwise via 'height'.
+                ],
+                'height' => [ // Via 'customHeight', only when size=custom; otherwise via 'height'.
                     'type' => 'integer',
                     'minimum' => 0,
                     'default' => 0,
                     'description' => __('Height'),
-                ),
+                ],
 
-                'caption' => array(
+                'caption' => [
                     'type' => 'string',
                     'default' => '',
                     'sanitize_callback' => 'wp_kses_post',
                     'description' => __('Caption'),
                     'should_preview_update' => false,
-                ),
-                'alt' => array(
+                ],
+                'alt' => [
                     'type' => 'string',
                     'default' => '',
                     'sanitize_callback' => 'sanitize_text_field',
                     'description' => __('Alternative Text'),
-                ),
-                'link_type' => array(
+                ],
+                'link_type' => [
                     'type' => 'string',
-                    'enum' => array('none', 'file', 'post', 'custom'),
+                    'enum' => ['none', 'file', 'post', 'custom'],
                     'default' => 'none',
                     'media_prop' => 'link',
                     'description' => __('Link To'),
                     'should_preview_update' => false,
-                ),
-                'link_url' => array(
+                ],
+                'link_url' => [
                     'type' => 'string',
                     'default' => '',
                     'format' => 'uri',
                     'media_prop' => 'linkUrl',
                     'description' => __('URL'),
                     'should_preview_update' => false,
-                ),
-                'image_classes' => array(
+                ],
+                'image_classes' => [
                     'type' => 'string',
                     'default' => '',
-                    'sanitize_callback' => array($this, 'sanitize_token_list'),
+                    'sanitize_callback' => [$this, 'sanitize_token_list'],
                     'media_prop' => 'extraClasses',
                     'description' => __('Image CSS Class'),
                     'should_preview_update' => false,
-                ),
-                'link_classes' => array(
+                ],
+                'link_classes' => [
                     'type' => 'string',
                     'default' => '',
-                    'sanitize_callback' => array($this, 'sanitize_token_list'),
+                    'sanitize_callback' => [$this, 'sanitize_token_list'],
                     'media_prop' => 'linkClassName',
                     'should_preview_update' => false,
                     'description' => __('Link CSS Class'),
-                ),
-                'link_rel' => array(
+                ],
+                'link_rel' => [
                     'type' => 'string',
                     'default' => '',
-                    'sanitize_callback' => array($this, 'sanitize_token_list'),
+                    'sanitize_callback' => [$this, 'sanitize_token_list'],
                     'media_prop' => 'linkRel',
                     'description' => __('Link Rel'),
                     'should_preview_update' => false,
-                ),
-                'link_target_blank' => array(
+                ],
+                'link_target_blank' => [
                     'type' => 'boolean',
                     'default' => false,
                     'media_prop' => 'linkTargetBlank',
                     'description' => __('Open link in a new tab'),
                     'should_preview_update' => false,
-                ),
-                'image_title' => array(
+                ],
+                'image_title' => [
                     'type' => 'string',
                     'default' => '',
                     'sanitize_callback' => 'sanitize_text_field',
                     'media_prop' => 'title',
                     'description' => __('Image Title Attribute'),
                     'should_preview_update' => false,
-                ),
+                ],
 
                 /*
                  * There are two additional properties exposed by the PostImage modal
@@ -169,7 +169,7 @@ class ImageWidget extends MediaWidget
                  * - height (redundant when size is not custom)
                  * - width (redundant when size is not custom)
                  */
-            )
+            ]
         );
     }
 
@@ -185,9 +185,9 @@ class ImageWidget extends MediaWidget
     public function render_media($instance)
     {
         $instance = array_merge(wp_list_pluck($this->get_instance_schema(), 'default'), $instance);
-        $instance = wp_parse_args($instance, array(
+        $instance = wp_parse_args($instance, [
             'size' => 'thumbnail',
-        ));
+        ]);
 
         $attachment = null;
         if ($this->is_attachment_with_mime_type($instance['attachment_id'], $this->widget_options['mime_type'])) {
@@ -199,10 +199,10 @@ class ImageWidget extends MediaWidget
                 $caption = $instance['caption'];
             }
 
-            $image_attributes = array(
+            $image_attributes = [
                 'class' => sprintf('image wp-image-%d %s', $attachment->ID, $instance['image_classes']),
                 'style' => 'max-width: 100%; height: auto;',
-            );
+            ];
             if (!empty($instance['image_title'])) {
                 $image_attributes['title'] = $instance['image_title'];
             }
@@ -213,8 +213,8 @@ class ImageWidget extends MediaWidget
 
             $size = $instance['size'];
             if ('custom' === $size ||
-                !in_array($size, array_merge(get_intermediate_image_sizes(), array('full')), true)) {
-                $size = array($instance['width'], $instance['height']);
+                !in_array($size, array_merge(get_intermediate_image_sizes(), ['full']), true)) {
+                $size = [$instance['width'], $instance['height']];
             }
             $image_attributes['class'] .= sprintf(
                 ' attachment-%1$s size-%1$s',
@@ -275,10 +275,10 @@ class ImageWidget extends MediaWidget
         }
 
         if ($caption) {
-            $image = img_caption_shortcode(array(
+            $image = img_caption_shortcode([
                 'width' => $width,
                 'caption' => $caption,
-            ), $image);
+            ], $image);
         }
 
         echo $image;
@@ -297,11 +297,11 @@ class ImageWidget extends MediaWidget
         $handle = 'media-image-widget';
         wp_enqueue_script($handle);
 
-        $exported_schema = array();
+        $exported_schema = [];
         foreach ($this->get_instance_schema() as $field => $field_schema) {
             $exported_schema[$field] = wp_array_slice_assoc(
                 $field_schema,
-                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update')
+                ['type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update']
             );
         }
         wp_add_inline_script(

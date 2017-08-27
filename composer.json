@@ -16,11 +16,12 @@
         "pomo/pomo": "^1.3",
         "twig/twig": "1.*",
         "symfony/event-dispatcher": "^3.3",
-        "paragonie/random_compat": "1.2.1"
+        "paragonie/random_compat": "1.2.1",
+        "pclzip/pclzip": "^2.8"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7",
-        "friendsofphp/php-cs-fixer": "^2.4"
+        "friendsofphp/php-cs-fixer": "^2.2"
     },
     "license": "GPLv2",
     "authors": [
@@ -39,36 +40,19 @@
             "web/wp-includes/class-wp-matchesmapregex.php",
             "web/wp-includes/class-wp.php",
             "web/wp-includes/class-wp-error.php",
-            "web/wp-includes/class-wp-site-query.php",
-            "web/wp-includes/class-wp-network-query.php",
             "web/wp-includes/class-wp-locale.php",
             "web/wp-includes/class-wp-locale-switcher.php",
             "web/wp-includes/class-wp-ajax-response.php",
             "web/wp-includes/class-wp-roles.php",
             "web/wp-includes/class-wp-role.php",
-            "web/wp-includes/class-wp-query.php",
             "web/wp-includes/class-wp-theme.php",
-            "web/wp-includes/class-wp-user-query.php",
             "web/wp-includes/class-wp-session-tokens.php",
             "web/wp-includes/class-wp-user-meta-session-tokens.php",
-            "web/wp-includes/class-wp-meta-query.php",
             "web/wp-includes/class-wp-metadata-lazyloader.php",
-            "web/wp-includes/class-wp-comment-query.php",
             "web/wp-includes/class-wp-rewrite.php",
             "web/wp-includes/class-wp-taxonomy.php",
-            "web/wp-includes/class-wp-term-query.php",
-            "web/wp-includes/class-wp-tax-query.php",
             "web/wp-includes/class-wp-embed.php",
-            "web/wp-includes/class-wp-oembed-controller.php",
-            "web/wp-includes/class-wp-http-streams.php",
-            "web/wp-includes/class-wp-http-curl.php",
-            "web/wp-includes/class-wp-http-proxy.php",
-            "web/wp-includes/class-wp-http-cookie.php",
-            "web/wp-includes/class-wp-http-encoding.php",
-            "web/wp-includes/class-wp-http-response.php",
-            "web/wp-includes/class-wp-http-requests-response.php",
-            "web/wp-includes/class-wp-http-requests-hooks.php",
-            "web/wp-includes/class-wp-widget-factory.php"
+            "web/wp-includes/class-wp-oembed-controller.php"
         ]
     }
 }

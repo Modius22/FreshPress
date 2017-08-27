@@ -282,16 +282,16 @@ class CommentWalker extends Walker
             $add_below = 'div-comment';
         } ?>
         <<?php echo $tag; ?><?php comment_class(
-            $this->has_children ? 'parent' : '',
+        $this->has_children ? 'parent' : '',
         $comment
-        ); ?> id="comment-<?php comment_ID(); ?>">
+    ); ?> id="comment-<?php comment_ID(); ?>">
         <?php if ('div' != $args['style']) : ?>
         <div id="div-comment-<?php comment_ID(); ?>" class="comment-body">
     <?php endif; ?>
         <div class="comment-author vcard">
             <?php if (0 != $args['avatar_size']) {
-            echo get_avatar($comment, $args['avatar_size']);
-        } ?>
+        echo get_avatar($comment, $args['avatar_size']);
+    } ?>
             <?php
             /* translators: %s: comment author link */
             printf(
@@ -315,18 +315,18 @@ class CommentWalker extends Walker
         </div>
 
         <?php comment_text(
-                $comment,
-        array_merge($args, array('add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']))
-            ); ?>
+        $comment,
+        array_merge($args, ['add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']])
+    ); ?>
 
         <?php
-        comment_reply_link(array_merge($args, array(
+        comment_reply_link(array_merge($args, [
             'add_below' => $add_below,
             'depth' => $depth,
             'max_depth' => $args['max_depth'],
             'before' => '<div class="reply">',
             'after' => '</div>'
-        ))); ?>
+        ])); ?>
 
         <?php if ('div' != $args['style']) : ?>
         </div>
@@ -350,15 +350,15 @@ class CommentWalker extends Walker
     {
         $tag = ('div' === $args['style']) ? 'div' : 'li'; ?>
         <<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class(
-            $this->has_children ? 'parent' : '',
+        $this->has_children ? 'parent' : '',
         $comment
-        ); ?>>
+    ); ?>>
         <article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
             <footer class="comment-meta">
                 <div class="comment-author vcard">
                     <?php if (0 != $args['avatar_size']) {
-            echo get_avatar($comment, $args['avatar_size']);
-        } ?>
+        echo get_avatar($comment, $args['avatar_size']);
+    } ?>
                     <?php
                     /* translators: %s: comment author link */
                     printf(
@@ -388,13 +388,13 @@ class CommentWalker extends Walker
             </div><!-- .comment-content -->
 
             <?php
-            comment_reply_link(array_merge($args, array(
+            comment_reply_link(array_merge($args, [
                 'add_below' => 'div-comment',
                 'depth' => $depth,
                 'max_depth' => $args['max_depth'],
                 'before' => '<div class="reply">',
                 'after' => '</div>'
-            ))); ?>
+            ])); ?>
         </article><!-- .comment-body -->
         <?php
     }

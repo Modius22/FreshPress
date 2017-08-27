@@ -128,6 +128,52 @@ $classes = array_change_key_case([
     '_WP_Dependency' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Dependency',
     'WP_Scripts' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Scripts',
     'WP_Styles' => 'Devtronic\\FreshPress\\Components\\Dependencies\\Styles',
+    'WP_Query' => 'Devtronic\\FreshPress\\Components\\Query\\Query',
+    'WP_Site_Query' => 'Devtronic\\FreshPress\\Components\\Query\\SiteQuery',
+    'WP_Network_Query' => 'Devtronic\\FreshPress\\Components\\Query\\NetworkQuery',
+    'WP_User_Query' => 'Devtronic\\FreshPress\\Components\\Query\\UserQuery',
+    'WP_Meta_Query' => 'Devtronic\\FreshPress\\Components\\Query\\MetaQuery',
+    'WP_Comment_Query' => 'Devtronic\\FreshPress\\Components\\Query\\CommentQuery',
+    'WP_Term_Query' => 'Devtronic\\FreshPress\\Components\\Query\\TermQuery',
+    'WP_Tax_Query' => 'Devtronic\\FreshPress\\Components\\Query\\TaxQuery',
+    'WP_Site_Icon' => 'Devtronic\\FreshPress\\Components\\Admin\\SiteIcon',
+    'WP_Date_Query' => 'Devtronic\\FreshPress\\Components\\Query\\DateQuery',
+    'WP_Feed_Cache' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedCache',
+    'WP_Feed_Cache_Transient' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedCacheTransient',
+    'WP_SimplePie_File' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedFile',
+    'WP_SimplePie_Sanitize_KSES' => 'Devtronic\\FreshPress\\Components\\Feed\\FeedSanitize',
+    'WP_Widget_Factory' => 'Devtronic\\FreshPress\\Components\\Widgets\\WidgetFactory',
+    'WP_Http' => 'Devtronic\\FreshPress\\Components\\Http\\Http',
+    'WP_Http_Cookie' => 'Devtronic\\FreshPress\\Components\\Http\\Cookie',
+    'WP_HTTP_Requests_Hooks' => 'Devtronic\\FreshPress\\Components\\Http\\Hooks',
+    'WP_HTTP_Proxy' => 'Devtronic\\FreshPress\\Components\\Http\\Proxy',
+    'WP_Http_Curl' => 'Devtronic\\FreshPress\\Components\\Http\\Curl',
+    'WP_HTTP_Response' => 'Devtronic\\FreshPress\\Components\\Http\\Response',
+    'WP_HTTP_Requests_Response' => 'Devtronic\\FreshPress\\Components\\Http\\RequestsResponse',
+    'WP_Http_Encoding' => 'Devtronic\\FreshPress\\Components\\Http\\Encoding',
+    'WP_Http_Streams' => 'Devtronic\\FreshPress\\Components\\Http\\Streams',
+    'WP_HTTP_Fsockopen' => 'Devtronic\\FreshPress\\Components\\Http\\Streams',
+    'AtomEntry' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomEntry',
+    'AtomFeed' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomFeed',
+    'AtomParser' => 'Devtronic\\FreshPress\\Components\\AtomLib\\AtomParser',
+    'Text_Diff' => 'Devtronic\\FreshPress\\Components\\Text\\Diff',
+    'Text_MappedDiff' => 'Devtronic\\FreshPress\\Components\\Text\\MappedDiff',
+    'Text_Diff_Op' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOp',
+    'Text_Diff_Op_add' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpAdd',
+    'Text_Diff_Op_delete' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpDelete',
+    'Text_Diff_Op_change' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpChange',
+    'Text_Diff_Op_copy' => 'Devtronic\\FreshPress\\Components\\Text\\DiffOpCopy',
+    'Text_Diff_Engine_native' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\NativeEngine',
+    'Text_Diff_Engine_shell' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\ShellEngine',
+    'Text_Diff_Engine_string' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\StringEngine',
+    'Text_Diff_Engine_xdiff' => 'Devtronic\\FreshPress\\Components\\Text\\Engine\\XDiffEngine',
+    'Text_Diff_Renderer' => 'Devtronic\\FreshPress\\Components\\Text\\Renderer',
+    'Text_Diff_Renderer_inline' => 'Devtronic\\FreshPress\\Components\\Text\\InlineRenderer',
+    'WP_Text_Diff_Renderer_inline' => 'Devtronic\\FreshPress\\Components\\Text\\CustomInlineRenderer',
+    'WP_Text_Diff_Renderer_Table' => 'Devtronic\\FreshPress\\Components\\Text\\TableRenderer',
+    'ftp_base' => 'Devtronic\\FreshPress\\Components\\FTP\\BaseFTP',
+    'ftp_pure' => 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP',
+    'ftp_sockets' => 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP',
 ]);
 
 $abstractClasses = array_change_key_case([
@@ -150,6 +196,13 @@ $finalClasses = array_change_key_case([
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
     'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
 ]);
+
+// Only for compatibility, remove in 2.x
+$mod_sockets = extension_loaded('sockets');
+$classes['ftp'] = 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP';
+if ($mod_sockets) {
+    $classes['ftp'] = 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP';
+}
 
 // Classes
 spl_autoload_register(function ($oldClass) use ($classes) {

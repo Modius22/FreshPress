@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Dependencies\Dependencies;
 use Devtronic\FreshPress\Components\Dependencies\Dependency;
 use Devtronic\FreshPress\Components\Dependencies\Styles;
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -3418,7 +3419,7 @@ function language_attributes($doctype = 'html')
  *
  * @since 2.1.0
  *
- * @global WP_Query $wp_query
+ * @global Query $wp_query
  * @global WP_Rewrite $wp_rewrite
  *
  * @param string|array $args {
@@ -3426,7 +3427,7 @@ function language_attributes($doctype = 'html')
  *
  * @type string $base Base of the paginated url. Default empty.
  * @type string $format Format for the pagination structure. Default empty.
- * @type int $total The total amount of pages. Default is the value WP_Query's
+ * @type int $total The total amount of pages. Default is the value Devtronic\FreshPress\Components\Query\Query's
  *                                      `max_num_pages` or 1.
  * @type int $current The current page number. Default is 'paged' query var or 1.
  * @type bool $show_all Whether to show all pages. Default false.

@@ -9,17 +9,17 @@
 
 namespace Devtronic\FreshPress\Components\Rest;
 
+use Devtronic\FreshPress\Components\Http\Response as HttpResponse;
 use WP_Error;
-use WP_HTTP_Response;
 
 /**
  * Core class used to implement a REST response object.
  *
  * @since 4.4.0
  *
- * @see WP_HTTP_Response
+ * @see HttpResponse
  */
-class Response extends WP_HTTP_Response
+class Response extends HttpResponse
 {
 
     /**

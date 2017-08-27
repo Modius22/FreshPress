@@ -29,12 +29,12 @@ class VideoWidget extends MediaWidget
      */
     public function __construct()
     {
-        parent::__construct('media_video', __('Video'), array(
+        parent::__construct('media_video', __('Video'), [
             'description' => __('Displays a video from the media library or from YouTube, Vimeo, or another provider.'),
             'mime_type' => 'video',
-        ));
+        ]);
 
-        $this->l10n = array_merge($this->l10n, array(
+        $this->l10n = array_merge($this->l10n, [
             'no_media_selected' => __('No video selected'),
             'add_media' => _x('Add Video', 'label for button in the video widget'),
             'replace_media' => _x(
@@ -58,7 +58,7 @@ class VideoWidget extends MediaWidget
                 __('Sorry, we can&#8217;t display the video file type selected. Please select a supported video file (%1$s) or stream (YouTube or Vimeo) instead.'),
                 '<code>.' . implode('</code>, <code>.', wp_get_video_extensions()) . '</code>'
             ),
-        ));
+        ]);
     }
 
     /**
@@ -76,38 +76,38 @@ class VideoWidget extends MediaWidget
     {
         $schema = array_merge(
             parent::get_instance_schema(),
-            array(
-                'preload' => array(
+            [
+                'preload' => [
                     'type' => 'string',
-                    'enum' => array('none', 'auto', 'metadata'),
+                    'enum' => ['none', 'auto', 'metadata'],
                     'default' => 'metadata',
                     'description' => __('Preload'),
                     'should_preview_update' => false,
-                ),
-                'loop' => array(
+                ],
+                'loop' => [
                     'type' => 'boolean',
                     'default' => false,
                     'description' => __('Loop'),
                     'should_preview_update' => false,
-                ),
-                'content' => array(
+                ],
+                'content' => [
                     'type' => 'string',
                     'default' => '',
                     'sanitize_callback' => 'wp_kses_post',
                     'description' => __('Tracks (subtitles, captions, descriptions, chapters, or metadata)'),
                     'should_preview_update' => false,
-                ),
-            )
+                ],
+            ]
         );
 
         foreach (wp_get_video_extensions() as $video_extension) {
-            $schema[$video_extension] = array(
+            $schema[$video_extension] = [
                 'type' => 'string',
                 'default' => '',
                 'format' => 'uri',
                 /* translators: placeholder is video extension */
                 'description' => sprintf(__('URL to the %s video source file'), $video_extension),
-            );
+            ];
         }
 
         return $schema;
@@ -145,7 +145,7 @@ class VideoWidget extends MediaWidget
             return;
         }
 
-        add_filter('wp_video_shortcode', array($this, 'inject_video_max_width_style'));
+        add_filter('wp_video_shortcode', [$this, 'inject_video_max_width_style']);
 
         echo wp_video_shortcode(
             array_merge(
@@ -155,7 +155,7 @@ class VideoWidget extends MediaWidget
             $instance['content']
         );
 
-        remove_filter('wp_video_shortcode', array($this, 'inject_video_max_width_style'));
+        remove_filter('wp_video_shortcode', [$this, 'inject_video_max_width_style']);
     }
 
     /**
@@ -211,11 +211,11 @@ class VideoWidget extends MediaWidget
         $handle = 'media-video-widget';
         wp_enqueue_script($handle);
 
-        $exported_schema = array();
+        $exported_schema = [];
         foreach ($this->get_instance_schema() as $field => $field_schema) {
             $exported_schema[$field] = wp_array_slice_assoc(
                 $field_schema,
-                array('type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update')
+                ['type', 'default', 'enum', 'minimum', 'format', 'media_prop', 'should_preview_update']
             );
         }
         wp_add_inline_script(

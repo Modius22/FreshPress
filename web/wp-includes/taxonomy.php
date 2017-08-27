@@ -6,6 +6,8 @@
  * @subpackage Taxonomy
  */
 
+use Devtronic\FreshPress\Components\Query\TaxQuery;
+use Devtronic\FreshPress\Components\Query\TermQuery;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -696,7 +698,7 @@ function get_objects_in_term($term_ids, $taxonomies, $args = array())
  *
  * @since 3.1.0
  *
- * @see WP_Tax_Query
+ * @see TaxQuery
  *
  * @param array $tax_query A compact tax query
  * @param string $primary_table
@@ -705,7 +707,7 @@ function get_objects_in_term($term_ids, $taxonomies, $args = array())
  */
 function get_tax_sql($tax_query, $primary_table, $primary_id_column)
 {
-    $tax_query_obj = new WP_Tax_Query($tax_query);
+    $tax_query_obj = new TaxQuery($tax_query);
     return $tax_query_obj->get_sql($primary_table, $primary_id_column);
 }
 
@@ -1075,7 +1077,7 @@ function get_term_to_edit($id, $taxonomy)
  * @global WPDB $wpdb WordPress database abstraction object.
  * @global array $wp_filter
  *
- * @param string|array $args Optional. Array or string of arguments. See WP_Term_Query::__construct()
+ * @param string|array $args Optional. Array or string of arguments. See TermQuery::__construct()
  *                                 for information on accepted arguments. Default empty.
  * @param array $deprecated Argument array, when using the legacy function parameter format. If present, this
  *                                 parameter will be interpreted as `$args`, and the first function parameter will
@@ -1087,7 +1089,7 @@ function get_terms($args = array(), $deprecated = '')
 {
     global $wpdb;
 
-    $term_query = new WP_Term_Query();
+    $term_query = new TermQuery();
 
     $defaults = array(
         'suppress_filter' => false,
@@ -1123,7 +1125,7 @@ function get_terms($args = array(), $deprecated = '')
         }
     }
 
-    // Don't pass suppress_filter to WP_Term_Query.
+    // Don't pass suppress_filter to TermQuery.
     $suppress_filter = $args['suppress_filter'];
     unset($args['suppress_filter']);
 
@@ -1147,7 +1149,7 @@ function get_terms($args = array(), $deprecated = '')
      * @param array $terms Array of found terms.
      * @param array $taxonomies An array of taxonomies.
      * @param array $args An array of get_terms() arguments.
-     * @param WP_Term_Query $term_query The WP_Term_Query object.
+     * @param TermQuery $term_query The TermQuery object.
      */
     return apply_filters(
         'get_terms',
@@ -1939,13 +1941,13 @@ function wp_delete_category($cat_ID)
  *              Introduced `$parent` argument.
  * @since 4.4.0 Introduced `$meta_query` and `$update_term_meta_cache` arguments. When `$fields` is 'all' or
  *              'all_with_object_id', an array of `Term` objects will be returned.
- * @since 4.7.0 Refactored to use WP_Term_Query, and to support any WP_Term_Query arguments.
+ * @since 4.7.0 Refactored to use TermQuery, and to support any TermQuery arguments.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int|array $object_ids The ID(s) of the object(s) to retrieve.
  * @param string|array $taxonomies The taxonomies to retrieve terms from.
- * @param array|string $args See WP_Term_Query::__construct() for supported arguments.
+ * @param array|string $args See TermQuery::__construct() for supported arguments.
  * @return array|WP_Error The requested term data or empty array if no terms found.
  *                        WP_Error if any of the $taxonomies don't exist.
  */

@@ -7,6 +7,7 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\NavMenuChecklistWalker;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
 use Devtronic\FreshPress\Core\WPDB;
@@ -92,7 +93,7 @@ function _wp_ajax_menu_quick_search($request = array())
             if (isset($post_type_obj->_default_query)) {
                 $args = array_merge($args, (array)$post_type_obj->_default_query);
             }
-            $search_results_query = new WP_Query($args);
+            $search_results_query = new Query($args);
             if (!$search_results_query->have_posts()) {
                 return;
             }
@@ -391,7 +392,7 @@ function wp_nav_menu_item_post_type_meta_box($object, $box)
     }
 
     // @todo transient caching of these results with proper invalidation on updating of a post of this type
-    $get_posts = new WP_Query;
+    $get_posts = new Query;
     $posts = $get_posts->query($args);
     if (!$get_posts->post_count) {
         echo '<p>' . __('No items.') . '</p>';
@@ -497,7 +498,7 @@ function wp_nav_menu_item_post_type_meta_box($object, $box)
      * @since 4.3.0
      *
      * @param array $most_recent An array of post objects being listed.
-     * @param array $args An array of WP_Query arguments.
+     * @param array $args An array of Query arguments.
      * @param array $box Arguments passed to wp_nav_menu_item_post_type_meta_box().
      */
     $most_recent = apply_filters("nav_menu_items_{$post_type_name}_recent", $most_recent, $args, $box);
@@ -617,10 +618,10 @@ function wp_nav_menu_item_post_type_meta_box($object, $box)
      * @since 3.2.0
      * @since 4.6.0 Converted the `$post_type` parameter to accept a WP_Post_Type object.
      *
-     * @see WP_Query::query()
+     * @see Query::query()
      *
      * @param array $posts The posts for the current post type.
-     * @param array $args An array of WP_Query arguments.
+     * @param array $args An array of Query arguments.
      * @param WP_Post_Type $post_type The current post type object for this menu item meta box.
      */
     $posts = apply_filters("nav_menu_items_{$post_type_name}", $posts, $args, $post_type);

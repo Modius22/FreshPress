@@ -186,7 +186,7 @@ class TermsController extends Controller
 
         /*
          * This array defines mappings between public API query parameters whose
-         * values are accepted as-passed, and their internal WP_Query parameter
+         * values are accepted as-passed, and their internal Query parameter
          * name equivalents (some are the same). Only values which are also
          * present in $registered will be set.
          */
@@ -1049,8 +1049,8 @@ class TermsController extends Controller
          * slug for the controller.
          *
          * This filter registers the collection parameter, but does not map the
-         * collection parameter to an internal WP_Term_Query parameter.  Use the
-         * `rest_{$this->taxonomy}_query` filter to set WP_Term_Query parameters.
+         * collection parameter to an internal Devtronic\FreshPress\Components\Query\TermQuery parameter.  Use the
+         * `rest_{$this->taxonomy}_query` filter to set Devtronic\FreshPress\Components\Query\TermQuery parameters.
          *
          * @since 4.7.0
          *

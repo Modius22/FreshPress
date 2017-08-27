@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Rest;
 
+use Devtronic\FreshPress\Components\Http\Response;
 use WP_Error;
-use WP_HTTP_Response;
 
 /**
  * Core class used to implement the WordPress REST API server.
@@ -360,7 +360,7 @@ class Server
          * @since 4.4.0
          * @since 4.5.0 Applied to embedded responses.
          *
-         * @param WP_HTTP_Response $result Result to send to the client. Usually a Response.
+         * @param Response $result Result to send to the client. Usually a Response.
          * @param Server $this Server instance.
          * @param Request $request Request used to generate the response.
          */
@@ -388,7 +388,7 @@ class Server
          *
          * @param bool $served Whether the request has already been served.
          *                                           Default false.
-         * @param WP_HTTP_Response $result Result to send to the client. Usually a Response.
+         * @param Response $result Result to send to the client. Usually a Response.
          * @param Request $request Request used to generate the response.
          * @param Server $this Server instance.
          */
@@ -918,7 +918,7 @@ class Server
                  *
                  * @since 4.7.0
                  *
-                 * @param WP_HTTP_Response $response Result to send to the client. Usually a Response.
+                 * @param Response $response Result to send to the client. Usually a Response.
                  * @param Server $handler ResponseHandler instance (usually Server).
                  * @param Request $request Request used to generate the response.
                  */
@@ -981,7 +981,7 @@ class Server
                  *
                  * @since 4.7.0
                  *
-                 * @param WP_HTTP_Response $response Result to send to the client. Usually a Response.
+                 * @param Response $response Result to send to the client. Usually a Response.
                  * @param Server $handler ResponseHandler instance (usually Server).
                  * @param Request $request Request used to generate the response.
                  */

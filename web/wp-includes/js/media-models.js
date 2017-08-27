@@ -1274,7 +1274,7 @@ Query = Attachments.extend({
 	orderby: {
 		allowed:  [ 'name', 'author', 'date', 'title', 'modified', 'uploadedTo', 'id', 'post__in', 'menuOrder' ],
 		/**
-		 * A map of JavaScript orderby values to their WP_Query equivalents.
+		 * A map of JavaScript orderby values to their Devtronic\FreshPress\Components\Query\Query equivalents.
 		 * @type {Object}
 		 */
 		valuemap: {
@@ -1284,7 +1284,7 @@ Query = Attachments.extend({
 		}
 	},
 	/**
-	 * A map of JavaScript query properties to their WP_Query equivalents.
+	 * A map of JavaScript query properties to their Devtronic\FreshPress\Components\Query\Query equivalents.
 	 *
 	 * @readonly
 	 */

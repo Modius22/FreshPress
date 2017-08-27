@@ -1292,7 +1292,7 @@ function wp_edit_attachments_query_vars($q = false)
 }
 
 /**
- * Executes a query for attachments. An array of WP_Query arguments
+ * Executes a query for attachments. An array of Query arguments
  * can be passed in, which will override the arguments set by this function.
  *
  * @since 2.5.0
@@ -1804,7 +1804,7 @@ function _admin_notice_post_locked()
                     <p class="wp-tab-first" tabindex="0">
                         <span class="currently-editing"></span><br/>
                         <span class="locked-saving hidden"><img
-                                    src="<?php echo esc_url(admin_url('images/spinner-2x.gif')); ?>" width="16"
+                                    src="<?php echo esc_url(admin_url('assets/images/spinner-2x.gif')); ?>" width="16"
                                     height="16" alt=""/> <?php _e('Saving revision&hellip;'); ?></span>
                         <span class="locked-saved hidden"><?php _e('Your latest changes were saved as a revision.'); ?></span>
                     </p>

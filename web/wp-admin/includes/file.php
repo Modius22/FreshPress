@@ -11,7 +11,11 @@
  * @since 2.3.0
  */
 
-use Devtronic\FreshPress\Components\Filesystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\DirectFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\FTPExtFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\FTPSocketsFilesystem;
+use Devtronic\FreshPress\Components\FileSystem\SSH2Filesystem;
 
 /** The descriptions for theme files. */
 $wp_file_descriptions = array(
@@ -729,9 +733,9 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
 
         $parent_folder = dirname($dir);
         while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array(
-            $parent_folder,
+                $parent_folder,
                 $needed_dirs
-        )) {
+            )) {
             $needed_dirs[] = $parent_folder;
             $parent_folder = dirname($parent_folder);
         }
@@ -800,8 +804,6 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
 
     mbstring_binary_safe_encoding();
 
-    require_once(ABSPATH . 'wp-admin/includes/class-pclzip.php');
-
     $archive = new PclZip($file);
 
     $archive_files = $archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING);
@@ -858,9 +860,9 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
 
         $parent_folder = dirname($dir);
         while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array(
-            $parent_folder,
+                $parent_folder,
                 $needed_dirs
-        )) {
+            )) {
             $needed_dirs[] = $parent_folder;
             $parent_folder = dirname($parent_folder);
         }
@@ -979,7 +981,21 @@ function WP_Filesystem($args = false, $context = false, $allow_relaxed_file_owne
         return false;
     }
 
-    $method = "WP_Filesystem_$method";
+    $method = '';
+    switch ($method) {
+        case 'ssh2':
+            $method = SSH2Filesystem::class;
+            break;
+        case 'ftpext':
+            $method = FTPExtFilesystem::class;
+            break;
+        case 'ftpsockets':
+            $method = FTPSocketsFilesystem::class;
+            break;
+        default:
+            $method = DirectFilesystem::class;
+            break;
+    }
 
     $wp_filesystem = new $method($args);
 
@@ -1136,7 +1152,8 @@ function request_filesystem_credentials(
     $context = '',
     $extra_fields = null,
     $allow_relaxed_file_ownership = false
-) {
+)
+{
     global $pagenow;
 
     /**
@@ -1292,36 +1309,36 @@ function request_filesystem_credentials(
             <?php
             // Print a H1 heading in the FTP credentials modal dialog, default is a H2.
             $heading_tag = 'h2';
-    if ('plugins.php' === $pagenow || 'plugin-install.php' === $pagenow) {
-        $heading_tag = 'h1';
-    }
-    echo "<$heading_tag id='request-filesystem-credentials-title'>" . __('Connection Information') . "</$heading_tag>"; ?>
+            if ('plugins.php' === $pagenow || 'plugin-install.php' === $pagenow) {
+                $heading_tag = 'h1';
+            }
+            echo "<$heading_tag id='request-filesystem-credentials-title'>" . __('Connection Information') . "</$heading_tag>"; ?>
             <p id="request-filesystem-credentials-desc"><?php
                 $label_user = __('Username');
-    $label_pass = __('Password');
-    _e('To perform the requested action, WordPress needs to access your web server.');
-    echo ' ';
-    if ((isset($types['ftp']) || isset($types['ftps']))) {
-        if (isset($types['ssh'])) {
-            _e('Please enter your FTP or SSH credentials to proceed.');
-            $label_user = __('FTP/SSH Username');
-            $label_pass = __('FTP/SSH Password');
-        } else {
-            _e('Please enter your FTP credentials to proceed.');
-            $label_user = __('FTP Username');
-            $label_pass = __('FTP Password');
-        }
-        echo ' ';
-    }
-    _e('If you do not remember your credentials, you should contact your web host.'); ?></p>
+                $label_pass = __('Password');
+                _e('To perform the requested action, WordPress needs to access your web server.');
+                echo ' ';
+                if ((isset($types['ftp']) || isset($types['ftps']))) {
+                    if (isset($types['ssh'])) {
+                        _e('Please enter your FTP or SSH credentials to proceed.');
+                        $label_user = __('FTP/SSH Username');
+                        $label_pass = __('FTP/SSH Password');
+                    } else {
+                        _e('Please enter your FTP credentials to proceed.');
+                        $label_user = __('FTP Username');
+                        $label_pass = __('FTP Password');
+                    }
+                    echo ' ';
+                }
+                _e('If you do not remember your credentials, you should contact your web host.'); ?></p>
             <label for="hostname">
                 <span class="field-title"><?php _e('Hostname') ?></span>
                 <input name="hostname" type="text" id="hostname" aria-describedby="request-filesystem-credentials-desc"
                        class="code" placeholder="<?php esc_attr_e('example: www.wordpress.org') ?>"
                        value="<?php echo esc_attr($hostname);
-    if (!empty($port)) {
-        echo ":$port";
-    } ?>"<?php disabled(defined('FTP_HOST')); ?> />
+                       if (!empty($port)) {
+                           echo ":$port";
+                       } ?>"<?php disabled(defined('FTP_HOST')); ?> />
             </label>
             <div class="ftp-username">
                 <label for="username">
@@ -1334,22 +1351,22 @@ function request_filesystem_credentials(
                 <label for="password">
                     <span class="field-title"><?php echo $label_pass; ?></span>
                     <input name="password" type="password" id="password" value="<?php if (defined('FTP_PASS')) {
-        echo '*****';
-    } ?>"<?php disabled(defined('FTP_PASS')); ?> />
+                        echo '*****';
+                    } ?>"<?php disabled(defined('FTP_PASS')); ?> />
                     <em><?php if (!defined('FTP_PASS')) {
-        _e('This password will not be stored on the server.');
-    } ?></em>
+                            _e('This password will not be stored on the server.');
+                        } ?></em>
                 </label>
             </div>
             <fieldset>
                 <legend><?php _e('Connection Type'); ?></legend>
                 <?php
                 $disabled = disabled((defined('FTP_SSL') && FTP_SSL) || (defined('FTP_SSH') && FTP_SSH), true, false);
-    foreach ($types as $name => $text) : ?>
+                foreach ($types as $name => $text) : ?>
                     <label for="<?php echo esc_attr($name) ?>">
                         <input type="radio" name="connection_type" id="<?php echo esc_attr($name) ?>"
                                value="<?php echo esc_attr($name) ?>"<?php checked($name, $connection_type);
-    echo $disabled; ?> />
+                        echo $disabled; ?> />
                         <?php echo $text; ?>
                     </label>
                     <?php
@@ -1378,11 +1395,11 @@ function request_filesystem_credentials(
                 <?php
             }
 
-    foreach ((array)$extra_fields as $field) {
-        if (isset($submitted_form[$field])) {
-            echo '<input type="hidden" name="' . esc_attr($field) . '" value="' . esc_attr($submitted_form[$field]) . '" />';
-        }
-    } ?>
+            foreach ((array)$extra_fields as $field) {
+                if (isset($submitted_form[$field])) {
+                    echo '<input type="hidden" name="' . esc_attr($field) . '" value="' . esc_attr($submitted_form[$field]) . '" />';
+                }
+            } ?>
             <p class="request-filesystem-credentials-action-buttons">
                 <?php wp_nonce_field('filesystem-credentials', '_fs_nonce', false, true); ?>
                 <button class="button cancel-button" data-js-action="close"
