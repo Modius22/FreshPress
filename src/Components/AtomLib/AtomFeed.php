@@ -24,18 +24,18 @@ class AtomFeed
      * @var array
      * @access public
      */
-    public $links = array();
+    public $links = [];
     /**
      * Stores Categories
      * @var array
      * @access public
      */
-    public $categories = array();
+    public $categories = [];
     /**
      * Stores Entries
      *
      * @var array
      * @access public
      */
-    public $entries = array();
+    public $entries = [];
 }

@@ -28,8 +28,8 @@ class XDiffEngine
      */
     public function diff($from_lines, $to_lines)
     {
-        array_walk($from_lines, array(Diff::class, 'trimNewlines'));
-        array_walk($to_lines, array(Diff::class, 'trimNewlines'));
+        array_walk($from_lines, [Diff::class, 'trimNewlines']);
+        array_walk($to_lines, [Diff::class, 'trimNewlines']);
 
         /* Convert the two input arrays into strings for xdiff processing. */
         $from_string = implode("\n", $from_lines);
@@ -47,22 +47,22 @@ class XDiffEngine
          * lines using this approach, so we can't add Text_Diff_Op_changed
          * instances to the $edits array.  The result is still perfectly
          * valid, albeit a little less descriptive and efficient. */
-        $edits = array();
+        $edits = [];
         foreach ($diff as $line) {
             if (!strlen($line)) {
                 continue;
             }
             switch ($line[0]) {
                 case ' ':
-                    $edits[] = new DiffOpCopy(array(substr($line, 1)));
+                    $edits[] = new DiffOpCopy([substr($line, 1)]);
                     break;
 
                 case '+':
-                    $edits[] = new DiffOpAdd(array(substr($line, 1)));
+                    $edits[] = new DiffOpAdd([substr($line, 1)]);
                     break;
 
                 case '-':
-                    $edits[] = new DiffOpDelete(array(substr($line, 1)));
+                    $edits[] = new DiffOpDelete([substr($line, 1)]);
                     break;
             }
         }

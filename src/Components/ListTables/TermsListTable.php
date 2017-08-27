@@ -40,15 +40,15 @@ class TermsListTable extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         global $post_type, $taxonomy, $action, $tax;
 
-        parent::__construct(array(
+        parent::__construct([
             'plural' => 'tags',
             'singular' => 'tag',
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
 
         $action = $this->screen->action;
         $post_type = $this->screen->post_type;
@@ -65,7 +65,7 @@ class TermsListTable extends ListTable
         $tax = get_taxonomy($taxonomy);
 
         // @todo Still needed? Maybe just the show_ui part.
-        if (empty($post_type) || !in_array($post_type, get_post_types(array('show_ui' => true)))) {
+        if (empty($post_type) || !in_array($post_type, get_post_types(['show_ui' => true]))) {
             $post_type = 'post';
         }
     }
@@ -118,11 +118,11 @@ class TermsListTable extends ListTable
 
         $search = !empty($_REQUEST['s']) ? trim(wp_unslash($_REQUEST['s'])) : '';
 
-        $args = array(
+        $args = [
             'search' => $search,
             'page' => $this->get_pagenum(),
             'number' => $tags_per_page,
-        );
+        ];
 
         if (!empty($_REQUEST['orderby'])) {
             $args['orderby'] = trim(wp_unslash($_REQUEST['orderby']));
@@ -134,10 +134,10 @@ class TermsListTable extends ListTable
 
         $this->callback_args = $args;
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => wp_count_terms($this->screen->taxonomy, compact('search')),
             'per_page' => $tags_per_page,
-        ));
+        ]);
     }
 
     /**
@@ -164,7 +164,7 @@ class TermsListTable extends ListTable
      */
     protected function get_bulk_actions()
     {
-        $actions = array();
+        $actions = [];
 
         if (current_user_can(get_taxonomy($this->screen->taxonomy)->cap->delete_terms)) {
             $actions['delete'] = __('Delete');
@@ -192,12 +192,12 @@ class TermsListTable extends ListTable
      */
     public function get_columns()
     {
-        $columns = array(
+        $columns = [
             'cb' => '<input type="checkbox" />',
             'name' => _x('Name', 'term name'),
             'description' => __('Description'),
             'slug' => __('Slug'),
-        );
+        ];
 
         if ('link_category' === $this->screen->taxonomy) {
             $columns['links'] = __('Links');
@@ -214,13 +214,13 @@ class TermsListTable extends ListTable
      */
     protected function get_sortable_columns()
     {
-        return array(
+        return [
             'name' => 'name',
             'description' => 'description',
             'slug' => 'slug',
             'posts' => 'count',
             'links' => 'count'
-        );
+        ];
     }
 
     /**
@@ -230,12 +230,12 @@ class TermsListTable extends ListTable
     {
         $taxonomy = $this->screen->taxonomy;
 
-        $args = wp_parse_args($this->callback_args, array(
+        $args = wp_parse_args($this->callback_args, [
             'page' => 1,
             'number' => 20,
             'search' => '',
             'hide_empty' => 0
-        ));
+        ]);
 
         $page = $args['page'];
 
@@ -262,7 +262,7 @@ class TermsListTable extends ListTable
 
         if (is_taxonomy_hierarchical($taxonomy) && !isset($args['orderby'])) {
             if (!empty($args['search'])) {// Ignore children on searches.
-                $children = array();
+                $children = [];
             } else {
                 $children = _get_term_hierarchy($taxonomy);
             }
@@ -300,7 +300,7 @@ class TermsListTable extends ListTable
 
             // If the page starts in a subtree, print the parents.
             if ($count == $start && $term->parent > 0 && empty($_REQUEST['s'])) {
-                $my_parents = $parent_ids = array();
+                $my_parents = $parent_ids = [];
                 $p = $term->parent;
                 while ($p) {
                     $my_parent = get_term($p, $taxonomy);
@@ -461,7 +461,7 @@ class TermsListTable extends ListTable
             get_edit_term_link($tag->term_id, $taxonomy, $this->screen->post_type)
         );
 
-        $actions = array();
+        $actions = [];
         if (current_user_can('edit_term', $tag->term_id)) {
             $actions['edit'] = sprintf(
                 '<a href="%s" aria-label="%s">%s</a>',
@@ -562,9 +562,9 @@ class TermsListTable extends ListTable
         }
 
         if ($tax->query_var) {
-            $args = array($tax->query_var => $tag->slug);
+            $args = [$tax->query_var => $tag->slug];
         } else {
-            $args = array('taxonomy' => $tax->name, 'term' => $tag->slug);
+            $args = ['taxonomy' => $tax->name, 'term' => $tag->slug];
         }
 
         if ('post' != $this->screen->post_type) {
@@ -629,37 +629,37 @@ class TermsListTable extends ListTable
         <form method="get">
             <table style="display: none">
                 <tbody id="inlineedit">
-                    <tr id="inline-edit" class="inline-edit-row" style="display: none">
-                        <td colspan="<?php echo $this->get_column_count(); ?>" class="colspanchange">
+                <tr id="inline-edit" class="inline-edit-row" style="display: none">
+                    <td colspan="<?php echo $this->get_column_count(); ?>" class="colspanchange">
 
-                            <fieldset>
-                                <legend class="inline-edit-legend"><?php _e('Quick Edit'); ?></legend>
-                                <div class="inline-edit-col">
+                        <fieldset>
+                            <legend class="inline-edit-legend"><?php _e('Quick Edit'); ?></legend>
+                            <div class="inline-edit-col">
+                                <label>
+                                    <span class="title"><?php _ex('Name', 'term name'); ?></span>
+                                    <span class="input-text-wrap"><input type="text" name="name" class="ptitle"
+                                                                         value=""/></span>
+                                </label>
+                                <?php if (!global_terms_enabled()) {
+            ?>
                                     <label>
-                                        <span class="title"><?php _ex('Name', 'term name'); ?></span>
-                                        <span class="input-text-wrap"><input type="text" name="name" class="ptitle"
+                                        <span class="title"><?php _e('Slug'); ?></span>
+                                        <span class="input-text-wrap"><input type="text" name="slug" class="ptitle"
                                                                              value=""/></span>
                                     </label>
-                                    <?php if (!global_terms_enabled()) {
-            ?>
-                                        <label>
-                                            <span class="title"><?php _e('Slug'); ?></span>
-                                            <span class="input-text-wrap"><input type="text" name="slug" class="ptitle"
-                                                                                 value=""/></span>
-                                        </label>
-                                        <?php
+                                    <?php
         } ?>
-                                </div>
-                            </fieldset>
-                            <?php
+                            </div>
+                        </fieldset>
+                        <?php
 
-                            $core_columns = array(
-                                'cb' => true,
-                                'description' => true,
-                                'name' => true,
-                                'slug' => true,
-                                'posts' => true
-                            );
+                        $core_columns = [
+                            'cb' => true,
+                            'description' => true,
+                            'name' => true,
+                            'slug' => true,
+                            'posts' => true
+                        ];
 
         list($columns) = $this->get_column_info();
 
@@ -672,21 +672,21 @@ class TermsListTable extends ListTable
             do_action('quick_edit_custom_box', $column_name, 'edit-tags', $this->screen->taxonomy);
         } ?>
 
-                            <p class="inline-edit-save submit">
-                                <button type="button" class="cancel button alignleft"><?php _e('Cancel'); ?></button>
-                                <button type="button"
-                                        class="save button button-primary alignright"><?php echo $tax->labels->update_item; ?></button>
-                                <span class="spinner"></span>
-                                <span class="error" style="display:none;"></span>
-                                <?php wp_nonce_field('taxinlineeditnonce', '_inline_edit', false); ?>
-                                <input type="hidden" name="taxonomy"
-                                       value="<?php echo esc_attr($this->screen->taxonomy); ?>"/>
-                                <input type="hidden" name="post_type"
-                                       value="<?php echo esc_attr($this->screen->post_type); ?>"/>
-                                <br class="clear"/>
-                            </p>
-                        </td>
-                    </tr>
+                        <p class="inline-edit-save submit">
+                            <button type="button" class="cancel button alignleft"><?php _e('Cancel'); ?></button>
+                            <button type="button"
+                                    class="save button button-primary alignright"><?php echo $tax->labels->update_item; ?></button>
+                            <span class="spinner"></span>
+                            <span class="error" style="display:none;"></span>
+                            <?php wp_nonce_field('taxinlineeditnonce', '_inline_edit', false); ?>
+                            <input type="hidden" name="taxonomy"
+                                   value="<?php echo esc_attr($this->screen->taxonomy); ?>"/>
+                            <input type="hidden" name="post_type"
+                                   value="<?php echo esc_attr($this->screen->post_type); ?>"/>
+                            <br class="clear"/>
+                        </p>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </form>

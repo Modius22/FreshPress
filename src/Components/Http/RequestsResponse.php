@@ -189,15 +189,15 @@ class RequestsResponse extends Response
      */
     public function get_cookies()
     {
-        $cookies = array();
+        $cookies = [];
         foreach ($this->response->cookies as $cookie) {
-            $cookies[] = new Cookie(array(
+            $cookies[] = new Cookie([
                 'name' => $cookie->name,
                 'value' => urldecode($cookie->value),
                 'expires' => isset($cookie->attributes['expires']) ? $cookie->attributes['expires'] : null,
                 'path' => isset($cookie->attributes['path']) ? $cookie->attributes['path'] : null,
                 'domain' => isset($cookie->attributes['domain']) ? $cookie->attributes['domain'] : null,
-            ));
+            ]);
         }
 
         return $cookies;
@@ -213,15 +213,15 @@ class RequestsResponse extends Response
      */
     public function to_array()
     {
-        return array(
+        return [
             'headers' => $this->get_headers(),
             'body' => $this->get_data(),
-            'response' => array(
+            'response' => [
                 'code' => $this->get_status(),
                 'message' => get_status_header_desc($this->get_status()),
-            ),
+            ],
             'cookies' => $this->get_cookies(),
             'filename' => $this->filename,
-        );
+        ];
     }
 }

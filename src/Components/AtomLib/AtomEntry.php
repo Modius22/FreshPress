@@ -24,11 +24,11 @@ class AtomEntry
      * @var array
      * @access public
      */
-    public $links = array();
+    public $links = [];
     /**
      * Stores Categories
      * @var array
      * @access public
      */
-    public $categories = array();
+    public $categories = [];
 }

@@ -29,16 +29,16 @@ class RecentCommentsWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'classname' => 'widget_recent_comments',
             'description' => __('Your site&#8217;s most recent comments.'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('recent-comments', __('Recent Comments'), $widget_ops);
         $this->alt_option_name = 'widget_recent_comments';
 
         if (is_active_widget(false, false, $this->id_base) || is_customize_preview()) {
-            add_action('wp_head', array($this, 'recent_comments_style'));
+            add_action('wp_head', [$this, 'recent_comments_style']);
         }
     }
 
@@ -107,11 +107,11 @@ class RecentCommentsWidget extends Widget
          *
          * @param array $comment_args An array of arguments used to retrieve the recent comments.
          */
-        $comments = get_comments(apply_filters('widget_comments_args', array(
+        $comments = get_comments(apply_filters('widget_comments_args', [
             'number' => $number,
             'status' => 'approve',
             'post_status' => 'publish'
-        )));
+        ]));
 
         $output .= $args['before_widget'];
         if ($title) {

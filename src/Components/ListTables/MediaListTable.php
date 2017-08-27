@@ -29,7 +29,7 @@ class MediaListTable extends ListTable
      * @var array
      * @access protected
      */
-    protected $comment_pending_count = array();
+    protected $comment_pending_count = [];
 
     private $detached;
 
@@ -45,19 +45,19 @@ class MediaListTable extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         $this->detached = (isset($_REQUEST['attachment-filter']) && 'detached' === $_REQUEST['attachment-filter']);
 
-        $this->modes = array(
+        $this->modes = [
             'list' => __('List View'),
             'grid' => __('Grid View')
-        );
+        ];
 
-        parent::__construct(array(
+        parent::__construct([
             'plural' => 'media',
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
     }
 
     /**
@@ -86,11 +86,11 @@ class MediaListTable extends ListTable
 
         $mode = empty($_REQUEST['mode']) ? 'list' : $_REQUEST['mode'];
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args([
             'total_items' => $wp_query->found_posts,
             'total_pages' => $wp_query->max_num_pages,
             'per_page' => $wp_query->query_vars['posts_per_page'],
-        ));
+        ]);
     }
 
     /**
@@ -102,7 +102,7 @@ class MediaListTable extends ListTable
     {
         global $post_mime_types, $avail_post_mime_types;
 
-        $type_links = array();
+        $type_links = [];
 
         $filter = empty($_GET['attachment-filter']) ? '' : $_GET['attachment-filter'];
 
@@ -149,7 +149,7 @@ class MediaListTable extends ListTable
      */
     protected function get_bulk_actions()
     {
-        $actions = array();
+        $actions = [];
         if (MEDIA_TRASH) {
             if ($this->is_trash) {
                 $actions['untrash'] = __('Restore');
@@ -186,7 +186,7 @@ class MediaListTable extends ListTable
                 /** This action is documented in src/Components/ListTables/PostsListTable.php */
                 do_action('restrict_manage_posts', $this->screen->post_type, $which);
 
-                submit_button(__('Filter'), '', 'filter_action', false, array('id' => 'post-query-submit'));
+                submit_button(__('Filter'), '', 'filter_action', false, ['id' => 'post-query-submit']);
             }
 
         if ($this->is_trash && current_user_can('edit_others_posts') && $this->has_items()) {
@@ -264,7 +264,7 @@ class MediaListTable extends ListTable
                 $this->extra_tablenav('bar');
 
         /** This filter is documented in src/Components/ListTables/ListTable.php */
-        $views = apply_filters("views_{$this->screen->id}", array());
+        $views = apply_filters("views_{$this->screen->id}", []);
 
         // Back compat for pre-4.0 view links.
         if (!empty($views)) {
@@ -290,14 +290,14 @@ class MediaListTable extends ListTable
      */
     public function get_columns()
     {
-        $posts_columns = array();
+        $posts_columns = [];
         $posts_columns['cb'] = '<input type="checkbox" />';
         /* translators: column name */
         $posts_columns['title'] = _x('File', 'column name');
         $posts_columns['author'] = __('Author');
 
         $taxonomies = get_taxonomies_for_attachments('objects');
-        $taxonomies = wp_filter_object_list($taxonomies, array('show_admin_column' => true), 'and', 'name');
+        $taxonomies = wp_filter_object_list($taxonomies, ['show_admin_column' => true], 'and', 'name');
 
         /**
          * Filters the taxonomy columns for attachments in the Media list table.
@@ -348,13 +348,13 @@ class MediaListTable extends ListTable
      */
     protected function get_sortable_columns()
     {
-        return array(
+        return [
             'title' => 'title',
             'author' => 'author',
             'parent' => 'parent',
             'comments' => 'comment_count',
-            'date' => array('date', true),
-        );
+            'date' => ['date', true],
+        ];
     }
 
     /**
@@ -390,7 +390,7 @@ class MediaListTable extends ListTable
         list($mime) = explode('/', $post->post_mime_type);
 
         $title = _draft_or_post_title();
-        $thumb = wp_get_attachment_image($post->ID, array(60, 60), true, array('alt' => ''));
+        $thumb = wp_get_attachment_image($post->ID, [60, 60], true, ['alt' => '']);
         $link_start = $link_end = '';
 
         if (current_user_can('edit_post', $post->ID) && !$this->is_trash) {
@@ -434,7 +434,7 @@ class MediaListTable extends ListTable
     {
         printf(
             '<a href="%s">%s</a>',
-            esc_url(add_query_arg(array('author' => get_the_author_meta('ID')), 'upload.php')),
+            esc_url(add_query_arg(['author' => get_the_author_meta('ID')], 'upload.php')),
             get_the_author()
         );
     }
@@ -515,11 +515,11 @@ class MediaListTable extends ListTable
             }
 
             if ($user_can_edit):
-                $detach_url = add_query_arg(array(
+                $detach_url = add_query_arg([
                     'parent_post_id' => $post->post_parent,
                     'media[]' => $post->ID,
                     '_wpnonce' => wp_create_nonce('bulk-' . $this->_args['plural'])
-                ), 'upload.php');
+                ], 'upload.php');
             printf(
                     '<br /><a href="%s" class="hide-if-no-js detach-from-parent" aria-label="%s">%s</a>',
                     $detach_url,
@@ -590,9 +590,9 @@ class MediaListTable extends ListTable
         if ($taxonomy) {
             $terms = get_the_terms($post->ID, $taxonomy);
             if (is_array($terms)) {
-                $out = array();
+                $out = [];
                 foreach ($terms as $t) {
-                    $posts_in_term_qv = array();
+                    $posts_in_term_qv = [];
                     $posts_in_term_qv['taxonomy'] = $taxonomy;
                     $posts_in_term_qv['term'] = $t->slug;
 
@@ -676,7 +676,7 @@ class MediaListTable extends ListTable
      */
     private function _get_row_actions($post, $att_title)
     {
-        $actions = array();
+        $actions = [];
 
         if ($this->detached) {
             if (current_user_can('edit_post', $post->ID)) {

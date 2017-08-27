@@ -37,11 +37,11 @@ class CalendarWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'classname' => 'widget_calendar',
             'description' => __('A calendar of your site&#8217;s Posts.'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('calendar', __('Calendar'), $widget_ops);
     }
 
@@ -109,7 +109,7 @@ class CalendarWidget extends Widget
      */
     public function form($instance)
     {
-        $instance = wp_parse_args((array)$instance, array('title' => ''));
+        $instance = wp_parse_args((array)$instance, ['title' => '']);
         $title = sanitize_text_field($instance['title']); ?>
         <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"

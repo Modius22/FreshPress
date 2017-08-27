@@ -29,11 +29,11 @@ class RecentPostsWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'classname' => 'widget_recent_entries',
             'description' => __('Your site&#8217;s most recent Posts.'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('recent-posts', __('Recent Posts'), $widget_ops);
         $this->alt_option_name = 'widget_recent_entries';
     }
@@ -74,12 +74,12 @@ class RecentPostsWidget extends Widget
          *
          * @param array $args An array of arguments used to retrieve the recent posts.
          */
-        $r = new Query(apply_filters('widget_posts_args', array(
+        $r = new Query(apply_filters('widget_posts_args', [
             'posts_per_page' => $number,
             'no_found_rows' => true,
             'post_status' => 'publish',
             'ignore_sticky_posts' => true
-        )));
+        ]));
 
         if ($r->have_posts()) :
             ?>

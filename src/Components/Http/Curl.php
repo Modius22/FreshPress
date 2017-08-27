@@ -78,18 +78,18 @@ class Curl
      * @param string|array $args Optional. Override the defaults.
      * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
      */
-    public function request($url, $args = array())
+    public function request($url, $args = [])
     {
-        $defaults = array(
+        $defaults = [
             'method' => 'GET',
             'timeout' => 5,
             'redirection' => 5,
             'httpversion' => '1.0',
             'blocking' => true,
-            'headers' => array(),
+            'headers' => [],
             'body' => null,
-            'cookies' => array()
-        );
+            'cookies' => []
+        ];
 
         $r = wp_parse_args($args, $defaults);
 
@@ -179,8 +179,8 @@ class Curl
         }
 
         if (true === $r['blocking']) {
-            curl_setopt($handle, CURLOPT_HEADERFUNCTION, array($this, 'stream_headers'));
-            curl_setopt($handle, CURLOPT_WRITEFUNCTION, array($this, 'stream_body'));
+            curl_setopt($handle, CURLOPT_HEADERFUNCTION, [$this, 'stream_headers']);
+            curl_setopt($handle, CURLOPT_WRITEFUNCTION, [$this, 'stream_body']);
         }
 
         curl_setopt($handle, CURLOPT_HEADER, false);
@@ -210,7 +210,7 @@ class Curl
 
         if (!empty($r['headers'])) {
             // cURL expects full header strings in each element.
-            $headers = array();
+            $headers = [];
             foreach ($r['headers'] as $name => $value) {
                 $headers[] = "{$name}: $value";
             }
@@ -235,7 +235,7 @@ class Curl
          * @param array $r The HTTP request arguments.
          * @param string $url The request URL.
          */
-        do_action_ref_array('http_api_curl', array(&$handle, $r, $url));
+        do_action_ref_array('http_api_curl', [&$handle, $r, $url]);
 
         // We don't need to return the body, so don't. Just execute request and return.
         if (!$r['blocking']) {
@@ -245,18 +245,18 @@ class Curl
                 curl_close($handle);
                 return new WP_Error('http_request_failed', $curl_error);
             }
-            if (in_array(curl_getinfo($handle, CURLINFO_HTTP_CODE), array(301, 302))) {
+            if (in_array(curl_getinfo($handle, CURLINFO_HTTP_CODE), [301, 302])) {
                 curl_close($handle);
                 return new WP_Error('http_request_failed', __('Too many redirects.'));
             }
 
             curl_close($handle);
-            return array(
-                'headers' => array(),
+            return [
+                'headers' => [],
                 'body' => '',
-                'response' => array('code' => false, 'message' => false),
-                'cookies' => array()
-            );
+                'response' => ['code' => false, 'message' => false],
+                'cookies' => []
+            ];
         }
 
         curl_exec($handle);
@@ -289,7 +289,7 @@ class Curl
                     return new WP_Error('http_request_failed', $curl_error);
                 }
             }
-            if (in_array(curl_getinfo($handle, CURLINFO_HTTP_CODE), array(301, 302))) {
+            if (in_array(curl_getinfo($handle, CURLINFO_HTTP_CODE), [301, 302])) {
                 curl_close($handle);
                 return new WP_Error('http_request_failed', __('Too many redirects.'));
             }
@@ -301,13 +301,13 @@ class Curl
             fclose($this->stream_handle);
         }
 
-        $response = array(
+        $response = [
             'headers' => $theHeaders['headers'],
             'body' => null,
             'response' => $theHeaders['response'],
             'cookies' => $theHeaders['cookies'],
             'filename' => $r['filename']
-        );
+        ];
 
         // Handle redirects.
         if (false !== ($redirect_response = Http::handle_redirects($url, $r, $response))) {
@@ -387,7 +387,7 @@ class Curl
      * @param array $args Optional. Array of request arguments. Default empty array.
      * @return bool False means this class can not be used, true means it can.
      */
-    public static function test($args = array())
+    public static function test($args = [])
     {
         if (!function_exists('curl_init') || !function_exists('curl_exec')) {
             return false;

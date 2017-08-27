@@ -46,7 +46,7 @@ class Diff
     {
         // Backward compatibility workaround.
         if (!is_string($engine)) {
-            $params = array($engine, $params);
+            $params = [$engine, $params];
             $engine = 'auto';
         }
 
@@ -70,7 +70,7 @@ class Diff
                 break;
         }
 
-        $this->_edits = call_user_func_array(array($diff_engine, 'diff'), $params);
+        $this->_edits = call_user_func_array([$diff_engine, 'diff'], $params);
     }
 
     /**
@@ -140,7 +140,7 @@ class Diff
         } else {
             $rev = $this;
         }
-        $rev->_edits = array();
+        $rev->_edits = [];
         foreach ($this->_edits as $edit) {
             $rev->_edits[] = $edit->reverse();
         }
@@ -189,7 +189,7 @@ class Diff
      */
     public function getOriginal()
     {
-        $lines = array();
+        $lines = [];
         foreach ($this->_edits as $edit) {
             if ($edit->orig) {
                 array_splice($lines, count($lines), 0, $edit->orig);
@@ -207,7 +207,7 @@ class Diff
      */
     public function getFinal()
     {
-        $lines = array();
+        $lines = [];
         foreach ($this->_edits as $edit) {
             if ($edit->final) {
                 array_splice($lines, count($lines), 0, $edit->final);
@@ -225,7 +225,7 @@ class Diff
      */
     public static function trimNewlines(&$line, $key)
     {
-        $line = str_replace(array("\n", "\r"), '', $line);
+        $line = str_replace(["\n", "\r"], '', $line);
     }
 
     /**
@@ -240,14 +240,14 @@ class Diff
      */
     public function _getTempDir()
     {
-        $tmp_locations = array(
+        $tmp_locations = [
             '/tmp',
             '/var/tmp',
             'c:\WUTemp',
             'c:\temp',
             'c:\windows\temp',
             'c:\winnt\temp'
-        );
+        ];
 
         /* Try PHP's upload_tmp_dir directive. */
         $tmp = ini_get('upload_tmp_dir');

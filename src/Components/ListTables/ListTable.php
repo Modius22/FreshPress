@@ -45,7 +45,7 @@ class ListTable
      * @access protected
      * @var array
      */
-    protected $_pagination_args = array();
+    protected $_pagination_args = [];
 
     /**
      * The current screen.
@@ -81,7 +81,7 @@ class ListTable
      * @access protected
      * @var array
      */
-    protected $modes = array();
+    protected $modes = [];
 
     /**
      * Stores the value returned by ->get_column_info().
@@ -98,7 +98,7 @@ class ListTable
      * @access protected
      * @var array
      */
-    protected $compat_fields = array('_args', '_pagination_args', 'screen', '_actions', '_pagination');
+    protected $compat_fields = ['_args', '_pagination_args', 'screen', '_actions', '_pagination'];
 
     /**
      * {@internal Missing Summary}
@@ -106,7 +106,7 @@ class ListTable
      * @access protected
      * @var array
      */
-    protected $compat_methods = array(
+    protected $compat_methods = [
         'set_pagination_args',
         'get_views',
         'get_bulk_actions',
@@ -123,7 +123,7 @@ class ListTable
         'display_tablenav',
         'extra_tablenav',
         'single_row_columns'
-    );
+    ];
 
     /**
      * Constructor.
@@ -151,18 +151,18 @@ class ListTable
      *                            Default null.
      * }
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        $args = wp_parse_args($args, array(
+        $args = wp_parse_args($args, [
             'plural' => '',
             'singular' => '',
             'ajax' => false,
             'screen' => null,
-        ));
+        ]);
 
         $this->screen = convert_to_screen($args['screen']);
 
-        add_filter("manage_{$this->screen->id}_columns", array($this, 'get_columns'), 0);
+        add_filter("manage_{$this->screen->id}_columns", [$this, 'get_columns'], 0);
 
         if (!$args['plural']) {
             $args['plural'] = $this->screen->base;
@@ -175,14 +175,14 @@ class ListTable
 
         if ($args['ajax']) {
             // wp_enqueue_script( 'list-table' );
-            add_action('admin_footer', array($this, '_js_vars'));
+            add_action('admin_footer', [$this, '_js_vars']);
         }
 
         if (empty($this->modes)) {
-            $this->modes = array(
+            $this->modes = [
                 'list' => __('List View'),
                 'excerpt' => __('Excerpt View')
-            );
+            ];
         }
     }
 
@@ -263,7 +263,7 @@ class ListTable
     public function __call($name, $arguments)
     {
         if (in_array($name, $this->compat_methods)) {
-            return call_user_func_array(array($this, $name), $arguments);
+            return call_user_func_array([$this, $name], $arguments);
         }
         return false;
     }
@@ -303,11 +303,11 @@ class ListTable
      */
     protected function set_pagination_args($args)
     {
-        $args = wp_parse_args($args, array(
+        $args = wp_parse_args($args, [
             'total_items' => 0,
             'total_pages' => 0,
             'per_page' => 0,
-        ));
+        ]);
 
         if (!$args['total_pages'] && $args['per_page'] > 0) {
             $args['total_pages'] = ceil($args['total_items'] / $args['per_page']);
@@ -400,7 +400,7 @@ class ListTable
             <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo $text; ?>:</label>
             <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s"
                    value="<?php _admin_search_query(); ?>"/>
-            <?php submit_button($text, '', '', false, array('id' => 'search-submit')); ?>
+            <?php submit_button($text, '', '', false, ['id' => 'search-submit']); ?>
         </p>
         <?php
     }
@@ -416,7 +416,7 @@ class ListTable
      */
     protected function get_views()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -465,7 +465,7 @@ class ListTable
      */
     protected function get_bulk_actions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -515,7 +515,7 @@ class ListTable
 
         echo "</select>\n";
 
-        submit_button(__('Apply'), 'action', '', false, array('id' => "doaction$two"));
+        submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
         echo "\n";
     }
 
@@ -674,7 +674,7 @@ class ListTable
         <div class="view-switch">
             <?php
             foreach ($this->modes as $mode => $title) {
-                $classes = array('view-' . $mode);
+                $classes = ['view-' . $mode];
                 if ($current_mode === $mode) {
                     $classes[] = 'current';
                 }
@@ -726,7 +726,7 @@ class ListTable
             printf(
                 '<a href="%s" class="post-com-count post-com-count-approved"><span class="comment-count-approved" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
                 esc_url(add_query_arg(
-                    array('p' => $post_id, 'comment_status' => 'approved'),
+                    ['p' => $post_id, 'comment_status' => 'approved'],
                     admin_url('edit-comments.php')
                 )),
                 $approved_comments_number,
@@ -744,7 +744,7 @@ class ListTable
             printf(
                 '<a href="%s" class="post-com-count post-com-count-pending"><span class="comment-count-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
                 esc_url(add_query_arg(
-                    array('p' => $post_id, 'comment_status' => 'moderated'),
+                    ['p' => $post_id, 'comment_status' => 'moderated'],
                     admin_url('edit-comments.php')
                 )),
                 $pending_comments_number,
@@ -847,7 +847,7 @@ class ListTable
 
         $current_url = remove_query_arg($removable_query_args, $current_url);
 
-        $page_links = array();
+        $page_links = [];
 
         $total_pages_before = '<span class="paging-input">';
         $total_pages_after = '</span></span>';
@@ -976,7 +976,7 @@ class ListTable
      */
     protected function get_sortable_columns()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -1073,7 +1073,7 @@ class ListTable
         if (isset($this->_column_headers) && is_array($this->_column_headers)) {
             // Back-compat for list tables that have been manually setting $_column_headers for horse reasons.
             // In 4.3, we added a fourth argument for primary column.
-            $column_headers = array(array(), array(), array(), $this->get_primary_column_name());
+            $column_headers = [[], [], [], $this->get_primary_column_name()];
             foreach ($this->_column_headers as $key => $value) {
                 $column_headers[$key] = $value;
             }
@@ -1097,7 +1097,7 @@ class ListTable
          */
         $_sortable = apply_filters("manage_{$this->screen->id}_sortable_columns", $sortable_columns);
 
-        $sortable = array();
+        $sortable = [];
         foreach ($_sortable as $id => $data) {
             if (empty($data)) {
                 continue;
@@ -1112,7 +1112,7 @@ class ListTable
         }
 
         $primary = $this->get_primary_column_name();
-        $this->_column_headers = array($columns, $hidden, $sortable, $primary);
+        $this->_column_headers = [$columns, $hidden, $sortable, $primary];
 
         return $this->_column_headers;
     }
@@ -1169,7 +1169,7 @@ class ListTable
         }
 
         foreach ($columns as $column_key => $column_display_name) {
-            $class = array('manage-column', "column-$column_key");
+            $class = ['manage-column', "column-$column_key"];
 
             if (in_array($column_key, $hidden)) {
                 $class[] = 'hidden';
@@ -1177,7 +1177,7 @@ class ListTable
 
             if ('cb' === $column_key) {
                 $class[] = 'check-column';
-            } elseif (in_array($column_key, array('posts', 'comments', 'links'))) {
+            } elseif (in_array($column_key, ['posts', 'comments', 'links'])) {
                 $class[] = 'num';
             }
 
@@ -1230,22 +1230,22 @@ class ListTable
         $this->screen->render_screen_reader_content('heading_list'); ?>
         <table class="wp-list-table <?php echo implode(' ', $this->get_table_classes()); ?>">
             <thead>
-                <tr>
-                    <?php $this->print_column_headers(); ?>
-                </tr>
+            <tr>
+                <?php $this->print_column_headers(); ?>
+            </tr>
             </thead>
 
             <tbody id="the-list"<?php
             if ($singular) {
                 echo " data-wp-lists='list:$singular'";
             } ?>>
-                <?php $this->display_rows_or_placeholder(); ?>
+            <?php $this->display_rows_or_placeholder(); ?>
             </tbody>
 
             <tfoot>
-                <tr>
-                    <?php $this->print_column_headers(false); ?>
-                </tr>
+            <tr>
+                <?php $this->print_column_headers(false); ?>
+            </tr>
             </tfoot>
 
         </table>
@@ -1263,7 +1263,7 @@ class ListTable
      */
     protected function get_table_classes()
     {
-        return array('widefat', 'fixed', 'striped', $this->_args['plural']);
+        return ['widefat', 'fixed', 'striped', $this->_args['plural']];
     }
 
     /**
@@ -1401,7 +1401,7 @@ class ListTable
                 echo '</th>';
             } elseif (method_exists($this, '_column_' . $column_name)) {
                 echo call_user_func(
-                    array($this, '_column_' . $column_name),
+                    [$this, '_column_' . $column_name],
                     $item,
                     $classes,
                     $data,
@@ -1409,7 +1409,7 @@ class ListTable
                 );
             } elseif (method_exists($this, 'column_' . $column_name)) {
                 echo "<td $attributes>";
-                echo call_user_func(array($this, 'column_' . $column_name), $item);
+                echo call_user_func([$this, 'column_' . $column_name], $item);
                 echo $this->handle_row_actions($item, $column_name, $primary);
                 echo "</td>";
             } else {
@@ -1456,7 +1456,7 @@ class ListTable
 
         $rows = ob_get_clean();
 
-        $response = array('rows' => $rows);
+        $response = ['rows' => $rows];
 
         if (isset($this->_pagination_args['total_items'])) {
             $response['total_items_i18n'] = sprintf(
@@ -1479,13 +1479,13 @@ class ListTable
      */
     public function _js_vars()
     {
-        $args = array(
+        $args = [
             'class' => get_class($this),
-            'screen' => array(
+            'screen' => [
                 'id' => $this->screen->id,
                 'base' => $this->screen->base,
-            )
-        );
+            ]
+        ];
 
         printf("<script type='text/javascript'>list_args = %s;</script>\n", wp_json_encode($args));
     }

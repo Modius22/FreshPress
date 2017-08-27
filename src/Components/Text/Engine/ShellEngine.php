@@ -43,8 +43,8 @@ class ShellEngine
      */
     public function diff($from_lines, $to_lines)
     {
-        array_walk($from_lines, array(Diff::class, 'trimNewlines'));
-        array_walk($to_lines, array(Diff::class, 'trimNewlines'));
+        array_walk($from_lines, [Diff::class, 'trimNewlines']);
+        array_walk($to_lines, [Diff::class, 'trimNewlines']);
 
         $temp_dir = Diff::_getTempDir();
 
@@ -63,12 +63,12 @@ class ShellEngine
 
         if (is_null($diff)) {
             // No changes were made
-            return array(new DiffOpCopy($from_lines));
+            return [new DiffOpCopy($from_lines)];
         }
 
         $from_line_no = 1;
         $to_line_no = 1;
-        $edits = array();
+        $edits = [];
 
         // Get changed lines by parsing something like:
         // 0a1,2
@@ -180,14 +180,14 @@ class ShellEngine
     public function _getLines(&$text_lines, &$line_no, $end = false)
     {
         if (!empty($end)) {
-            $lines = array();
+            $lines = [];
             // We can shift even more
             while ($line_no <= $end) {
                 array_push($lines, array_shift($text_lines));
                 $line_no++;
             }
         } else {
-            $lines = array(array_shift($text_lines));
+            $lines = [array_shift($text_lines)];
             $line_no++;
         }
 

@@ -94,7 +94,7 @@
                         <input id="blog-norobots" type="radio" name="blog_public" value="0"
                                 {{ blog_public ?: 'checked' }} />
                         <label for="blog-norobots">{{ 'Discourage search engines from indexing this site' | trans | raw }}</label>
-                    <p class="description">{{ 'Note: Neither of these options blocks access to your site &mdash; it is up to search engines to honor your request.' | trans | raw }}</p>
+                        <p class="description">{{ 'Note: Neither of these options blocks access to your site &mdash; it is up to search engines to honor your request.' | trans | raw }}</p>
                         {{ privacy_selector }}
                     {% else %}
 

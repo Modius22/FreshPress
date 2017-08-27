@@ -30,10 +30,10 @@ class NavMenuWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'description' => __('Add a custom menu to your sidebar.'),
             'customize_selective_refresh' => true,
-        );
+        ];
         parent::__construct('nav_menu', __('Custom Menu'), $widget_ops);
     }
 
@@ -70,10 +70,10 @@ class NavMenuWidget extends Widget
             echo $args['before_title'] . $instance['title'] . $args['after_title'];
         }
 
-        $nav_menu_args = array(
+        $nav_menu_args = [
             'fallback_cb' => '',
             'menu' => $nav_menu
-        );
+        ];
 
         /**
          * Filters the arguments for the Custom Menu widget.
@@ -108,7 +108,7 @@ class NavMenuWidget extends Widget
      */
     public function update($new_instance, $old_instance)
     {
-        $instance = array();
+        $instance = [];
         if (!empty($new_instance['title'])) {
             $instance['title'] = sanitize_text_field($new_instance['title']);
         }

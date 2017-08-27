@@ -178,7 +178,7 @@ class Widget
      * @param array $control_options Optional. Widget control options. See wp_register_widget_control() for
      *                                information on accepted arguments. Default empty array.
      */
-    public function __construct($id_base, $name, $widget_options = array(), $control_options = array())
+    public function __construct($id_base, $name, $widget_options = [], $control_options = [])
     {
         $this->id_base = empty($id_base) ? preg_replace(
             '/(wp_)?widget_/',
@@ -189,9 +189,9 @@ class Widget
         $this->option_name = 'widget_' . $this->id_base;
         $this->widget_options = wp_parse_args(
             $widget_options,
-            array('classname' => $this->option_name, 'customize_selective_refresh' => false)
+            ['classname' => $this->option_name, 'customize_selective_refresh' => false]
         );
-        $this->control_options = wp_parse_args($control_options, array('id_base' => $this->id_base));
+        $this->control_options = wp_parse_args($control_options, ['id_base' => $this->id_base]);
     }
 
     /**
@@ -233,7 +233,7 @@ class Widget
     public function get_field_id($field_name)
     {
         return 'widget-' . $this->id_base . '-' . $this->number . '-' .
-            trim(str_replace(array('[]', '[', ']'), array('', '-', ''), $field_name), '-');
+            trim(str_replace(['[]', '[', ']'], ['', '-', ''], $field_name), '-');
     }
 
     /**
@@ -294,7 +294,7 @@ class Widget
      */
     public function _get_display_callback()
     {
-        return array($this, 'display_callback');
+        return [$this, 'display_callback'];
     }
 
     /**
@@ -307,7 +307,7 @@ class Widget
      */
     public function _get_update_callback()
     {
-        return array($this, 'update_callback');
+        return [$this, 'update_callback'];
     }
 
     /**
@@ -320,7 +320,7 @@ class Widget
      */
     public function _get_form_callback()
     {
-        return array($this, 'form_callback');
+        return [$this, 'form_callback'];
     }
 
     /**
@@ -364,10 +364,10 @@ class Widget
     public function display_callback($args, $widget_args = 1)
     {
         if (is_numeric($widget_args)) {
-            $widget_args = array('number' => $widget_args);
+            $widget_args = ['number' => $widget_args];
         }
 
-        $widget_args = wp_parse_args($widget_args, array('number' => -1));
+        $widget_args = wp_parse_args($widget_args, ['number' => -1]);
         $this->_set($widget_args['number']);
         $instances = $this->get_settings();
 
@@ -445,7 +445,7 @@ class Widget
                 $settings = $_POST['widget-' . $this->id_base];
             } elseif (isset($_POST['id_base']) && $_POST['id_base'] == $this->id_base) {
                 $num = $_POST['multi_number'] ? (int)$_POST['multi_number'] : (int)$_POST['widget_number'];
-                $settings = array($num => array());
+                $settings = [$num => []];
             } else {
                 return;
             }
@@ -454,7 +454,7 @@ class Widget
                 $new_instance = stripslashes_deep($new_instance);
                 $this->_set($number);
 
-                $old_instance = isset($all_instances[$number]) ? $all_instances[$number] : array();
+                $old_instance = isset($all_instances[$number]) ? $all_instances[$number] : [];
 
                 $was_cache_addition_suspended = wp_suspend_cache_addition();
                 if ($this->is_preview() && !$was_cache_addition_suspended) {
@@ -510,16 +510,16 @@ class Widget
     public function form_callback($widget_args = 1)
     {
         if (is_numeric($widget_args)) {
-            $widget_args = array('number' => $widget_args);
+            $widget_args = ['number' => $widget_args];
         }
 
-        $widget_args = wp_parse_args($widget_args, array('number' => -1));
+        $widget_args = wp_parse_args($widget_args, ['number' => -1]);
         $all_instances = $this->get_settings();
 
         if (-1 == $widget_args['number']) {
             // We echo out a form where 'number' can be set later
             $this->_set('__i__');
-            $instance = array();
+            $instance = [];
         } else {
             $this->_set($widget_args['number']);
             $instance = $all_instances[$widget_args['number']];
@@ -557,7 +557,7 @@ class Widget
              * @param null $return Return null if new fields are added.
              * @param array $instance An array of the widget's settings.
              */
-            do_action_ref_array('in_widget_form', array(&$this, &$return, $instance));
+            do_action_ref_array('in_widget_form', [&$this, &$return, $instance]);
         }
         return $return;
     }
@@ -578,20 +578,20 @@ class Widget
             $this->name,
             $this->_get_display_callback(),
             $this->widget_options,
-            array('number' => $number)
+            ['number' => $number]
         );
         _register_widget_update_callback(
             $this->id_base,
             $this->_get_update_callback(),
             $this->control_options,
-            array('number' => -1)
+            ['number' => -1]
         );
         _register_widget_form_callback(
             $this->id,
             $this->name,
             $this->_get_form_callback(),
             $this->control_options,
-            array('number' => $number)
+            ['number' => $number]
         );
     }
 
@@ -626,12 +626,12 @@ class Widget
                 $settings = get_option($this->alt_option_name);
             } else {
                 // Save an option so it can be autoloaded next time.
-                $this->save_settings(array());
+                $this->save_settings([]);
             }
         }
 
         if (!is_array($settings) && !($settings instanceof \ArrayObject || $settings instanceof \ArrayIterator)) {
-            $settings = array();
+            $settings = [];
         }
 
         if (!empty($settings) && !isset($settings['_multiwidget'])) {

@@ -1433,8 +1433,8 @@ class Manager
     public function unsanitized_post_values($args = [])
     {
         $args = array_merge([
-                'exclude_changeset' => false,
-                'exclude_post_data' => !current_user_can('customize'),
+            'exclude_changeset' => false,
+            'exclude_post_data' => !current_user_can('customize'),
         ], $args);
 
         $values = [];

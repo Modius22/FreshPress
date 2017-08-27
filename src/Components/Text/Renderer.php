@@ -37,7 +37,7 @@ class Renderer
     /**
      * Constructor.
      */
-    public function __construct($params = array())
+    public function __construct($params = [])
     {
         foreach ($params as $param => $value) {
             $v = '_' . $param;
@@ -50,7 +50,7 @@ class Renderer
     /**
      * PHP4 constructor.
      */
-    public function Text_Diff_Renderer($params = array())
+    public function Text_Diff_Renderer($params = [])
     {
         self::__construct($params);
     }
@@ -62,7 +62,7 @@ class Renderer
      */
     public function getParams()
     {
-        $params = array();
+        $params = [];
         foreach (get_object_vars($this) as $k => $v) {
             if ($k[0] == '_') {
                 $params[substr($k, 1)] = $v;
@@ -83,7 +83,7 @@ class Renderer
     {
         $xi = $yi = 1;
         $block = false;
-        $context = array();
+        $context = [];
 
         $nlead = $this->_leading_context_lines;
         $ntrail = $this->_trailing_context_lines;
@@ -132,7 +132,7 @@ class Renderer
                     $context = array_slice($context, count($context) - $nlead);
                     $x0 = $xi - count($context);
                     $y0 = $yi - count($context);
-                    $block = array();
+                    $block = [];
                     if ($context) {
                         $block[] = new DiffOpCopy($context);
                     }

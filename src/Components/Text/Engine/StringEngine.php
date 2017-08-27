@@ -100,10 +100,10 @@ class StringEngine
      */
     public function parseUnifiedDiff($diff)
     {
-        $edits = array();
+        $edits = [];
         $end = count($diff) - 1;
         for ($i = 0; $i < $end;) {
-            $diff1 = array();
+            $diff1 = [];
             switch (substr($diff[$i], 0, 1)) {
                 case ' ':
                     do {
@@ -122,7 +122,7 @@ class StringEngine
 
                 case '-':
                     // get changed or removed lines
-                    $diff2 = array();
+                    $diff2 = [];
                     do {
                         $diff1[] = substr($diff[$i], 1);
                     } while (++$i < $end && substr($diff[$i], 0, 1) == '-');
@@ -155,7 +155,7 @@ class StringEngine
      */
     public function parseContextDiff(&$diff)
     {
-        $edits = array();
+        $edits = [];
         $i = $max_i = $j = $max_j = 0;
         $end = count($diff) - 1;
         while ($i < $end && $j < $end) {
@@ -184,7 +184,7 @@ class StringEngine
             }
 
             // find what hasn't been changed
-            $array = array();
+            $array = [];
             while ($i < $max_i &&
                 $j < $max_j &&
                 strcmp($diff[$i], $diff[$j]) == 0) {
@@ -211,10 +211,10 @@ class StringEngine
             }
 
             if ($i < $max_i) {
-                $diff1 = array();
+                $diff1 = [];
                 switch (substr($diff[$i], 0, 1)) {
                     case '!':
-                        $diff2 = array();
+                        $diff2 = [];
                         do {
                             $diff1[] = substr($diff[$i], 2);
                             if ($j < $max_j && substr($diff[$j], 0, 1) == '!') {
@@ -241,7 +241,7 @@ class StringEngine
             }
 
             if ($j < $max_j) {
-                $diff2 = array();
+                $diff2 = [];
                 switch (substr($diff[$j], 0, 1)) {
                     case '+':
                         do {

@@ -155,7 +155,7 @@ class Encoding
      */
     public static function accept_encoding($url, $args)
     {
-        $type = array();
+        $type = [];
         $compression_enabled = self::is_available();
 
         if (!$args['decompress']) { // Decompression specifically disabled.

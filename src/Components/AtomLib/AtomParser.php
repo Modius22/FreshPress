@@ -20,18 +20,18 @@ namespace Devtronic\FreshPress\Components\AtomLib;
 class AtomParser
 {
     public $NS = 'http://www.w3.org/2005/Atom';
-    public $ATOM_CONTENT_ELEMENTS = array('content', 'summary', 'title', 'subtitle', 'rights');
-    public $ATOM_SIMPLE_ELEMENTS = array('id', 'updated', 'published', 'draft');
+    public $ATOM_CONTENT_ELEMENTS = ['content', 'summary', 'title', 'subtitle', 'rights'];
+    public $ATOM_SIMPLE_ELEMENTS = ['id', 'updated', 'published', 'draft'];
 
     public $debug = false;
 
     public $depth = 0;
     public $indent = 2;
     public $in_content;
-    public $ns_contexts = array();
-    public $ns_decls = array();
-    public $content_ns_decls = array();
-    public $content_ns_contexts = array();
+    public $ns_contexts = [];
+    public $ns_decls = [];
+    public $content_ns_decls = [];
+    public $content_ns_contexts = [];
     public $is_xhtml = false;
     public $is_html = false;
     public $is_text = true;
@@ -49,8 +49,8 @@ class AtomParser
     {
         $this->feed = new AtomFeed();
         $this->current = null;
-        $this->map_attrs_func = array(__CLASS__, 'map_attrs');
-        $this->map_xmlns_func = array(__CLASS__, 'map_xmlns');
+        $this->map_attrs_func = [__CLASS__, 'map_attrs'];
+        $this->map_xmlns_func = [__CLASS__, 'map_xmlns'];
     }
 
     /**
@@ -103,9 +103,9 @@ class AtomParser
 
     public function parse()
     {
-        set_error_handler(array(&$this, 'error_handler'));
+        set_error_handler([&$this, 'error_handler']);
 
-        array_unshift($this->ns_contexts, array());
+        array_unshift($this->ns_contexts, []);
 
         if (!function_exists('xml_parser_create_ns')) {
             trigger_error(__("PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension."));
@@ -174,13 +174,13 @@ class AtomParser
         $this->depth++;
 
         if (!empty($this->in_content)) {
-            $this->content_ns_decls = array();
+            $this->content_ns_decls = [];
 
             if ($this->is_html || $this->is_text) {
                 trigger_error("Invalid content in element found. Content must not be of type text or html if it contains markup.");
             }
 
-            $attrs_prefix = array();
+            $attrs_prefix = [];
 
             // resolve prefixes for attributes
             foreach ($attrs as $key => $value) {
@@ -217,11 +217,11 @@ class AtomParser
 
             array_push(
                 $this->in_content,
-                array($tag, $this->depth, "<" . $with_prefix[1] . "{$xmlns_str}{$attrs_str}" . ">")
+                [$tag, $this->depth, "<" . $with_prefix[1] . "{$xmlns_str}{$attrs_str}" . ">"]
             );
         } else {
             if (in_array($tag, $this->ATOM_CONTENT_ELEMENTS) || in_array($tag, $this->ATOM_SIMPLE_ELEMENTS)) {
-                $this->in_content = array();
+                $this->in_content = [];
                 $this->is_xhtml = $attrs['type'] == 'xhtml';
                 $this->is_html = $attrs['type'] == 'html' || $attrs['type'] == 'text/html';
                 $this->is_text = !in_array('type', array_keys($attrs)) || $attrs['type'] == 'text';
@@ -230,7 +230,7 @@ class AtomParser
                 if (in_array('src', array_keys($attrs))) {
                     $this->current->$tag = $attrs;
                 } else {
-                    array_push($this->in_content, array($tag, $this->depth, $type));
+                    array_push($this->in_content, [$tag, $this->depth, $type]);
                 }
             } else {
                 if ($tag == 'link') {
@@ -243,7 +243,7 @@ class AtomParser
             }
         }
 
-        $this->ns_decls = array();
+        $this->ns_decls = [];
     }
 
     public function end_element($parser, $name)
@@ -260,7 +260,7 @@ class AtomParser
                 $this->in_content[0][1] == $this->depth) {
                 $origtype = $this->in_content[0][2];
                 array_shift($this->in_content);
-                $newcontent = array();
+                $newcontent = [];
                 foreach ($this->in_content as $c) {
                     if (count($c) == 3) {
                         array_push($newcontent, $c[2]);
@@ -273,11 +273,11 @@ class AtomParser
                     }
                 }
                 if (in_array($tag, $this->ATOM_CONTENT_ELEMENTS)) {
-                    $this->current->$tag = array($origtype, join('', $newcontent));
+                    $this->current->$tag = [$origtype, join('', $newcontent)];
                 } else {
                     $this->current->$tag = join('', $newcontent);
                 }
-                $this->in_content = array();
+                $this->in_content = [];
             } else {
                 if ($this->in_content[$ccount - 1][0] == $tag &&
                     $this->in_content[$ccount - 1][1] == $this->depth) {
@@ -285,7 +285,7 @@ class AtomParser
                 } else {
                     # else, just finalize the current element's content
                     $endtag = $this->ns_to_prefix($name);
-                    array_push($this->in_content, array($tag, $this->depth, "</$endtag[1]>"));
+                    array_push($this->in_content, [$tag, $this->depth, "</$endtag[1]>"]);
                 }
             }
         }
@@ -305,7 +305,7 @@ class AtomParser
     public function start_ns($parser, $prefix, $uri)
     {
         $this->_p("starting: " . $prefix . ":" . $uri);
-        array_push($this->ns_decls, array($prefix, $uri));
+        array_push($this->ns_decls, [$prefix, $uri]);
     }
 
     public function end_ns($parser, $prefix)
@@ -315,7 +315,7 @@ class AtomParser
 
     public function cdata($parser, $data)
     {
-        $this->_p("data: #" . str_replace(array("\n"), array("\\n"), trim($data)) . "#");
+        $this->_p("data: #" . str_replace(["\n"], ["\\n"], trim($data)) . "#");
         if (!empty($this->in_content)) {
             array_push($this->in_content, $data);
         }
@@ -341,19 +341,19 @@ class AtomParser
             foreach ($this->ns_contexts as $context) {
                 foreach ($context as $mapping) {
                     if ($mapping[1] == $ns && strlen($mapping[0]) > 0) {
-                        return array($mapping, "$mapping[0]:$name");
+                        return [$mapping, "$mapping[0]:$name"];
                     }
                 }
             }
         }
 
         if ($attr) {
-            return array(null, $name);
+            return [null, $name];
         } else {
             foreach ($this->ns_contexts as $context) {
                 foreach ($context as $mapping) {
                     if (strlen($mapping[0]) == 0) {
-                        return array($mapping, $name);
+                        return [$mapping, $name];
                     }
                 }
             }
@@ -375,8 +375,8 @@ class AtomParser
     public function xml_escape($string)
     {
         return str_replace(
-            array('&', '"', "'", '<', '>'),
-            array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'),
+            ['&', '"', "'", '<', '>'],
+            ['&amp;', '&quot;', '&apos;', '&lt;', '&gt;'],
             $string
         );
     }

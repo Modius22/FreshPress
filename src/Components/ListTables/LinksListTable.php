@@ -30,12 +30,12 @@ class LinksListTable extends ListTable
      *
      * @param array $args An associative array of arguments.
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'plural' => 'bookmarks',
             'screen' => isset($args['screen']) ? $args['screen'] : null,
-        ));
+        ]);
     }
 
     /**
@@ -58,9 +58,9 @@ class LinksListTable extends ListTable
     {
         global $cat_id, $s, $orderby, $order;
 
-        wp_reset_vars(array('action', 'cat_id', 'link_id', 'orderby', 'order', 's'));
+        wp_reset_vars(['action', 'cat_id', 'link_id', 'orderby', 'order', 's']);
 
-        $args = array('hide_invisible' => 0, 'hide_empty' => 0);
+        $args = ['hide_invisible' => 0, 'hide_empty' => 0];
 
         if ('all' != $cat_id) {
             $args['category'] = $cat_id;
@@ -92,7 +92,7 @@ class LinksListTable extends ListTable
      */
     protected function get_bulk_actions()
     {
-        $actions = array();
+        $actions = [];
         $actions['delete'] = __('Delete');
 
         return $actions;
@@ -112,7 +112,7 @@ class LinksListTable extends ListTable
         } ?>
         <div class="alignleft actions">
             <?php
-            $dropdown_options = array(
+            $dropdown_options = [
                 'selected' => $cat_id,
                 'name' => 'cat_id',
                 'taxonomy' => 'link_category',
@@ -121,11 +121,11 @@ class LinksListTable extends ListTable
                 'hierarchical' => 1,
                 'show_count' => 0,
                 'orderby' => 'name',
-            );
+            ];
 
         echo '<label class="screen-reader-text" for="cat_id">' . __('Filter by category') . '</label>';
         wp_dropdown_categories($dropdown_options);
-        submit_button(__('Filter'), '', 'filter_action', false, array('id' => 'post-query-submit')); ?>
+        submit_button(__('Filter'), '', 'filter_action', false, ['id' => 'post-query-submit']); ?>
         </div>
         <?php
     }
@@ -136,7 +136,7 @@ class LinksListTable extends ListTable
      */
     public function get_columns()
     {
-        return array(
+        return [
             'cb' => '<input type="checkbox" />',
             'name' => _x('Name', 'link name'),
             'url' => __('URL'),
@@ -144,7 +144,7 @@ class LinksListTable extends ListTable
             'rel' => __('Relationship'),
             'visible' => __('Visible'),
             'rating' => __('Rating')
-        );
+        ];
     }
 
     /**
@@ -153,12 +153,12 @@ class LinksListTable extends ListTable
      */
     protected function get_sortable_columns()
     {
-        return array(
+        return [
             'name' => 'name',
             'url' => 'url',
             'visible' => 'visible',
             'rating' => 'rating'
-        );
+        ];
     }
 
     /**
@@ -241,7 +241,7 @@ class LinksListTable extends ListTable
     {
         global $cat_id;
 
-        $cat_names = array();
+        $cat_names = [];
         foreach ($link->link_category as $category) {
             $cat = get_term($category, 'link_category', OBJECT, 'display');
             if (is_wp_error($cat)) {
@@ -353,7 +353,7 @@ class LinksListTable extends ListTable
 
         $edit_link = get_edit_bookmark_link($link);
 
-        $actions = array();
+        $actions = [];
         $actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit') . '</a>';
         $actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url(
                 "link.php?action=delete&amp;link_id=$link->link_id",

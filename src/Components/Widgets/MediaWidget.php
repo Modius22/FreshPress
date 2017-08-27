@@ -29,7 +29,7 @@ abstract class MediaWidget extends Widget
      * @since 4.8.0
      * @var array
      */
-    public $l10n = array(
+    public $l10n = [
         'add_to_widget' => '',
         'replace_media' => '',
         'edit_media' => '',
@@ -38,7 +38,7 @@ abstract class MediaWidget extends Widget
         'missing_attachment' => '',
         'no_media_selected' => '',
         'add_media' => '',
-    );
+    ];
 
     /**
      * Constructor.
@@ -53,17 +53,17 @@ abstract class MediaWidget extends Widget
      * @param array $control_options Optional. Widget control options. See wp_register_widget_control()
      *                                for information on accepted arguments. Default empty array.
      */
-    public function __construct($id_base, $name, $widget_options = array(), $control_options = array())
+    public function __construct($id_base, $name, $widget_options = [], $control_options = [])
     {
-        $widget_opts = wp_parse_args($widget_options, array(
+        $widget_opts = wp_parse_args($widget_options, [
             'description' => __('A media item.'),
             'customize_selective_refresh' => true,
             'mime_type' => '',
-        ));
+        ]);
 
-        $control_opts = wp_parse_args($control_options, array());
+        $control_opts = wp_parse_args($control_options, []);
 
-        $l10n_defaults = array(
+        $l10n_defaults = [
             'no_media_selected' => __('No media selected'),
             'add_media' => _x('Add Media', 'label for button in the media widget'),
             'replace_media' => _x(
@@ -84,7 +84,7 @@ abstract class MediaWidget extends Widget
             'media_library_state_multi' => _n_noop('Media Widget (%d)', 'Media Widget (%d)'),
             'media_library_state_single' => __('Media Widget'),
             'unsupported_file_type' => __('Looks like this isn&#8217;t the correct kind of file. Please link to an appropriate file instead.'),
-        );
+        ];
         $this->l10n = array_merge($l10n_defaults, array_filter($this->l10n));
 
         parent::__construct(
@@ -105,16 +105,16 @@ abstract class MediaWidget extends Widget
     {
 
         // Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_scripts().
-        add_action('admin_print_scripts-widgets.php', array($this, 'enqueue_admin_scripts'));
+        add_action('admin_print_scripts-widgets.php', [$this, 'enqueue_admin_scripts']);
 
         if ($this->is_preview()) {
-            add_action('wp_enqueue_scripts', array($this, 'enqueue_preview_scripts'));
+            add_action('wp_enqueue_scripts', [$this, 'enqueue_preview_scripts']);
         }
 
         // Note that the widgets component in the customizer will also do the 'admin_footer-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_footer_scripts().
-        add_action('admin_footer-widgets.php', array($this, 'render_control_template_scripts'));
+        add_action('admin_footer-widgets.php', [$this, 'render_control_template_scripts']);
 
-        add_filter('display_media_states', array($this, 'display_media_state'), 10, 2);
+        add_filter('display_media_states', [$this, 'display_media_state'], 10, 2);
 
         parent::_register();
     }
@@ -132,28 +132,28 @@ abstract class MediaWidget extends Widget
      */
     public function get_instance_schema()
     {
-        return array(
-            'attachment_id' => array(
+        return [
+            'attachment_id' => [
                 'type' => 'integer',
                 'default' => 0,
                 'minimum' => 0,
                 'description' => __('Attachment post ID'),
                 'media_prop' => 'id',
-            ),
-            'url' => array(
+            ],
+            'url' => [
                 'type' => 'string',
                 'default' => '',
                 'format' => 'uri',
                 'description' => __('URL to the media file'),
-            ),
-            'title' => array(
+            ],
+            'title' => [
                 'type' => 'string',
                 'default' => '',
                 'sanitize_callback' => 'sanitize_text_field',
                 'description' => __('Title for the widget'),
                 'should_preview_update' => false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**

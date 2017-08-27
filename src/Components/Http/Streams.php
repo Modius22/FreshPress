@@ -32,18 +32,18 @@ class Streams
      * @param string|array $args Optional. Override the defaults.
      * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
      */
-    public function request($url, $args = array())
+    public function request($url, $args = [])
     {
-        $defaults = array(
+        $defaults = [
             'method' => 'GET',
             'timeout' => 5,
             'redirection' => 5,
             'httpversion' => '1.0',
             'blocking' => true,
-            'headers' => array(),
+            'headers' => [],
             'body' => null,
-            'cookies' => array()
-        );
+            'cookies' => []
+        ];
 
         $r = wp_parse_args($args, $defaults);
 
@@ -121,16 +121,16 @@ class Streams
 
         $proxy = new Proxy();
 
-        $context = stream_context_create(array(
-            'ssl' => array(
+        $context = stream_context_create([
+            'ssl' => [
                 'verify_peer' => $ssl_verify,
                 //'CN_match' => $arrURL['host'], // This is handled by self::verify_ssl_certificate()
                 'capture_peer_cert' => $ssl_verify,
                 'SNI_enabled' => true,
                 'cafile' => $r['sslcertificates'],
                 'allow_self_signed' => !$ssl_verify,
-            )
-        ));
+            ]
+        ]);
 
         $timeout = (int)floor($r['timeout']);
         $utimeout = $timeout == $r['timeout'] ? 0 : 1000000 * $r['timeout'] % 1000000;
@@ -264,12 +264,12 @@ class Streams
         if (!$r['blocking']) {
             stream_set_blocking($handle, 0);
             fclose($handle);
-            return array(
-                'headers' => array(),
+            return [
+                'headers' => [],
                 'body' => '',
-                'response' => array('code' => false, 'message' => false),
-                'cookies' => array()
-            );
+                'response' => ['code' => false, 'message' => false],
+                'cookies' => []
+            ];
         }
 
         $strResponse = '';
@@ -349,14 +349,14 @@ class Streams
 
         $arrHeaders = Http::processHeaders($process['headers'], $url);
 
-        $response = array(
+        $response = [
             'headers' => $arrHeaders['headers'],
             // Not yet processed.
             'body' => null,
             'response' => $arrHeaders['response'],
             'cookies' => $arrHeaders['cookies'],
             'filename' => $r['filename']
-        );
+        ];
 
         // Handle redirects.
         if (false !== ($redirect_response = Http::handle_redirects($url, $r, $response))) {
@@ -417,7 +417,7 @@ class Streams
          */
         $host_type = (Http::is_ip_address($host) ? 'ip' : 'dns');
 
-        $certificate_hostnames = array();
+        $certificate_hostnames = [];
         if (!empty($cert['extensions']['subjectAltName'])) {
             $match_against = preg_split('/,\s*/', $cert['extensions']['subjectAltName']);
             foreach ($match_against as $match) {
@@ -463,7 +463,7 @@ class Streams
      * @param array $args Optional. Array of request arguments. Default empty array.
      * @return bool False means this class can not be used, true means it can.
      */
-    public static function test($args = array())
+    public static function test($args = [])
     {
         if (!function_exists('stream_socket_client')) {
             return false;

@@ -101,7 +101,7 @@ class InlineRenderer extends Renderer
     public function _lines($lines, $prefix = ' ', $encode = true)
     {
         if ($encode) {
-            array_walk($lines, array(&$this, '_encode'));
+            array_walk($lines, [&$this, '_encode']);
         }
 
         if ($this->_split_level == 'lines') {
@@ -113,7 +113,7 @@ class InlineRenderer extends Renderer
 
     public function _added($lines)
     {
-        array_walk($lines, array(&$this, '_encode'));
+        array_walk($lines, [&$this, '_encode']);
         $lines[0] = $this->_ins_prefix . $lines[0];
         $lines[count($lines) - 1] .= $this->_ins_suffix;
         return $this->_lines($lines, ' ', false);
@@ -121,7 +121,7 @@ class InlineRenderer extends Renderer
 
     public function _deleted($lines, $words = false)
     {
-        array_walk($lines, array(&$this, '_encode'));
+        array_walk($lines, [&$this, '_encode']);
         $lines[0] = $this->_del_prefix . $lines[0];
         $lines[count($lines) - 1] .= $this->_del_suffix;
         return $this->_lines($lines, ' ', false);
@@ -157,10 +157,10 @@ class InlineRenderer extends Renderer
         if ($this->_split_characters) {
             $diff = new Diff(
                 'native',
-                array(
+                [
                     preg_split('//', $text1),
                     preg_split('//', $text2)
-                )
+                ]
             );
         } else {
             /* We want to split on word boundaries, but we need to preserve
@@ -168,17 +168,17 @@ class InlineRenderer extends Renderer
              * all blocks of whitespace in the wordlist. */
             $diff = new Diff(
                 'native',
-                array(
+                [
                     $this->_splitOnWords($text1, $nl),
                     $this->_splitOnWords($text2, $nl)
-                )
+                ]
             );
         }
 
         /* Get the diff in inline format. */
         $renderer = new InlineRenderer(array_merge(
             $this->getParams(),
-            array('split_level' => $this->_split_characters ? 'characters' : 'words')
+            ['split_level' => $this->_split_characters ? 'characters' : 'words']
         ));
 
         /* Run the diff and get the output. */
@@ -190,7 +190,7 @@ class InlineRenderer extends Renderer
         // Ignore \0; otherwise the while loop will never finish.
         $string = str_replace("\0", '', $string);
 
-        $words = array();
+        $words = [];
         $length = strlen($string);
         $pos = 0;
 

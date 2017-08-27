@@ -27,15 +27,15 @@ class TextWidget extends Widget
      */
     public function __construct()
     {
-        $widget_ops = array(
+        $widget_ops = [
             'classname' => 'widget_text',
             'description' => __('Arbitrary text or HTML.'),
             'customize_selective_refresh' => true,
-        );
-        $control_ops = array(
+        ];
+        $control_ops = [
             'width' => 400,
             'height' => 350,
-        );
+        ];
         parent::__construct('text', __('Text'), $widget_ops, $control_ops);
     }
 
@@ -49,10 +49,10 @@ class TextWidget extends Widget
     {
 
         // Note that the widgets component in the customizer will also do the 'admin_print_scripts-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_scripts().
-        add_action('admin_print_scripts-widgets.php', array($this, 'enqueue_admin_scripts'));
+        add_action('admin_print_scripts-widgets.php', [$this, 'enqueue_admin_scripts']);
 
         // Note that the widgets component in the customizer will also do the 'admin_footer-widgets.php' action in Devtronic\FreshPress\Components\Customize\Widgets::print_footer_scripts().
-        add_action('admin_footer-widgets.php', array($this, 'render_control_template_scripts'));
+        add_action('admin_footer-widgets.php', [$this, 'render_control_template_scripts']);
 
         parent::_register();
     }
@@ -179,10 +179,10 @@ class TextWidget extends Widget
     {
         $instance = wp_parse_args(
             (array)$instance,
-            array(
+            [
                 'title' => '',
                 'text' => '',
-            )
+            ]
         ); ?>
         <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>"
                class="title" type="hidden" value="<?php echo esc_attr($instance['title']); ?>">
