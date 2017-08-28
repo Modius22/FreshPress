@@ -174,6 +174,7 @@ $classes = array_change_key_case([
     'ftp_base' => 'Devtronic\\FreshPress\\Components\\FTP\\BaseFTP',
     'ftp_pure' => 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP',
     'ftp_sockets' => 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP',
+    'WP_List_Util' => 'Devtronic\\FreshPress\\Components\\Util\\ListUtil',
 ]);
 
 $abstractClasses = array_change_key_case([

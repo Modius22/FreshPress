@@ -36,7 +36,6 @@
             "Devtronic\\FreshPress\\": "src/"
         },
         "classmap": [
-            "web/wp-includes/class-wp-list-util.php",
             "web/wp-includes/class-wp-matchesmapregex.php",
             "web/wp-includes/class-wp.php",
             "web/wp-includes/class-wp-error.php",

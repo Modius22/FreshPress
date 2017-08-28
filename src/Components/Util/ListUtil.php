@@ -6,6 +6,8 @@
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Util;
+
 /**
  * List utility.
  *
@@ -13,7 +15,7 @@
  *
  * @since 4.7.0
  */
-class WP_List_Util
+class ListUtil
 {
     /**
      * The input array.
@@ -22,7 +24,7 @@ class WP_List_Util
      * @access private
      * @var array
      */
-    private $input = array();
+    private $input = [];
 
     /**
      * The output array.
@@ -31,7 +33,7 @@ class WP_List_Util
      * @access private
      * @var array
      */
-    private $output = array();
+    private $output = [];
 
     /**
      * Temporary arguments for sorting.
@@ -40,7 +42,7 @@ class WP_List_Util
      * @access private
      * @var array
      */
-    private $orderby = array();
+    private $orderby = [];
 
     /**
      * Constructor.
@@ -95,7 +97,7 @@ class WP_List_Util
      *                         match. Default 'AND'.
      * @return array Array of found values.
      */
-    public function filter($args = array(), $operator = 'AND')
+    public function filter($args = [], $operator = 'AND')
     {
         if (empty($args)) {
             return $this->output;
@@ -103,12 +105,12 @@ class WP_List_Util
 
         $operator = strtoupper($operator);
 
-        if (!in_array($operator, array('AND', 'OR', 'NOT'), true)) {
-            return array();
+        if (!in_array($operator, ['AND', 'OR', 'NOT'], true)) {
+            return [];
         }
 
         $count = count($args);
-        $filtered = array();
+        $filtered = [];
 
         foreach ($this->output as $key => $obj) {
             $to_match = (array)$obj;
@@ -170,7 +172,7 @@ class WP_List_Util
          * When index_key is not set for a particular item, push the value
          * to the end of the stack. This is how array_column() behaves.
          */
-        $newlist = array();
+        $newlist = [];
         foreach ($this->output as $value) {
             if (is_object($value)) {
                 if (isset($value->$index_key)) {
@@ -204,14 +206,14 @@ class WP_List_Util
      * @param bool $preserve_keys Optional. Whether to preserve keys. Default false.
      * @return array The sorted array.
      */
-    public function sort($orderby = array(), $order = 'ASC', $preserve_keys = false)
+    public function sort($orderby = [], $order = 'ASC', $preserve_keys = false)
     {
         if (empty($orderby)) {
             return $this->output;
         }
 
         if (is_string($orderby)) {
-            $orderby = array($orderby => $order);
+            $orderby = [$orderby => $order];
         }
 
         foreach ($orderby as $field => $direction) {
@@ -221,12 +223,12 @@ class WP_List_Util
         $this->orderby = $orderby;
 
         if ($preserve_keys) {
-            uasort($this->output, array($this, 'sort_callback'));
+            uasort($this->output, [$this, 'sort_callback']);
         } else {
-            usort($this->output, array($this, 'sort_callback'));
+            usort($this->output, [$this, 'sort_callback']);
         }
 
-        $this->orderby = array();
+        $this->orderby = [];
 
         return $this->output;
     }
@@ -237,7 +239,7 @@ class WP_List_Util
      * @since 4.7.0
      * @access private
      *
-     * @see WP_List_Util::sort()
+     * @see ListUtil::sort()
      *
      * @param object|array $a One object to compare.
      * @param object|array $b The other object to compare.
@@ -261,7 +263,7 @@ class WP_List_Util
                 continue;
             }
 
-            $results = 'DESC' === $direction ? array(1, -1) : array(-1, 1);
+            $results = 'DESC' === $direction ? [1, -1] : [-1, 1];
 
             if (is_numeric($a[$field]) && is_numeric($b[$field])) {
                 return ($a[$field] < $b[$field]) ? $results[0] : $results[1];

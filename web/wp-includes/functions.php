@@ -6,6 +6,7 @@
  */
 
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Components\Util\ListUtil;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -3839,7 +3840,7 @@ function wp_is_numeric_array($data)
  * Filters a list of objects, based on a set of key => value arguments.
  *
  * @since 3.0.0
- * @since 4.7.0 Uses WP_List_Util class.
+ * @since 4.7.0 Uses ListUtil class.
  *
  * @param array $list An array of objects to filter
  * @param array $args Optional. An array of key => value arguments to match
@@ -3858,7 +3859,7 @@ function wp_filter_object_list($list, $args = array(), $operator = 'and', $field
         return array();
     }
 
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
 
     $util->filter($args, $operator);
 
@@ -3873,7 +3874,7 @@ function wp_filter_object_list($list, $args = array(), $operator = 'and', $field
  * Filters a list of objects, based on a set of key => value arguments.
  *
  * @since 3.1.0
- * @since 4.7.0 Uses WP_List_Util class.
+ * @since 4.7.0 Uses ListUtil class.
  *
  * @param array $list An array of objects to filter.
  * @param array $args Optional. An array of key => value arguments to match
@@ -3890,7 +3891,7 @@ function wp_list_filter($list, $args = array(), $operator = 'AND')
         return array();
     }
 
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
     return $util->filter($args, $operator);
 }
 
@@ -3902,7 +3903,7 @@ function wp_list_filter($list, $args = array(), $operator = 'AND')
  *
  * @since 3.1.0
  * @since 4.0.0 $index_key parameter added.
- * @since 4.7.0 Uses WP_List_Util class.
+ * @since 4.7.0 Uses ListUtil class.
  *
  * @param array $list List of objects or arrays
  * @param int|string $field Field from the object to place instead of the entire object
@@ -3914,7 +3915,7 @@ function wp_list_filter($list, $args = array(), $operator = 'AND')
  */
 function wp_list_pluck($list, $field, $index_key = null)
 {
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
     return $util->pluck($field, $index_key);
 }
 
@@ -3937,7 +3938,7 @@ function wp_list_sort($list, $orderby = array(), $order = 'ASC', $preserve_keys 
         return array();
     }
 
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
     return $util->sort($orderby, $order, $preserve_keys);
 }
 
