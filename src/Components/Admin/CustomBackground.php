@@ -663,7 +663,6 @@ class CustomBackground
         $thumbnail = wp_get_attachment_image_src($id, 'thumbnail');
         set_theme_mod('background_image_thumb', esc_url_raw($thumbnail[0]));
 
-        /** This action is documented in wp-admin/custom-header.php */
         do_action('wp_create_file_in_uploads', $file, $id); // For replication
         $this->updated = true;
     }

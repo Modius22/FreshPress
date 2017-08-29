@@ -6,6 +6,7 @@
  * @subpackage Theme
  */
 
+use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 use Devtronic\FreshPress\Components\Admin\CustomBackground;
 use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Components\Query\Query;
@@ -2662,7 +2663,7 @@ function add_theme_support($feature)
  * @since 3.4.0
  * @access private
  *
- * @global Custom_Image_Header $custom_image_header
+ * @global CustomImageHeader $custom_image_header
  * @global CustomBackground $custom_background
  */
 function _custom_header_background_just_in_time()
@@ -2679,8 +2680,7 @@ function _custom_header_background_just_in_time()
         }
 
         if (is_admin()) {
-            require_once(ABSPATH . 'wp-admin/custom-header.php');
-            $custom_image_header = new Custom_Image_Header(
+            $custom_image_header = new CustomImageHeader(
                 $args[0]['admin-head-callback'],
                 $args[0]['admin-preview-callback']
             );
@@ -2796,7 +2796,7 @@ function remove_theme_support($feature)
  * @since 3.1.0
  *
  * @global array $_wp_theme_features
- * @global Custom_Image_Header $custom_image_header
+ * @global CustomImageHeader $custom_image_header
  * @global CustomBackground $custom_background
  *
  * @param string $feature
