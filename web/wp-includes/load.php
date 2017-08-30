@@ -5,6 +5,7 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
@@ -815,7 +816,7 @@ function wp_clone($object)
  *
  * @since 1.5.1
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress administration interface, false otherwise.
  */
@@ -840,7 +841,7 @@ function is_admin()
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress blog administration pages.
  */
@@ -865,7 +866,7 @@ function is_blog_admin()
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress network administration pages.
  */
@@ -891,7 +892,7 @@ function is_network_admin()
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress user administration pages.
  */

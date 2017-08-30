@@ -7,6 +7,7 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\LinksListTable;
 use Devtronic\FreshPress\Components\ListTables\ListTableCompat;
@@ -90,7 +91,7 @@ function register_column_headers($screen, $columns)
  *
  * @since 2.7.0
  *
- * @param string|WP_Screen $screen The screen hook name or screen object.
+ * @param string|Screen $screen The screen hook name or screen object.
  * @param bool $with_id Whether to set the id attribute or not.
  */
 function print_column_headers($screen, $with_id = true)

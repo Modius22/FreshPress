@@ -198,6 +198,7 @@ $finalClasses = array_change_key_case([
     'WP_Comment' => 'Devtronic\\FreshPress\\Entity\\Comment',
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
     'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
+    'WP_Screen' => 'Devtronic\\FreshPress\\Components\\Admin\\Screen',
 ]);
 
 // Only for compatibility, remove in 2.x

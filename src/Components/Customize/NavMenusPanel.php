@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Screen;
+use Devtronic\FreshPress\Components\Admin\Screen;
 
 /**
  * Customize Nav Menus Panel Class
@@ -45,7 +45,7 @@ class NavMenusPanel extends Panel
         add_filter('manage_nav-menus_columns', 'wp_nav_menu_manage_columns');
 
         // Display screen options.
-        $screen = WP_Screen::get('nav-menus.php');
+        $screen = Screen::get('nav-menus.php');
         $screen->render_screen_options(['wrap' => false]);
     }
 

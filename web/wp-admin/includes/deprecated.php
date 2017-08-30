@@ -12,6 +12,7 @@
  * Deprecated functions come here to die.
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -870,8 +871,8 @@ function wp_quicktags()
  * Returns the screen layout options.
  *
  * @since 2.8.0
- * @deprecated 3.3.0 WP_Screen::render_screen_layout()
- * @see WP_Screen::render_screen_layout()
+ * @deprecated 3.3.0 Screen::render_screen_layout()
+ * @see Screen::render_screen_layout()
  */
 function screen_layout($screen)
 {
@@ -892,8 +893,8 @@ function screen_layout($screen)
  * Returns the screen's per-page options.
  *
  * @since 2.8.0
- * @deprecated 3.3.0 Use WP_Screen::render_per_page_options()
- * @see WP_Screen::render_per_page_options()
+ * @deprecated 3.3.0 Use Screen::render_per_page_options()
+ * @see Screen::render_per_page_options()
  */
 function screen_options($screen)
 {
@@ -914,8 +915,8 @@ function screen_options($screen)
  * Renders the screen's help.
  *
  * @since 2.7.0
- * @deprecated 3.3.0 Use WP_Screen::render_screen_meta()
- * @see WP_Screen::render_screen_meta()
+ * @deprecated 3.3.0 Use Screen::render_screen_meta()
+ * @see Screen::render_screen_meta()
  */
 function screen_meta($screen)
 {
@@ -1053,8 +1054,8 @@ function type_url_form_file()
  * Creates an 'Overview' help tab.
  *
  * @since 2.7.0
- * @deprecated 3.3.0 Use WP_Screen::add_help_tab()
- * @see WP_Screen::add_help_tab()
+ * @deprecated 3.3.0 Use Screen::add_help_tab()
+ * @see Screen::add_help_tab()
  *
  * @param string $screen The handle for the screen to add help to. This is usually the hook name returned by the add_*_page() functions.
  * @param string $help The content of an 'Overview' help tab.
@@ -1067,7 +1068,7 @@ function add_contextual_help($screen, $help)
         $screen = convert_to_screen($screen);
     }
 
-    WP_Screen::add_old_compat_help($screen, $help);
+    Screen::add_old_compat_help($screen, $help);
 }
 
 /**
