@@ -6,6 +6,7 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Text\Diff;
 use Devtronic\FreshPress\Components\Text\TableRenderer;
 use Devtronic\FreshPress\Core\WPDB;
@@ -691,7 +692,7 @@ if (!function_exists('wp_validate_auth_cookie')) :
             return false;
         }
 
-        $manager = WP_Session_Tokens::get_instance($user->ID);
+        $manager = SessionTokens::get_instance($user->ID);
         if (!$manager->verify($token)) {
             do_action('auth_cookie_bad_session_token', $cookie_elements);
             return false;
@@ -736,7 +737,7 @@ if (!function_exists('wp_generate_auth_cookie')) :
         }
 
         if (!$token) {
-            $manager = WP_Session_Tokens::get_instance($user_id);
+            $manager = SessionTokens::get_instance($user_id);
             $token = $manager->create($expiration);
         }
 
@@ -899,7 +900,7 @@ if (!function_exists('wp_set_auth_cookie')) :
         }
 
         if ('' === $token) {
-            $manager = WP_Session_Tokens::get_instance($user_id);
+            $manager = SessionTokens::get_instance($user_id);
             $token = $manager->create($expiration);
         }
 

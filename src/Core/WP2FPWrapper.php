@@ -184,6 +184,7 @@ $abstractClasses = array_change_key_case([
     'WP_REST_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\Controller',
     'WP_REST_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\MetaFields',
     'WP_Image_Editor' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImageEditor',
+    'WP_Session_Tokens' => 'Devtronic\\FreshPress\\Components\\Session\\SessionTokens',
 ]);
 
 $finalClasses = array_change_key_case([

@@ -19,6 +19,7 @@ use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -3520,7 +3521,7 @@ function wp_ajax_destroy_sessions()
         ));
     }
 
-    $sessions = WP_Session_Tokens::get_instance($user->ID);
+    $sessions = SessionTokens::get_instance($user->ID);
 
     if ($user->ID === get_current_user_id()) {
         $sessions->destroy_others(wp_get_session_token());

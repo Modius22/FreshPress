@@ -7,12 +7,14 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Components\Session\SessionTokens;
+
 /**
  * Meta-based user sessions token manager.
  *
  * @since 4.0.0
  */
-class WP_User_Meta_Session_Tokens extends WP_Session_Tokens
+class WP_User_Meta_Session_Tokens extends SessionTokens
 {
 
     /**

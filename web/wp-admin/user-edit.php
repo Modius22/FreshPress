@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Entity\User;
 
 /** WordPress Administration Bootstrap */
@@ -197,7 +198,7 @@ switch ($action) {
         }
 
         $title = sprintf($title, $profileuser->display_name);
-        $sessions = WP_Session_Tokens::get_instance($profileuser->ID);
+        $sessions = SessionTokens::get_instance($profileuser->ID);
 
         include(ABSPATH . 'wp-admin/admin-header.php');
         ?>
