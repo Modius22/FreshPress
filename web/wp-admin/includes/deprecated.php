@@ -532,21 +532,6 @@ if (!class_exists('WP_User_Search', false)) :
         }
 
         /**
-         * PHP4 Constructor - Sets up the object properties.
-         *
-         * @since 2.1.0
-         *
-         * @param string $search_term Search terms string.
-         * @param int $page Optional. Page ID.
-         * @param string $role Role name.
-         * @return WP_User_Search
-         */
-        public function WP_User_Search($search_term = '', $page = '', $role = '')
-        {
-            self::__construct($search_term, $page, $role);
-        }
-
-        /**
          * Prepares the user search query (legacy).
          *
          * @since 2.1.0
