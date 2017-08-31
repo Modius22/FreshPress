@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Query\TaxQuery;
 use Devtronic\FreshPress\Components\Query\TermQuery;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\Term;
@@ -430,7 +431,7 @@ function register_taxonomy($taxonomy, $object_type, $args = array())
  *
  * @since 4.5.0
  *
- * @global WP $wp Current WordPress environment instance.
+ * @global Kernel $wp Current WordPress environment instance.
  * @global array $wp_taxonomies List of taxonomies.
  *
  * @param string $taxonomy Taxonomy name.

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -154,7 +155,7 @@ function add_rewrite_rule($regex, $query, $after = 'bottom')
  * @since 2.1.0
  *
  * @global WP_Rewrite $wp_rewrite
- * @global WP $wp
+ * @global Kernel $wp
  *
  * @param string $tag Name of the new rewrite tag.
  * @param string $regex Regular expression to substitute the tag for in rewrite rules.
@@ -474,7 +475,7 @@ function wp_resolve_numeric_slug_conflicts($query_vars = array())
  * @since 1.0.0
  *
  * @global WP_Rewrite $wp_rewrite
- * @global WP $wp
+ * @global Kernel $wp
  *
  * @param string $url Permalink to check.
  * @return int Post ID, or 0 on failure.

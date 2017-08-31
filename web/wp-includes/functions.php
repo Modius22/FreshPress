@@ -8,6 +8,7 @@
 use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Util\ListUtil;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -1025,7 +1026,7 @@ function wp_remote_fopen($uri)
  *
  * @since 2.0.0
  *
- * @global WP $wp_locale
+ * @global Kernel $wp_locale
  * @global Query $wp_query
  * @global Query $wp_the_query
  *

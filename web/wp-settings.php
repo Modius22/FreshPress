@@ -10,6 +10,7 @@
 
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
 /**
@@ -301,10 +302,10 @@ $GLOBALS['wp_rewrite'] = new WP_Rewrite();
 
 /**
  * WordPress Object
- * @global WP $wp
+ * @global Kernel $wp
  * @since 2.0.0
  */
-$GLOBALS['wp'] = new WP();
+$GLOBALS['wp'] = new Kernel();
 
 /**
  * WordPress Widget Factory Object

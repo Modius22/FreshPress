@@ -7,6 +7,8 @@
  * @since 1.5.0
  */
 
+use Devtronic\FreshPress\Core\Kernel;
+
 /**
  * Core class used to implement a rewrite component API.
  *
@@ -1810,7 +1812,7 @@ class WP_Rewrite
      * @access public
      *
      * @see add_rewrite_endpoint() for full documentation.
-     * @global WP $wp
+     * @global Kernel $wp
      *
      * @param string $name Name of the endpoint.
      * @param int $places Endpoint mask describing the places the endpoint should be added.

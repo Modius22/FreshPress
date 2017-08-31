@@ -21,6 +21,7 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\UsersController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Kernel;
 
 /**
  * Version number for our API.
@@ -149,7 +150,7 @@ function register_rest_field($object_type, $attribute, $args = array())
  * @since 4.4.0
  *
  * @see rest_api_register_rewrites()
- * @global WP $wp Current WordPress environment instance.
+ * @global Kernel $wp Current WordPress environment instance.
  */
 function rest_api_init()
 {
@@ -275,7 +276,7 @@ function create_initial_rest_routes()
  *
  * @since 4.4.0
  *
- * @global WP $wp Current WordPress environment instance.
+ * @global Kernel $wp Current WordPress environment instance.
  * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  */
 function rest_api_loaded()

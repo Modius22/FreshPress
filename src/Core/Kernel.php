@@ -1,8 +1,12 @@
 <?php
 
+namespace Devtronic\FreshPress\Core;
+
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
+use WP_MatchesMapRegex;
+use WP_Rewrite;
 
 /**
  * WordPress environment setup class.
@@ -10,7 +14,7 @@ use Devtronic\FreshPress\Entity\User;
  * @package WordPress
  * @since 2.0.0
  */
-class WP
+class Kernel
 {
     /**
      * Public query variables.
@@ -21,7 +25,7 @@ class WP
      * @access public
      * @var array
      */
-    public $public_query_vars = array(
+    public $public_query_vars = [
         'm',
         'p',
         'posts',
@@ -68,7 +72,7 @@ class WP
         'cpage',
         'post_type',
         'embed'
-    );
+    ];
 
     /**
      * Private query variables.
@@ -79,7 +83,7 @@ class WP
      * @access public
      * @var array
      */
-    public $private_query_vars = array(
+    public $private_query_vars = [
         'offset',
         'posts_per_page',
         'posts_per_archive_page',
@@ -106,7 +110,7 @@ class WP
         'post_parent__not_in',
         'title',
         'fields'
-    );
+    ];
 
     /**
      * Extra query variables set by the user.
@@ -115,7 +119,7 @@ class WP
      * @access public
      * @var array
      */
-    public $extra_query_vars = array();
+    public $extra_query_vars = [];
 
     /**
      * Query variables for setting up the WordPress Query Loop.
@@ -196,7 +200,7 @@ class WP
      */
     public function remove_query_var($name)
     {
-        $this->public_query_vars = array_diff($this->public_query_vars, array($name));
+        $this->public_query_vars = array_diff($this->public_query_vars, [$name]);
     }
 
     /**
@@ -236,15 +240,15 @@ class WP
          * @since 3.5.0
          *
          * @param bool $bool Whether or not to parse the request. Default true.
-         * @param WP $this Current WordPress environment instance.
+         * @param Kernel $this Current WordPress environment instance.
          * @param array|string $extra_query_vars Extra passed query variables.
          */
         if (!apply_filters('do_parse_request', true, $this, $extra_query_vars)) {
             return;
         }
 
-        $this->query_vars = array();
-        $post_type_query_vars = array();
+        $this->query_vars = [];
+        $post_type_query_vars = [];
 
         if (is_array($extra_query_vars)) {
             $this->extra_query_vars = &$extra_query_vars;
@@ -307,25 +311,25 @@ class WP
                 if (isset($rewrite['$'])) {
                     $this->matched_rule = '$';
                     $query = $rewrite['$'];
-                    $matches = array('');
+                    $matches = [''];
                 }
             } else {
                 foreach ((array)$rewrite as $match => $query) {
                     // If the requested file is the anchor of the match, prepend it to the path info.
                     if (!empty($requested_file) && strpos(
-                        $match,
+                            $match,
                             $requested_file
-                    ) === 0 && $requested_file != $requested_path) {
+                        ) === 0 && $requested_file != $requested_path) {
                         $request_match = $requested_file . '/' . $requested_path;
                     }
 
                     if (preg_match("#^$match#", $request_match, $matches) ||
                         preg_match("#^$match#", urldecode($request_match), $matches)) {
                         if ($wp_rewrite->use_verbose_page_rules && preg_match(
-                            '/pagename=\$matches\[([0-9]+)\]/',
+                                '/pagename=\$matches\[([0-9]+)\]/',
                                 $query,
-                            $varmatch
-                        )) {
+                                $varmatch
+                            )) {
                             // This is a verbose page match, let's check to be sure about it.
                             $page = get_page_by_path($matches[$varmatch[1]]);
                             if (!$page) {
@@ -366,9 +370,9 @@ class WP
 
             // If req_uri is empty or if it is a request for ourself, unset error.
             if (empty($requested_path) || $requested_file == $self || strpos(
-                $_SERVER['PHP_SELF'],
+                    $_SERVER['PHP_SELF'],
                     'wp-admin/'
-            ) !== false) {
+                ) !== false) {
                 unset($error, $_GET['error']);
 
                 if (isset($perma_query_vars) && strpos($_SERVER['PHP_SELF'], 'wp-admin/') !== false) {
@@ -392,7 +396,7 @@ class WP
          */
         $this->public_query_vars = apply_filters('query_vars', $this->public_query_vars);
 
-        foreach (get_post_types(array(), 'objects') as $post_type => $t) {
+        foreach (get_post_types([], 'objects') as $post_type => $t) {
             if (is_post_type_viewable($t) && $t->query_var) {
                 $post_type_query_vars[$t->query_var] = $post_type;
             }
@@ -428,7 +432,7 @@ class WP
         }
 
         // Convert urldecoded spaces back into +
-        foreach (get_taxonomies(array(), 'objects') as $taxonomy => $t) {
+        foreach (get_taxonomies([], 'objects') as $taxonomy => $t) {
             if ($t->query_var && isset($this->query_vars[$t->query_var])) {
                 $this->query_vars[$t->query_var] = str_replace(' ', '+', $this->query_vars[$t->query_var]);
             }
@@ -436,7 +440,7 @@ class WP
 
         // Don't allow non-publicly queryable taxonomies to be queried from the front end.
         if (!is_admin()) {
-            foreach (get_taxonomies(array('publicly_queryable' => false), 'objects') as $taxonomy => $t) {
+            foreach (get_taxonomies(['publicly_queryable' => false], 'objects') as $taxonomy => $t) {
                 /*
                  * Disallow when set to the 'taxonomy' query var.
                  * Non-publicly queryable taxonomies cannot register custom query vars. See register_taxonomy().
@@ -449,7 +453,7 @@ class WP
 
         // Limit publicly queried post_types to those that are publicly_queryable
         if (isset($this->query_vars['post_type'])) {
-            $queryable_post_types = get_post_types(array('publicly_queryable' => true));
+            $queryable_post_types = get_post_types(['publicly_queryable' => true]);
             if (!is_array($this->query_vars['post_type'])) {
                 if (!in_array($this->query_vars['post_type'], $queryable_post_types)) {
                     unset($this->query_vars['post_type']);
@@ -486,9 +490,9 @@ class WP
          *
          * @since 2.1.0
          *
-         * @param WP &$this Current WordPress environment instance (passed by reference).
+         * @param Kernel &$this Current WordPress environment instance (passed by reference).
          */
-        do_action_ref_array('parse_request', array(&$this));
+        do_action_ref_array('parse_request', [&$this]);
     }
 
     /**
@@ -503,7 +507,7 @@ class WP
      */
     public function send_headers()
     {
-        $headers = array();
+        $headers = [];
         $status = null;
         $exit_required = false;
 
@@ -517,7 +521,7 @@ class WP
                     $headers = array_merge($headers, wp_get_nocache_headers());
                 }
                 $headers['Content-Type'] = get_option('html_type') . '; charset=' . get_option('blog_charset');
-            } elseif (in_array($status, array(403, 500, 502, 503))) {
+            } elseif (in_array($status, [403, 500, 502, 503])) {
                 $exit_required = true;
             }
         } elseif (empty($this->query_vars['feed'])) {
@@ -588,7 +592,7 @@ class WP
          * @since 2.8.0
          *
          * @param array $headers The list of headers to be sent.
-         * @param WP $this Current WordPress environment instance.
+         * @param Kernel $this Current WordPress environment instance.
          */
         $headers = apply_filters('wp_headers', $headers, $this);
 
@@ -628,9 +632,9 @@ class WP
          *
          * @since 2.1.0
          *
-         * @param WP &$this Current WordPress environment instance (passed by reference).
+         * @param Kernel &$this Current WordPress environment instance (passed by reference).
          */
-        do_action_ref_array('send_headers', array(&$this));
+        do_action_ref_array('send_headers', [&$this]);
     }
 
     /**
@@ -864,7 +868,7 @@ class WP
          *
          * @since 2.1.0
          *
-         * @param WP &$this Current WordPress environment instance (passed by reference).
+         * @param Kernel &$this Current WordPress environment instance (passed by reference).
          */
         do_action_ref_array('wp', array(&$this));
     }
