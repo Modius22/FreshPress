@@ -58,9 +58,9 @@ abstract class SessionTokens
          * @since 4.0.0
          *
          * @param string $session Name of class to use as the manager.
-         *                        Default 'WP_User_Meta_Session_Tokens'.
+         *                        Default 'UserMetaSessionTokens'.
          */
-        $manager = apply_filters('session_token_manager', 'WP_User_Meta_Session_Tokens');
+        $manager = apply_filters('session_token_manager', UserMetaSessionTokens::class);
         return new $manager($user_id);
     }
 
@@ -252,7 +252,7 @@ abstract class SessionTokens
      */
     final public static function destroy_all_for_all_users()
     {
-        $manager = apply_filters('session_token_manager', 'WP_User_Meta_Session_Tokens');
+        $manager = apply_filters('session_token_manager', UserMetaSessionTokens::class);
         call_user_func([$manager, 'drop_sessions']);
     }
 

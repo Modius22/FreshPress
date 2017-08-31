@@ -177,6 +177,7 @@ $classes = array_change_key_case([
     'WP_List_Util' => 'Devtronic\\FreshPress\\Components\\Util\\ListUtil',
     'Custom_Background' => 'Devtronic\\FreshPress\\Components\\Admin\\CustomBackground',
     'Custom_Image_Header' => 'Devtronic\\FreshPress\\Components\\Admin\\CustomImageHeader',
+    'WP_User_Meta_Session_Tokens' => 'Devtronic\\FreshPress\\Components\\Session\\UserMetaSessionTokens',
 ]);
 
 $abstractClasses = array_change_key_case([
