@@ -8,6 +8,7 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\Core\Kernel;
@@ -353,9 +354,9 @@ $GLOBALS['wp_locale'] = new WP_Locale();
  *
  * @since 4.7.0
  *
- * @global WP_Locale_Switcher $wp_locale_switcher WordPress locale switcher object.
+ * @global LocaleSwitcher $wp_locale_switcher WordPress locale switcher object.
  */
-$GLOBALS['wp_locale_switcher'] = new WP_Locale_Switcher();
+$GLOBALS['wp_locale_switcher'] = new LocaleSwitcher();
 $GLOBALS['wp_locale_switcher']->init();
 
 // Load the functions for the active theme, for both parent and child theme if applicable.

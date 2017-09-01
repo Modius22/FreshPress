@@ -7,6 +7,7 @@
  * @since 1.2.0
  */
 
+use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
 use Devtronic\FreshPress\Entity\User;
 use POMO\MO;
 use POMO\Translations\NOOPTranslations;
@@ -1335,14 +1336,14 @@ function is_rtl()
  *
  * @since 4.7.0
  *
- * @global WP_Locale_Switcher $wp_locale_switcher
+ * @global LocaleSwitcher $wp_locale_switcher
  *
  * @param string $locale The locale.
  * @return bool True on success, false on failure.
  */
 function switch_to_locale($locale)
 {
-    /* @var WP_Locale_Switcher $wp_locale_switcher */
+    /* @var LocaleSwitcher $wp_locale_switcher */
     global $wp_locale_switcher;
 
     return $wp_locale_switcher->switch_to_locale($locale);
@@ -1353,13 +1354,13 @@ function switch_to_locale($locale)
  *
  * @since 4.7.0
  *
- * @global WP_Locale_Switcher $wp_locale_switcher
+ * @global LocaleSwitcher $wp_locale_switcher
  *
  * @return string|false Locale on success, false on error.
  */
 function restore_previous_locale()
 {
-    /* @var WP_Locale_Switcher $wp_locale_switcher */
+    /* @var LocaleSwitcher $wp_locale_switcher */
     global $wp_locale_switcher;
 
     return $wp_locale_switcher->restore_previous_locale();
@@ -1370,13 +1371,13 @@ function restore_previous_locale()
  *
  * @since 4.7.0
  *
- * @global WP_Locale_Switcher $wp_locale_switcher
+ * @global LocaleSwitcher $wp_locale_switcher
  *
  * @return string|false Locale on success, false on error.
  */
 function restore_current_locale()
 {
-    /* @var WP_Locale_Switcher $wp_locale_switcher */
+    /* @var LocaleSwitcher $wp_locale_switcher */
     global $wp_locale_switcher;
 
     return $wp_locale_switcher->restore_current_locale();
@@ -1387,13 +1388,13 @@ function restore_current_locale()
  *
  * @since 4.7.0
  *
- * @global WP_Locale_Switcher $wp_locale_switcher
+ * @global LocaleSwitcher $wp_locale_switcher
  *
  * @return bool True if the locale has been switched, false otherwise.
  */
 function is_locale_switched()
 {
-    /* @var WP_Locale_Switcher $wp_locale_switcher */
+    /* @var LocaleSwitcher $wp_locale_switcher */
     global $wp_locale_switcher;
 
     return $wp_locale_switcher->is_switched();

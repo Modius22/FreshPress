@@ -179,6 +179,7 @@ $classes = array_change_key_case([
     'Custom_Image_Header' => 'Devtronic\\FreshPress\\Components\\Admin\\CustomImageHeader',
     'WP_User_Meta_Session_Tokens' => 'Devtronic\\FreshPress\\Components\\Session\\UserMetaSessionTokens',
     'WP' => 'Devtronic\\FreshPress\\Core\\Kernel',
+    'WP_Locale_Switcher' => 'Devtronic\\FreshPress\\Components\\I18n\\LocaleSwitcher',
 ]);
 
 $abstractClasses = array_change_key_case([
