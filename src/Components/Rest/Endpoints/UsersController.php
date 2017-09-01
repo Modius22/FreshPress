@@ -14,9 +14,9 @@ use Devtronic\FreshPress\Components\Rest\Fields\UserMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
-use WP_Error;
 
 /**
  * Core class used to manage users via the REST API.
@@ -167,7 +167,7 @@ class UsersController extends Controller
      * @param Request $request Full details about the request.
      * @param string $param The parameter that is being sanitized.
      *
-     * @return int|bool|WP_Error
+     * @return int|bool|Error
      */
     public function check_reassign($value, $request, $param)
     {
@@ -179,7 +179,7 @@ class UsersController extends Controller
             return false;
         }
 
-        return new WP_Error('rest_invalid_param', __('Invalid user parameter(s).'), ['status' => 400]);
+        return new Error('rest_invalid_param', __('Invalid user parameter(s).'), ['status' => 400]);
     }
 
     /**
@@ -189,13 +189,13 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has read access, otherwise WP_Error object.
+     * @return true|Error True if the request has read access, otherwise Error object.
      */
     public function get_items_permissions_check($request)
     {
         // Check if roles is specified in GET request and if user can list users.
         if (!empty($request['roles']) && !current_user_can('list_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_cannot_view',
                 __('Sorry, you are not allowed to filter users by role.'),
                 ['status' => rest_authorization_required_code()]
@@ -203,7 +203,7 @@ class UsersController extends Controller
         }
 
         if ('edit' === $request['context'] && !current_user_can('list_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_forbidden_context',
                 __('Sorry, you are not allowed to list users.'),
                 ['status' => rest_authorization_required_code()]
@@ -211,7 +211,7 @@ class UsersController extends Controller
         }
 
         if (in_array($request['orderby'], ['email', 'registered_date'], true) && !current_user_can('list_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_forbidden_orderby',
                 __('Sorry, you are not allowed to order users by this parameter.'),
                 ['status' => rest_authorization_required_code()]
@@ -228,7 +228,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
@@ -362,11 +362,11 @@ class UsersController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return User|WP_Error True if ID is valid, WP_Error otherwise.
+     * @return User|Error True if ID is valid, Error otherwise.
      */
     protected function get_user($id)
     {
-        $error = new WP_Error('rest_user_invalid_id', __('Invalid user ID.'), ['status' => 404]);
+        $error = new Error('rest_user_invalid_id', __('Invalid user ID.'), ['status' => 404]);
         if ((int)$id <= 0) {
             return $error;
         }
@@ -390,7 +390,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has read access for the item, otherwise WP_Error object.
+     * @return true|Error True if the request has read access for the item, otherwise Error object.
      */
     public function get_item_permissions_check($request)
     {
@@ -406,7 +406,7 @@ class UsersController extends Controller
         }
 
         if ('edit' === $request['context'] && !current_user_can('list_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_cannot_view',
                 __('Sorry, you are not allowed to list users.'),
                 ['status' => rest_authorization_required_code()]
@@ -415,7 +415,7 @@ class UsersController extends Controller
                 'edit_user',
                 $user->ID
             ) && !current_user_can('list_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_cannot_view',
                 __('Sorry, you are not allowed to list users.'),
                 ['status' => rest_authorization_required_code()]
@@ -432,7 +432,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
@@ -454,14 +454,14 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_current_item($request)
     {
         $current_user_id = get_current_user_id();
 
         if (empty($current_user_id)) {
-            return new WP_Error('rest_not_logged_in', __('You are not currently logged in.'), ['status' => 401]);
+            return new Error('rest_not_logged_in', __('You are not currently logged in.'), ['status' => 401]);
         }
 
         $user = wp_get_current_user();
@@ -479,12 +479,12 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has access to create items, WP_Error object otherwise.
+     * @return true|Error True if the request has access to create items, Error object otherwise.
      */
     public function create_item_permissions_check($request)
     {
         if (!current_user_can('create_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_create_user',
                 __('Sorry, you are not allowed to create new users.'),
                 ['status' => rest_authorization_required_code()]
@@ -501,12 +501,12 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function create_item($request)
     {
         if (!empty($request['id'])) {
-            return new WP_Error('rest_user_exists', __('Cannot create existing user.'), ['status' => 400]);
+            return new Error('rest_user_exists', __('Cannot create existing user.'), ['status' => 400]);
         }
 
         $schema = $this->get_item_schema();
@@ -525,7 +525,7 @@ class UsersController extends Controller
             $ret = wpmu_validate_user_signup($user->user_login, $user->user_email);
 
             if (is_wp_error($ret['errors']) && !empty($ret['errors']->errors)) {
-                $error = new WP_Error('rest_invalid_param', __('Invalid user parameter(s).'), ['status' => 400]);
+                $error = new Error('rest_invalid_param', __('Invalid user parameter(s).'), ['status' => 400]);
                 foreach ($ret['errors']->errors as $code => $messages) {
                     foreach ($messages as $message) {
                         $error->add($code, $message);
@@ -542,7 +542,7 @@ class UsersController extends Controller
             $user_id = wpmu_create_user($user->user_login, $user->user_pass, $user->user_email);
 
             if (!$user_id) {
-                return new WP_Error('rest_user_create', __('Error creating new user.'), ['status' => 500]);
+                return new Error('rest_user_create', __('Error creating new user.'), ['status' => 500]);
             }
 
             $user->ID = $user_id;
@@ -611,7 +611,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has access to update the item, WP_Error object otherwise.
+     * @return true|Error True if the request has access to update the item, Error object otherwise.
      */
     public function update_item_permissions_check($request)
     {
@@ -621,7 +621,7 @@ class UsersController extends Controller
         }
 
         if (!current_user_can('edit_user', $user->ID)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_edit',
                 __('Sorry, you are not allowed to edit this user.'),
                 ['status' => rest_authorization_required_code()]
@@ -629,7 +629,7 @@ class UsersController extends Controller
         }
 
         if (!empty($request['roles']) && !current_user_can('edit_users')) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_edit_roles',
                 __('Sorry, you are not allowed to edit roles of this user.'),
                 ['status' => rest_authorization_required_code()]
@@ -646,7 +646,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function update_item($request)
     {
@@ -658,22 +658,22 @@ class UsersController extends Controller
         $id = $user->ID;
 
         if (!$user) {
-            return new WP_Error('rest_user_invalid_id', __('Invalid user ID.'), ['status' => 404]);
+            return new Error('rest_user_invalid_id', __('Invalid user ID.'), ['status' => 404]);
         }
 
         if (email_exists($request['email']) && $request['email'] !== $user->user_email) {
-            return new WP_Error('rest_user_invalid_email', __('Invalid email address.'), ['status' => 400]);
+            return new Error('rest_user_invalid_email', __('Invalid email address.'), ['status' => 400]);
         }
 
         if (!empty($request['username']) && $request['username'] !== $user->user_login) {
-            return new WP_Error('rest_user_invalid_argument', __("Username isn't editable."), ['status' => 400]);
+            return new Error('rest_user_invalid_argument', __("Username isn't editable."), ['status' => 400]);
         }
 
         if (!empty($request['slug']) && $request['slug'] !== $user->user_nicename && get_user_by(
                 'slug',
                 $request['slug']
             )) {
-            return new WP_Error('rest_user_invalid_slug', __('Invalid slug.'), ['status' => 400]);
+            return new Error('rest_user_invalid_slug', __('Invalid slug.'), ['status' => 400]);
         }
 
         if (!empty($request['roles'])) {
@@ -736,7 +736,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has access to update the item, WP_Error object otherwise.
+     * @return true|Error True if the request has access to update the item, Error object otherwise.
      */
     public function update_current_item_permissions_check($request)
     {
@@ -752,7 +752,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function update_current_item($request)
     {
@@ -768,7 +768,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
+     * @return true|Error True if the request has access to delete the item, Error object otherwise.
      */
     public function delete_item_permissions_check($request)
     {
@@ -778,7 +778,7 @@ class UsersController extends Controller
         }
 
         if (!current_user_can('delete_user', $user->ID)) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_cannot_delete',
                 __('Sorry, you are not allowed to delete this user.'),
                 ['status' => rest_authorization_required_code()]
@@ -795,13 +795,13 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function delete_item($request)
     {
         // We don't support delete requests in multisite.
         if (is_multisite()) {
-            return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), ['status' => 501]);
+            return new Error('rest_cannot_delete', __('The user cannot be deleted.'), ['status' => 501]);
         }
         $user = $this->get_user($request['id']);
         if (is_wp_error($user)) {
@@ -814,7 +814,7 @@ class UsersController extends Controller
 
         // We don't support trashing for users.
         if (!$force) {
-            return new WP_Error(
+            return new Error(
                 'rest_trash_not_supported',
                 __('Users do not support trashing. Set force=true to delete.'),
                 ['status' => 501]
@@ -823,7 +823,7 @@ class UsersController extends Controller
 
         if (!empty($reassign)) {
             if ($reassign === $id || !get_userdata($reassign)) {
-                return new WP_Error(
+                return new Error(
                     'rest_user_invalid_reassign',
                     __('Invalid user ID for reassignment.'),
                     ['status' => 400]
@@ -841,7 +841,7 @@ class UsersController extends Controller
         $result = wp_delete_user($id, $reassign);
 
         if (!$result) {
-            return new WP_Error('rest_cannot_delete', __('The user cannot be deleted.'), ['status' => 500]);
+            return new Error('rest_cannot_delete', __('The user cannot be deleted.'), ['status' => 500]);
         }
 
         $response = new Response();
@@ -868,7 +868,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
+     * @return true|Error True if the request has access to delete the item, Error object otherwise.
      */
     public function delete_current_item_permissions_check($request)
     {
@@ -884,7 +884,7 @@ class UsersController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function delete_current_item($request)
     {
@@ -1115,8 +1115,8 @@ class UsersController extends Controller
      *
      * @param integer $user_id User ID.
      * @param array $roles New user roles.
-     * @return true|WP_Error True if the current user is allowed to make the role change,
-     *                       otherwise a WP_Error object.
+     * @return true|Error True if the current user is allowed to make the role change,
+     *                       otherwise a Error object.
      */
     protected function check_role_update($user_id, $roles)
     {
@@ -1125,7 +1125,7 @@ class UsersController extends Controller
         foreach ($roles as $role) {
             if (!isset($wp_roles->role_objects[$role])) {
                 /* translators: %s: role key */
-                return new WP_Error(
+                return new Error(
                     'rest_user_invalid_role',
                     sprintf(__('The role %s does not exist.'), $role),
                     ['status' => 400]
@@ -1143,7 +1143,7 @@ class UsersController extends Controller
                 && get_current_user_id() === $user_id
                 && !$potential_role->has_cap('edit_users')
             ) {
-                return new WP_Error(
+                return new Error(
                     'rest_user_invalid_role',
                     __('Sorry, you are not allowed to give users that role.'),
                     ['status' => rest_authorization_required_code()]
@@ -1157,7 +1157,7 @@ class UsersController extends Controller
             $editable_roles = get_editable_roles();
 
             if (empty($editable_roles[$role])) {
-                return new WP_Error(
+                return new Error(
                     'rest_user_invalid_role',
                     __('Sorry, you are not allowed to give users that role.'),
                     ['status' => 403]
@@ -1179,14 +1179,14 @@ class UsersController extends Controller
      * @param  mixed $value The username submitted in the request.
      * @param  Request $request Full details about the request.
      * @param  string $param The parameter name.
-     * @return WP_Error|string The sanitized username, if valid, otherwise an error.
+     * @return Error|string The sanitized username, if valid, otherwise an error.
      */
     public function check_username($value, $request, $param)
     {
         $username = (string)$value;
 
         if (!validate_username($username)) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_invalid_username',
                 __('Username contains invalid characters.'),
                 ['status' => 400]
@@ -1197,7 +1197,7 @@ class UsersController extends Controller
         $illegal_logins = (array)apply_filters('illegal_user_logins', []);
 
         if (in_array(strtolower($username), array_map('strtolower', $illegal_logins))) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_invalid_username',
                 __('Sorry, that username is not allowed.'),
                 ['status' => 400]
@@ -1218,18 +1218,18 @@ class UsersController extends Controller
      * @param  mixed $value The password submitted in the request.
      * @param  Request $request Full details about the request.
      * @param  string $param The parameter name.
-     * @return WP_Error|string The sanitized password, if valid, otherwise an error.
+     * @return Error|string The sanitized password, if valid, otherwise an error.
      */
     public function check_user_password($value, $request, $param)
     {
         $password = (string)$value;
 
         if (empty($password)) {
-            return new WP_Error('rest_user_invalid_password', __('Passwords cannot be empty.'), ['status' => 400]);
+            return new Error('rest_user_invalid_password', __('Passwords cannot be empty.'), ['status' => 400]);
         }
 
         if (false !== strpos($password, "\\")) {
-            return new WP_Error(
+            return new Error(
                 'rest_user_invalid_password',
                 __('Passwords cannot contain the "\\" character.'),
                 ['status' => 400]

@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Query;
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
-use WP_Error;
 
 /**
  * Core class used to implement taxonomy queries for the Taxonomy API.
@@ -578,14 +578,14 @@ class TaxQuery
     {
         if (empty($query['taxonomy'])) {
             if ('term_taxonomy_id' !== $query['field']) {
-                $query = new WP_Error('invalid_taxonomy', __('Invalid taxonomy.'));
+                $query = new Error('invalid_taxonomy', __('Invalid taxonomy.'));
                 return;
             }
 
             // so long as there are shared terms, include_children requires that a taxonomy is set
             $query['include_children'] = false;
         } elseif (!taxonomy_exists($query['taxonomy'])) {
-            $query = new WP_Error('invalid_taxonomy', __('Invalid taxonomy.'));
+            $query = new Error('invalid_taxonomy', __('Invalid taxonomy.'));
             return;
         }
 
@@ -680,7 +680,7 @@ class TaxQuery
         }
 
         if ('AND' == $query['operator'] && count($terms) < count($query['terms'])) {
-            $query = new WP_Error('inexistent_terms', __('Inexistent terms.'));
+            $query = new Error('inexistent_terms', __('Inexistent terms.'));
             return;
         }
 

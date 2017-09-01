@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Text\Diff;
 use Devtronic\FreshPress\Components\Text\TableRenderer;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\User;
@@ -379,7 +380,7 @@ if (!function_exists('wp_mail')) :
             $mail_error_data['phpmailer_exception_code'] = $e->getCode();
 
             /** This filter is documented in wp-includes/pluggable.php */
-            do_action('wp_mail_failed', new WP_Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
+            do_action('wp_mail_failed', new Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
 
             return false;
         }
@@ -511,10 +512,10 @@ if (!function_exists('wp_mail')) :
              *
              * @since 4.4.0
              *
-             * @param WP_Error $error A WP_Error object with the phpmailerException message, and an array
+             * @param Error $error A Error object with the phpmailerException message, and an array
              *                        containing the mail recipient, subject, message, headers, and attachments.
              */
-            do_action('wp_mail_failed', new WP_Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
+            do_action('wp_mail_failed', new Error('wp_mail_failed', $e->getMessage(), $mail_error_data));
 
             return false;
         }
@@ -530,8 +531,8 @@ if (!function_exists('wp_authenticate')) :
      *
      * @param string $username User's username or email address.
      * @param string $password User's password.
-     * @return User|WP_Error User object if the credentials are valid,
-     *                          otherwise WP_Error.
+     * @return User|Error User object if the credentials are valid,
+     *                          otherwise Error.
      */
     function wp_authenticate($username, $password)
     {
@@ -542,13 +543,13 @@ if (!function_exists('wp_authenticate')) :
          * Filters whether a set of user login credentials are valid.
          *
          * A User object is returned if the credentials authenticate a user.
-         * WP_Error or null otherwise.
+         * Error or null otherwise.
          *
          * @since 2.8.0
          * @since 4.5.0 `$username` now accepts an email address.
          *
-         * @param null|User|WP_Error $user User if the user is authenticated.
-         *                                        WP_Error or null otherwise.
+         * @param null|User|Error $user User if the user is authenticated.
+         *                                        Error or null otherwise.
          * @param string $username Username or email address.
          * @param string $password User password
          */
@@ -557,7 +558,7 @@ if (!function_exists('wp_authenticate')) :
         if ($user == null) {
             // TODO what should the error message be? (Or would these even happen?)
             // Only needed if all authentication handlers fail to return anything.
-            $user = new WP_Error(
+            $user = new Error(
                 'authentication_failed',
                 __('<strong>ERROR</strong>: Invalid username, email address or incorrect password.')
             );

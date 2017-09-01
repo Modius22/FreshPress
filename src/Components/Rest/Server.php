@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Rest;
 
 use Devtronic\FreshPress\Components\Http\Response;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to implement the WordPress REST API server.
@@ -116,7 +116,7 @@ class Server
      * @since 4.4.0
      * @access public
      *
-     * @return WP_Error|null WP_Error indicates unsuccessful login, null indicates successful
+     * @return Error|null Error indicates unsuccessful login, null indicates successful
      *                       or no authentication provided
      */
     public function check_authentication()
@@ -124,7 +124,7 @@ class Server
         /**
          * Filters REST authentication errors.
          *
-         * This is used to pass a WP_Error from an authentication method back to
+         * This is used to pass a Error from an authentication method back to
          * the API.
          *
          * Authentication methods should check first if they're being used, as
@@ -135,14 +135,14 @@ class Server
          * callbacks should ensure the value is `null` before checking for
          * errors.
          *
-         * A WP_Error instance can be returned if an error occurs, and this should
+         * A Error instance can be returned if an error occurs, and this should
          * match the format used by API methods internally (that is, the `status`
          * data should be used). A callback can return `true` to indicate that
          * the authentication method was used, and it succeeded.
          *
          * @since 4.4.0
          *
-         * @param WP_Error|null|bool WP_Error if authentication error, null if authentication
+         * @param Error|null|bool Error if authentication error, null if authentication
          *                              method wasn't used, true if authentication succeeded.
          */
         return apply_filters('rest_authentication_errors', null);
@@ -158,7 +158,7 @@ class Server
      * @since 4.4.0
      * @access protected
      *
-     * @param WP_Error $error WP_Error instance.
+     * @param Error $error Error instance.
      * @return Response List of associative arrays with code and message keys.
      */
     protected function error_to_response($error)
@@ -195,14 +195,14 @@ class Server
      * Retrieves an appropriate error representation in JSON.
      *
      * Note: This should only be used in Server::serve_request(), as it
-     * cannot handle WP_Error internally. All callbacks and other internal methods
-     * should instead return a WP_Error with the data set to an array that includes
+     * cannot handle Error internally. All callbacks and other internal methods
+     * should instead return a Error with the data set to an array that includes
      * a 'status' key, with the value being the HTTP status to send.
      *
      * @since 4.4.0
      * @access protected
      *
-     * @param string $code WP_Error-style code.
+     * @param string $code Error-style code.
      * @param string $message Human-readable message.
      * @param int $status Optional. HTTP status code to send. Default null.
      * @return string JSON representation of the error
@@ -344,10 +344,10 @@ class Server
             $result = $this->dispatch($request);
         }
 
-        // Normalize to either WP_Error or Response...
+        // Normalize to either Error or Response...
         $result = rest_ensure_response($result);
 
-        // ...then convert WP_Error across.
+        // ...then convert Error across.
         if (is_wp_error($result)) {
             $result = $this->error_to_response($result);
         }
@@ -406,7 +406,7 @@ class Server
 
             $json_error_message = $this->get_json_last_error();
             if ($json_error_message) {
-                $json_error_obj = new WP_Error('rest_encode_error', $json_error_message, ['status' => 500]);
+                $json_error_obj = new Error('rest_encode_error', $json_error_message, ['status' => 500]);
                 $result = $this->error_to_response($json_error_obj);
                 $result = wp_json_encode($result->data[0]);
             }
@@ -871,7 +871,7 @@ class Server
                 }
 
                 if (!is_callable($callback)) {
-                    $response = new WP_Error(
+                    $response = new Error(
                         'rest_invalid_handler',
                         __('The handler for the route is invalid'),
                         ['status' => 500]
@@ -932,7 +932,7 @@ class Server
                         if (is_wp_error($permission)) {
                             $response = $permission;
                         } elseif (false === $permission || null === $permission) {
-                            $response = new WP_Error(
+                            $response = new Error(
                                 'rest_forbidden',
                                 __('Sorry, you are not allowed to do that.'),
                                 ['status' => 403]
@@ -1000,7 +1000,7 @@ class Server
             }
         }
 
-        return $this->error_to_response(new WP_Error(
+        return $this->error_to_response(new Error(
             'rest_no_route',
             __('No route was found matching the URL and request method'),
             ['status' => 404]
@@ -1089,15 +1089,15 @@ class Server
      * @access public
      *
      * @param Request $request REST request instance.
-     * @return Response|WP_Error Response instance if the index was found,
-     *                                   WP_Error if the namespace isn't set.
+     * @return Response|Error Response instance if the index was found,
+     *                                   Error if the namespace isn't set.
      */
     public function get_namespace_index($request)
     {
         $namespace = $request['namespace'];
 
         if (!isset($this->namespaces[$namespace])) {
-            return new WP_Error(
+            return new Error(
                 'rest_invalid_namespace',
                 __('The specified namespace could not be found.'),
                 ['status' => 404]

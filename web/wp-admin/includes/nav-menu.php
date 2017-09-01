@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\NavMenuChecklistWalker;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -1020,7 +1021,7 @@ function _wp_nav_menu_meta_box_object($object = null)
  * @since 3.0.0
  *
  * @param int $menu_id Optional. The ID of the menu to format. Default 0.
- * @return string|WP_Error $output The menu formatted to edit or error object on failure.
+ * @return string|Error $output The menu formatted to edit or error object on failure.
  */
 function wp_get_nav_menu_to_edit($menu_id = 0)
 {
@@ -1051,7 +1052,7 @@ function wp_get_nav_menu_to_edit($menu_id = 0)
         if (class_exists($walker_class_name)) {
             $walker = new $walker_class_name;
         } else {
-            return new WP_Error(
+            return new Error(
                 'menu_walker_not_exist',
                 /* translators: %s: walker class name */
                 sprintf(

@@ -9,13 +9,13 @@
 
 namespace Devtronic\FreshPress\Components\Http;
 
+use Devtronic\FreshPress\Core\Error;
 use Requests;
 use Requests_Cookie;
 use Requests_Cookie_Jar;
 use Requests_Exception;
 use Requests_Proxy_HTTP;
 use Requests_Response;
-use WP_Error;
 
 /**
  * Core class used for managing HTTP transports and making HTTP requests.
@@ -146,8 +146,8 @@ class Http
      * @type int $limit_response_size Size in bytes to limit the response to. Default null.
      *
      * }
-     * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'.
-     *                        A WP_Error instance upon error.
+     * @return array|Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'.
+     *                        A Error instance upon error.
      */
     public function request($url, $args = [])
     {
@@ -243,14 +243,14 @@ class Http
          * early with that value. A filter should return either:
          *
          *  - An array containing 'headers', 'body', 'response', 'cookies', and 'filename' elements
-         *  - A WP_Error instance
+         *  - A Error instance
          *  - boolean false (to avoid short-circuiting the response)
          *
          * Returning any other value may result in unexpected behaviour.
          *
          * @since 2.9.0
          *
-         * @param false|array|WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
+         * @param false|array|Error $preempt Whether to preempt an HTTP request's return value. Default false.
          * @param array $r HTTP request arguments.
          * @param string $url The request URL.
          */
@@ -272,11 +272,11 @@ class Http
         $arrURL = @parse_url($url);
 
         if (empty($url) || empty($arrURL['scheme'])) {
-            return new WP_Error('http_request_failed', __('A valid URL was not provided.'));
+            return new Error('http_request_failed', __('A valid URL was not provided.'));
         }
 
         if ($this->block_request($url)) {
-            return new WP_Error('http_request_failed', __('User has blocked requests through HTTP.'));
+            return new Error('http_request_failed', __('User has blocked requests through HTTP.'));
         }
 
         // If we are streaming to a file but no filename was given drop it in the WP temp dir
@@ -289,7 +289,7 @@ class Http
             // Force some settings if we are streaming to a file and check for existence and perms of destination directory
             $r['blocking'] = true;
             if (!wp_is_writable(dirname($r['filename']))) {
-                return new WP_Error(
+                return new Error(
                     'http_request_failed',
                     __('Destination directory for file streaming does not exist or is not writable.')
                 );
@@ -391,7 +391,7 @@ class Http
             // Add the original object to the array.
             $response['http_response'] = $http_response;
         } catch (Requests_Exception $e) {
-            $response = new WP_Error('http_request_failed', $e->getMessage());
+            $response = new Error('http_request_failed', $e->getMessage());
         }
 
         reset_mbstring_encoding();
@@ -401,7 +401,7 @@ class Http
          *
          * @since 2.8.0
          *
-         * @param array|WP_Error $response HTTP response or WP_Error object.
+         * @param array|Error $response HTTP response or Error object.
          * @param string $context Context under which the hook is fired.
          * @param string $class HTTP transport used.
          * @param array $args HTTP request arguments.
@@ -561,7 +561,7 @@ class Http
      *
      * @param string $url URL to Request
      * @param array $args Request arguments
-     * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+     * @return array|Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
      */
     private function _dispatch_request($url, $args)
     {
@@ -569,7 +569,7 @@ class Http
 
         $class = $this->_get_first_available_transport($args, $url);
         if (!$class) {
-            return new WP_Error(
+            return new Error(
                 'http_failure',
                 __('There are no HTTP transports available which can complete the requested request.')
             );
@@ -611,7 +611,7 @@ class Http
      *
      * @param string $url The request URL.
      * @param string|array $args Optional. Override the defaults.
-     * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+     * @return array|Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
      */
     public function post($url, $args = [])
     {
@@ -630,7 +630,7 @@ class Http
      *
      * @param string $url The request URL.
      * @param string|array $args Optional. Override the defaults.
-     * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+     * @return array|Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
      */
     public function get($url, $args = [])
     {
@@ -649,7 +649,7 @@ class Http
      *
      * @param string $url The request URL.
      * @param string|array $args Optional. Override the defaults.
-     * @return array|WP_Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+     * @return array|Error Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
      */
     public function head($url, $args = [])
     {
@@ -1018,7 +1018,7 @@ class Http
      * @param string $url The URL which was requested.
      * @param array $args The Arguments which were used to make the request.
      * @param array $response The Response of the HTTP request.
-     * @return false|object False if no redirect is present, a Http or WP_Error result otherwise.
+     * @return false|object False if no redirect is present, a Http or Error result otherwise.
      */
     public static function handle_redirects($url, $args, $response)
     {
@@ -1034,7 +1034,7 @@ class Http
 
         // Don't redirect if we've run out of redirects.
         if ($args['redirection']-- <= 0) {
-            return new WP_Error('http_request_failed', __('Too many redirects.'));
+            return new Error('http_request_failed', __('Too many redirects.'));
         }
 
         $redirect_location = $response['headers']['location'];

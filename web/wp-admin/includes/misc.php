@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\Error;
+
 /**
  * Returns whether the server is running Apache with the mod_rewrite module loaded.
  *
@@ -337,7 +339,7 @@ function wp_reset_vars($vars)
  *
  * @since 2.1.0
  *
- * @param string|WP_Error $message
+ * @param string|Error $message
  */
 function show_message($message)
 {

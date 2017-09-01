@@ -12,7 +12,7 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to manage taxonomies via the REST API.
@@ -82,7 +82,7 @@ class TaxonomiesController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
+     * @return true|Error True if the request has read access, Error object otherwise.
      */
     public function get_items_permissions_check($request)
     {
@@ -97,7 +97,7 @@ class TaxonomiesController extends Controller
                     return true;
                 }
             }
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_view',
                 __('Sorry, you are not allowed to manage terms in this taxonomy.'),
                 ['status' => rest_authorization_required_code()]
@@ -113,7 +113,7 @@ class TaxonomiesController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response Response object on success, or WP_Error object on failure.
+     * @return Response Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
@@ -151,7 +151,7 @@ class TaxonomiesController extends Controller
      * @access public
      *
      * @param  Request $request Full details about the request.
-     * @return true|WP_Error True if the request has read access for the item, otherwise false or WP_Error object.
+     * @return true|Error True if the request has read access for the item, otherwise false or Error object.
      */
     public function get_item_permissions_check($request)
     {
@@ -162,7 +162,7 @@ class TaxonomiesController extends Controller
                 return false;
             }
             if ('edit' === $request['context'] && !current_user_can($tax_obj->cap->manage_terms)) {
-                return new WP_Error(
+                return new Error(
                     'rest_forbidden_context',
                     __('Sorry, you are not allowed to manage terms in this taxonomy.'),
                     ['status' => rest_authorization_required_code()]
@@ -180,13 +180,13 @@ class TaxonomiesController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
         $tax_obj = get_taxonomy($request['taxonomy']);
         if (empty($tax_obj)) {
-            return new WP_Error('rest_taxonomy_invalid', __('Invalid taxonomy.'), ['status' => 404]);
+            return new Error('rest_taxonomy_invalid', __('Invalid taxonomy.'), ['status' => 404]);
         }
         $data = $this->prepare_item_for_response($tax_obj, $request);
         return rest_ensure_response($data);

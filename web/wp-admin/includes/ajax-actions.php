@@ -24,6 +24,7 @@ use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
 use Devtronic\FreshPress\Components\Walker\NavMenuEditWalker;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
 
 //
@@ -912,7 +913,7 @@ function wp_ajax_dim_comment()
     if (!$comment = get_comment($id)) {
         $x = new WP_Ajax_Response(array(
             'what' => 'comment',
-            'id' => new WP_Error('invalid_comment', sprintf(__('Comment %d does not exist'), $id))
+            'id' => new Error('invalid_comment', sprintf(__('Comment %d does not exist'), $id))
         ));
         $x->send();
     }
@@ -1016,7 +1017,7 @@ function wp_ajax_add_tag()
 
         $x->add(array(
             'what' => 'taxonomy',
-            'data' => new WP_Error('error', $message)
+            'data' => new Error('error', $message)
         ));
         $x->send();
     }

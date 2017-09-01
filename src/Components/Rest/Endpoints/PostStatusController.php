@@ -12,7 +12,7 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to access post statuses via the REST API.
@@ -82,7 +82,7 @@ class PostStatusController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|bool True if the request has read access, WP_Error object otherwise.
+     * @return Error|bool True if the request has read access, Error object otherwise.
      */
     public function get_items_permissions_check($request)
     {
@@ -94,7 +94,7 @@ class PostStatusController extends Controller
                     return true;
                 }
             }
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_view',
                 __('Sorry, you are not allowed to edit posts in this post type.'),
                 ['status' => rest_authorization_required_code()]
@@ -111,7 +111,7 @@ class PostStatusController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
@@ -140,20 +140,20 @@ class PostStatusController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|bool True if the request has read access for the item, WP_Error object otherwise.
+     * @return Error|bool True if the request has read access for the item, Error object otherwise.
      */
     public function get_item_permissions_check($request)
     {
         $status = get_post_status_object($request['status']);
 
         if (empty($status)) {
-            return new WP_Error('rest_status_invalid', __('Invalid status.'), ['status' => 404]);
+            return new Error('rest_status_invalid', __('Invalid status.'), ['status' => 404]);
         }
 
         $check = $this->check_read_permission($status);
 
         if (!$check) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_read_status',
                 __('Cannot view status.'),
                 ['status' => rest_authorization_required_code()]
@@ -198,14 +198,14 @@ class PostStatusController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
         $obj = get_post_status_object($request['status']);
 
         if (empty($obj)) {
-            return new WP_Error('rest_status_invalid', __('Invalid status.'), ['status' => 404]);
+            return new Error('rest_status_invalid', __('Invalid status.'), ['status' => 404]);
         }
 
         $data = $this->prepare_item_for_response($obj, $request);

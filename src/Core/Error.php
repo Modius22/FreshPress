@@ -2,23 +2,25 @@
 /**
  * WordPress Error API.
  *
- * Contains the WP_Error class and the is_wp_error() function.
+ * Contains the Error class and the is_wp_error() function.
  *
  * @package WordPress
  */
+
+namespace Devtronic\FreshPress\Core;
 
 /**
  * WordPress Error class.
  *
  * Container for checking for WordPress errors and error messages. Return
- * WP_Error and use is_wp_error() to check if this class is returned. Many
+ * Error and use is_wp_error() to check if this class is returned. Many
  * core WordPress functions pass this class in the event of an error and
  * if not handled properly will result in code errors.
  *
  * @package WordPress
  * @since 2.1.0
  */
-class WP_Error
+class Error
 {
     /**
      * Stores the list of errors.
@@ -26,7 +28,7 @@ class WP_Error
      * @since 2.1.0
      * @var array
      */
-    public $errors = array();
+    public $errors = [];
 
     /**
      * Stores the list of data for error codes.
@@ -34,7 +36,7 @@ class WP_Error
      * @since 2.1.0
      * @var array
      */
-    public $error_data = array();
+    public $error_data = [];
 
     /**
      * Initialize the error.
@@ -77,7 +79,7 @@ class WP_Error
     public function get_error_codes()
     {
         if (empty($this->errors)) {
-            return array();
+            return [];
         }
 
         return array_keys($this->errors);
@@ -114,7 +116,7 @@ class WP_Error
     {
         // Return all messages if no code specified.
         if (empty($code)) {
-            $all_messages = array();
+            $all_messages = [];
             foreach ((array)$this->errors as $code => $messages) {
                 $all_messages = array_merge($all_messages, $messages);
             }
@@ -125,7 +127,7 @@ class WP_Error
         if (isset($this->errors[$code])) {
             return $this->errors[$code];
         } else {
-            return array();
+            return [];
         }
     }
 

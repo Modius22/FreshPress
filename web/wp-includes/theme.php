@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -1879,7 +1880,7 @@ function wp_get_custom_css($stylesheet = '')
  * @type string $preprocessed Pre-processed CSS, stored in `post_content_filtered`. Normally empty string. Optional.
  * @type string $stylesheet Stylesheet (child theme) to update. Optional, defaults to current theme/stylesheet.
  * }
- * @return Post|WP_Error Post on success, error on failure.
+ * @return Post|Error Post on success, error on failure.
  */
 function wp_update_custom_css_post($css, $args = array())
 {

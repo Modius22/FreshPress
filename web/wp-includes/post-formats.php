@@ -6,6 +6,8 @@
  * @subpackage Post
  */
 
+use Devtronic\FreshPress\Core\Error;
+
 /**
  * Retrieve the format slug for a post
  *
@@ -64,14 +66,14 @@ function has_post_format($format = array(), $post = null)
  *
  * @param int|object $post The post for which to assign a format.
  * @param string $format A format to assign. Use an empty string or array to remove all formats from the post.
- * @return array|WP_Error|false WP_Error on error. Array of affected term IDs on success.
+ * @return array|Error|false Error on error. Array of affected term IDs on success.
  */
 function set_post_format($post, $format)
 {
     $post = get_post($post);
 
     if (empty($post)) {
-        return new WP_Error('invalid_post', __('Invalid post.'));
+        return new Error('invalid_post', __('Invalid post.'));
     }
 
     if (!empty($format)) {
@@ -148,7 +150,7 @@ function get_post_format_string($slug)
  * @since 3.1.0
  *
  * @param string $format The post format slug.
- * @return string|WP_Error|false The post format term link.
+ * @return string|Error|false The post format term link.
  */
 function get_post_format_link($format)
 {

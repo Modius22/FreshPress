@@ -10,6 +10,7 @@ use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\ImageEditor\GdImageEditor;
 use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
 use Devtronic\FreshPress\Components\ImageEditor\ImagickImageEditor;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
@@ -3012,7 +3013,7 @@ function wp_max_upload_size()
  * @param string $path Path to the file to load.
  * @param array $args Optional. Additional arguments for retrieving the image editor.
  *                     Default empty array.
- * @return ImageEditor|WP_Error The ImageEditor object if successful, an WP_Error object otherwise.
+ * @return ImageEditor|Error The ImageEditor object if successful, an Error object otherwise.
  */
 function wp_get_image_editor($path, $args = array())
 {
@@ -3041,7 +3042,7 @@ function wp_get_image_editor($path, $args = array())
         return $editor;
     }
 
-    return new WP_Error('image_no_editor', __('No editor could be selected.'));
+    return new Error('image_no_editor', __('No editor could be selected.'));
 }
 
 /**

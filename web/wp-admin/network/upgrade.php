@@ -7,6 +7,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Core\Error;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -96,7 +98,7 @@ switch ($action) {
              *
              * @since MU
              *
-             * @param array|WP_Error $response The upgrade response array or WP_Error on failure.
+             * @param array|Error $response The upgrade response array or Error on failure.
              */
             do_action('after_mu_upgrade', $response);
             /**

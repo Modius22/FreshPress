@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -111,7 +112,7 @@ function get_clean_basedomain()
  *
  * @global bool $is_apache
  *
- * @param WP_Error $errors
+ * @param Error $errors
  */
 function network_step1($errors = false)
 {
@@ -356,7 +357,7 @@ function network_step1($errors = false)
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param WP_Error $errors
+ * @param Error $errors
  */
 function network_step2($errors = false)
 {

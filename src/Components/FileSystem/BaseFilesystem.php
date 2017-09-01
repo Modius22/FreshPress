@@ -8,7 +8,7 @@
 
 namespace Devtronic\FreshPress\Components\FileSystem;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Base WordPress Filesystem class for which Filesystem implementations extend
@@ -46,7 +46,7 @@ class BaseFilesystem
 
     /**
      * @access public
-     * @var WP_Error
+     * @var Error
      */
     public $errors = null;
 

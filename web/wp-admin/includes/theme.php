@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -18,7 +19,7 @@ use Devtronic\FreshPress\Entity\Post;
  *
  * @param string $stylesheet Stylesheet of the theme to delete
  * @param string $redirect Redirect to page when complete.
- * @return void|bool|WP_Error When void, echoes content.
+ * @return void|bool|Error When void, echoes content.
  */
 function delete_theme($stylesheet, $redirect = '')
 {
@@ -64,17 +65,17 @@ function delete_theme($stylesheet, $redirect = '')
     }
 
     if (!is_object($wp_filesystem)) {
-        return new WP_Error('fs_unavailable', __('Could not access filesystem.'));
+        return new Error('fs_unavailable', __('Could not access filesystem.'));
     }
 
     if (is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
-        return new WP_Error('fs_error', __('Filesystem error.'), $wp_filesystem->errors);
+        return new Error('fs_error', __('Filesystem error.'), $wp_filesystem->errors);
     }
 
     // Get the base plugin folder.
     $themes_dir = $wp_filesystem->wp_themes_dir();
     if (empty($themes_dir)) {
-        return new WP_Error('fs_no_themes_dir', __('Unable to locate WordPress theme directory.'));
+        return new Error('fs_no_themes_dir', __('Unable to locate WordPress theme directory.'));
     }
 
     $themes_dir = trailingslashit($themes_dir);
@@ -82,7 +83,7 @@ function delete_theme($stylesheet, $redirect = '')
     $deleted = $wp_filesystem->delete($theme_dir, true);
 
     if (!$deleted) {
-        return new WP_Error('could_not_remove_theme', sprintf(__('Could not fully remove the theme %s.'), $stylesheet));
+        return new Error('could_not_remove_theme', sprintf(__('Could not fully remove the theme %s.'), $stylesheet));
     }
 
     $theme_translations = wp_get_installed_translations('themes');
@@ -435,7 +436,7 @@ function get_theme_feature_list($api = true)
  * @type bool $extended_author Whether to return nicename or nicename and display name. Default false.
  *     }
  * }
- * @return object|array|WP_Error Response object or array on success, WP_Error on failure. See the
+ * @return object|array|Error Response object or array on success, Error on failure. See the
  *         {@link https://developer.wordpress.org/reference/functions/themes_api/ function reference article}
  *         for more information on the make-up of possible return objects depending on the value of `$action`.
  */
@@ -512,7 +513,7 @@ function themes_api($action, $args = array())
         }
 
         if (is_wp_error($request)) {
-            $res = new WP_Error(
+            $res = new Error(
                 'themes_api_failed',
                 sprintf(
                 /* translators: %s: support forums URL */
@@ -524,7 +525,7 @@ function themes_api($action, $args = array())
         } else {
             $res = maybe_unserialize(wp_remote_retrieve_body($request));
             if (!is_object($res) && !is_array($res)) {
-                $res = new WP_Error(
+                $res = new Error(
                     'themes_api_failed',
                     sprintf(
                     /* translators: %s: support forums URL */
@@ -542,7 +543,7 @@ function themes_api($action, $args = array())
      *
      * @since 2.8.0
      *
-     * @param array|object|WP_Error $res WordPress.org Themes API response.
+     * @param array|object|Error $res WordPress.org Themes API response.
      * @param string $action Requested action. Likely values are 'theme_information',
      *                                      'feature_list', or 'query_themes'.
      * @param object $args Arguments used to query for installer pages from the WordPress.org Themes API.

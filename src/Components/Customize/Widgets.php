@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use Devtronic\FreshPress\Components\Dependencies\Scripts;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Customize Widgets class.
@@ -664,13 +664,13 @@ class Widgets
      * @access public
      *
      * @param string $setting_id Widget setting ID.
-     * @return WP_Error|array Array containing a widget's id_base and number components,
-     *                        or a WP_Error object.
+     * @return Error|array Array containing a widget's id_base and number components,
+     *                        or a Error object.
      */
     public function parse_widget_setting_id($setting_id)
     {
         if (!preg_match('/^(widget_(.+?))(?:\[(\d+)\])?$/', $setting_id, $matches)) {
-            return new WP_Error('widget_setting_invalid_id');
+            return new Error('widget_setting_invalid_id');
         }
 
         $id_base = $matches[2];
@@ -1475,8 +1475,8 @@ class Widgets
      * @global array $wp_registered_widget_controls
      *
      * @param  string $widget_id Widget ID.
-     * @return WP_Error|array Array containing the updated widget information.
-     *                        A WP_Error object, otherwise.
+     * @return Error|array Array containing the updated widget information.
+     *                        A Error object, otherwise.
      */
     public function call_widget_update($widget_id)
     {
@@ -1509,13 +1509,13 @@ class Widgets
             $sanitized_widget_setting = json_decode($this->get_post_value('sanitized_widget_setting'), true);
             if (false === $sanitized_widget_setting) {
                 $this->stop_capturing_option_updates();
-                return new WP_Error('widget_setting_malformed');
+                return new Error('widget_setting_malformed');
             }
 
             $instance = $this->sanitize_widget_instance($sanitized_widget_setting);
             if (is_null($instance)) {
                 $this->stop_capturing_option_updates();
-                return new WP_Error('widget_setting_unsanitized');
+                return new Error('widget_setting_unsanitized');
             }
 
             if (!is_null($parsed_id['number'])) {
@@ -1552,13 +1552,13 @@ class Widgets
         if (0 !== $this->count_captured_options()) {
             if ($this->count_captured_options() > 1) {
                 $this->stop_capturing_option_updates();
-                return new WP_Error('widget_setting_too_many_options');
+                return new Error('widget_setting_too_many_options');
             }
 
             $updated_option_name = key($this->get_captured_options());
             if ($updated_option_name !== $option_name) {
                 $this->stop_capturing_option_updates();
-                return new WP_Error('widget_setting_unexpected_option');
+                return new Error('widget_setting_unexpected_option');
             }
         }
 

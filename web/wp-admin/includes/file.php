@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\FileSystem\DirectFilesystem;
 use Devtronic\FreshPress\Components\FileSystem\FTPExtFilesystem;
 use Devtronic\FreshPress\Components\FileSystem\FTPSocketsFilesystem;
 use Devtronic\FreshPress\Components\FileSystem\SSH2Filesystem;
+use Devtronic\FreshPress\Core\Error;
 
 /** The descriptions for theme files. */
 $wp_file_descriptions = array(
@@ -511,20 +512,20 @@ function wp_handle_sideload(&$file, $overrides = false, $time = null)
  *
  * @param string $url the URL of the file to download
  * @param int $timeout The timeout for the request to download the file default 300 seconds
- * @return mixed WP_Error on failure, string Filename on success.
+ * @return mixed Error on failure, string Filename on success.
  */
 function download_url($url, $timeout = 300)
 {
     //WARNING: The file is not automatically deleted, The script must unlink() the file.
     if (!$url) {
-        return new WP_Error('http_no_url', __('Invalid URL Provided.'));
+        return new Error('http_no_url', __('Invalid URL Provided.'));
     }
 
     $url_filename = basename(parse_url($url, PHP_URL_PATH));
 
     $tmpfname = wp_tempnam($url_filename);
     if (!$tmpfname) {
-        return new WP_Error('http_no_file', __('Could not create Temporary file.'));
+        return new Error('http_no_file', __('Could not create Temporary file.'));
     }
 
     $response = wp_safe_remote_get($url, array('timeout' => $timeout, 'stream' => true, 'filename' => $tmpfname));
@@ -536,7 +537,7 @@ function download_url($url, $timeout = 300)
 
     if (200 != wp_remote_retrieve_response_code($response)) {
         unlink($tmpfname);
-        return new WP_Error('http_404', trim(wp_remote_retrieve_response_message($response)));
+        return new Error('http_404', trim(wp_remote_retrieve_response_message($response)));
     }
 
     $content_md5 = wp_remote_retrieve_header($response, 'content-md5');
@@ -558,7 +559,7 @@ function download_url($url, $timeout = 300)
  *
  * @param string $filename The filename to check the MD5 of.
  * @param string $expected_md5 The expected MD5 of the file, either a base64 encoded raw md5, or a hex-encoded md5
- * @return bool|object WP_Error on failure, true on success, false when the MD5 format is unknown/unexpected
+ * @return bool|object Error on failure, true on success, false when the MD5 format is unknown/unexpected
  */
 function verify_file_md5($filename, $expected_md5)
 {
@@ -576,7 +577,7 @@ function verify_file_md5($filename, $expected_md5)
         return true;
     }
 
-    return new WP_Error(
+    return new Error(
         'md5_mismatch',
         sprintf(
             __('The checksum of the file (%1$s) does not match the expected checksum value (%2$s).'),
@@ -599,14 +600,14 @@ function verify_file_md5($filename, $expected_md5)
  *
  * @param string $file Full path and filename of zip archive
  * @param string $to Full path on the filesystem to extract archive to
- * @return mixed WP_Error on failure, True on success
+ * @return mixed Error on failure, True on success
  */
 function unzip_file($file, $to)
 {
     global $wp_filesystem;
 
     if (!$wp_filesystem || !is_object($wp_filesystem)) {
-        return new WP_Error('fs_unavailable', __('Could not access filesystem.'));
+        return new Error('fs_unavailable', __('Could not access filesystem.'));
     }
 
     // Unzip can use a lot of memory, but not this much hopefully.
@@ -670,7 +671,7 @@ function unzip_file($file, $to)
  * @param string $file Full path and filename of zip archive
  * @param string $to Full path on the filesystem to extract archive to
  * @param array $needed_dirs A partial list of required folders needed to be created.
- * @return mixed WP_Error on failure, True on success
+ * @return mixed Error on failure, True on success
  */
 function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
 {
@@ -680,14 +681,14 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
 
     $zopen = $z->open($file, ZIPARCHIVE::CHECKCONS);
     if (true !== $zopen) {
-        return new WP_Error('incompatible_archive', __('Incompatible Archive.'), array('ziparchive_error' => $zopen));
+        return new Error('incompatible_archive', __('Incompatible Archive.'), array('ziparchive_error' => $zopen));
     }
 
     $uncompressed_size = 0;
 
     for ($i = 0; $i < $z->numFiles; $i++) {
         if (!$info = $z->statIndex($i)) {
-            return new WP_Error('stat_failed_ziparchive', __('Could not retrieve file from archive.'));
+            return new Error('stat_failed_ziparchive', __('Could not retrieve file from archive.'));
         }
 
         if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Skip the OS X-created __MACOSX directory
@@ -713,7 +714,7 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
     if (wp_doing_cron()) {
         $available_space = @disk_free_space(WP_CONTENT_DIR);
         if ($available_space && ($uncompressed_size * 2.1) > $available_space) {
-            return new WP_Error(
+            return new Error(
                 'disk_full_unzip_file',
                 __('Could not copy files. You may have run out of disk space.'),
                 compact('uncompressed_size', 'available_space')
@@ -746,7 +747,7 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
     foreach ($needed_dirs as $_dir) {
         // Only check to see if the Dir exists upon creation failure. Less I/O this way.
         if (!$wp_filesystem->mkdir($_dir, FS_CHMOD_DIR) && !$wp_filesystem->is_dir($_dir)) {
-            return new WP_Error(
+            return new Error(
                 'mkdir_failed_ziparchive',
                 __('Could not create directory.'),
                 substr($_dir, strlen($to))
@@ -757,7 +758,7 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
 
     for ($i = 0; $i < $z->numFiles; $i++) {
         if (!$info = $z->statIndex($i)) {
-            return new WP_Error('stat_failed_ziparchive', __('Could not retrieve file from archive.'));
+            return new Error('stat_failed_ziparchive', __('Could not retrieve file from archive.'));
         }
 
         if ('/' == substr($info['name'], -1)) { // directory
@@ -770,11 +771,11 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
 
         $contents = $z->getFromIndex($i);
         if (false === $contents) {
-            return new WP_Error('extract_failed_ziparchive', __('Could not extract file from archive.'), $info['name']);
+            return new Error('extract_failed_ziparchive', __('Could not extract file from archive.'), $info['name']);
         }
 
         if (!$wp_filesystem->put_contents($to . $info['name'], $contents, FS_CHMOD_FILE)) {
-            return new WP_Error('copy_failed_ziparchive', __('Could not copy file.'), $info['name']);
+            return new Error('copy_failed_ziparchive', __('Could not copy file.'), $info['name']);
         }
     }
 
@@ -796,7 +797,7 @@ function _unzip_file_ziparchive($file, $to, $needed_dirs = array())
  * @param string $file Full path and filename of zip archive
  * @param string $to Full path on the filesystem to extract archive to
  * @param array $needed_dirs A partial list of required folders needed to be created.
- * @return mixed WP_Error on failure, True on success
+ * @return mixed Error on failure, True on success
  */
 function _unzip_file_pclzip($file, $to, $needed_dirs = array())
 {
@@ -812,11 +813,11 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
 
     // Is the archive valid?
     if (!is_array($archive_files)) {
-        return new WP_Error('incompatible_archive', __('Incompatible Archive.'), $archive->errorInfo(true));
+        return new Error('incompatible_archive', __('Incompatible Archive.'), $archive->errorInfo(true));
     }
 
     if (0 == count($archive_files)) {
-        return new WP_Error('empty_archive_pclzip', __('Empty archive.'));
+        return new Error('empty_archive_pclzip', __('Empty archive.'));
     }
 
     $uncompressed_size = 0;
@@ -840,7 +841,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
     if (wp_doing_cron()) {
         $available_space = @disk_free_space(WP_CONTENT_DIR);
         if ($available_space && ($uncompressed_size * 2.1) > $available_space) {
-            return new WP_Error(
+            return new Error(
                 'disk_full_unzip_file',
                 __('Could not copy files. You may have run out of disk space.'),
                 compact('uncompressed_size', 'available_space')
@@ -873,7 +874,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
     foreach ($needed_dirs as $_dir) {
         // Only check to see if the dir exists upon creation failure. Less I/O this way.
         if (!$wp_filesystem->mkdir($_dir, FS_CHMOD_DIR) && !$wp_filesystem->is_dir($_dir)) {
-            return new WP_Error('mkdir_failed_pclzip', __('Could not create directory.'), substr($_dir, strlen($to)));
+            return new Error('mkdir_failed_pclzip', __('Could not create directory.'), substr($_dir, strlen($to)));
         }
     }
     unset($needed_dirs);
@@ -889,7 +890,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
         }
 
         if (!$wp_filesystem->put_contents($to . $file['filename'], $file['content'], FS_CHMOD_FILE)) {
-            return new WP_Error('copy_failed_pclzip', __('Could not copy file.'), $file['filename']);
+            return new Error('copy_failed_pclzip', __('Could not copy file.'), $file['filename']);
         }
     }
     return true;
@@ -906,7 +907,7 @@ function _unzip_file_pclzip($file, $to, $needed_dirs = array())
  * @param string $from source directory
  * @param string $to destination directory
  * @param array $skip_list a list of files/folders to skip copying
- * @return mixed WP_Error on failure, True on success.
+ * @return mixed Error on failure, True on success.
  */
 function copy_dir($from, $to, $skip_list = array())
 {
@@ -927,13 +928,13 @@ function copy_dir($from, $to, $skip_list = array())
                 // If copy failed, chmod file to 0644 and try again.
                 $wp_filesystem->chmod($to . $filename, FS_CHMOD_FILE);
                 if (!$wp_filesystem->copy($from . $filename, $to . $filename, true, FS_CHMOD_FILE)) {
-                    return new WP_Error('copy_failed_copy_dir', __('Could not copy file.'), $to . $filename);
+                    return new Error('copy_failed_copy_dir', __('Could not copy file.'), $to . $filename);
                 }
             }
         } elseif ('d' == $fileinfo['type']) {
             if (!$wp_filesystem->is_dir($to . $filename)) {
                 if (!$wp_filesystem->mkdir($to . $filename, FS_CHMOD_DIR)) {
-                    return new WP_Error('mkdir_failed_copy_dir', __('Could not create directory.'), $to . $filename);
+                    return new Error('mkdir_failed_copy_dir', __('Could not create directory.'), $to . $filename);
                 }
             }
 

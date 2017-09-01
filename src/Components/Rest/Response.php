@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Rest;
 
 use Devtronic\FreshPress\Components\Http\Response as HttpResponse;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to implement a REST response object.
@@ -244,12 +244,12 @@ class Response extends HttpResponse
     }
 
     /**
-     * Retrieves a WP_Error object from the response.
+     * Retrieves a Error object from the response.
      *
      * @since 4.4.0
      * @access public
      *
-     * @return WP_Error|null WP_Error or null on not an errored response.
+     * @return Error|null Error or null on not an errored response.
      */
     public function as_error()
     {
@@ -257,7 +257,7 @@ class Response extends HttpResponse
             return null;
         }
 
-        $error = new WP_Error;
+        $error = new Error;
 
         if (is_array($this->get_data())) {
             $data = $this->get_data();

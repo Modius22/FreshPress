@@ -13,8 +13,8 @@ use Devtronic\FreshPress\Components\Rest\Fields\TermMetaFields;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Term;
-use WP_Error;
 use WP_Taxonomy;
 
 /**
@@ -151,7 +151,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return bool|WP_Error True if the request has read access, otherwise false or WP_Error object.
+     * @return bool|Error True if the request has read access, otherwise false or Error object.
      */
     public function get_items_permissions_check($request)
     {
@@ -160,7 +160,7 @@ class TermsController extends Controller
             return false;
         }
         if ('edit' === $request['context'] && !current_user_can($tax_obj->cap->edit_terms)) {
-            return new WP_Error(
+            return new Error(
                 'rest_forbidden_context',
                 __('Sorry, you are not allowed to edit terms in this taxonomy.'),
                 ['status' => rest_authorization_required_code()]
@@ -176,7 +176,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
@@ -317,11 +317,11 @@ class TermsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return Term|WP_Error Term object if ID is valid, WP_Error otherwise.
+     * @return Term|Error Term object if ID is valid, Error otherwise.
      */
     protected function get_term($id)
     {
-        $error = new WP_Error('rest_term_invalid', __('Term does not exist.'), ['status' => 404]);
+        $error = new Error('rest_term_invalid', __('Term does not exist.'), ['status' => 404]);
 
         if (!$this->check_is_taxonomy_allowed($this->taxonomy)) {
             return $error;
@@ -346,7 +346,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return bool|WP_Error True if the request has read access for the item, otherwise false or WP_Error object.
+     * @return bool|Error True if the request has read access for the item, otherwise false or Error object.
      */
     public function get_item_permissions_check($request)
     {
@@ -356,7 +356,7 @@ class TermsController extends Controller
         }
 
         if ('edit' === $request['context'] && !current_user_can('edit_term', $term->term_id)) {
-            return new WP_Error(
+            return new Error(
                 'rest_forbidden_context',
                 __('Sorry, you are not allowed to edit this term.'),
                 ['status' => rest_authorization_required_code()]
@@ -372,7 +372,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
@@ -393,7 +393,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return bool|WP_Error True if the request has access to create items, false or WP_Error object otherwise.
+     * @return bool|Error True if the request has access to create items, false or Error object otherwise.
      */
     public function create_item_permissions_check($request)
     {
@@ -403,7 +403,7 @@ class TermsController extends Controller
 
         $taxonomy_obj = get_taxonomy($this->taxonomy);
         if (!current_user_can($taxonomy_obj->cap->edit_terms)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_create',
                 __('Sorry, you are not allowed to create new terms.'),
                 ['status' => rest_authorization_required_code()]
@@ -420,13 +420,13 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function create_item($request)
     {
         if (isset($request['parent'])) {
             if (!is_taxonomy_hierarchical($this->taxonomy)) {
-                return new WP_Error(
+                return new Error(
                     'rest_taxonomy_not_hierarchical',
                     __('Cannot set parent term, taxonomy is not hierarchical.'),
                     ['status' => 400]
@@ -436,7 +436,7 @@ class TermsController extends Controller
             $parent = get_term((int)$request['parent'], $this->taxonomy);
 
             if (!$parent) {
-                return new WP_Error('rest_term_invalid', __('Parent term does not exist.'), ['status' => 400]);
+                return new Error('rest_term_invalid', __('Parent term does not exist.'), ['status' => 400]);
             }
         }
 
@@ -504,7 +504,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return bool|WP_Error True if the request has access to update the item, false or WP_Error object otherwise.
+     * @return bool|Error True if the request has access to update the item, false or Error object otherwise.
      */
     public function update_item_permissions_check($request)
     {
@@ -514,7 +514,7 @@ class TermsController extends Controller
         }
 
         if (!current_user_can('edit_term', $term->term_id)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_update',
                 __('Sorry, you are not allowed to edit this term.'),
                 ['status' => rest_authorization_required_code()]
@@ -531,7 +531,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function update_item($request)
     {
@@ -542,7 +542,7 @@ class TermsController extends Controller
 
         if (isset($request['parent'])) {
             if (!is_taxonomy_hierarchical($this->taxonomy)) {
-                return new WP_Error(
+                return new Error(
                     'rest_taxonomy_not_hierarchical',
                     __('Cannot set parent term, taxonomy is not hierarchical.'),
                     ['status' => 400]
@@ -552,7 +552,7 @@ class TermsController extends Controller
             $parent = get_term((int)$request['parent'], $this->taxonomy);
 
             if (!$parent) {
-                return new WP_Error('rest_term_invalid', __('Parent term does not exist.'), ['status' => 400]);
+                return new Error('rest_term_invalid', __('Parent term does not exist.'), ['status' => 400]);
             }
         }
 
@@ -601,7 +601,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return bool|WP_Error True if the request has access to delete the item, otherwise false or WP_Error object.
+     * @return bool|Error True if the request has access to delete the item, otherwise false or Error object.
      */
     public function delete_item_permissions_check($request)
     {
@@ -611,7 +611,7 @@ class TermsController extends Controller
         }
 
         if (!current_user_can('delete_term', $term->term_id)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_delete',
                 __('Sorry, you are not allowed to delete this term.'),
                 ['status' => rest_authorization_required_code()]
@@ -628,7 +628,7 @@ class TermsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function delete_item($request)
     {
@@ -641,7 +641,7 @@ class TermsController extends Controller
 
         // We don't support trashing for terms.
         if (!$force) {
-            return new WP_Error(
+            return new Error(
                 'rest_trash_not_supported',
                 __('Terms do not support trashing. Set force=true to delete.'),
                 ['status' => 501]
@@ -655,7 +655,7 @@ class TermsController extends Controller
         $retval = wp_delete_term($term->term_id, $term->taxonomy);
 
         if (!$retval) {
-            return new WP_Error('rest_cannot_delete', __('The term cannot be deleted.'), ['status' => 500]);
+            return new Error('rest_cannot_delete', __('The term cannot be deleted.'), ['status' => 500]);
         }
 
         $response = new Response();

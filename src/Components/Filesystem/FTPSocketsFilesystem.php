@@ -8,7 +8,7 @@
 
 namespace Devtronic\FreshPress\Components\FileSystem;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * WordPress Filesystem Class for implementing FTP Sockets.
@@ -34,7 +34,7 @@ class FTPSocketsFilesystem extends BaseFilesystem
     public function __construct($opt = '')
     {
         $this->method = 'ftpsockets';
-        $this->errors = new WP_Error();
+        $this->errors = new Error();
 
         $mod_sockets = extension_loaded('sockets');
         $ftpClass = 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP';

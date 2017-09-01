@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\ListTable;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Retrieves plugin installer pages from the WordPress.org Plugins API.
@@ -96,7 +97,7 @@ use Devtronic\FreshPress\Components\ListTables\ListTable;
  * @type bool $contributors Whether to return the list of contributors. Default false.
  *     }
  * }
- * @return object|array|WP_Error Response object or array on success, WP_Error on failure. See the
+ * @return object|array|Error Response object or array on success, Error on failure. See the
  *         {@link https://developer.wordpress.org/reference/functions/plugins_api/ function reference article}
  *         for more information on the make-up of possible return values depending on the value of `$action`.
  */
@@ -170,7 +171,7 @@ function plugins_api($action, $args = array())
         }
 
         if (is_wp_error($request)) {
-            $res = new WP_Error(
+            $res = new Error(
                 'plugins_api_failed',
                 sprintf(
                 /* translators: %s: support forums URL */
@@ -182,7 +183,7 @@ function plugins_api($action, $args = array())
         } else {
             $res = maybe_unserialize(wp_remote_retrieve_body($request));
             if (!is_object($res) && !is_array($res)) {
-                $res = new WP_Error(
+                $res = new Error(
                     'plugins_api_failed',
                     sprintf(
                     /* translators: %s: support forums URL */
@@ -202,7 +203,7 @@ function plugins_api($action, $args = array())
      *
      * @since 2.7.0
      *
-     * @param object|WP_Error $res Response object or WP_Error.
+     * @param object|Error $res Response object or Error.
      * @param string $action The type of information being requested from the Plugin Install API.
      * @param object $args Plugin API arguments.
      */

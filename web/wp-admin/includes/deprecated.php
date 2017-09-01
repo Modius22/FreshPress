@@ -16,6 +16,7 @@ use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -494,7 +495,7 @@ if (!class_exists('WP_User_Search', false)) :
          *
          * @since 2.1.0
          * @access private
-         * @var WP_Error
+         * @var Error
          */
         public $search_errors;
 
@@ -590,7 +591,7 @@ if (!class_exists('WP_User_Search', false)) :
                 $this->total_users_for_query = $wpdb->get_var("SELECT COUNT(DISTINCT($wpdb->users.ID))" . $this->query_from . $this->query_where);
             } // no limit
             else {
-                $this->search_errors = new WP_Error('no_matching_users_found', __('No users found.'));
+                $this->search_errors = new Error('no_matching_users_found', __('No users found.'));
             }
         }
 

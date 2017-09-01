@@ -37,7 +37,6 @@
         },
         "classmap": [
             "web/wp-includes/class-wp-matchesmapregex.php",
-            "web/wp-includes/class-wp-error.php",
             "web/wp-includes/class-wp-ajax-response.php",
             "web/wp-includes/class-wp-roles.php",
             "web/wp-includes/class-wp-role.php",

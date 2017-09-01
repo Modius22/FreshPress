@@ -7,6 +7,8 @@
  * @since 4.8.0
  */
 
+use Devtronic\FreshPress\Core\Error;
+
 /**
  * Class WP_Community_Events.
  *
@@ -86,7 +88,7 @@ class WP_Community_Events
      *                                e.g., "Seattle". Default empty string.
      * @param string $timezone Optional. Timezone to help determine the location.
      *                                Default empty string.
-     * @return array|WP_Error A WP_Error on failure; an array with location and events on
+     * @return array|Error A Error on failure; an array with location and events on
      *                        success.
      */
     public function get_events($location_search = '', $timezone = '')
@@ -108,13 +110,13 @@ class WP_Community_Events
         if (is_wp_error($response)) {
             $response_error = $response;
         } elseif (200 !== $response_code) {
-            $response_error = new WP_Error(
+            $response_error = new Error(
                 'api-error',
                 /* translators: %s is a numeric HTTP status code; e.g., 400, 403, 500, 504, etc. */
                 sprintf(__('Invalid API response code (%d)'), $response_code)
             );
         } elseif (!isset($response_body['location'], $response_body['events'])) {
-            $response_error = new WP_Error(
+            $response_error = new Error(
                 'api-invalid-response',
                 isset($response_body['error']) ? $response_body['error'] : __('Unknown API error.')
             );
@@ -443,7 +445,7 @@ class WP_Community_Events
     /**
      * Logs responses to Events API requests.
      *
-     * All responses are logged when debugging, even if they're not WP_Errors.
+     * All responses are logged when debugging, even if they're not Errors.
      * Debugging info is still needed for "successful" responses, because
      * the API might have returned a different location than the one the user
      * intended to receive. In those cases, knowing the exact `request_url` is

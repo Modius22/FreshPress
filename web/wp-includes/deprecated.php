@@ -3649,7 +3649,7 @@ function wp_load_image($file)
  * @param string $suffix Optional. File suffix.
  * @param string $dest_path Optional. New image file path.
  * @param int $jpeg_quality Optional, default is 90. Image quality percentage.
- * @return mixed WP_Error on failure. String with new destination path.
+ * @return mixed Error on failure. String with new destination path.
  */
 function image_resize($file, $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90)
 {

@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Entity;
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
-use WP_Error;
 
 /**
  * Core class used to implement the Term object.
@@ -124,7 +124,7 @@ class Term
      * @param int $term_id Term ID.
      * @param string $taxonomy Optional. Limit matched terms to those matching `$taxonomy`. Only used for
      *                         disambiguating potentially shared terms.
-     * @return Term|WP_Error|false Term object, if found. WP_Error if `$term_id` is shared between taxonomies and
+     * @return Term|Error|false Term object, if found. Error if `$term_id` is shared between taxonomies and
      *                                there's insufficient data to distinguish which term is intended.
      *                                False for other failures.
      */
@@ -173,7 +173,7 @@ class Term
 
                     // Only hit if we've already identified a term in a valid taxonomy.
                     if ($_term) {
-                        return new WP_Error(
+                        return new Error(
                             'ambiguous_term_id',
                             __('Term ID is shared between multiple taxonomies'),
                             $term_id
@@ -190,7 +190,7 @@ class Term
 
             // Don't return terms from invalid taxonomies.
             if (!taxonomy_exists($_term->taxonomy)) {
-                return new WP_Error('invalid_taxonomy', __('Invalid taxonomy.'));
+                return new Error('invalid_taxonomy', __('Invalid taxonomy.'));
             }
 
             $_term = sanitize_term($_term, $_term->taxonomy, 'raw');

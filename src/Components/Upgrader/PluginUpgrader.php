@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Upgrader;
 
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used for upgrading/installing plugins.
@@ -31,7 +31,7 @@ class PluginUpgrader extends Upgrader
      *
      * @since 2.8.0
      * @access public
-     * @var array|WP_Error $result
+     * @var array|Error $result
      *
      * @see Upgrader::$result
      */
@@ -96,7 +96,7 @@ class PluginUpgrader extends Upgrader
      * @type bool $clear_update_cache Whether to clear the plugin updates cache if successful.
      *                                    Default true.
      * }
-     * @return bool|WP_Error True if the install was successful, false or a WP_Error otherwise.
+     * @return bool|Error True if the install was successful, false or a Error otherwise.
      */
     public function install($package, $args = [])
     {
@@ -152,7 +152,7 @@ class PluginUpgrader extends Upgrader
      * @type bool $clear_update_cache Whether to clear the plugin updates cache if successful.
      *                                    Default true.
      * }
-     * @return bool|WP_Error True if the upgrade was successful, false or a WP_Error object otherwise.
+     * @return bool|Error True if the upgrade was successful, false or a Error object otherwise.
      */
     public function upgrade($plugin, $args = [])
     {
@@ -343,7 +343,7 @@ class PluginUpgrader extends Upgrader
      * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param string $source The path to the downloaded package source.
-     * @return string|WP_Error The source as passed, or a WP_Error object
+     * @return string|Error The source as passed, or a Error object
      *                         if no plugins were found.
      */
     public function check_package($source)
@@ -373,7 +373,7 @@ class PluginUpgrader extends Upgrader
         }
 
         if (!$plugins_found) {
-            return new WP_Error(
+            return new Error(
                 'incompatible_archive_no_plugins',
                 $this->strings['incompatible_archive'],
                 __('No valid plugins were found.')
@@ -421,9 +421,9 @@ class PluginUpgrader extends Upgrader
      * @since 4.1.0 Added a return value.
      * @access public
      *
-     * @param bool|WP_Error $return Upgrade offer return.
+     * @param bool|Error $return Upgrade offer return.
      * @param array $plugin Plugin package arguments.
-     * @return bool|WP_Error The passed in $return param or WP_Error.
+     * @return bool|Error The passed in $return param or Error.
      */
     public function deactivate_plugin_before_upgrade($return, $plugin)
     {
@@ -438,7 +438,7 @@ class PluginUpgrader extends Upgrader
 
         $plugin = isset($plugin['plugin']) ? $plugin['plugin'] : '';
         if (empty($plugin)) {
-            return new WP_Error('bad_request', $this->strings['bad_request']);
+            return new Error('bad_request', $this->strings['bad_request']);
         }
 
         if (is_plugin_active($plugin)) {
@@ -460,11 +460,11 @@ class PluginUpgrader extends Upgrader
      *
      * @global BaseFilesystem $wp_filesystem Subclass
      *
-     * @param bool|WP_Error $removed
+     * @param bool|Error $removed
      * @param string $local_destination
      * @param string $remote_destination
      * @param array $plugin
-     * @return WP_Error|bool
+     * @return Error|bool
      */
     public function delete_old_plugin($removed, $local_destination, $remote_destination, $plugin)
     {
@@ -476,7 +476,7 @@ class PluginUpgrader extends Upgrader
 
         $plugin = isset($plugin['plugin']) ? $plugin['plugin'] : '';
         if (empty($plugin)) {
-            return new WP_Error('bad_request', $this->strings['bad_request']);
+            return new Error('bad_request', $this->strings['bad_request']);
         }
 
         $plugins_dir = $wp_filesystem->wp_plugins_dir();
@@ -497,7 +497,7 @@ class PluginUpgrader extends Upgrader
         }
 
         if (!$deleted) {
-            return new WP_Error('remove_old_failed', $this->strings['remove_old_failed']);
+            return new Error('remove_old_failed', $this->strings['remove_old_failed']);
         }
 
         return true;

@@ -12,8 +12,8 @@ namespace Devtronic\FreshPress\Components\Customize;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Error;
 use WP_Theme;
 
 /**
@@ -851,26 +851,26 @@ class Manager
      * @access protected
      *
      * @param int $post_id Changeset post ID.
-     * @return array|WP_Error Changeset data or WP_Error on error.
+     * @return array|Error Changeset data or Error on error.
      */
     protected function get_changeset_post_data($post_id)
     {
         if (!$post_id) {
-            return new WP_Error('empty_post_id');
+            return new Error('empty_post_id');
         }
         $changeset_post = get_post($post_id);
         if (!$changeset_post) {
-            return new WP_Error('missing_post');
+            return new Error('missing_post');
         }
         if ('customize_changeset' !== $changeset_post->post_type) {
-            return new WP_Error('wrong_post_type');
+            return new Error('wrong_post_type');
         }
         $changeset_data = json_decode($changeset_post->post_content, true);
         if (function_exists('json_last_error') && json_last_error()) {
-            return new WP_Error('json_parse_error', '', json_last_error());
+            return new Error('json_parse_error', '', json_last_error());
         }
         if (!is_array($changeset_data)) {
-            return new WP_Error('expected_array');
+            return new Error('expected_array');
         }
         return $changeset_data;
     }
@@ -2025,7 +2025,7 @@ class Manager
      *
      * Validation is skipped for unregistered settings or for values that are
      * already null since they will be skipped anyway. Sanitization is applied
-     * to values that pass validation, and values that become null or `WP_Error`
+     * to values that pass validation, and values that become null or `Error`
      * after sanitizing are marked invalid.
      *
      * @since 4.6.0
@@ -2041,7 +2041,7 @@ class Manager
      * @type bool $validate_existence Whether a setting's existence will be checked.
      * @type bool $validate_capability Whether the setting capability will be checked.
      * }
-     * @return array Mapping of setting IDs to return value of validate method calls, either `true` or `WP_Error`.
+     * @return array Mapping of setting IDs to return value of validate method calls, either `true` or `Error`.
      */
     public function validate_setting_values($setting_values, $options = [])
     {
@@ -2055,7 +2055,7 @@ class Manager
             $setting = $this->get_setting($setting_id);
             if (!$setting) {
                 if ($options['validate_existence']) {
-                    $validities[$setting_id] = new WP_Error(
+                    $validities[$setting_id] = new Error(
                         'unrecognized',
                         __('Setting does not exist or is unrecognized.')
                     );
@@ -2063,7 +2063,7 @@ class Manager
                 continue;
             }
             if ($options['validate_capability'] && !current_user_can($setting->capability)) {
-                $validity = new WP_Error('unauthorized', __('Unauthorized to modify setting due to capability.'));
+                $validity = new Error('unauthorized', __('Unauthorized to modify setting due to capability.'));
             } else {
                 if (is_null($unsanitized_value)) {
                     continue;
@@ -2074,7 +2074,7 @@ class Manager
                 /** This filter is documented in wp-includes/class-wp-customize-setting.php */
                 $late_validity = apply_filters(
                     "customize_validate_{$setting->id}",
-                    new WP_Error(),
+                    new Error(),
                     $unsanitized_value,
                     $setting
                 );
@@ -2091,7 +2091,7 @@ class Manager
                 }
             }
             if (false === $validity) {
-                $validity = new WP_Error('invalid_value', __('Invalid value.'));
+                $validity = new Error('invalid_value', __('Invalid value.'));
             }
             $validities[$setting_id] = $validity;
         }
@@ -2101,14 +2101,14 @@ class Manager
     /**
      * Prepares setting validity for exporting to the client (JS).
      *
-     * Converts `WP_Error` instance into array suitable for passing into the
+     * Converts `Error` instance into array suitable for passing into the
      * `wp.customize.Notification` JS model.
      *
      * @since 4.6.0
      * @access public
      *
-     * @param true|WP_Error $validity Setting validity.
-     * @return true|array If `$validity` was a WP_Error, the error codes will be array-mapped
+     * @param true|Error $validity Setting validity.
+     * @return true|array If `$validity` was a Error, the error codes will be array-mapped
      *                    to their respective `message` and `data` to pass into the
      *                    `wp.customize.Notification` JS model.
      */
@@ -2294,7 +2294,7 @@ class Manager
      * @type bool $starter_content Whether the data is starter content. If false (default), then $starter_content will be cleared for any $data being saved.
      * }
      *
-     * @return array|WP_Error Returns array on success and WP_Error with array data on error.
+     * @return array|Error Returns array on success and Error with array data on error.
      */
     public function save_changeset_post($args = [])
     {
@@ -2315,7 +2315,7 @@ class Manager
         if ($changeset_post_id) {
             $existing_status = get_post_status($changeset_post_id);
             if ('publish' === $existing_status || 'trash' === $existing_status) {
-                return new WP_Error('changeset_already_published');
+                return new Error('changeset_already_published');
             }
 
             $existing_changeset_data = $this->get_changeset_post_data($changeset_post_id);
@@ -2326,7 +2326,7 @@ class Manager
                 'transition_post_status',
                 '_wp_customize_publish_changeset'
             )) {
-            return new WP_Error('missing_publish_callback');
+            return new Error('missing_publish_callback');
         }
 
         // Validate date.
@@ -2334,22 +2334,22 @@ class Manager
         if ($args['date_gmt']) {
             $is_future_dated = (mysql2date('U', $args['date_gmt'], false) > mysql2date('U', $now, false));
             if (!$is_future_dated) {
-                return new WP_Error('not_future_date'); // Only future dates are allowed.
+                return new Error('not_future_date'); // Only future dates are allowed.
             }
 
             if (!$this->is_theme_active() && ('future' === $args['status'] || $is_future_dated)) {
-                return new WP_Error('cannot_schedule_theme_switches'); // This should be allowed in the future, when theme is a regular setting.
+                return new Error('cannot_schedule_theme_switches'); // This should be allowed in the future, when theme is a regular setting.
             }
             $will_remain_auto_draft = (!$args['status'] && (!$changeset_post_id || 'auto-draft' === get_post_status($changeset_post_id)));
             if ($will_remain_auto_draft) {
-                return new WP_Error('cannot_supply_date_for_auto_draft_changeset');
+                return new Error('cannot_supply_date_for_auto_draft_changeset');
             }
         } elseif ($changeset_post_id && 'future' === $args['status']) {
 
             // Fail if the new status is future but the existing post's date is not in the future.
             $changeset_post = get_post($changeset_post_id);
             if (mysql2date('U', $changeset_post->post_date_gmt, false) <= mysql2date('U', $now, false)) {
-                return new WP_Error('not_future_date');
+                return new Error('not_future_date');
             }
         }
 
@@ -2442,7 +2442,7 @@ class Manager
                     $invalid_setting_count
                 ), number_format_i18n($invalid_setting_count)),
             ];
-            return new WP_Error('transaction_fail', '', $response);
+            return new Error('transaction_fail', '', $response);
         }
 
         // Obtain/merge data for changeset.
@@ -2622,7 +2622,7 @@ class Manager
 
         if (is_wp_error($r)) {
             $response['changeset_post_save_failure'] = $r->get_error_code();
-            return new WP_Error('changeset_post_save_failure', '', $response);
+            return new Error('changeset_post_save_failure', '', $response);
         }
 
         return $response;
@@ -2678,7 +2678,7 @@ class Manager
      * @see _wp_customize_publish_changeset()
      *
      * @param int $changeset_post_id ID for customize_changeset post. Defaults to the changeset for the current manager instance.
-     * @return true|WP_Error True or error info.
+     * @return true|Error True or error info.
      */
     public function _publish_changeset_values($changeset_post_id)
     {
@@ -4448,38 +4448,38 @@ class Manager
      *
      * @param string $value Repeat value.
      * @param Setting $setting Setting.
-     * @return string|WP_Error Background value or validation error.
+     * @return string|Error Background value or validation error.
      */
     public function _sanitize_background_setting($value, $setting)
     {
         if ('background_repeat' === $setting->id) {
             if (!in_array($value, ['repeat-x', 'repeat-y', 'repeat', 'no-repeat'])) {
-                return new WP_Error('invalid_value', __('Invalid value for background repeat.'));
+                return new Error('invalid_value', __('Invalid value for background repeat.'));
             }
         } elseif ('background_attachment' === $setting->id) {
             if (!in_array($value, ['fixed', 'scroll'])) {
-                return new WP_Error('invalid_value', __('Invalid value for background attachment.'));
+                return new Error('invalid_value', __('Invalid value for background attachment.'));
             }
         } elseif ('background_position_x' === $setting->id) {
             if (!in_array($value, ['left', 'center', 'right'], true)) {
-                return new WP_Error('invalid_value', __('Invalid value for background position X.'));
+                return new Error('invalid_value', __('Invalid value for background position X.'));
             }
         } elseif ('background_position_y' === $setting->id) {
             if (!in_array($value, ['top', 'center', 'bottom'], true)) {
-                return new WP_Error('invalid_value', __('Invalid value for background position Y.'));
+                return new Error('invalid_value', __('Invalid value for background position Y.'));
             }
         } elseif ('background_size' === $setting->id) {
             if (!in_array($value, ['auto', 'contain', 'cover'], true)) {
-                return new WP_Error('invalid_value', __('Invalid value for background size.'));
+                return new Error('invalid_value', __('Invalid value for background size.'));
             }
         } elseif ('background_preset' === $setting->id) {
             if (!in_array($value, ['default', 'fill', 'fit', 'repeat', 'custom'], true)) {
-                return new WP_Error('invalid_value', __('Invalid value for background size.'));
+                return new Error('invalid_value', __('Invalid value for background size.'));
             }
         } elseif ('background_image' === $setting->id || 'background_image_thumb' === $setting->id) {
             $value = empty($value) ? '' : esc_url_raw($value);
         } else {
-            return new WP_Error('unrecognized_setting', __('Unrecognized background setting.'));
+            return new Error('unrecognized_setting', __('Unrecognized background setting.'));
         }
         return $value;
     }
@@ -4510,7 +4510,7 @@ class Manager
      *
      * @since 4.7.0
      *
-     * @param WP_Error $validity
+     * @param Error $validity
      * @param mixed $value
      * @return mixed
      */
@@ -4547,7 +4547,7 @@ class Manager
      *
      * @since 4.7.0
      *
-     * @param WP_Error $validity
+     * @param Error $validity
      * @param mixed $value
      * @return mixed
      */

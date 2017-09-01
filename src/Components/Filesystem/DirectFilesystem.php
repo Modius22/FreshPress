@@ -8,7 +8,7 @@
 
 namespace Devtronic\FreshPress\Components\FileSystem;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * WordPress Filesystem Class for direct PHP file and folder manipulation.
@@ -31,7 +31,7 @@ class DirectFilesystem extends BaseFilesystem
     public function __construct($arg)
     {
         $this->method = 'direct';
-        $this->errors = new WP_Error();
+        $this->errors = new Error();
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Custom Setting to handle WP Custom CSS.
@@ -171,11 +171,11 @@ class CustomCssSetting extends Setting
      * @access public
      *
      * @param string $css The input string.
-     * @return true|WP_Error True if the input was validated, otherwise WP_Error.
+     * @return true|Error True if the input was validated, otherwise Error.
      */
     public function validate($css)
     {
-        $validity = new WP_Error();
+        $validity = new Error();
 
         if (preg_match('#</?\w+#', $css)) {
             $validity->add('illegal_markup', __('Markup is not allowed in CSS.'));
@@ -294,7 +294,7 @@ class CustomCssSetting extends Setting
             'stylesheet' => $this->stylesheet,
         ]);
 
-        if ($r instanceof WP_Error) {
+        if ($r instanceof Error) {
             return false;
         }
         $post_id = $r->ID;

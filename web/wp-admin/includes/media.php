@@ -8,6 +8,7 @@
 
 use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -294,7 +295,7 @@ function media_send_to_editor($html)
  *                          be set to 0, creating a media item that has no relationship to a post.
  * @param array $post_data Overwrite some of the attachment. Optional.
  * @param array $overrides Override the wp_handle_upload() behavior. Optional.
- * @return int|WP_Error ID of the attachment or a WP_Error object on failure.
+ * @return int|Error ID of the attachment or a Error object on failure.
  */
 function media_handle_upload($file_id, $post_id, $post_data = array(), $overrides = array('test_form' => false))
 {
@@ -308,7 +309,7 @@ function media_handle_upload($file_id, $post_id, $post_data = array(), $override
     $file = wp_handle_upload($_FILES[$file_id], $overrides, $time);
 
     if (isset($file['error'])) {
-        return new WP_Error('upload_error', $file['error']);
+        return new Error('upload_error', $file['error']);
     }
 
     $name = $_FILES[$file_id]['name'];
@@ -421,7 +422,7 @@ function media_handle_upload($file_id, $post_id, $post_data = array(), $override
  * @param int $post_id The post ID the media is associated with.
  * @param string $desc Optional. Description of the side-loaded file. Default null.
  * @param array $post_data Optional. Post data to override. Default empty array.
- * @return int|object The ID of the attachment or a WP_Error on failure.
+ * @return int|object The ID of the attachment or a Error on failure.
  */
 function media_handle_sideload($file_array, $post_id, $desc = null, $post_data = array())
 {
@@ -436,7 +437,7 @@ function media_handle_sideload($file_array, $post_id, $desc = null, $post_data =
 
     $file = wp_handle_sideload($file_array, $overrides, $time);
     if (isset($file['error'])) {
-        return new WP_Error('upload_error', $file['error']);
+        return new Error('upload_error', $file['error']);
     }
 
     $url = $file['url'];
@@ -688,7 +689,7 @@ function get_upload_iframe_src($type = null, $post_id = null, $tab = null)
  *
  * @since 2.5.0
  *
- * @return mixed void|object WP_Error on failure
+ * @return mixed void|object Error on failure
  */
 function media_upload_form_handler()
 {
@@ -935,7 +936,7 @@ function wp_media_upload_handler()
  * @param int $post_id The post ID the media is to be associated with.
  * @param string $desc Optional. Description of the image.
  * @param string $return Optional. Accepts 'html' (image tag html) or 'src' (URL), or 'id' (attachment ID). Default 'html'.
- * @return string|WP_Error Populated HTML img tag on success, WP_Error object otherwise.
+ * @return string|Error Populated HTML img tag on success, Error object otherwise.
  */
 function media_sideload_image($file, $post_id, $desc = null, $return = 'html')
 {
@@ -944,7 +945,7 @@ function media_sideload_image($file, $post_id, $desc = null, $return = 'html')
         // Set variables for storage, fix file filename for query strings.
         preg_match('/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $file, $matches);
         if (!$matches) {
-            return new WP_Error('image_sideload_failed', __('Invalid image URL'));
+            return new Error('image_sideload_failed', __('Invalid image URL'));
         }
 
         $file_array = array();
@@ -983,7 +984,7 @@ function media_sideload_image($file, $post_id, $desc = null, $return = 'html')
         $html = "<img src='$src' alt='$alt' />";
         return $html;
     } else {
-        return new WP_Error('image_sideload_failed');
+        return new Error('image_sideload_failed');
     }
 }
 

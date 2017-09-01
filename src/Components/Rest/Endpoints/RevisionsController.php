@@ -12,8 +12,8 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Error;
 
 /**
  * Core class used to access revisions via the REST API.
@@ -145,11 +145,11 @@ class RevisionsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return Post|WP_Error Post object if ID is valid, WP_Error otherwise.
+     * @return Post|Error Post object if ID is valid, Error otherwise.
      */
     protected function get_parent($parent)
     {
-        $error = new WP_Error('rest_post_invalid_parent', __('Invalid post parent ID.'), ['status' => 404]);
+        $error = new Error('rest_post_invalid_parent', __('Invalid post parent ID.'), ['status' => 404]);
         if ((int)$parent <= 0) {
             return $error;
         }
@@ -169,7 +169,7 @@ class RevisionsController extends Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
+     * @return true|Error True if the request has read access, Error object otherwise.
      */
     public function get_items_permissions_check($request)
     {
@@ -180,7 +180,7 @@ class RevisionsController extends Controller
 
         $parent_post_type_obj = get_post_type_object($parent->post_type);
         if (!current_user_can($parent_post_type_obj->cap->edit_post, $parent->ID)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_read',
                 __('Sorry, you are not allowed to view revisions of this post.'),
                 ['status' => rest_authorization_required_code()]
@@ -196,11 +196,11 @@ class RevisionsController extends Controller
      * @since 4.7.2
      *
      * @param int $id Supplied ID.
-     * @return Post|WP_Error Revision post object if ID is valid, WP_Error otherwise.
+     * @return Post|Error Revision post object if ID is valid, Error otherwise.
      */
     protected function get_revision($id)
     {
-        $error = new WP_Error('rest_post_invalid_id', __('Invalid revision ID.'), ['status' => 404]);
+        $error = new Error('rest_post_invalid_id', __('Invalid revision ID.'), ['status' => 404]);
         if ((int)$id <= 0) {
             return $error;
         }
@@ -220,7 +220,7 @@ class RevisionsController extends Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
@@ -246,7 +246,7 @@ class RevisionsController extends Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return bool|WP_Error True if the request has read access for the item, WP_Error object otherwise.
+     * @return bool|Error True if the request has read access for the item, Error object otherwise.
      */
     public function get_item_permissions_check($request)
     {
@@ -260,7 +260,7 @@ class RevisionsController extends Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return Response|WP_Error Response object on success, or WP_Error object on failure.
+     * @return Response|Error Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
@@ -285,7 +285,7 @@ class RevisionsController extends Controller
      * @access public
      *
      * @param  Request $request Full details about the request.
-     * @return bool|WP_Error True if the request has access to delete the item, WP_Error object otherwise.
+     * @return bool|Error True if the request has access to delete the item, Error object otherwise.
      */
     public function delete_item_permissions_check($request)
     {
@@ -315,7 +315,7 @@ class RevisionsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return true|WP_Error True on success, or WP_Error object on failure.
+     * @return true|Error True on success, or Error object on failure.
      */
     public function delete_item($request)
     {
@@ -328,7 +328,7 @@ class RevisionsController extends Controller
 
         // We don't support trashing for revisions.
         if (!$force) {
-            return new WP_Error(
+            return new Error(
                 'rest_trash_not_supported',
                 __('Revisions do not support trashing. Set force=true to delete.'),
                 ['status' => 501]
@@ -352,7 +352,7 @@ class RevisionsController extends Controller
         do_action('rest_delete_revision', $result, $request);
 
         if (!$result) {
-            return new WP_Error('rest_cannot_delete', __('The post cannot be deleted.'), ['status' => 500]);
+            return new Error('rest_cannot_delete', __('The post cannot be deleted.'), ['status' => 500]);
         }
 
         $response = new Response();

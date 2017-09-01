@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Generic Bulk Upgrader Skin for WordPress Upgrades.
@@ -100,7 +100,7 @@ class BulkUpgraderSkin extends UpgraderSkin
 
     /**
      *
-     * @param string|WP_Error $error
+     * @param string|Error $error
      */
     public function error($error)
     {
