@@ -7,6 +7,7 @@
  * @since 4.2.0
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -1302,7 +1303,7 @@ class WP_Press_This
      * @since 4.2.0
      * @access public
      *
-     * @global WP_Locale $wp_locale
+     * @global Locale $wp_locale
      * @global bool $is_IE
      */
     public function html()

@@ -6,9 +6,10 @@
  * @subpackage Theme
  */
 
-use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 use Devtronic\FreshPress\Components\Admin\CustomBackground;
+use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -279,7 +280,7 @@ function get_stylesheet_uri()
  *
  * @since 2.1.0
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @return string
  */

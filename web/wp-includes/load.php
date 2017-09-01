@@ -6,6 +6,7 @@
  */
 
 use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
@@ -977,7 +978,7 @@ function get_current_network_id()
  * @since 3.4.0
  * @access private
  *
- * @global WP_Locale $wp_locale The WordPress date and time locale object.
+ * @global Locale $wp_locale The WordPress date and time locale object.
  *
  * @staticvar bool $loaded
  */
@@ -1000,7 +1001,6 @@ function wp_load_translations_early()
 
     // Translation and localization
     require_once ABSPATH . WPINC . '/l10n.php';
-    require_once ABSPATH . WPINC . '/class-wp-locale.php';
 
     // General libraries
     require_once ABSPATH . WPINC . '/plugin.php';
@@ -1060,7 +1060,7 @@ function wp_load_translations_early()
         break;
     }
 
-    $wp_locale = new WP_Locale();
+    $wp_locale = new Locale();
 }
 
 /**

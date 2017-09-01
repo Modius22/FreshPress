@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Entity\User;
 use POMO\MO;
 use POMO\Translations\NOOPTranslations;
@@ -1318,14 +1319,14 @@ function wp_dropdown_languages($args = array())
  *
  * @since 3.0.0
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @return bool Whether locale is RTL.
  */
 function is_rtl()
 {
     global $wp_locale;
-    if (!($wp_locale instanceof WP_Locale)) {
+    if (!($wp_locale instanceof Locale)) {
         return false;
     }
     return $wp_locale->is_rtl();

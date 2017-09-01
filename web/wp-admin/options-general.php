@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -409,7 +411,7 @@ include(ABSPATH . 'wp-admin/admin-header.php');
                 <td><select name="start_of_week" id="start_of_week">
                         <?php
                         /**
-                         * @global WP_Locale $wp_locale
+                         * @global Locale $wp_locale
                          */
                         global $wp_locale;
 

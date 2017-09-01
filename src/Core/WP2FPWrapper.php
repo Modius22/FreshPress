@@ -180,6 +180,7 @@ $classes = array_change_key_case([
     'WP_User_Meta_Session_Tokens' => 'Devtronic\\FreshPress\\Components\\Session\\UserMetaSessionTokens',
     'WP' => 'Devtronic\\FreshPress\\Core\\Kernel',
     'WP_Locale_Switcher' => 'Devtronic\\FreshPress\\Components\\I18n\\LocaleSwitcher',
+    'WP_Locale' => 'Devtronic\\FreshPress\\Components\\I18n\\Locale',
 ]);
 
 $abstractClasses = array_change_key_case([

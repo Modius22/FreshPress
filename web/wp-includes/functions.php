@@ -6,6 +6,7 @@
  */
 
 use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Util\ListUtil;
 use Devtronic\FreshPress\Core\Kernel;
@@ -94,7 +95,7 @@ function current_time($type, $gmt = 0)
  *
  * @since 0.71
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param string $dateformatstring Format to display the date.
  * @param bool|int $unixtimestamp Optional. Unix timestamp. Default false.
@@ -228,7 +229,7 @@ function wp_maybe_decline_date($date)
  *
  * @since 2.3.0
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param float $number The number to convert based on locale.
  * @param int $decimals Optional. Precision of the number of decimal places. Default 0.

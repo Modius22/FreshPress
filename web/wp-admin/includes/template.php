@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\ListTables\CommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\ListTable;
 use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
@@ -689,7 +690,7 @@ function meta_form($post = null)
  * @since 0.71
  * @since 4.4.0 Converted to use get_comment() instead of the global `$comment`.
  *
- * @global WP_Locale  $wp_locale
+ * @global Locale  $wp_locale
  *
  * @param int|bool $edit      Accepts 1|true for editing the date, 0|false for adding the date.
  * @param int|bool $for_post  Accepts 1|true for applying the date to a post, 0|false for a comment.
@@ -1671,7 +1672,7 @@ function _admin_search_query()
  *
  * @global string    $hook_suffix
  * @global string    $admin_body_class
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param string $title      Optional. Title of the Iframe page. Default empty.
  * @param bool   $deprecated Not used.

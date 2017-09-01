@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Dependencies\Dependencies;
 use Devtronic\FreshPress\Components\Dependencies\Dependency;
 use Devtronic\FreshPress\Components\Dependencies\Styles;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -1152,7 +1153,7 @@ function _wp_render_title_tag()
  *
  * @since 1.0.0
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param string $sep Optional, default is '&raquo;'. How to separate the various items
  *                            within the page title.
@@ -1479,7 +1480,7 @@ function single_term_title($prefix = '', $display = true)
  *
  * @since 0.71
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param string $prefix Optional. What to display before the title.
  * @param bool $display Optional, default is true. Whether to display or retrieve title.
@@ -1719,7 +1720,7 @@ function get_archives_link($url, $text, $format = 'html', $before = '', $after =
  * @see get_archives_link()
  *
  * @global WPDB $wpdb
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param string|array $args {
  *     Default archive links arguments. Optional.
@@ -1970,7 +1971,7 @@ function calendar_week_mod($num)
  * @global int $m
  * @global int $monthnum
  * @global int $year
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  * @global array $posts
  *
  * @param bool $initial Optional, default is true. Use initial calendar names.
@@ -2622,7 +2623,7 @@ function get_post_modified_time($d = 'U', $gmt = false, $post = null, $translate
  *
  * @since 0.71
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  */
 function the_weekday()
 {
@@ -2647,7 +2648,7 @@ function the_weekday()
  *
  * @since 0.71
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  * @global string|int|bool $currentday
  * @global string|int|bool $previousweekday
  *

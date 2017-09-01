@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\I18n;
 
-use WP_Locale;
-
 /**
  * Core class used for switching locales.
  *
@@ -229,7 +227,7 @@ class LocaleSwitcher
      * @since 4.7.0
      * @access private
      *
-     * @global WP_Locale $wp_locale The WordPress date and time locale object.
+     * @global Locale $wp_locale The WordPress date and time locale object.
      *
      * @param string $locale The locale to change to.
      */
@@ -240,7 +238,7 @@ class LocaleSwitcher
 
         $this->load_translations($locale);
 
-        $GLOBALS['wp_locale'] = new WP_Locale();
+        $GLOBALS['wp_locale'] = new Locale();
 
         /**
          * Fires when the locale is switched to or restored.

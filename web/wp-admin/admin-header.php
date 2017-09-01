@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
 
 @header('Content-Type: ' . get_option('html_type') . '; charset=' . get_option('blog_charset'));
 if (!defined('WP_ADMIN')) {
@@ -19,7 +20,7 @@ if (!defined('WP_ADMIN')) {
  * @global string $title
  * @global string $hook_suffix
  * @global Screen $current_screen
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  * @global string $pagenow
  * @global string $update_title
  * @global int $total_update_count

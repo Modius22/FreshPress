@@ -18,6 +18,7 @@
 
 use Devtronic\FreshPress\Components\Dependencies\Scripts;
 use Devtronic\FreshPress\Components\Dependencies\Styles;
+use Devtronic\FreshPress\Components\I18n\Locale;
 
 /** WordPress Scripts Functions */
 require(ABSPATH . WPINC . '/functions.wp-scripts.php');
@@ -1537,7 +1538,7 @@ function wp_just_in_time_script_localization()
  *
  * @link http://api.jqueryui.com/datepicker/#options
  *
- * @global WP_Locale $wp_locale The WordPress date and time locale object.
+ * @global Locale $wp_locale The WordPress date and time locale object.
  */
 function wp_localize_jquery_ui_datepicker()
 {

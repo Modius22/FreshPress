@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -2565,7 +2566,7 @@ function media_upload_gallery_form($errors)
  *
  * @global WPDB $wpdb
  * @global Query $wp_query
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  * @global string $type
  * @global string $tab
  * @global array $post_mime_types

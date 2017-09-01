@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\Core\Kernel;
@@ -344,10 +345,10 @@ unset($locale_file);
 
 /**
  * WordPress Locale object for loading locale domain date and various strings.
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  * @since 2.1.0
  */
-$GLOBALS['wp_locale'] = new WP_Locale();
+$GLOBALS['wp_locale'] = new Locale();
 
 /**
  *  WordPress Locale Switcher object for switching locales.

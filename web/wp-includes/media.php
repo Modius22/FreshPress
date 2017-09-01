@@ -6,6 +6,7 @@
  * @subpackage Media
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\ImageEditor\GdImageEditor;
 use Devtronic\FreshPress\Components\ImageEditor\ImageEditor;
 use Devtronic\FreshPress\Components\ImageEditor\ImagickImageEditor;
@@ -3429,7 +3430,7 @@ function wp_prepare_attachment_for_js($attachment)
  *
  * @global int $content_width
  * @global WPDB $wpdb
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param array $args {
  *     Arguments for enqueuing media scripts.
