@@ -13,6 +13,7 @@
  */
 
 use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\Admin\AdminBar;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -914,12 +915,12 @@ function screen_meta($screen)
  * Favorite actions were deprecated in version 3.2. Use the admin bar instead.
  *
  * @since 2.7.0
- * @deprecated 3.2.0 Use WP_Admin_Bar
- * @see WP_Admin_Bar
+ * @deprecated 3.2.0 Use AdminBar
+ * @see AdminBar
  */
 function favorite_actions()
 {
-    _deprecated_function(__FUNCTION__, '3.2.0', 'WP_Admin_Bar');
+    _deprecated_function(__FUNCTION__, '3.2.0', AdminBar::class);
 }
 
 /**

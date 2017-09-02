@@ -8,6 +8,7 @@
  * @subpackage Deprecated
  */
 
+use Devtronic\FreshPress\Components\Admin\AdminBar;
 use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -3176,7 +3177,7 @@ function parent_post_rel_link($title = '%title')
  * @since 3.2.0
  * @deprecated 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance.
+ * @param AdminBar $wp_admin_bar AdminBar instance.
  */
 function wp_admin_bar_dashboard_view_site_menu($wp_admin_bar)
 {
