@@ -7,6 +7,7 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -371,7 +372,7 @@ All at ###SITENAME###
  *
  * @since 3.0.0
  *
- * @global WP_Error $errors WP_Error object.
+ * @global Error $errors Error object.
  * @global WPDB $wpdb WordPress database object.
  */
 function send_confirmation_on_profile_email()
@@ -379,7 +380,7 @@ function send_confirmation_on_profile_email()
     global $errors, $wpdb;
     $current_user = wp_get_current_user();
     if (!is_object($errors)) {
-        $errors = new WP_Error();
+        $errors = new Error();
     }
 
     if ($current_user->ID != $_POST['user_id']) {

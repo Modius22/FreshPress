@@ -6,12 +6,14 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\Error;
+
 /**
  * Add a link to using values provided in $_POST.
  *
  * @since 2.0.0
  *
- * @return int|WP_Error Value 0 or WP_Error on failure. The link ID on success.
+ * @return int|Error Value 0 or Error on failure. The link ID on success.
  */
 function add_link()
 {
@@ -24,7 +26,7 @@ function add_link()
  * @since 2.0.0
  *
  * @param int $link_id Optional. ID of the link to edit. Default 0.
- * @return int|WP_Error Value 0 or WP_Error on failure. The link ID on success.
+ * @return int|Error Value 0 or Error on failure. The link ID on success.
  */
 function edit_link($link_id = 0)
 {
@@ -155,8 +157,8 @@ function get_link_to_edit($link)
  * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @param array $linkdata Elements that make up the link to insert.
- * @param bool $wp_error Optional. Whether to return a WP_Error object on failure. Default false.
- * @return int|WP_Error Value 0 or WP_Error on failure. The link ID on success.
+ * @param bool $wp_error Optional. Whether to return a Error object on failure. Default false.
+ * @return int|Error Value 0 or Error on failure. The link ID on success.
  */
 function wp_insert_link($linkdata, $wp_error = false)
 {
@@ -222,7 +224,7 @@ function wp_insert_link($linkdata, $wp_error = false)
             compact('link_id')
         )) {
             if ($wp_error) {
-                return new WP_Error('db_update_error', __('Could not update link in the database'), $wpdb->last_error);
+                return new Error('db_update_error', __('Could not update link in the database'), $wpdb->last_error);
             } else {
                 return 0;
             }
@@ -245,7 +247,7 @@ function wp_insert_link($linkdata, $wp_error = false)
                 )
         )) {
             if ($wp_error) {
-                return new WP_Error(
+                return new Error(
                     'db_insert_error',
                     __('Could not insert link into the database'),
                     $wpdb->last_error
@@ -312,7 +314,7 @@ function wp_set_link_cats($link_id = 0, $link_categories = array())
  * @since 2.0.0
  *
  * @param array $linkdata Link data to update.
- * @return int|WP_Error Value 0 or WP_Error on failure. The updated link ID on success.
+ * @return int|Error Value 0 or Error on failure. The updated link ID on success.
  */
 function wp_update_link($linkdata)
 {

@@ -174,6 +174,14 @@ $classes = array_change_key_case([
     'ftp_base' => 'Devtronic\\FreshPress\\Components\\FTP\\BaseFTP',
     'ftp_pure' => 'Devtronic\\FreshPress\\Components\\FTP\\PureFTP',
     'ftp_sockets' => 'Devtronic\\FreshPress\\Components\\FTP\\SocketsFTP',
+    'WP_List_Util' => 'Devtronic\\FreshPress\\Components\\Util\\ListUtil',
+    'Custom_Background' => 'Devtronic\\FreshPress\\Components\\Admin\\CustomBackground',
+    'Custom_Image_Header' => 'Devtronic\\FreshPress\\Components\\Admin\\CustomImageHeader',
+    'WP_User_Meta_Session_Tokens' => 'Devtronic\\FreshPress\\Components\\Session\\UserMetaSessionTokens',
+    'WP' => 'Devtronic\\FreshPress\\Core\\Kernel',
+    'WP_Locale_Switcher' => 'Devtronic\\FreshPress\\Components\\I18n\\LocaleSwitcher',
+    'WP_Locale' => 'Devtronic\\FreshPress\\Components\\I18n\\Locale',
+    'WP_Admin_Bar' => 'Devtronic\\FreshPress\\Components\\Admin\\AdminBar',
 ]);
 
 $abstractClasses = array_change_key_case([
@@ -181,6 +189,7 @@ $abstractClasses = array_change_key_case([
     'WP_REST_Controller' => 'Devtronic\\FreshPress\\Components\\Rest\\Endpoints\\Controller',
     'WP_REST_Meta_Fields' => 'Devtronic\\FreshPress\\Components\\Rest\\Fields\\MetaFields',
     'WP_Image_Editor' => 'Devtronic\\FreshPress\\Components\\ImageEditor\\ImageEditor',
+    'WP_Session_Tokens' => 'Devtronic\\FreshPress\\Components\\Session\\SessionTokens',
 ]);
 
 $finalClasses = array_change_key_case([
@@ -195,6 +204,7 @@ $finalClasses = array_change_key_case([
     'WP_Comment' => 'Devtronic\\FreshPress\\Entity\\Comment',
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
     'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
+    'WP_Screen' => 'Devtronic\\FreshPress\\Components\\Admin\\Screen',
 ]);
 
 // Only for compatibility, remove in 2.x

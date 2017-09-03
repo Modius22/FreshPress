@@ -9,8 +9,8 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Error;
 
 /**
  * Customize Setting to represent a nav_menu.
@@ -156,7 +156,7 @@ class NavMenuItemSetting extends Setting
      *
      * @since 4.3.0
      * @access public
-     * @var WP_Error
+     * @var Error
      *
      * @see NavMenuItemSetting::update()
      * @see NavMenuItemSetting::amend_customize_save_response()
@@ -796,7 +796,7 @@ class NavMenuItemSetting extends Setting
                 $r = wp_delete_post($this->post_id, true);
 
                 if (false === $r) {
-                    $this->update_error = new WP_Error('delete_failure');
+                    $this->update_error = new Error('delete_failure');
                     $this->update_status = 'error';
                 } else {
                     $this->update_status = 'deleted';
@@ -812,19 +812,19 @@ class NavMenuItemSetting extends Setting
 
                 if (!$nav_menu_setting || !($nav_menu_setting instanceof NavMenuSetting)) {
                     $this->update_status = 'error';
-                    $this->update_error = new WP_Error('unexpected_nav_menu_setting');
+                    $this->update_error = new Error('unexpected_nav_menu_setting');
                     return;
                 }
 
                 if (false === $nav_menu_setting->save()) {
                     $this->update_status = 'error';
-                    $this->update_error = new WP_Error('nav_menu_setting_failure');
+                    $this->update_error = new Error('nav_menu_setting_failure');
                     return;
                 }
 
                 if ($nav_menu_setting->previous_term_id !== intval($value['nav_menu_term_id'])) {
                     $this->update_status = 'error';
-                    $this->update_error = new WP_Error('unexpected_previous_term_id');
+                    $this->update_error = new Error('unexpected_previous_term_id');
                     return;
                 }
 
@@ -838,19 +838,19 @@ class NavMenuItemSetting extends Setting
 
                 if (!$parent_nav_menu_item_setting || !($parent_nav_menu_item_setting instanceof NavMenuItemSetting)) {
                     $this->update_status = 'error';
-                    $this->update_error = new WP_Error('unexpected_nav_menu_item_setting');
+                    $this->update_error = new Error('unexpected_nav_menu_item_setting');
                     return;
                 }
 
                 if (false === $parent_nav_menu_item_setting->save()) {
                     $this->update_status = 'error';
-                    $this->update_error = new WP_Error('nav_menu_item_setting_failure');
+                    $this->update_error = new Error('nav_menu_item_setting_failure');
                     return;
                 }
 
                 if ($parent_nav_menu_item_setting->previous_post_id !== intval($value['menu_item_parent'])) {
                     $this->update_status = 'error';
-                    $this->update_error = new WP_Error('unexpected_previous_post_id');
+                    $this->update_error = new Error('unexpected_previous_post_id');
                     return;
                 }
 

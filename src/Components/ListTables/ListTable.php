@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Locale;
+use Devtronic\FreshPress\Components\I18n\Locale;
 
 /**
  * Base class for displaying a list of items in an ajaxified HTML table.
@@ -583,7 +583,7 @@ class ListTable
      * @access protected
      *
      * @global wpdb $wpdb
-     * @global WP_Locale $wp_locale
+     * @global Locale $wp_locale
      *
      * @param string $post_type
      */

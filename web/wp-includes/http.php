@@ -11,6 +11,7 @@
 
 use Devtronic\FreshPress\Components\Http\Cookie;
 use Devtronic\FreshPress\Components\Http\Http;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Returns the initialized Http Object
@@ -45,7 +46,7 @@ function _wp_http_get_object()
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_safe_remote_request($url, $args = array())
 {
@@ -67,7 +68,7 @@ function wp_safe_remote_request($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_safe_remote_get($url, $args = array())
 {
@@ -89,7 +90,7 @@ function wp_safe_remote_get($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_safe_remote_post($url, $args = array())
 {
@@ -111,7 +112,7 @@ function wp_safe_remote_post($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_safe_remote_head($url, $args = array())
 {
@@ -154,7 +155,7 @@ function wp_safe_remote_head($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_remote_request($url, $args = array())
 {
@@ -172,7 +173,7 @@ function wp_remote_request($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_remote_get($url, $args = array())
 {
@@ -190,7 +191,7 @@ function wp_remote_get($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_remote_post($url, $args = array())
 {
@@ -208,7 +209,7 @@ function wp_remote_post($url, $args = array())
  *
  * @param string $url Site URL to retrieve.
  * @param array $args Optional. Request arguments. Default empty array.
- * @return WP_Error|array The response or WP_Error on failure.
+ * @return Error|array The response or Error on failure.
  */
 function wp_remote_head($url, $args = array())
 {
@@ -319,7 +320,7 @@ function wp_remote_retrieve_body($response)
  * @since 4.4.0
  *
  * @param array $response HTTP response.
- * @return array An array of `Cookie` objects from the response. Empty array if there are none, or the response is a WP_Error.
+ * @return array An array of `Cookie` objects from the response. Empty array if there are none, or the response is a Error.
  */
 function wp_remote_retrieve_cookies($response)
 {

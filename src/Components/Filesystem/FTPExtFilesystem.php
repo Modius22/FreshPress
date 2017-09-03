@@ -8,7 +8,7 @@
 
 namespace Devtronic\FreshPress\Components\FileSystem;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * WordPress Filesystem Class for implementing FTP.
@@ -30,7 +30,7 @@ class FTPExtFilesystem extends BaseFilesystem
     public function __construct($opt = '')
     {
         $this->method = 'ftpext';
-        $this->errors = new WP_Error();
+        $this->errors = new Error();
 
         // Check if possible to use ftp functions.
         if (!extension_loaded('ftp')) {

@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Customize Setting to represent a nav_menu.
@@ -123,7 +123,7 @@ class NavMenuSetting extends Setting
      *
      * @since 4.3.0
      * @access public
-     * @var WP_Error
+     * @var Error
      *
      * @see NavMenuSetting::update()
      * @see NavMenuSetting::amend_customize_save_response()

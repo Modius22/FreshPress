@@ -1,20 +1,22 @@
 <?php
 /**
- * Toolbar API: WP_Admin_Bar class
+ * Toolbar API: AdminBar class
  *
  * @package WordPress
  * @subpackage Toolbar
  * @since 3.1.0
  */
 
+namespace Devtronic\FreshPress\Components\Admin;
+
 /**
  * Core class used to implement the Toolbar API.
  *
  * @since 3.1.0
  */
-class WP_Admin_Bar
+class AdminBar
 {
-    private $nodes = array();
+    private $nodes = [];
     private $bound = false;
     public $user;
 
@@ -30,11 +32,11 @@ class WP_Admin_Bar
 
             case 'menu':
                 _deprecated_argument(
-                    'WP_Admin_Bar',
+                    AdminBar::class,
                     '3.3.0',
-                    'Modify admin bar nodes with WP_Admin_Bar::get_node(), WP_Admin_Bar::add_node(), and WP_Admin_Bar::remove_node(), not the <code>menu</code> property.'
+                    'Modify admin bar nodes with AdminBar::get_node(), AdminBar::add_node(), and AdminBar::remove_node(), not the <code>menu</code> property.'
                 );
-                return array(); // Sorry, folks.
+                return []; // Sorry, folks.
         }
     }
 
@@ -43,7 +45,7 @@ class WP_Admin_Bar
      */
     public function initialize()
     {
-        $this->user = new stdClass;
+        $this->user = new \stdClass;
 
         if (is_user_logged_in()) {
             /* Populate settings we need for the menu based on the current user. */
@@ -82,7 +84,7 @@ class WP_Admin_Bar
         wp_enqueue_style('admin-bar');
 
         /**
-         * Fires after WP_Admin_Bar is initialized.
+         * Fires after AdminBar is initialized.
          *
          * @since 3.1.0
          */
@@ -128,7 +130,7 @@ class WP_Admin_Bar
     {
         // Shim for old method signature: add_node( $parent_id, $menu_obj, $args )
         if (func_num_args() >= 3 && is_string(func_get_arg(0))) {
-            $args = array_merge(array('parent' => func_get_arg(0)), func_get_arg(2));
+            $args = array_merge(['parent' => func_get_arg(0)], func_get_arg(2));
         }
 
         if (is_object($args)) {
@@ -146,14 +148,14 @@ class WP_Admin_Bar
             $args['id'] = esc_attr(sanitize_title(trim($args['title'])));
         }
 
-        $defaults = array(
+        $defaults = [
             'id' => false,
             'title' => false,
             'parent' => false,
             'href' => false,
             'group' => false,
-            'meta' => array(),
-        );
+            'meta' => [],
+        ];
 
         // If the node already exists, keep any data that isn't provided.
         if ($maybe_defaults = $this->get_node($args['id'])) {
@@ -167,10 +169,10 @@ class WP_Admin_Bar
 
         $args = wp_parse_args($args, $defaults);
 
-        $back_compat_parents = array(
-            'my-account-with-avatar' => array('my-account', '3.3'),
-            'my-blogs' => array('my-sites', '3.3'),
-        );
+        $back_compat_parents = [
+            'my-account-with-avatar' => ['my-account', '3.3'],
+            'my-blogs' => ['my-sites', '3.3'],
+        ];
 
         if (isset($back_compat_parents[$args['parent']])) {
             list($new_parent, $version) = $back_compat_parents[$args['parent']];
@@ -319,14 +321,14 @@ class WP_Admin_Bar
         // Add the root node.
         // Clear it first, just in case. Don't mess with The Root.
         $this->remove_node('root');
-        $this->add_node(array(
+        $this->add_node([
             'id' => 'root',
             'group' => false,
-        ));
+        ]);
 
         // Normalize nodes: define internal 'children' and 'type' properties.
         foreach ($this->_get_nodes() as $node) {
-            $node->children = array();
+            $node->children = [];
             $node->type = ($node->group) ? 'group' : 'item';
             unset($node->group);
 
@@ -367,17 +369,17 @@ class WP_Admin_Bar
                 if (!$default) {
                     // Use _set_node because add_node can be overloaded.
                     // Make sure to specify default settings for all properties.
-                    $this->_set_node(array(
+                    $this->_set_node([
                         'id' => $default_id,
                         'parent' => $parent->id,
                         'type' => 'group',
-                        'children' => array(),
-                        'meta' => array(
+                        'children' => [],
+                        'meta' => [
                             'class' => $group_class,
-                        ),
+                        ],
                         'title' => false,
                         'href' => false,
-                    ));
+                    ]);
                     $default = $this->_get_node($default_id);
                     $parent->children[] = $default;
                 }
@@ -393,15 +395,15 @@ class WP_Admin_Bar
                 if (!$container) {
                     // Use _set_node because add_node can be overloaded.
                     // Make sure to specify default settings for all properties.
-                    $this->_set_node(array(
+                    $this->_set_node([
                         'id' => $container_id,
                         'type' => 'container',
-                        'children' => array($parent),
+                        'children' => [$parent],
                         'parent' => false,
                         'title' => false,
                         'href' => false,
-                        'meta' => array(),
-                    ));
+                        'meta' => [],
+                    ]);
 
                     $container = $this->_get_node($container_id);
 
@@ -415,7 +417,7 @@ class WP_Admin_Bar
                         if ($index === false) {
                             $grandparent->children[] = $container;
                         } else {
-                            array_splice($grandparent->children, $index, 1, array($container));
+                            array_splice($grandparent->children, $index, 1, [$container]);
                         }
                     }
 
@@ -464,7 +466,7 @@ class WP_Admin_Bar
             <?php if (!is_admin()) {
             ?>
                 <a class="screen-reader-shortcut" href="#wp-toolbar" tabindex="1"><?php _e('Skip to toolbar'); ?></a>
-            <?php
+                <?php
         } ?>
             <div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="<?php esc_attr_e('Toolbar'); ?>"
                  tabindex="0">
@@ -613,7 +615,7 @@ class WP_Admin_Bar
      */
     public function recursive_render($id, $node)
     {
-        _deprecated_function(__METHOD__, '3.3.0', 'WP_Admin_bar::render(), WP_Admin_Bar::_render_item()');
+        _deprecated_function(__METHOD__, '3.3.0', 'AdminBar::render(), AdminBar::_render_item()');
         $this->_render_item($node);
     }
 

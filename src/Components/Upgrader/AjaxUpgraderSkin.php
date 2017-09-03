@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Upgrader Skin for Ajax WordPress upgrades.
@@ -24,11 +24,11 @@ class AjaxUpgraderSkin extends AutomaticUpgraderSkin
 {
 
     /**
-     * Holds the WP_Error object.
+     * Holds the Error object.
      *
      * @since 4.6.0
      * @access protected
-     * @var null|WP_Error
+     * @var null|Error
      */
     protected $errors = null;
 
@@ -44,7 +44,7 @@ class AjaxUpgraderSkin extends AutomaticUpgraderSkin
     {
         parent::__construct($args);
 
-        $this->errors = new WP_Error();
+        $this->errors = new Error();
     }
 
     /**
@@ -53,7 +53,7 @@ class AjaxUpgraderSkin extends AutomaticUpgraderSkin
      * @since 4.6.0
      * @access public
      *
-     * @return WP_Error Errors during an upgrade.
+     * @return Error Errors during an upgrade.
      */
     public function get_errors()
     {
@@ -89,7 +89,7 @@ class AjaxUpgraderSkin extends AutomaticUpgraderSkin
      * @since 4.6.0
      * @access public
      *
-     * @param string|WP_Error $errors Errors.
+     * @param string|Error $errors Errors.
      */
     public function error($errors)
     {
@@ -130,7 +130,7 @@ class AjaxUpgraderSkin extends AutomaticUpgraderSkin
      * @since 4.6.0
      * @access public
      *
-     * @param string|array|WP_Error $data Log entry data.
+     * @param string|array|Error $data Log entry data.
      */
     public function feedback($data)
     {

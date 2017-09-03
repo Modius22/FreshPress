@@ -8,8 +8,11 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
 /**
@@ -301,10 +304,10 @@ $GLOBALS['wp_rewrite'] = new WP_Rewrite();
 
 /**
  * WordPress Object
- * @global WP $wp
+ * @global Kernel $wp
  * @since 2.0.0
  */
-$GLOBALS['wp'] = new WP();
+$GLOBALS['wp'] = new Kernel();
 
 /**
  * WordPress Widget Factory Object
@@ -342,19 +345,19 @@ unset($locale_file);
 
 /**
  * WordPress Locale object for loading locale domain date and various strings.
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  * @since 2.1.0
  */
-$GLOBALS['wp_locale'] = new WP_Locale();
+$GLOBALS['wp_locale'] = new Locale();
 
 /**
  *  WordPress Locale Switcher object for switching locales.
  *
  * @since 4.7.0
  *
- * @global WP_Locale_Switcher $wp_locale_switcher WordPress locale switcher object.
+ * @global LocaleSwitcher $wp_locale_switcher WordPress locale switcher object.
  */
-$GLOBALS['wp_locale_switcher'] = new WP_Locale_Switcher();
+$GLOBALS['wp_locale_switcher'] = new LocaleSwitcher();
 $GLOBALS['wp_locale_switcher']->init();
 
 // Load the functions for the active theme, for both parent and child theme if applicable.

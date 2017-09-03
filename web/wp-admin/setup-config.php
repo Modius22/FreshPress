@@ -9,6 +9,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\DependencyInjection\ServiceContainer;
 use Symfony\Component\Yaml\Yaml;
 
@@ -122,7 +123,7 @@ if ($step == -1 && wp_can_install_language_pack() && empty($language) && ($langu
         $loaded_language = wp_download_language_pack($language);
         if ($loaded_language) {
             load_default_textdomain($loaded_language);
-            $GLOBALS['wp_locale'] = new WP_Locale();
+            $GLOBALS['wp_locale'] = new Locale();
         }
     }
 
@@ -142,7 +143,7 @@ if ($step == -1 && wp_can_install_language_pack() && empty($language) && ($langu
     echo $twig->render('installer/introduction.html.twig', $context);
 } elseif ($step == 1) {
     load_default_textdomain($language);
-    $GLOBALS['wp_locale'] = new WP_Locale();
+    $GLOBALS['wp_locale'] = new Locale();
 
     $context = getTemplateParameters();
     $context['noapi'] = isset($_GET['noapi']);
@@ -151,7 +152,7 @@ if ($step == -1 && wp_can_install_language_pack() && empty($language) && ($langu
     echo $twig->render('installer/setup_database.html.twig', $context);
 } elseif ($step == 2) {
     load_default_textdomain($language);
-    $GLOBALS['wp_locale'] = new WP_Locale();
+    $GLOBALS['wp_locale'] = new Locale();
 
     $dbname = trim(wp_unslash($_POST['dbname']));
     $uname = trim(wp_unslash($_POST['uname']));

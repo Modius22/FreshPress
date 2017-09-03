@@ -12,7 +12,7 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core base controller for managing and interacting with REST API items.
@@ -62,11 +62,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|bool True if the request has read access, WP_Error object otherwise.
+     * @return Error|bool True if the request has read access, Error object otherwise.
      */
     public function get_items_permissions_check($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -80,11 +80,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -98,11 +98,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|bool True if the request has read access for the item, WP_Error object otherwise.
+     * @return Error|bool True if the request has read access for the item, Error object otherwise.
      */
     public function get_item_permissions_check($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -116,11 +116,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -134,11 +134,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|bool True if the request has access to create items, WP_Error object otherwise.
+     * @return Error|bool True if the request has access to create items, Error object otherwise.
      */
     public function create_item_permissions_check($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -152,11 +152,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function create_item($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -170,11 +170,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|bool True if the request has access to update the item, WP_Error object otherwise.
+     * @return Error|bool True if the request has access to update the item, Error object otherwise.
      */
     public function update_item_permissions_check($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -188,11 +188,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function update_item($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -206,11 +206,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|bool True if the request has access to delete the item, WP_Error object otherwise.
+     * @return Error|bool True if the request has access to delete the item, Error object otherwise.
      */
     public function delete_item_permissions_check($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -224,11 +224,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function delete_item($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -242,11 +242,11 @@ abstract class Controller
      * @access public
      *
      * @param Request $request Request object.
-     * @return WP_Error|object The prepared item, or WP_Error object on failure.
+     * @return Error|object The prepared item, or Error object on failure.
      */
     protected function prepare_item_for_database($request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -261,11 +261,11 @@ abstract class Controller
      *
      * @param mixed $item WordPress representation of the item.
      * @param Request $request Request object.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function prepare_item_for_response($item, $request)
     {
-        return new WP_Error(
+        return new Error(
             'invalid-method',
             sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
             ['status' => 405]
@@ -496,7 +496,7 @@ abstract class Controller
      *
      * @param array $object Data Object.
      * @param Request $request Full details about the request.
-     * @return bool|WP_Error True on success, WP_Error object if a field cannot be updated.
+     * @return bool|Error True on success, Error object if a field cannot be updated.
      */
     protected function update_additional_fields_for_object($object, $request)
     {

@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Translation Upgrader Skin for WordPress Translation Upgrades.
@@ -65,7 +65,7 @@ class LanguageUpgraderSkin extends UpgraderSkin
 
     /**
      *
-     * @param string|WP_Error $error
+     * @param string|Error $error
      */
     public function error($error)
     {

@@ -13,6 +13,7 @@
 use Devtronic\FreshPress\Components\Feed\FeedCache;
 use Devtronic\FreshPress\Components\Feed\FeedFile;
 use Devtronic\FreshPress\Components\Feed\FeedSanitize;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Comment;
 
 /**
@@ -737,7 +738,7 @@ function feed_content_type($type = '')
  * using SimplePie's multifeed feature.
  * See also {@link ​http://simplepie.org/wiki/faq/typical_multifeed_gotchas}
  *
- * @return WP_Error|SimplePie WP_Error object on failure or SimplePie object on success
+ * @return Error|SimplePie Error object on failure or SimplePie object on success
  */
 function fetch_feed($url)
 {
@@ -767,7 +768,7 @@ function fetch_feed($url)
     $feed->set_output_encoding(get_option('blog_charset'));
 
     if ($feed->error()) {
-        return new WP_Error('simplepie-error', $feed->error());
+        return new Error('simplepie-error', $feed->error());
     }
 
     return $feed;

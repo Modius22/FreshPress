@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Upgrader;
 
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used for updating core.
@@ -65,7 +65,7 @@ class CoreUpgrader extends Upgrader
      * @type bool $do_rollback Whether to perform this "upgrade" as a rollback.
      *                                     Default false.
      * }
-     * @return null|false|WP_Error False or WP_Error on failure, null on success.
+     * @return null|false|Error False or Error on failure, null on success.
      */
     public function upgrade($current, $args = [])
     {
@@ -88,7 +88,7 @@ class CoreUpgrader extends Upgrader
 
         // Is an update available?
         if (!isset($current->response) || $current->response == 'latest') {
-            return new WP_Error('up_to_date', $this->strings['up_to_date']);
+            return new Error('up_to_date', $this->strings['up_to_date']);
         }
 
         $res = $this->fs_connect([ABSPATH, WP_CONTENT_DIR], $parsed_args['allow_relaxed_file_ownership']);
@@ -127,7 +127,7 @@ class CoreUpgrader extends Upgrader
         // Lock to prevent multiple Core Updates occurring
         $lock = Upgrader::create_lock('core_updater', 15 * MINUTE_IN_SECONDS);
         if (!$lock) {
-            return new WP_Error('locked', $this->strings['locked']);
+            return new Error('locked', $this->strings['locked']);
         }
 
         $download = $this->download_package($current->packages->$to_download);
@@ -150,7 +150,7 @@ class CoreUpgrader extends Upgrader
         )) {
             $wp_filesystem->delete($working_dir, true);
             Upgrader::release_lock('core_updater');
-            return new WP_Error(
+            return new Error(
                 'copy_failed_for_update_core_file',
                 __('The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.'),
                 'wp-admin/includes/update-core.php'
@@ -162,7 +162,7 @@ class CoreUpgrader extends Upgrader
 
         if (!function_exists('update_core')) {
             Upgrader::release_lock('core_updater');
-            return new WP_Error('copy_failed_space', $this->strings['copy_failed_space']);
+            return new Error('copy_failed_space', $this->strings['copy_failed_space']);
         }
 
         $result = update_core($working_dir, $wp_dir);
@@ -196,7 +196,7 @@ class CoreUpgrader extends Upgrader
                 $rollback_result = $this->upgrade($current, array_merge($parsed_args, ['do_rollback' => true]));
 
                 $original_result = $result;
-                $result = new WP_Error(
+                $result = new Error(
                     'rollback_was_required',
                     $this->strings['rollback_was_required'],
                     (object)['update' => $original_result, 'rollback' => $rollback_result]

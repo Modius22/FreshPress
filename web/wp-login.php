@@ -8,7 +8,7 @@
  * @package WordPress
  */
 
-use Devtronic\FreshPress\Entity\User;use Hautelook\Phpass\PasswordHash;
+use Devtronic\FreshPress\Core\Error;use Devtronic\FreshPress\Entity\User;use Hautelook\Phpass\PasswordHash;
 
 /** Make sure that the WordPress bootstrap has run before continuing. */
 require(dirname(__FILE__) . '/wp-load.php');
@@ -30,7 +30,7 @@ if (force_ssl_admin() && !is_ssl()) {
  * @param string $title Optional. WordPress login Page title to display in the `<title>` element.
  *                           Default 'Log In'.
  * @param string $message Optional. Message to display in header. Default empty.
- * @param WP_Error $wp_error Optional. The error to pass. Default empty.
+ * @param Error $wp_error Optional. The error to pass. Default empty.
  */
 function login_header($title = 'Log In', $message = '', $wp_error = '')
 {
@@ -42,7 +42,7 @@ function login_header($title = 'Log In', $message = '', $wp_error = '')
     add_action('login_head', 'wp_login_viewport_meta');
 
     if (empty($wp_error)) {
-        $wp_error = new WP_Error();
+        $wp_error = new Error();
     }
 
     // Shake it!
@@ -348,11 +348,11 @@ function wp_login_viewport_meta()
 /**
  * Handles sending password retrieval email to user.
  *
- * @return bool|WP_Error True: when finish. WP_Error on error
+ * @return bool|Error True: when finish. Error on error
  */
 function retrieve_password()
 {
-    $errors = new WP_Error();
+    $errors = new Error();
 
     if (empty($_POST['user_login'])) {
         $errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or email address.'));
@@ -375,7 +375,7 @@ function retrieve_password()
      * @since 2.1.0
      * @since 4.4.0 Added the `$errors` parameter.
      *
-     * @param WP_Error $errors A WP_Error object containing any errors generated
+     * @param Error $errors A Error object containing any errors generated
      *                         by using invalid credentials.
      */
     do_action('lostpassword_post', $errors);
@@ -460,7 +460,7 @@ function retrieve_password()
 //
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'login';
-$errors = new WP_Error();
+$errors = new Error();
 
 if (isset($_GET['key'])) {
     $action = 'resetpass';
@@ -704,7 +704,7 @@ switch ($action) {
             exit;
         }
 
-        $errors = new WP_Error();
+        $errors = new Error();
 
         if (isset($_POST['pass1']) && $_POST['pass1'] != $_POST['pass2']) {
             $errors->add('password_reset_mismatch', __('The passwords do not match.'));
@@ -716,7 +716,7 @@ switch ($action) {
          * @since 3.5.0
          *
          * @param object $errors WP Error object.
-         * @param User|WP_Error $user User object if the login and reset key match. WP_Error object otherwise.
+         * @param User|Error $user User object if the login and reset key match. Error object otherwise.
          */
         do_action('validate_password_reset', $errors, $user);
 
@@ -928,7 +928,7 @@ switch ($action) {
         if (empty($_COOKIE[LOGGED_IN_COOKIE])) {
             if (headers_sent()) {
                 /* translators: 1: Browser cookie documentation URL, 2: Support forums URL */
-                $user = new WP_Error(
+                $user = new Error(
                     'test_cookie',
                     sprintf(
                         __('<strong>ERROR</strong>: Cookies are blocked due to unexpected output. For help, please see <a href="%1$s">this documentation</a> or try the <a href="%2$s">support forums</a>.'),
@@ -939,7 +939,7 @@ switch ($action) {
             } elseif (isset($_POST['testcookie']) && empty($_COOKIE[TEST_COOKIE])) {
                 // If cookies are disabled we can't log in even with a valid user+pass
                 /* translators: 1: Browser cookie documentation URL */
-                $user = new WP_Error(
+                $user = new Error(
                     'test_cookie',
                     sprintf(
                         __('<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a href="%s">enable cookies</a> to use WordPress.'),
@@ -957,7 +957,7 @@ switch ($action) {
          *
          * @param string $redirect_to The redirect destination URL.
          * @param string $requested_redirect_to The requested redirect destination URL passed as a parameter.
-         * @param User|WP_Error $user User object if login was successful, WP_Error object otherwise.
+         * @param User|Error $user User object if login was successful, Error object otherwise.
          */
         $redirect_to = apply_filters('login_redirect', $redirect_to, $requested_redirect_to, $user);
 
@@ -1002,7 +1002,7 @@ switch ($action) {
         $errors = $user;
         // Clear errors if loggedout is set.
         if (!empty($_GET['loggedout']) || $reauth) {
-            $errors = new WP_Error();
+            $errors = new Error();
         }
 
         if ($interim_login) {

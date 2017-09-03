@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * oEmbed API endpoint controller.
@@ -109,7 +110,7 @@ final class WP_oEmbed_Controller
      * @access public
      *
      * @param Request $request Full data about the request.
-     * @return WP_Error|array oEmbed response data or WP_Error on failure.
+     * @return Error|array oEmbed response data or Error on failure.
      */
     public function get_item($request)
     {
@@ -128,7 +129,7 @@ final class WP_oEmbed_Controller
         $data = get_oembed_response_data($post_id, $request['maxwidth']);
 
         if (!$data) {
-            return new WP_Error('oembed_invalid_url', get_status_header_desc(404), array('status' => 404));
+            return new Error('oembed_invalid_url', get_status_header_desc(404), array('status' => 404));
         }
 
         return $data;
@@ -140,12 +141,12 @@ final class WP_oEmbed_Controller
      * @since 4.8.0
      * @access public
      *
-     * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
+     * @return true|Error True if the request has read access, Error object otherwise.
      */
     public function get_proxy_item_permissions_check()
     {
         if (!current_user_can('edit_posts')) {
-            return new WP_Error(
+            return new Error(
                 'rest_forbidden',
                 __('Sorry, you are not allowed to make proxied oEmbed requests.'),
                 array('status' => rest_authorization_required_code())
@@ -164,7 +165,7 @@ final class WP_oEmbed_Controller
      *
      * @see WP_oEmbed::get_html()
      * @param Request $request Full data about the request.
-     * @return WP_Error|array oEmbed response data or WP_Error on failure.
+     * @return Error|array oEmbed response data or Error on failure.
      */
     public function get_proxy_item($request)
     {
@@ -183,7 +184,7 @@ final class WP_oEmbed_Controller
         $data = _wp_oembed_get_object()->get_data($url, $args);
 
         if (false === $data) {
-            return new WP_Error('oembed_invalid_url', get_status_header_desc(404), array('status' => 404));
+            return new Error('oembed_invalid_url', get_status_header_desc(404), array('status' => 404));
         }
 
         /**

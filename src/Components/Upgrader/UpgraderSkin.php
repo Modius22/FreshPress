@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Generic Skin for the WordPress Upgrader classes. This skin is designed to be extended for specific purposes.
@@ -28,7 +28,7 @@ class UpgraderSkin
      *
      * @since 2.8.0
      * @access public
-     * @var string|bool|WP_Error
+     * @var string|bool|Error
      */
     public $result = false;
     public $options = [];
@@ -67,7 +67,7 @@ class UpgraderSkin
      * @since 2.8.0
      * @access public
      *
-     * @param string|bool|WP_Error $result The result of an upgrade.
+     * @param string|bool|Error $result The result of an upgrade.
      */
     public function set_result($result)
     {
@@ -132,7 +132,7 @@ class UpgraderSkin
 
     /**
      *
-     * @param string|WP_Error $errors
+     * @param string|Error $errors
      */
     public function error($errors)
     {

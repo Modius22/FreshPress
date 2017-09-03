@@ -1,18 +1,20 @@
 <?php
 /**
- * Session API: WP_Session_Tokens class
+ * Session API: SessionTokens class
  *
  * @package WordPress
  * @subpackage Session
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Session;
+
 /**
  * Abstract class for managing user session tokens.
  *
  * @since 4.0.0
  */
-abstract class WP_Session_Tokens
+abstract class SessionTokens
 {
 
     /**
@@ -40,7 +42,7 @@ abstract class WP_Session_Tokens
      * Get a session token manager instance for a user.
      *
      * This method contains a filter that allows a plugin to swap out
-     * the session manager for a subclass of WP_Session_Tokens.
+     * the session manager for a subclass of SessionTokens.
      *
      * @since 4.0.0
      * @access public
@@ -56,9 +58,9 @@ abstract class WP_Session_Tokens
          * @since 4.0.0
          *
          * @param string $session Name of class to use as the manager.
-         *                        Default 'WP_User_Meta_Session_Tokens'.
+         *                        Default 'UserMetaSessionTokens'.
          */
-        $manager = apply_filters('session_token_manager', 'WP_User_Meta_Session_Tokens');
+        $manager = apply_filters('session_token_manager', UserMetaSessionTokens::class);
         return new $manager($user_id);
     }
 
@@ -143,7 +145,7 @@ abstract class WP_Session_Tokens
          * @param array $session Array of extra data.
          * @param int $user_id User ID.
          */
-        $session = apply_filters('attach_session_information', array(), $this->user_id);
+        $session = apply_filters('attach_session_information', [], $this->user_id);
         $session['expiration'] = $expiration;
 
         // IP address.
@@ -250,9 +252,8 @@ abstract class WP_Session_Tokens
      */
     final public static function destroy_all_for_all_users()
     {
-        /** This filter is documented in wp-includes/class-wp-session-tokens.php */
-        $manager = apply_filters('session_token_manager', 'WP_User_Meta_Session_Tokens');
-        call_user_func(array($manager, 'drop_sessions'));
+        $manager = apply_filters('session_token_manager', UserMetaSessionTokens::class);
+        call_user_func([$manager, 'drop_sessions']);
     }
 
     /**

@@ -1,6 +1,9 @@
 <?php
 
 /** Sets up the WordPress Environment. */
+
+use Devtronic\FreshPress\Core\Error;
+
 require(dirname(__FILE__) . '/wp-load.php');
 
 add_action('wp_head', 'wp_no_robots');
@@ -140,12 +143,12 @@ do_action('before_signup_form');
              *
              * @param string $blogname The new site name.
              * @param string $blog_title The new site title.
-             * @param WP_Error|string $errors A WP_Error object containing existing errors. Defaults to empty string.
+             * @param Error|string $errors A Error object containing existing errors. Defaults to empty string.
              */
             function show_blog_form($blogname = '', $blog_title = '', $errors = '')
             {
                 if (!is_wp_error($errors)) {
-                    $errors = new WP_Error();
+                    $errors = new Error();
                 }
 
                 $current_network = get_network();
@@ -254,7 +257,7 @@ do_action('before_signup_form');
                  *
                  * @since 3.0.0
                  *
-                 * @param WP_Error $errors A WP_Error object possibly containing 'blogname' or 'blog_title' errors.
+                 * @param Error $errors A Error object possibly containing 'blogname' or 'blog_title' errors.
                  */
                 do_action('signup_blogform', $errors);
             }
@@ -283,12 +286,12 @@ do_action('before_signup_form');
              *
              * @param string $user_name The entered username.
              * @param string $user_email The entered email address.
-             * @param WP_Error|string $errors A WP_Error object containing existing errors. Defaults to empty string.
+             * @param Error|string $errors A Error object containing existing errors. Defaults to empty string.
              */
             function show_user_form($user_name = '', $user_email = '', $errors = '')
             {
                 if (!is_wp_error($errors)) {
-                    $errors = new WP_Error();
+                    $errors = new Error();
                 }
 
                 // User name
@@ -317,7 +320,7 @@ do_action('before_signup_form');
                  *
                  * @since 3.0.0
                  *
-                 * @param WP_Error $errors A WP_Error object containing containing 'user_name' or 'user_email' errors.
+                 * @param Error $errors A Error object containing containing 'user_name' or 'user_email' errors.
                  */
                 do_action('signup_extra_fields', $errors);
             }
@@ -341,14 +344,14 @@ do_action('before_signup_form');
              *
              * @param string $blogname The new site name
              * @param string $blog_title The new site title.
-             * @param WP_Error|string $errors A WP_Error object containing existing errors. Defaults to empty string.
+             * @param Error|string $errors A Error object containing existing errors. Defaults to empty string.
              */
             function signup_another_blog($blogname = '', $blog_title = '', $errors = '')
             {
                 $current_user = wp_get_current_user();
 
                 if (!is_wp_error($errors)) {
-                    $errors = new WP_Error();
+                    $errors = new Error();
                 }
 
                 $signup_defaults = array(
@@ -367,7 +370,7 @@ do_action('before_signup_form');
                  *
                  * @type string $blogname The site blogname.
                  * @type string $blog_title The site title.
-                 * @type WP_Error $errors A WP_Error object possibly containing 'blogname' or 'blog_title' errors.
+                 * @type Error $errors A Error object possibly containing 'blogname' or 'blog_title' errors.
                  * }
                  */
                 $filtered_results = apply_filters('signup_another_blog_init', $signup_defaults);
@@ -585,14 +588,14 @@ do_action('before_signup_form');
              *
              * @param string $user_name The username.
              * @param string $user_email The user's email.
-             * @param WP_Error|string $errors A WP_Error object containing existing errors. Defaults to empty string.
+             * @param Error|string $errors A Error object containing existing errors. Defaults to empty string.
              */
             function signup_user($user_name = '', $user_email = '', $errors = '')
             {
                 global $active_signup;
 
                 if (!is_wp_error($errors)) {
-                    $errors = new WP_Error();
+                    $errors = new Error();
                 }
 
                 $signup_for = isset($_POST['signup_for']) ? esc_html($_POST['signup_for']) : 'blog';
@@ -613,7 +616,7 @@ do_action('before_signup_form');
                  *
                  * @type string $user_name The user username.
                  * @type string $user_email The user email address.
-                 * @type WP_Error $errors A WP_Error object with possible errors relevant to the sign-up user.
+                 * @type Error $errors A Error object with possible errors relevant to the sign-up user.
                  * }
                  */
                 $filtered_results = apply_filters('signup_user_init', $signup_user_defaults);
@@ -724,12 +727,12 @@ do_action('before_signup_form');
              * @param string $user_email The user's email address.
              * @param string $blogname The site name.
              * @param string $blog_title The site title.
-             * @param WP_Error|string $errors A WP_Error object containing existing errors. Defaults to empty string.
+             * @param Error|string $errors A Error object containing existing errors. Defaults to empty string.
              */
             function signup_blog($user_name = '', $user_email = '', $blogname = '', $blog_title = '', $errors = '')
             {
                 if (!is_wp_error($errors)) {
-                    $errors = new WP_Error();
+                    $errors = new Error();
                 }
 
                 $signup_blog_defaults = array(
@@ -752,7 +755,7 @@ do_action('before_signup_form');
                  * @type string $user_email The user email address.
                  * @type string $blogname The blogname.
                  * @type string $blog_title The title of the site.
-                 * @type WP_Error $errors A WP_Error object with possible errors relevant to new site creation variables.
+                 * @type Error $errors A Error object with possible errors relevant to new site creation variables.
                  * }
                  */
                 $filtered_results = apply_filters('signup_blog_init', $signup_blog_defaults);

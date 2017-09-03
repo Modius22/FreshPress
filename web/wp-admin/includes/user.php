@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -14,7 +15,7 @@ use Devtronic\FreshPress\Entity\User;
  *
  * @since 2.0.0
  *
- * @return int|WP_Error WP_Error or User ID.
+ * @return int|Error Error or User ID.
  */
 function add_user()
 {
@@ -29,7 +30,7 @@ function add_user()
  * @since 2.0.0
  *
  * @param int $user_id Optional. User ID.
- * @return int|WP_Error user id of the updated user
+ * @return int|Error user id of the updated user
  */
 function edit_user($user_id = 0)
 {
@@ -137,7 +138,7 @@ function edit_user($user_id = 0)
         $user->use_ssl = 1;
     }
 
-    $errors = new WP_Error();
+    $errors = new Error();
 
     /* checking that username has been typed */
     if ($user->user_login == '') {
@@ -234,7 +235,7 @@ function edit_user($user_id = 0)
      *
      * @since 2.8.0
      *
-     * @param WP_Error &$errors WP_Error object, passed by reference.
+     * @param Error &$errors Error object, passed by reference.
      * @param bool $update Whether this is a user update.
      * @param stdClass &$user User object, passed by reference.
      */

@@ -10,8 +10,8 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Error;
 
 /**
  * Customize Nav Menus class.
@@ -151,7 +151,7 @@ class NavMenus
      *                         'post_type' and 'taxonomy'. Default is 'post_type'.
      * @param string $object Optional. Accepts any registered taxonomy or post type name. Default is 'page'.
      * @param int $page Optional. The page number used to generate the query offset. Default is '0'.
-     * @return WP_Error|array Returns either a WP_Error object or an array of menu items.
+     * @return Error|array Returns either a Error object or an array of menu items.
      */
     public function load_available_items_query($type = 'post_type', $object = 'page', $page = 0)
     {
@@ -160,7 +160,7 @@ class NavMenus
         if ('post_type' === $type) {
             $post_type = get_post_type_object($object);
             if (!$post_type) {
-                return new WP_Error('nav_menus_invalid_post_type');
+                return new Error('nav_menus_invalid_post_type');
             }
 
             if (0 === $page && 'page' === $object) {
@@ -826,18 +826,18 @@ class NavMenus
      * @var string $post_name Post name.
      * @var string $post_content Post content.
      * }
-     * @return Post|WP_Error Inserted auto-draft post object or error.
+     * @return Post|Error Inserted auto-draft post object or error.
      */
     public function insert_auto_draft_post($postarr)
     {
         if (!isset($postarr['post_type'])) {
-            return new WP_Error('unknown_post_type', __('Invalid post type.'));
+            return new Error('unknown_post_type', __('Invalid post type.'));
         }
         if (empty($postarr['post_title'])) {
-            return new WP_Error('empty_title', __('Empty title'));
+            return new Error('empty_title', __('Empty title'));
         }
         if (!empty($postarr['post_status'])) {
-            return new WP_Error('status_forbidden', __('Status is forbidden'));
+            return new Error('status_forbidden', __('Status is forbidden'));
         }
 
         $postarr['post_status'] = 'auto-draft';

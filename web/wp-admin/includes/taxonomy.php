@@ -9,6 +9,7 @@
 //
 // Category
 //
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Check whether a category exists.
@@ -52,7 +53,7 @@ function get_category_to_edit($id)
  *
  * @param int|string $cat_name
  * @param int $parent
- * @return int|WP_Error
+ * @return int|Error
  */
 function wp_create_category($cat_name, $parent = 0)
 {
@@ -109,7 +110,7 @@ function wp_create_categories($categories, $post_id = '')
  * @type int|string $category_parent Category parent ID. Default empty.
  * }
  * @param bool $wp_error Optional. Default false.
- * @return int|object The ID number of the new or updated Category on success. Zero or a WP_Error on failure,
+ * @return int|object The ID number of the new or updated Category on success. Zero or a Error on failure,
  *                    depending on param $wp_error.
  */
 function wp_insert_category($catarr, $wp_error = false)
@@ -128,7 +129,7 @@ function wp_insert_category($catarr, $wp_error = false)
         if (!$wp_error) {
             return 0;
         } else {
-            return new WP_Error('cat_name', __('You did not enter a category name.'));
+            return new Error('cat_name', __('You did not enter a category name.'));
         }
     }
 
@@ -224,7 +225,7 @@ function tag_exists($tag_name)
  * @since 2.3.0
  *
  * @param int|string $tag_name
- * @return array|WP_Error
+ * @return array|Error
  */
 function wp_create_tag($tag_name)
 {
@@ -238,7 +239,7 @@ function wp_create_tag($tag_name)
  *
  * @param int $post_id
  * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
- * @return string|bool|WP_Error
+ * @return string|bool|Error
  */
 function get_tags_to_edit($post_id, $taxonomy = 'post_tag')
 {
@@ -252,7 +253,7 @@ function get_tags_to_edit($post_id, $taxonomy = 'post_tag')
  *
  * @param int $post_id
  * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
- * @return string|bool|WP_Error
+ * @return string|bool|Error
  */
 function get_terms_to_edit($post_id, $taxonomy = 'post_tag')
 {
@@ -302,7 +303,7 @@ function get_terms_to_edit($post_id, $taxonomy = 'post_tag')
  *
  * @param int|string $tag_name
  * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
- * @return array|WP_Error
+ * @return array|Error
  */
 function wp_create_term($tag_name, $taxonomy = 'post_tag')
 {

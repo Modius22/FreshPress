@@ -10,8 +10,7 @@
 namespace Devtronic\FreshPress\Components\Upgrader;
 
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
-use type;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 use WP_Theme;
 
 /**
@@ -33,7 +32,7 @@ class ThemeUpgrader extends Upgrader
      *
      * @since 2.8.0
      * @access public
-     * @var array|WP_Error $result
+     * @var array|Error $result
      * @see Upgrader::$result
      */
     public $result;
@@ -103,7 +102,7 @@ class ThemeUpgrader extends Upgrader
      * @param bool $install_result
      * @param array $hook_extra
      * @param array $child_result
-     * @return type
+     * @return \type
      */
     public function check_parent_theme_filter($install_result, $hook_extra, $child_result)
     {
@@ -212,7 +211,7 @@ class ThemeUpgrader extends Upgrader
      *                                    Default true.
      * }
      *
-     * @return bool|WP_Error True if the install was successful, false or a WP_Error object otherwise.
+     * @return bool|Error True if the install was successful, false or a Error object otherwise.
      */
     public function install($package, $args = [])
     {
@@ -270,7 +269,7 @@ class ThemeUpgrader extends Upgrader
      * @type bool $clear_update_cache Whether to clear the update cache if successful.
      *                                    Default true.
      * }
-     * @return bool|WP_Error True if the upgrade was successful, false or a WP_Error object otherwise.
+     * @return bool|Error True if the upgrade was successful, false or a Error object otherwise.
      */
     public function upgrade($theme, $args = [])
     {
@@ -462,7 +461,7 @@ class ThemeUpgrader extends Upgrader
      * @global BaseFilesystem $wp_filesystem Subclass
      *
      * @param string $source The full path to the package source.
-     * @return string|WP_Error The source or a WP_Error.
+     * @return string|Error The source or a Error.
      */
     public function check_package($source)
     {
@@ -480,7 +479,7 @@ class ThemeUpgrader extends Upgrader
 
         // A proper archive should have a style.css file in the single subdirectory
         if (!file_exists($working_directory . 'style.css')) {
-            return new WP_Error(
+            return new Error(
                 'incompatible_archive_theme_no_style',
                 $this->strings['incompatible_archive'],
                 /* translators: %s: style.css */
@@ -497,7 +496,7 @@ class ThemeUpgrader extends Upgrader
         );
 
         if (empty($info['Name'])) {
-            return new WP_Error(
+            return new Error(
                 'incompatible_archive_theme_no_name',
                 $this->strings['incompatible_archive'],
                 /* translators: %s: style.css */
@@ -510,7 +509,7 @@ class ThemeUpgrader extends Upgrader
 
         // If it's not a child theme, it must have at least an index.php to be legit.
         if (empty($info['Template']) && !file_exists($working_directory . 'index.php')) {
-            return new WP_Error(
+            return new Error(
                 'incompatible_archive_theme_no_index',
                 $this->strings['incompatible_archive'],
                 /* translators: %s: index.php */
@@ -533,9 +532,9 @@ class ThemeUpgrader extends Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @param bool|WP_Error $return
+     * @param bool|Error $return
      * @param array $theme
-     * @return bool|WP_Error
+     * @return bool|Error
      */
     public function current_before($return, $theme)
     {
@@ -565,9 +564,9 @@ class ThemeUpgrader extends Upgrader
      * @since 2.8.0
      * @access public
      *
-     * @param bool|WP_Error $return
+     * @param bool|Error $return
      * @param array $theme
-     * @return bool|WP_Error
+     * @return bool|Error
      */
     public function current_after($return, $theme)
     {

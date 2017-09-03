@@ -7,6 +7,8 @@
  * @since 4.2.0
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -295,7 +297,7 @@ class WP_Press_This
     public function fetch_source_html($url)
     {
         if (empty($url)) {
-            return new WP_Error('invalid-url', __('A valid URL was not provided.'));
+            return new Error('invalid-url', __('A valid URL was not provided.'));
         }
 
         $remote_url = wp_safe_remote_get($url, array(
@@ -1302,7 +1304,7 @@ class WP_Press_This
      * @since 4.2.0
      * @access public
      *
-     * @global WP_Locale $wp_locale
+     * @global Locale $wp_locale
      * @global bool $is_IE
      */
     public function html()

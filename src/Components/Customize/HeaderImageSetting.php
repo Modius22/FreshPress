@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use Custom_Image_Header;
+use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 
 /**
  * A setting that is used to filter a value, but will not save the results.
@@ -27,7 +27,7 @@ class HeaderImageSetting extends Setting
     /**
      * @since 3.4.0
      *
-     * @global Custom_Image_Header $custom_image_header
+     * @global CustomImageHeader $custom_image_header
      *
      * @param $value
      */
@@ -37,11 +37,10 @@ class HeaderImageSetting extends Setting
 
         // If _custom_header_background_just_in_time() fails to initialize $custom_image_header when not is_admin().
         if (empty($custom_image_header)) {
-            require_once(ABSPATH . 'wp-admin/custom-header.php');
             $args = get_theme_support('custom-header');
             $admin_head_callback = isset($args[0]['admin-head-callback']) ? $args[0]['admin-head-callback'] : null;
             $admin_preview_callback = isset($args[0]['admin-preview-callback']) ? $args[0]['admin-preview-callback'] : null;
-            $custom_image_header = new Custom_Image_Header($admin_head_callback, $admin_preview_callback);
+            $custom_image_header = new CustomImageHeader($admin_head_callback, $admin_preview_callback);
         }
 
         // If the value doesn't exist (removed or random),

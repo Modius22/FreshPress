@@ -617,11 +617,6 @@ function twentyseventeen_front_page_template($template)
 add_filter('frontpage_template', 'twentyseventeen_front_page_template');
 
 /**
- * Implement the Custom Header feature.
- */
-require get_parent_theme_file_path('/inc/custom-header.php');
-
-/**
  * Custom template tags for this theme.
  */
 require get_parent_theme_file_path('/inc/template-tags.php');

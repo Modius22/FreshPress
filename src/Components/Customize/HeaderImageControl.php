@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use Custom_Image_Header;
+use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 
 /**
  * Customize Header Image Control class.
@@ -76,7 +76,7 @@ class HeaderImageControl extends ImageControl
 
     /**
      *
-     * @global Custom_Image_Header $custom_image_header
+     * @global CustomImageHeader $custom_image_header
      */
     public function prepare_control()
     {

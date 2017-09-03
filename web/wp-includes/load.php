@@ -5,6 +5,9 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\EventDispatcher\Hook;
 
@@ -815,7 +818,7 @@ function wp_clone($object)
  *
  * @since 1.5.1
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress administration interface, false otherwise.
  */
@@ -840,7 +843,7 @@ function is_admin()
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress blog administration pages.
  */
@@ -865,7 +868,7 @@ function is_blog_admin()
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress network administration pages.
  */
@@ -891,7 +894,7 @@ function is_network_admin()
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
  * @return bool True if inside WordPress user administration pages.
  */
@@ -976,7 +979,7 @@ function get_current_network_id()
  * @since 3.4.0
  * @access private
  *
- * @global WP_Locale $wp_locale The WordPress date and time locale object.
+ * @global Locale $wp_locale The WordPress date and time locale object.
  *
  * @staticvar bool $loaded
  */
@@ -999,8 +1002,6 @@ function wp_load_translations_early()
 
     // Translation and localization
     require_once ABSPATH . WPINC . '/l10n.php';
-    require_once ABSPATH . WPINC . '/class-wp-locale.php';
-    require_once ABSPATH . WPINC . '/class-wp-locale-switcher.php';
 
     // General libraries
     require_once ABSPATH . WPINC . '/plugin.php';
@@ -1060,7 +1061,7 @@ function wp_load_translations_early()
         break;
     }
 
-    $wp_locale = new WP_Locale();
+    $wp_locale = new Locale();
 }
 
 /**
@@ -1224,16 +1225,16 @@ function wp_doing_cron()
 /**
  * Check whether variable is a WordPress Error.
  *
- * Returns true if $thing is an object of the WP_Error class.
+ * Returns true if $thing is an object of the Error class.
  *
  * @since 2.1.0
  *
- * @param mixed $thing Check if unknown variable is a WP_Error object.
- * @return bool True, if WP_Error. False, if not WP_Error.
+ * @param mixed $thing Check if unknown variable is a Error object.
+ * @return bool True, if Error. False, if not Error.
  */
 function is_wp_error($thing)
 {
-    return ($thing instanceof WP_Error);
+    return ($thing instanceof Error);
 }
 
 /**

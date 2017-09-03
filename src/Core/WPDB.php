@@ -17,7 +17,6 @@ namespace Devtronic\FreshPress\Core;
 
 use mysqli;
 use mysqli_result;
-use WP_Error;
 
 define('EZSQL_VERSION', 'WP1.25');
 
@@ -961,12 +960,12 @@ class WPDB
      *
      * @param string $prefix Alphanumeric name for the new prefix.
      * @param bool $set_table_names Optional. Whether the table names, e.g. WPDB::$posts, should be updated or not.
-     * @return string|WP_Error Old prefix or WP_Error on error
+     * @return string|Error Old prefix or Error on error
      */
     public function set_prefix($prefix, $set_table_names = true)
     {
         if (preg_match('|[^a-z0-9_]|i', $prefix)) {
-            return new WP_Error('invalid_db_prefix', 'Invalid database prefix');
+            return new Error('invalid_db_prefix', 'Invalid database prefix');
         }
 
         $old_prefix = is_multisite() ? '' : $prefix;
@@ -2578,7 +2577,7 @@ class WPDB
      * @access protected
      *
      * @param string $table Table name.
-     * @return string|WP_Error Table character set, WP_Error object if it couldn't be found.
+     * @return string|Error Table character set, Error object if it couldn't be found.
      */
     protected function get_table_charset($table)
     {
@@ -2610,7 +2609,7 @@ class WPDB
         $table = '`' . implode('`.`', $table_parts) . '`';
         $results = $this->get_results("SHOW FULL COLUMNS FROM $table");
         if (!$results) {
-            return new WP_Error('wpdb_get_table_charset_failure');
+            return new Error('wpdb_get_table_charset_failure');
         }
 
         foreach ($results as $column) {
@@ -2684,8 +2683,8 @@ class WPDB
      *
      * @param string $table Table name.
      * @param string $column Column name.
-     * @return string|false|WP_Error Column character set as a string. False if the column has no
-     *                               character set. WP_Error object if there was an error.
+     * @return string|false|Error Column character set as a string. False if the column has no
+     *                               character set. Error object if there was an error.
      */
     public function get_col_charset($table, $column)
     {
@@ -2750,9 +2749,9 @@ class WPDB
      *
      * @param string $table Table name.
      * @param string $column Column name.
-     * @return array|false|WP_Error array( 'length' => (int), 'type' => 'byte' | 'char' )
+     * @return array|false|Error array( 'length' => (int), 'type' => 'byte' | 'char' )
      *                              false if the column has no length (for example, numeric column)
-     *                              WP_Error object if there was an error.
+     *                              Error object if there was an error.
      */
     public function get_col_length($table, $column)
     {
@@ -2931,10 +2930,10 @@ class WPDB
      * @param array $data Array of value arrays. Each value array has the keys
      *                    'value' and 'charset'. An optional 'ascii' key can be
      *                    set to false to avoid redundant ASCII checks.
-     * @return array|WP_Error The $data parameter, with invalid characters removed from
+     * @return array|Error The $data parameter, with invalid characters removed from
      *                        each value. This works as a passthrough: any additional keys
      *                        such as 'field' are retained in each value array. If we cannot
-     *                        remove invalid characters, a WP_Error object is returned.
+     *                        remove invalid characters, a Error object is returned.
      */
     protected function strip_invalid_text($data)
     {
@@ -3079,7 +3078,7 @@ class WPDB
             $this->check_current_query = false;
             $row = $this->get_row("SELECT " . implode(', ', $sql), ARRAY_A);
             if (!$row) {
-                return new WP_Error('wpdb_strip_invalid_text_failure');
+                return new Error('wpdb_strip_invalid_text_failure');
             }
 
             foreach (array_keys($data) as $column) {
@@ -3099,7 +3098,7 @@ class WPDB
      * @access protected
      *
      * @param string $query Query to convert.
-     * @return string|WP_Error The converted query, or a WP_Error object if the conversion fails.
+     * @return string|Error The converted query, or a Error object if the conversion fails.
      */
     protected function strip_invalid_text_from_query($query)
     {
@@ -3148,7 +3147,7 @@ class WPDB
      * @param string $table Table name.
      * @param string $column Column name.
      * @param string $value The text to check.
-     * @return string|WP_Error The converted string, or a WP_Error object if the conversion fails.
+     * @return string|Error The converted string, or a Error object if the conversion fails.
      */
     public function strip_invalid_text_for_column($table, $column, $value)
     {
@@ -3349,8 +3348,8 @@ class WPDB
     public function bail($message, $error_code = '500')
     {
         if (!$this->show_errors) {
-            if (class_exists('WP_Error', false)) {
-                $this->error = new WP_Error($error_code, $message);
+            if (class_exists(Error::class, false)) {
+                $this->error = new Error($error_code, $message);
             } else {
                 $this->error = $message;
             }
@@ -3398,7 +3397,7 @@ class WPDB
      * @global string $wp_version
      * @global string $required_mysql_version
      *
-     * @return WP_Error|void
+     * @return Error|void
      */
     public function check_database_version()
     {
@@ -3406,7 +3405,7 @@ class WPDB
         // Make sure the server has the required MySQL version
         if (version_compare($this->db_version(), $required_mysql_version, '<')) {
             /* translators: 1: WordPress version number, 2: Minimum required MySQL version number */
-            return new WP_Error(
+            return new Error(
                 'database_version',
                 sprintf(
                     __('<strong>ERROR</strong>: WordPress %1$s requires MySQL %2$s or higher'),

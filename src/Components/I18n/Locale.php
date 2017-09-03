@@ -1,11 +1,13 @@
 <?php
 /**
- * Locale API: WP_Locale class
+ * Locale API: Locale class
  *
  * @package WordPress
  * @subpackage i18n
  * @since 4.6.0
  */
+
+namespace Devtronic\FreshPress\Components\I18n;
 
 /**
  * Core class used to store translated data for a locale.
@@ -13,7 +15,7 @@
  * @since 2.1.0
  * @since 4.6.0 Moved to its own file from wp-includes/locale.php.
  */
-class WP_Locale
+class Locale
 {
     /**
      * Stores the translated strings for the full weekday names.
@@ -29,7 +31,7 @@ class WP_Locale
      * There is a hack to make sure that Tuesday and Thursday, as well
      * as Sunday and Saturday, don't conflict. See init() method for more.
      *
-     * @see WP_Locale::init() for how to handle the hack.
+     * @see Locale::init() for how to handle the hack.
      *
      * @since 2.1.0
      * @var array
@@ -273,7 +275,7 @@ class WP_Locale
             $thousands_sep = str_replace(' ', '&nbsp;', $thousands_sep);
         } else {
             // PHP < 5.4.0 does not support multiple bytes in thousands separator.
-            $thousands_sep = str_replace(array('&nbsp;', '&#160;'), ' ', $thousands_sep);
+            $thousands_sep = str_replace(['&nbsp;', '&#160;'], ' ', $thousands_sep);
         }
 
         $this->number_format['thousands_sep'] = ('number_format_thousands_sep' === $thousands_sep) ? ',' : $thousands_sep;
@@ -293,7 +295,7 @@ class WP_Locale
 
         if ('rtl' === $this->text_direction && strpos(get_bloginfo('version'), '-src')) {
             $this->text_direction = 'ltr';
-            add_action('all_admin_notices', array($this, 'rtl_src_admin_notice'));
+            add_action('all_admin_notices', [$this, 'rtl_src_admin_notice']);
         }
     }
 
@@ -307,9 +309,9 @@ class WP_Locale
     {
         /* translators: %s: Name of the directory (build) */
         echo '<div class="error"><p>' . sprintf(
-            __('The %s directory of the develop repository must be used for RTL.'),
+                __('The %s directory of the develop repository must be used for RTL.'),
                 '<code>build</code>'
-        ) . '</p></div>';
+            ) . '</p></div>';
     }
 
     /**

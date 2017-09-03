@@ -1,18 +1,20 @@
 <?php
 /**
- * Session API: WP_User_Meta_Session_Tokens class
+ * Session API: UserMetaSessionTokens class
  *
  * @package WordPress
  * @subpackage Session
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\Session;
+
 /**
  * Meta-based user sessions token manager.
  *
  * @since 4.0.0
  */
-class WP_User_Meta_Session_Tokens extends WP_Session_Tokens
+class UserMetaSessionTokens extends SessionTokens
 {
 
     /**
@@ -28,11 +30,11 @@ class WP_User_Meta_Session_Tokens extends WP_Session_Tokens
         $sessions = get_user_meta($this->user_id, 'session_tokens', true);
 
         if (!is_array($sessions)) {
-            return array();
+            return [];
         }
 
-        $sessions = array_map(array($this, 'prepare_session'), $sessions);
-        return array_filter($sessions, array($this, 'is_still_valid'));
+        $sessions = array_map([$this, 'prepare_session'], $sessions);
+        return array_filter($sessions, [$this, 'is_still_valid']);
     }
 
     /**
@@ -44,7 +46,7 @@ class WP_User_Meta_Session_Tokens extends WP_Session_Tokens
     protected function prepare_session($session)
     {
         if (is_int($session)) {
-            return array('expiration' => $session);
+            return ['expiration' => $session];
         }
 
         return $session;
@@ -120,7 +122,7 @@ class WP_User_Meta_Session_Tokens extends WP_Session_Tokens
     protected function destroy_other_sessions($verifier)
     {
         $session = $this->get_session($verifier);
-        $this->update_sessions(array($verifier => $session));
+        $this->update_sessions([$verifier => $session]);
     }
 
     /**
@@ -131,7 +133,7 @@ class WP_User_Meta_Session_Tokens extends WP_Session_Tokens
      */
     protected function destroy_all_sessions()
     {
-        $this->update_sessions(array());
+        $this->update_sessions([]);
     }
 
     /**

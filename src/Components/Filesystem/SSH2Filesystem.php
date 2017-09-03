@@ -2,7 +2,7 @@
 
 namespace Devtronic\FreshPress\Components\FileSystem;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * WordPress Filesystem Class for implementing SSH2
@@ -61,7 +61,7 @@ class SSH2Filesystem extends BaseFilesystem
     public function __construct($opt = '')
     {
         $this->method = 'ssh2';
-        $this->errors = new WP_Error();
+        $this->errors = new Error();
 
         //Check if possible to use ssh2 functions.
         if (!extension_loaded('ssh2')) {

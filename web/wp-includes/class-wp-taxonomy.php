@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Devtronic\FreshPress\Core\Kernel;
+
 /**
  * Core class used for interacting with taxonomies.
  *
@@ -234,7 +236,7 @@ final class WP_Taxonomy
      * @since 4.7.0
      * @access public
      *
-     * @global WP $wp WP instance.
+     * @global Kernel $wp WP instance.
      *
      * @param string $taxonomy Taxonomy key, must not exceed 32 characters.
      * @param array|string $object_type Name of the object type for the taxonomy object.
@@ -387,11 +389,11 @@ final class WP_Taxonomy
      * @since 4.7.0
      * @access public
      *
-     * @global WP $wp Current WordPress environment instance.
+     * @global Kernel $wp Current WordPress environment instance.
      */
     public function add_rewrite_rules()
     {
-        /* @var WP $wp */
+        /* @var Kernel $wp */
         global $wp;
 
         // Non-publicly queryable taxonomies should not register query vars, except in the admin.
@@ -421,11 +423,11 @@ final class WP_Taxonomy
      * @since 4.7.0
      * @access public
      *
-     * @global WP $wp Current WordPress environment instance.
+     * @global Kernel $wp Current WordPress environment instance.
      */
     public function remove_rewrite_rules()
     {
-        /* @var WP $wp */
+        /* @var Kernel $wp */
         global $wp;
 
         // Remove query var.

@@ -7,6 +7,8 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Core\Error;
+
 /** Load WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -49,7 +51,7 @@ if (isset($_REQUEST['action']) && 'add-user' == $_REQUEST['action']) {
         $user_id = wpmu_create_user(esc_html(strtolower($user['username'])), $password, sanitize_email($user['email']));
 
         if (!$user_id) {
-            $add_user_errors = new WP_Error('add_user_fail', __('Cannot add user.'));
+            $add_user_errors = new Error('add_user_fail', __('Cannot add user.'));
         } else {
             /**
              * Fires after a new user has been created via the network user-new.php page.

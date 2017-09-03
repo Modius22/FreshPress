@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -804,7 +805,7 @@ $_new_bundled_files = array(
  *
  * @param string $from New release unzipped path.
  * @param string $to Path to old WordPress installation.
- * @return WP_Error|null WP_Error on failure, null on success.
+ * @return Error|null Error on failure, null on success.
  */
 function update_core($from, $to)
 {
@@ -842,7 +843,7 @@ function update_core($from, $to)
     }
     if (!$distro) {
         $wp_filesystem->delete($from, true);
-        return new WP_Error('insane_distro', __('The update could not be unpacked'));
+        return new Error('insane_distro', __('The update could not be unpacked'));
     }
 
 
@@ -855,7 +856,7 @@ function update_core($from, $to)
     $versions_file = trailingslashit($wp_filesystem->wp_content_dir()) . 'upgrade/version-current.php';
     if (!$wp_filesystem->copy($from . $distro . 'wp-includes/version.php', $versions_file)) {
         $wp_filesystem->delete($from, true);
-        return new WP_Error(
+        return new Error(
             'copy_failed_for_version_file',
             __('The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.'),
             'wp-includes/version.php'
@@ -885,7 +886,7 @@ function update_core($from, $to)
     }
 
     if (!$mysql_compat && !$php_compat) {
-        return new WP_Error(
+        return new Error(
             'php_mysql_not_compatible',
             sprintf(
                 __('The update cannot be installed because WordPress %1$s requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.'),
@@ -897,7 +898,7 @@ function update_core($from, $to)
             )
         );
     } elseif (!$php_compat) {
-        return new WP_Error(
+        return new Error(
             'php_not_compatible',
             sprintf(
                 __('The update cannot be installed because WordPress %1$s requires PHP version %2$s or higher. You are running version %3$s.'),
@@ -907,7 +908,7 @@ function update_core($from, $to)
             )
         );
     } elseif (!$mysql_compat) {
-        return new WP_Error(
+        return new Error(
             'mysql_not_compatible',
             sprintf(
                 __('The update cannot be installed because WordPress %1$s requires MySQL version %2$s or higher. You are running version %3$s.'),
@@ -971,11 +972,11 @@ function update_core($from, $to)
                 }
             }
 
-            // Store package-relative paths (the key) of non-writable files in the WP_Error object.
+            // Store package-relative paths (the key) of non-writable files in the Error object.
             $error_data = version_compare($old_wp_version, '3.7-beta2', '>') ? array_keys($files_not_writable) : '';
 
             if ($files_not_writable) {
-                return new WP_Error(
+                return new Error(
                     'files_not_writable',
                     __('The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.'),
                     implode(', ', $error_data)
@@ -997,7 +998,7 @@ function update_core($from, $to)
     // Copy new versions of WP files into place.
     $result = _copy_dir($from . $distro, $to, $skip);
     if (is_wp_error($result)) {
-        $result = new WP_Error(
+        $result = new Error(
             $result->get_error_code(),
             $result->get_error_message(),
             substr($result->get_error_data(), strlen($to))
@@ -1012,7 +1013,7 @@ function update_core($from, $to)
             true /* overwrite */
         )) {
             $wp_filesystem->delete($from, true);
-            $result = new WP_Error(
+            $result = new Error(
                 'copy_failed_for_version_file',
                 __('The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.'),
                 'wp-includes/version.php'
@@ -1057,11 +1058,11 @@ function update_core($from, $to)
         // Unlikely to be hit due to the check in unzip_file().
         $available_space = @disk_free_space(ABSPATH);
         if ($available_space && $total_size >= $available_space) {
-            $result = new WP_Error('disk_full', __('There is not enough free disk space to complete the update.'));
+            $result = new Error('disk_full', __('There is not enough free disk space to complete the update.'));
         } else {
             $result = _copy_dir($from . $distro, $to, $skip);
             if (is_wp_error($result)) {
-                $result = new WP_Error(
+                $result = new Error(
                     $result->get_error_code() . '_retry',
                     $result->get_error_message(),
                     substr($result->get_error_data(), strlen($to))
@@ -1092,7 +1093,7 @@ function update_core($from, $to)
             if ($wp_lang_dir) {
                 $result = copy_dir($from . $distro . 'wp-content/languages/', $wp_lang_dir);
                 if (is_wp_error($result)) {
-                    $result = new WP_Error(
+                    $result = new Error(
                         $result->get_error_code() . '_languages',
                         $result->get_error_message(),
                         substr($result->get_error_data(), strlen($wp_lang_dir))
@@ -1148,7 +1149,7 @@ function update_core($from, $to)
                         $dest . $filename,
                         FS_CHMOD_FILE
                     )) {
-                        $result = new WP_Error(
+                        $result = new Error(
                             "copy_failed_for_new_bundled_$type",
                             __('Could not copy file.'),
                             $dest . $filename
@@ -1165,7 +1166,7 @@ function update_core($from, $to)
                     // If a error occurs partway through this final step, keep the error flowing through, but keep process going.
                     if (is_wp_error($_result)) {
                         if (!is_wp_error($result)) {
-                            $result = new WP_Error;
+                            $result = new Error;
                         }
                         $result->add(
                             $_result->get_error_code() . "_$type",
@@ -1254,7 +1255,7 @@ function update_core($from, $to)
  * @param string $from source directory
  * @param string $to destination directory
  * @param array $skip_list a list of files/folders to skip copying
- * @return mixed WP_Error on failure, True on success.
+ * @return mixed Error on failure, True on success.
  */
 function _copy_dir($from, $to, $skip_list = array())
 {
@@ -1275,13 +1276,13 @@ function _copy_dir($from, $to, $skip_list = array())
                 // If copy failed, chmod file to 0644 and try again.
                 $wp_filesystem->chmod($to . $filename, FS_CHMOD_FILE);
                 if (!$wp_filesystem->copy($from . $filename, $to . $filename, true, FS_CHMOD_FILE)) {
-                    return new WP_Error('copy_failed__copy_dir', __('Could not copy file.'), $to . $filename);
+                    return new Error('copy_failed__copy_dir', __('Could not copy file.'), $to . $filename);
                 }
             }
         } elseif ('d' == $fileinfo['type']) {
             if (!$wp_filesystem->is_dir($to . $filename)) {
                 if (!$wp_filesystem->mkdir($to . $filename, FS_CHMOD_DIR)) {
-                    return new WP_Error('mkdir_failed__copy_dir', __('Could not create directory.'), $to . $filename);
+                    return new Error('mkdir_failed__copy_dir', __('Could not create directory.'), $to . $filename);
                 }
             }
 

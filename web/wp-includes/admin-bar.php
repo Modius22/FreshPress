@@ -7,6 +7,7 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\Admin\AdminBar;
 use Devtronic\FreshPress\Components\Customize\Manager;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Term;
@@ -20,7 +21,7 @@ use Devtronic\FreshPress\Entity\Term;
  * @since 3.1.0
  * @access private
  *
- * @global WP_Admin_Bar $wp_admin_bar
+ * @global AdminBar $wp_admin_bar
  *
  * @return bool Whether the admin bar was successfully initialized.
  */
@@ -32,9 +33,6 @@ function _wp_admin_bar_init()
         return false;
     }
 
-    /* Load the admin bar class code ready for instantiation */
-    require_once(ABSPATH . WPINC . '/class-wp-admin-bar.php');
-
     /* Instantiate the admin bar */
 
     /**
@@ -42,9 +40,9 @@ function _wp_admin_bar_init()
      *
      * @since 3.1.0
      *
-     * @param string $wp_admin_bar_class Admin bar class to use. Default 'WP_Admin_Bar'.
+     * @param string $wp_admin_bar_class Admin bar class to use. Default 'AdminBar'.
      */
-    $admin_bar_class = apply_filters('wp_admin_bar_class', 'WP_Admin_Bar');
+    $admin_bar_class = apply_filters('wp_admin_bar_class', AdminBar::class);
     if (class_exists($admin_bar_class)) {
         $wp_admin_bar = new $admin_bar_class;
     } else {
@@ -70,7 +68,7 @@ function _wp_admin_bar_init()
  *
  * @since 3.1.0
  *
- * @global WP_Admin_Bar $wp_admin_bar
+ * @global AdminBar $wp_admin_bar
  */
 function wp_admin_bar_render()
 {
@@ -87,7 +85,7 @@ function wp_admin_bar_render()
      *
      * @since 3.1.0
      *
-     * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference
+     * @param AdminBar $wp_admin_bar AdminBar instance, passed by reference
      */
     do_action_ref_array('admin_bar_menu', array(&$wp_admin_bar));
 
@@ -113,7 +111,7 @@ function wp_admin_bar_render()
  *
  * @since 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_wp_menu($wp_admin_bar)
 {
@@ -188,7 +186,7 @@ function wp_admin_bar_wp_menu($wp_admin_bar)
  *
  * @since 3.8.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_sidebar_toggle($wp_admin_bar)
 {
@@ -206,7 +204,7 @@ function wp_admin_bar_sidebar_toggle($wp_admin_bar)
  *
  * @since 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_my_account_item($wp_admin_bar)
 {
@@ -246,7 +244,7 @@ function wp_admin_bar_my_account_item($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_my_account_menu($wp_admin_bar)
 {
@@ -309,7 +307,7 @@ function wp_admin_bar_my_account_menu($wp_admin_bar)
  *
  * @since 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_site_menu($wp_admin_bar)
 {
@@ -385,7 +383,7 @@ function wp_admin_bar_site_menu($wp_admin_bar)
  *
  * @since 4.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance.
+ * @param AdminBar $wp_admin_bar AdminBar instance.
  * @global Manager $wp_customize
  */
 function wp_admin_bar_customize_menu($wp_admin_bar)
@@ -431,7 +429,7 @@ function wp_admin_bar_customize_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_my_sites_menu($wp_admin_bar)
 {
@@ -593,7 +591,7 @@ function wp_admin_bar_my_sites_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_shortlink_menu($wp_admin_bar)
 {
@@ -622,7 +620,7 @@ function wp_admin_bar_shortlink_menu($wp_admin_bar)
  * @global Term $tag
  * @global Query $wp_the_query
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_edit_menu($wp_admin_bar)
 {
@@ -709,7 +707,7 @@ function wp_admin_bar_edit_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_new_content_menu($wp_admin_bar)
 {
@@ -785,7 +783,7 @@ function wp_admin_bar_new_content_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_comments_menu($wp_admin_bar)
 {
@@ -816,7 +814,7 @@ function wp_admin_bar_comments_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_appearance_menu($wp_admin_bar)
 {
@@ -883,7 +881,7 @@ function wp_admin_bar_appearance_menu($wp_admin_bar)
  *
  * @since 3.1.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_updates_menu($wp_admin_bar)
 {
@@ -911,7 +909,7 @@ function wp_admin_bar_updates_menu($wp_admin_bar)
  *
  * @since 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_search_menu($wp_admin_bar)
 {
@@ -941,7 +939,7 @@ function wp_admin_bar_search_menu($wp_admin_bar)
  *
  * @since 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar
+ * @param AdminBar $wp_admin_bar
  */
 function wp_admin_bar_add_secondary_groups($wp_admin_bar)
 {

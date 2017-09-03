@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
+
 /**
  * Get the column headers for a screen
  *
@@ -13,7 +15,7 @@
  *
  * @staticvar array $column_headers
  *
- * @param string|WP_Screen $screen The screen you want the headers for
+ * @param string|Screen $screen The screen you want the headers for
  * @return array Containing the headers in the format id => UI String
  */
 function get_column_headers($screen)
@@ -49,7 +51,7 @@ function get_column_headers($screen)
  *
  * @since 2.7.0
  *
- * @param string|WP_Screen $screen The screen you want the hidden columns for
+ * @param string|Screen $screen The screen you want the hidden columns for
  * @return array
  */
 function get_hidden_columns($screen)
@@ -71,7 +73,7 @@ function get_hidden_columns($screen)
          * @since 4.4.0
          *
          * @param array $hidden An array of columns hidden by default.
-         * @param WP_Screen $screen WP_Screen object of the current screen.
+         * @param Screen $screen Screen object of the current screen.
          */
         $hidden = apply_filters('default_hidden_columns', $hidden, $screen);
     }
@@ -83,7 +85,7 @@ function get_hidden_columns($screen)
      * @since 4.4.1 Added the `use_defaults` parameter.
      *
      * @param array $hidden An array of hidden columns.
-     * @param WP_Screen $screen WP_Screen object of the current screen.
+     * @param Screen $screen Screen object of the current screen.
      * @param bool $use_defaults Whether to show the default columns.
      */
     return apply_filters('hidden_columns', $hidden, $screen, $use_defaults);
@@ -96,7 +98,7 @@ function get_hidden_columns($screen)
  *
  * @global array $wp_meta_boxes
  *
- * @param WP_Screen $screen
+ * @param Screen $screen
  */
 function meta_box_prefs($screen)
 {
@@ -148,7 +150,7 @@ function meta_box_prefs($screen)
  *
  * @since 2.7.0
  *
- * @param string|WP_Screen $screen Screen identifier
+ * @param string|Screen $screen Screen identifier
  * @return array Hidden Meta Boxes
  */
 function get_hidden_meta_boxes($screen)
@@ -187,7 +189,7 @@ function get_hidden_meta_boxes($screen)
          * @since 3.1.0
          *
          * @param array $hidden An array of meta boxes hidden by default.
-         * @param WP_Screen $screen WP_Screen object of the current screen.
+         * @param Screen $screen Screen object of the current screen.
          */
         $hidden = apply_filters('default_hidden_meta_boxes', $hidden, $screen);
     }
@@ -198,7 +200,7 @@ function get_hidden_meta_boxes($screen)
      * @since 3.3.0
      *
      * @param array $hidden An array of hidden meta boxes.
-     * @param WP_Screen $screen WP_Screen object of the current screen.
+     * @param Screen $screen Screen object of the current screen.
      * @param bool $use_defaults Whether to show the default meta boxes.
      *                                Default true.
      */
@@ -229,9 +231,9 @@ function add_screen_option($option, $args = array())
  *
  * @since 3.1.0
  *
- * @global WP_Screen $current_screen
+ * @global Screen $current_screen
  *
- * @return WP_Screen|null Current screen object or null when screen not defined.
+ * @return Screen|null Current screen object or null when screen not defined.
  */
 function get_current_screen()
 {
@@ -254,5 +256,5 @@ function get_current_screen()
  */
 function set_current_screen($hook_name = '')
 {
-    WP_Screen::get($hook_name)->set_current_screen();
+    Screen::get($hook_name)->set_current_screen();
 }

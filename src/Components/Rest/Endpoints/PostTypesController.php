@@ -12,7 +12,7 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class to access post types via the REST API.
@@ -81,7 +81,7 @@ class PostTypesController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|true True if the request has read access, WP_Error object otherwise.
+     * @return Error|true True if the request has read access, Error object otherwise.
      */
     public function get_items_permissions_check($request)
     {
@@ -92,7 +92,7 @@ class PostTypesController extends Controller
                 }
             }
 
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_view',
                 __('Sorry, you are not allowed to edit posts in this post type.'),
                 ['status' => rest_authorization_required_code()]
@@ -109,7 +109,7 @@ class PostTypesController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function get_items($request)
     {
@@ -134,18 +134,18 @@ class PostTypesController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|Response Response object on success, or WP_Error object on failure.
+     * @return Error|Response Response object on success, or Error object on failure.
      */
     public function get_item($request)
     {
         $obj = get_post_type_object($request['type']);
 
         if (empty($obj)) {
-            return new WP_Error('rest_type_invalid', __('Invalid post type.'), ['status' => 404]);
+            return new Error('rest_type_invalid', __('Invalid post type.'), ['status' => 404]);
         }
 
         if (empty($obj->show_in_rest)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_read_type',
                 __('Cannot view post type.'),
                 ['status' => rest_authorization_required_code()]
@@ -153,7 +153,7 @@ class PostTypesController extends Controller
         }
 
         if ('edit' === $request['context'] && !current_user_can($obj->cap->edit_posts)) {
-            return new WP_Error(
+            return new Error(
                 'rest_forbidden_context',
                 __('Sorry, you are not allowed to edit posts in this post type.'),
                 ['status' => rest_authorization_required_code()]

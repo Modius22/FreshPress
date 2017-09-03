@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Upgrader Skin for Automatic WordPress Upgrades
@@ -66,7 +66,7 @@ class AutomaticUpgraderSkin extends UpgraderSkin
     }
 
     /**
-     * @param string|array|WP_Error $data
+     * @param string|array|Error $data
      */
     public function feedback($data)
     {

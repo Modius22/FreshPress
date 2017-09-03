@@ -12,9 +12,12 @@
  * Deprecated functions come here to die.
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\Admin\AdminBar;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
@@ -493,7 +496,7 @@ if (!class_exists('WP_User_Search', false)) :
          *
          * @since 2.1.0
          * @access private
-         * @var WP_Error
+         * @var Error
          */
         public $search_errors;
 
@@ -528,21 +531,6 @@ if (!class_exists('WP_User_Search', false)) :
             $this->prepare_query();
             $this->query();
             $this->do_paging();
-        }
-
-        /**
-         * PHP4 Constructor - Sets up the object properties.
-         *
-         * @since 2.1.0
-         *
-         * @param string $search_term Search terms string.
-         * @param int $page Optional. Page ID.
-         * @param string $role Role name.
-         * @return WP_User_Search
-         */
-        public function WP_User_Search($search_term = '', $page = '', $role = '')
-        {
-            self::__construct($search_term, $page, $role);
         }
 
         /**
@@ -604,7 +592,7 @@ if (!class_exists('WP_User_Search', false)) :
                 $this->total_users_for_query = $wpdb->get_var("SELECT COUNT(DISTINCT($wpdb->users.ID))" . $this->query_from . $this->query_where);
             } // no limit
             else {
-                $this->search_errors = new WP_Error('no_matching_users_found', __('No users found.'));
+                $this->search_errors = new Error('no_matching_users_found', __('No users found.'));
             }
         }
 
@@ -870,8 +858,8 @@ function wp_quicktags()
  * Returns the screen layout options.
  *
  * @since 2.8.0
- * @deprecated 3.3.0 WP_Screen::render_screen_layout()
- * @see WP_Screen::render_screen_layout()
+ * @deprecated 3.3.0 Screen::render_screen_layout()
+ * @see Screen::render_screen_layout()
  */
 function screen_layout($screen)
 {
@@ -892,8 +880,8 @@ function screen_layout($screen)
  * Returns the screen's per-page options.
  *
  * @since 2.8.0
- * @deprecated 3.3.0 Use WP_Screen::render_per_page_options()
- * @see WP_Screen::render_per_page_options()
+ * @deprecated 3.3.0 Use Screen::render_per_page_options()
+ * @see Screen::render_per_page_options()
  */
 function screen_options($screen)
 {
@@ -914,8 +902,8 @@ function screen_options($screen)
  * Renders the screen's help.
  *
  * @since 2.7.0
- * @deprecated 3.3.0 Use WP_Screen::render_screen_meta()
- * @see WP_Screen::render_screen_meta()
+ * @deprecated 3.3.0 Use Screen::render_screen_meta()
+ * @see Screen::render_screen_meta()
  */
 function screen_meta($screen)
 {
@@ -927,12 +915,12 @@ function screen_meta($screen)
  * Favorite actions were deprecated in version 3.2. Use the admin bar instead.
  *
  * @since 2.7.0
- * @deprecated 3.2.0 Use WP_Admin_Bar
- * @see WP_Admin_Bar
+ * @deprecated 3.2.0 Use AdminBar
+ * @see AdminBar
  */
 function favorite_actions()
 {
-    _deprecated_function(__FUNCTION__, '3.2.0', 'WP_Admin_Bar');
+    _deprecated_function(__FUNCTION__, '3.2.0', AdminBar::class);
 }
 
 /**
@@ -1053,8 +1041,8 @@ function type_url_form_file()
  * Creates an 'Overview' help tab.
  *
  * @since 2.7.0
- * @deprecated 3.3.0 Use WP_Screen::add_help_tab()
- * @see WP_Screen::add_help_tab()
+ * @deprecated 3.3.0 Use Screen::add_help_tab()
+ * @see Screen::add_help_tab()
  *
  * @param string $screen The handle for the screen to add help to. This is usually the hook name returned by the add_*_page() functions.
  * @param string $help The content of an 'Overview' help tab.
@@ -1067,7 +1055,7 @@ function add_contextual_help($screen, $help)
         $screen = convert_to_screen($screen);
     }
 
-    WP_Screen::add_old_compat_help($screen, $help);
+    Screen::add_old_compat_help($screen, $help);
 }
 
 /**

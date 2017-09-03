@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Rest;
 
 use Devtronic\FreshPress\Components\Http\Http;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to implement a REST request object.
@@ -686,7 +686,7 @@ class Request implements \ArrayAccess
      * @since 4.4.0
      * @since 4.7.0 Returns error instance if value cannot be decoded.
      * @access protected
-     * @return true|WP_Error True if the JSON data was passed or no JSON data was provided, WP_Error if invalid JSON was passed.
+     * @return true|Error True if the JSON data was passed or no JSON data was provided, Error if invalid JSON was passed.
      */
     protected function parse_json_params()
     {
@@ -728,7 +728,7 @@ class Request implements \ArrayAccess
                 $error_data['json_error_message'] = json_last_error_msg();
             }
 
-            return new WP_Error('rest_invalid_json', __('Invalid JSON body passed.'), $error_data);
+            return new Error('rest_invalid_json', __('Invalid JSON body passed.'), $error_data);
         }
 
         $this->params['JSON'] = $params;
@@ -843,7 +843,7 @@ class Request implements \ArrayAccess
      * @since 4.4.0
      * @access public
      *
-     * @return true|WP_Error True if parameters were sanitized, WP_Error if an error occurred during sanitization.
+     * @return true|Error True if parameters were sanitized, Error if an error occurred during sanitization.
      */
     public function sanitize_params()
     {
@@ -888,7 +888,7 @@ class Request implements \ArrayAccess
         }
 
         if ($invalid_params) {
-            return new WP_Error(
+            return new Error(
                 'rest_invalid_param',
                 sprintf(__('Invalid parameter(s): %s'), implode(', ', array_keys($invalid_params))),
                 ['status' => 400, 'params' => $invalid_params]
@@ -904,8 +904,8 @@ class Request implements \ArrayAccess
      * @since 4.4.0
      * @access public
      *
-     * @return bool|WP_Error True if there are no parameters to validate or if all pass validation,
-     *                       WP_Error if required parameters are missing.
+     * @return bool|Error True if there are no parameters to validate or if all pass validation,
+     *                       Error if required parameters are missing.
      */
     public function has_valid_params()
     {
@@ -931,7 +931,7 @@ class Request implements \ArrayAccess
         }
 
         if (!empty($required)) {
-            return new WP_Error(
+            return new Error(
                 'rest_missing_callback_param',
                 sprintf(__('Missing parameter(s): %s'), implode(', ', $required)),
                 ['status' => 400, 'params' => $required]
@@ -962,7 +962,7 @@ class Request implements \ArrayAccess
         }
 
         if ($invalid_params) {
-            return new WP_Error(
+            return new Error(
                 'rest_invalid_param',
                 sprintf(__('Invalid parameter(s): %s'), implode(', ', array_keys($invalid_params))),
                 ['status' => 400, 'params' => $invalid_params]

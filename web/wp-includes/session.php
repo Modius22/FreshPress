@@ -1,11 +1,4 @@
 <?php
-/**
- * Session API
- *
- * @since 4.0.0
- */
+// Only for compatibility, remove in 2.x
 
-_deprecated_file(basename(__FILE__), '4.7.0');
-
-require_once(ABSPATH . WPINC . '/class-wp-session-tokens.php');
-require_once(ABSPATH . WPINC . '/class-wp-user-meta-session-tokens.php');
+_deprecated_file(str_replace(ABSPATH, '', __FILE__), '1.x', 'Check if(!class_exists(\'WP_User_Meta_Session_Tokens\')) {}');

@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\User;
 
 /** WordPress Administration Bootstrap */
@@ -217,7 +218,7 @@ switch ($wp_list_table->current_action()) {
         }
 
         if (!current_user_can('delete_users')) {
-            $errors = new WP_Error('edit_users', __('Sorry, you are not allowed to delete users.'));
+            $errors = new Error('edit_users', __('Sorry, you are not allowed to delete users.'));
         }
 
         if (empty($_REQUEST['users'])) {
@@ -384,7 +385,7 @@ switch ($wp_list_table->current_action()) {
         }
 
         if (!current_user_can('remove_users')) {
-            $error = new WP_Error('edit_users', __('Sorry, you are not allowed to remove users.'));
+            $error = new Error('edit_users', __('Sorry, you are not allowed to remove users.'));
         }
 
         if (empty($_REQUEST['users'])) {

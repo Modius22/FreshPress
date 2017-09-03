@@ -8,6 +8,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -992,7 +993,7 @@ endif;
  * @param string $path Optional. The path to append to the network's domain name. Default '/'.
  * @param bool $subdomain_install Optional. Whether the network is a subdomain install or a subdirectory install.
  *                                  Default false, meaning the network is a subdirectory install.
- * @return bool|WP_Error True on success, or WP_Error on warning (with the install otherwise successful,
+ * @return bool|Error True on success, or Error on warning (with the install otherwise successful,
  *                       so the error code must be checked) or failure.
  */
 function populate_network(
@@ -1005,7 +1006,7 @@ function populate_network(
 ) {
     global $wpdb, $current_site, $wp_db_version, $wp_rewrite;
 
-    $errors = new WP_Error();
+    $errors = new Error();
     if ('' == $domain) {
         $errors->add('empty_domain', __('You must provide a domain name.'));
     }
@@ -1245,7 +1246,7 @@ We hope you enjoy your new site. Thanks!
 
             $msg .= '<p>' . __('You can still use your site but any subdomain you create may not be accessible. If you know your DNS is correct, ignore this message.') . '</p>';
 
-            return new WP_Error('no_wildcard_dns', $msg);
+            return new Error('no_wildcard_dns', $msg);
         }
     }
 

@@ -11,7 +11,7 @@ namespace Devtronic\FreshPress\Components\Rest\Fields;
 
 use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Components\Rest\Request;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class to manage meta values for an object via the REST API.
@@ -67,7 +67,7 @@ abstract class MetaFields
      *
      * @param int $object_id Object ID to fetch meta for.
      * @param Request $request Full details about the request.
-     * @return WP_Error|object Object containing the meta values by name, otherwise WP_Error object.
+     * @return Error|object Object containing the meta values by name, otherwise Error object.
      */
     public function get_value($object_id, $request)
     {
@@ -129,7 +129,7 @@ abstract class MetaFields
      *
      * @param array $meta Array of meta parsed from the request.
      * @param int $object_id Object ID to fetch meta for.
-     * @return WP_Error|null WP_Error if one occurs, null on success.
+     * @return Error|null Error if one occurs, null on success.
      */
     public function update_value($meta, $object_id)
     {
@@ -183,13 +183,13 @@ abstract class MetaFields
      * @param int $object_id Object ID the field belongs to.
      * @param string $meta_key Key for the field.
      * @param string $name Name for the field that is exposed in the REST API.
-     * @return bool|WP_Error True if meta field is deleted, WP_Error otherwise.
+     * @return bool|Error True if meta field is deleted, Error otherwise.
      */
     protected function delete_meta_value($object_id, $meta_key, $name)
     {
         $meta_type = $this->get_meta_type();
         if (!current_user_can("delete_{$meta_type}_meta", $object_id, $meta_key)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_delete',
                 /* translators: %s: custom field key */
                 sprintf(__('Sorry, you are not allowed to edit the %s custom field.'), $name),
@@ -198,7 +198,7 @@ abstract class MetaFields
         }
 
         if (!delete_metadata($meta_type, $object_id, wp_slash($meta_key))) {
-            return new WP_Error(
+            return new Error(
                 'rest_meta_database_error',
                 __('Could not delete meta value from database.'),
                 ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
@@ -220,13 +220,13 @@ abstract class MetaFields
      * @param string $meta_key Key for the custom field.
      * @param string $name Name for the field that is exposed in the REST API.
      * @param array $values List of values to update to.
-     * @return bool|WP_Error True if meta fields are updated, WP_Error otherwise.
+     * @return bool|Error True if meta fields are updated, Error otherwise.
      */
     protected function update_multi_meta_value($object_id, $meta_key, $name, $values)
     {
         $meta_type = $this->get_meta_type();
         if (!current_user_can("edit_{$meta_type}_meta", $object_id, $meta_key)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_update',
                 /* translators: %s: custom field key */
                 sprintf(__('Sorry, you are not allowed to edit the %s custom field.'), $name),
@@ -262,7 +262,7 @@ abstract class MetaFields
 
         foreach ($to_remove as $value) {
             if (!delete_metadata($meta_type, $object_id, wp_slash($meta_key), wp_slash($value))) {
-                return new WP_Error(
+                return new Error(
                     'rest_meta_database_error',
                     __('Could not update meta value in database.'),
                     ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
@@ -272,7 +272,7 @@ abstract class MetaFields
 
         foreach ($to_add as $value) {
             if (!add_metadata($meta_type, $object_id, wp_slash($meta_key), wp_slash($value))) {
-                return new WP_Error(
+                return new Error(
                     'rest_meta_database_error',
                     __('Could not update meta value in database.'),
                     ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
@@ -293,13 +293,13 @@ abstract class MetaFields
      * @param string $meta_key Key for the custom field.
      * @param string $name Name for the field that is exposed in the REST API.
      * @param mixed $value Updated value.
-     * @return bool|WP_Error True if the meta field was updated, WP_Error otherwise.
+     * @return bool|Error True if the meta field was updated, Error otherwise.
      */
     protected function update_meta_value($object_id, $meta_key, $name, $value)
     {
         $meta_type = $this->get_meta_type();
         if (!current_user_can("edit_{$meta_type}_meta", $object_id, $meta_key)) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_update',
                 /* translators: %s: custom field key */
                 sprintf(__('Sorry, you are not allowed to edit the %s custom field.'), $name),
@@ -320,7 +320,7 @@ abstract class MetaFields
         }
 
         if (!update_metadata($meta_type, $object_id, $meta_key, $meta_value)) {
-            return new WP_Error(
+            return new Error(
                 'rest_meta_database_error',
                 __('Could not update meta value in database.'),
                 ['key' => $name, 'status' => Http::INTERNAL_SERVER_ERROR]
@@ -475,7 +475,7 @@ abstract class MetaFields
      * @param  mixed $value The meta value submitted in the request.
      * @param  Request $request Full details about the request.
      * @param  string $param The parameter name.
-     * @return WP_Error|string The meta array, if valid, otherwise an error.
+     * @return Error|string The meta array, if valid, otherwise an error.
      */
     public function check_meta_is_array($value, $request, $param)
     {

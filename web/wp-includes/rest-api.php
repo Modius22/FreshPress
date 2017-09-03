@@ -21,6 +21,8 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\UsersController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
+use Devtronic\FreshPress\Core\Kernel;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Version number for our API.
@@ -149,7 +151,7 @@ function register_rest_field($object_type, $attribute, $args = array())
  * @since 4.4.0
  *
  * @see rest_api_register_rewrites()
- * @global WP $wp Current WordPress environment instance.
+ * @global Kernel $wp Current WordPress environment instance.
  */
 function rest_api_init()
 {
@@ -275,7 +277,7 @@ function create_initial_rest_routes()
  *
  * @since 4.4.0
  *
- * @global WP $wp Current WordPress environment instance.
+ * @global Kernel $wp Current WordPress environment instance.
  * @global Server $wp_rest_server ResponseHandler instance (usually Devtronic\FreshPress\Components\Rest\Server).
  */
 function rest_api_loaded()
@@ -495,13 +497,13 @@ function rest_ensure_request($request)
  * Ensures a REST response is a response object (for consistency).
  *
  * This implements HttpResponse, allowing usage of `set_status`/`header`/etc
- * without needing to double-check the object. Will also allow WP_Error to indicate error
+ * without needing to double-check the object. Will also allow Error to indicate error
  * responses, so users should immediately check for this value.
  *
  * @since 4.4.0
  *
- * @param WP_Error|HttpResponse|mixed $response Response to check.
- * @return Response|mixed If response generated an error, WP_Error, if response
+ * @param Error|HttpResponse|mixed $response Response to check.
+ * @return Response|mixed If response generated an error, Error, if response
  *                                is already an instance, HttpResponse, otherwise
  *                                returns a new Response instance.
  */
@@ -745,10 +747,10 @@ function rest_output_link_header()
  * @global mixed $wp_rest_auth_cookie
  * @global Server $wp_rest_server REST server instance.
  *
- * @param WP_Error|mixed $result Error from another authentication handler,
+ * @param Error|mixed $result Error from another authentication handler,
  *                               null if we should handle it, or another value
  *                               if not.
- * @return WP_Error|mixed|bool WP_Error if the cookie is invalid, the $result, otherwise true.
+ * @return Error|mixed|bool Error if the cookie is invalid, the $result, otherwise true.
  */
 function rest_cookie_check_errors($result)
 {
@@ -786,7 +788,7 @@ function rest_cookie_check_errors($result)
     $result = wp_verify_nonce($nonce, 'wp_rest');
 
     if (!$result) {
-        return new WP_Error('rest_cookie_invalid_nonce', __('Cookie nonce is invalid'), array('status' => 403));
+        return new Error('rest_cookie_invalid_nonce', __('Cookie nonce is invalid'), array('status' => 403));
     }
 
     // Send a refreshed nonce in header.
@@ -904,7 +906,7 @@ function rest_authorization_required_code()
  * @param  mixed $value
  * @param  Request $request
  * @param  string $param
- * @return WP_Error|boolean
+ * @return Error|boolean
  */
 function rest_validate_request_arg($value, $request, $param)
 {
@@ -1094,7 +1096,7 @@ function rest_get_avatar_sizes()
  * @param mixed $value The value to validate.
  * @param array $args Schema array to use for validation.
  * @param string $param The parameter name, used in error messages.
- * @return true|WP_Error
+ * @return true|Error
  */
 function rest_validate_value_from_schema($value, $args, $param = '')
 {
@@ -1104,7 +1106,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
         }
         if (!wp_is_numeric_array($value)) {
             /* translators: 1: parameter, 2: type name */
-            return new WP_Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, 'array'));
+            return new Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, 'array'));
         }
         foreach ($value as $index => $v) {
             $is_valid = rest_validate_value_from_schema($v, $args['items'], $param . '[' . $index . ']');
@@ -1116,7 +1118,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
     if (!empty($args['enum'])) {
         if (!in_array($value, $args['enum'], true)) {
             /* translators: 1: parameter, 2: list of valid values */
-            return new WP_Error(
+            return new Error(
                 'rest_invalid_param',
                 sprintf(__('%1$s is not one of %2$s.'), $param, implode(', ', $args['enum']))
             );
@@ -1125,41 +1127,41 @@ function rest_validate_value_from_schema($value, $args, $param = '')
 
     if (in_array($args['type'], array('integer', 'number')) && !is_numeric($value)) {
         /* translators: 1: parameter, 2: type name */
-        return new WP_Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, $args['type']));
+        return new Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, $args['type']));
     }
 
     if ('integer' === $args['type'] && round(floatval($value)) !== floatval($value)) {
         /* translators: 1: parameter, 2: type name */
-        return new WP_Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, 'integer'));
+        return new Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, 'integer'));
     }
 
     if ('boolean' === $args['type'] && !rest_is_boolean($value)) {
         /* translators: 1: parameter, 2: type name */
-        return new WP_Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $value, 'boolean'));
+        return new Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $value, 'boolean'));
     }
 
     if ('string' === $args['type'] && !is_string($value)) {
         /* translators: 1: parameter, 2: type name */
-        return new WP_Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, 'string'));
+        return new Error('rest_invalid_param', sprintf(__('%1$s is not of type %2$s.'), $param, 'string'));
     }
 
     if (isset($args['format'])) {
         switch ($args['format']) {
             case 'date-time':
                 if (!rest_parse_date($value)) {
-                    return new WP_Error('rest_invalid_date', __('Invalid date.'));
+                    return new Error('rest_invalid_date', __('Invalid date.'));
                 }
                 break;
 
             case 'email':
                 if (!is_email($value)) {
-                    return new WP_Error('rest_invalid_email', __('Invalid email address.'));
+                    return new Error('rest_invalid_email', __('Invalid email address.'));
                 }
                 break;
             case 'ip':
                 if (!rest_is_ip_address($value)) {
                     /* translators: %s: IP address */
-                    return new WP_Error('rest_invalid_param', sprintf(__('%s is not a valid IP address.'), $value));
+                    return new Error('rest_invalid_param', sprintf(__('%s is not a valid IP address.'), $value));
                 }
                 break;
         }
@@ -1173,13 +1175,13 @@ function rest_validate_value_from_schema($value, $args, $param = '')
         if (isset($args['minimum']) && !isset($args['maximum'])) {
             if (!empty($args['exclusiveMinimum']) && $value <= $args['minimum']) {
                 /* translators: 1: parameter, 2: minimum number */
-                return new WP_Error(
+                return new Error(
                     'rest_invalid_param',
                     sprintf(__('%1$s must be greater than %2$d'), $param, $args['minimum'])
                 );
             } elseif (empty($args['exclusiveMinimum']) && $value < $args['minimum']) {
                 /* translators: 1: parameter, 2: minimum number */
-                return new WP_Error(
+                return new Error(
                     'rest_invalid_param',
                     sprintf(__('%1$s must be greater than or equal to %2$d'), $param, $args['minimum'])
                 );
@@ -1187,13 +1189,13 @@ function rest_validate_value_from_schema($value, $args, $param = '')
         } elseif (isset($args['maximum']) && !isset($args['minimum'])) {
             if (!empty($args['exclusiveMaximum']) && $value >= $args['maximum']) {
                 /* translators: 1: parameter, 2: maximum number */
-                return new WP_Error(
+                return new Error(
                     'rest_invalid_param',
                     sprintf(__('%1$s must be less than %2$d'), $param, $args['maximum'])
                 );
             } elseif (empty($args['exclusiveMaximum']) && $value > $args['maximum']) {
                 /* translators: 1: parameter, 2: maximum number */
-                return new WP_Error(
+                return new Error(
                     'rest_invalid_param',
                     sprintf(__('%1$s must be less than or equal to %2$d'), $param, $args['maximum'])
                 );
@@ -1202,7 +1204,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
             if (!empty($args['exclusiveMinimum']) && !empty($args['exclusiveMaximum'])) {
                 if ($value >= $args['maximum'] || $value <= $args['minimum']) {
                     /* translators: 1: parameter, 2: minimum number, 3: maximum number */
-                    return new WP_Error(
+                    return new Error(
                         'rest_invalid_param',
                         sprintf(
                             __('%1$s must be between %2$d (exclusive) and %3$d (exclusive)'),
@@ -1215,7 +1217,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
             } elseif (empty($args['exclusiveMinimum']) && !empty($args['exclusiveMaximum'])) {
                 if ($value >= $args['maximum'] || $value < $args['minimum']) {
                     /* translators: 1: parameter, 2: minimum number, 3: maximum number */
-                    return new WP_Error(
+                    return new Error(
                         'rest_invalid_param',
                         sprintf(
                             __('%1$s must be between %2$d (inclusive) and %3$d (exclusive)'),
@@ -1228,7 +1230,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
             } elseif (!empty($args['exclusiveMinimum']) && empty($args['exclusiveMaximum'])) {
                 if ($value > $args['maximum'] || $value <= $args['minimum']) {
                     /* translators: 1: parameter, 2: minimum number, 3: maximum number */
-                    return new WP_Error(
+                    return new Error(
                         'rest_invalid_param',
                         sprintf(
                             __('%1$s must be between %2$d (exclusive) and %3$d (inclusive)'),
@@ -1241,7 +1243,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
             } elseif (empty($args['exclusiveMinimum']) && empty($args['exclusiveMaximum'])) {
                 if ($value > $args['maximum'] || $value < $args['minimum']) {
                     /* translators: 1: parameter, 2: minimum number, 3: maximum number */
-                    return new WP_Error(
+                    return new Error(
                         'rest_invalid_param',
                         sprintf(
                             __('%1$s must be between %2$d (inclusive) and %3$d (inclusive)'),
@@ -1265,7 +1267,7 @@ function rest_validate_value_from_schema($value, $args, $param = '')
  *
  * @param mixed $value The value to sanitize.
  * @param array $args Schema array to use for sanitization.
- * @return true|WP_Error
+ * @return true|Error
  */
 function rest_sanitize_value_from_schema($value, $args)
 {

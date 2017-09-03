@@ -36,18 +36,11 @@
             "Devtronic\\FreshPress\\": "src/"
         },
         "classmap": [
-            "web/wp-includes/class-wp-list-util.php",
             "web/wp-includes/class-wp-matchesmapregex.php",
-            "web/wp-includes/class-wp.php",
-            "web/wp-includes/class-wp-error.php",
-            "web/wp-includes/class-wp-locale.php",
-            "web/wp-includes/class-wp-locale-switcher.php",
             "web/wp-includes/class-wp-ajax-response.php",
             "web/wp-includes/class-wp-roles.php",
             "web/wp-includes/class-wp-role.php",
             "web/wp-includes/class-wp-theme.php",
-            "web/wp-includes/class-wp-session-tokens.php",
-            "web/wp-includes/class-wp-user-meta-session-tokens.php",
             "web/wp-includes/class-wp-metadata-lazyloader.php",
             "web/wp-includes/class-wp-rewrite.php",
             "web/wp-includes/class-wp-taxonomy.php",

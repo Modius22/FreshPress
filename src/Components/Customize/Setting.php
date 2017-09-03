@@ -10,7 +10,7 @@
 namespace Devtronic\FreshPress\Components\Customize;
 
 use Devtronic\FreshPress\Components\Rest\Request;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Customize Setting class.
@@ -587,7 +587,7 @@ class Setting
      * @since 3.4.0
      *
      * @param string|array $value The value to sanitize.
-     * @return string|array|null|WP_Error Sanitized value, or `null`/`WP_Error` if invalid.
+     * @return string|array|null|Error Sanitized value, or `null`/`Error` if invalid.
      */
     public function sanitize($value)
     {
@@ -611,7 +611,7 @@ class Setting
      * @see Request::has_valid_params()
      *
      * @param mixed $value Value to validate.
-     * @return true|WP_Error True if the input was validated, otherwise WP_Error.
+     * @return true|Error True if the input was validated, otherwise Error.
      */
     public function validate($value)
     {
@@ -619,21 +619,21 @@ class Setting
             return $value;
         }
         if (is_null($value)) {
-            return new WP_Error('invalid_value', __('Invalid value.'));
+            return new Error('invalid_value', __('Invalid value.'));
         }
 
-        $validity = new WP_Error();
+        $validity = new Error();
 
         /**
          * Validates a Customize setting value.
          *
-         * Plugins should amend the `$validity` object via its `WP_Error::add()` method.
+         * Plugins should amend the `$validity` object via its `Error::add()` method.
          *
          * The dynamic portion of the hook name, `$this->ID`, refers to the setting ID.
          *
          * @since 4.6.0
          *
-         * @param WP_Error $validity Filtered from `true` to `WP_Error` when invalid.
+         * @param Error $validity Filtered from `true` to `Error` when invalid.
          * @param mixed $value Value of the setting.
          * @param Setting $this Setting instance.
          */

@@ -12,6 +12,7 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Http;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to implement oEmbed functionality.
@@ -600,7 +601,7 @@ class WP_oEmbed
      *
      * @param string $provider_url_with_args URL to the provider with full arguments list (url, maxheight, etc.)
      * @param string $format Format to use
-     * @return false|object|WP_Error False on failure, otherwise the result in the form of an object.
+     * @return false|object|Error False on failure, otherwise the result in the form of an object.
      */
     private function _fetch_with_format($provider_url_with_args, $format)
     {
@@ -611,7 +612,7 @@ class WP_oEmbed
 
         $response = wp_safe_remote_get($provider_url_with_args, $args);
         if (501 == wp_remote_retrieve_response_code($response)) {
-            return new WP_Error('not-implemented');
+            return new Error('not-implemented');
         }
         if (!$body = wp_remote_retrieve_body($response)) {
             return false;

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
@@ -694,7 +695,7 @@ function locate_template($template_names, $load = false, $require_once = true)
  * @global WP_Rewrite $wp_rewrite
  * @global \Devtronic\FreshPress\Core\WPDB $wpdb
  * @global string $wp_version
- * @global WP $wp
+ * @global Kernel $wp
  * @global int $id
  * @global Comment $comment
  * @global int $user_ID

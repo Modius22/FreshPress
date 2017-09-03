@@ -8,6 +8,7 @@
  * @subpackage Deprecated
  */
 
+use Devtronic\FreshPress\Components\Admin\AdminBar;
 use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -3176,7 +3177,7 @@ function parent_post_rel_link($title = '%title')
  * @since 3.2.0
  * @deprecated 3.3.0
  *
- * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance.
+ * @param AdminBar $wp_admin_bar AdminBar instance.
  */
 function wp_admin_bar_dashboard_view_site_menu($wp_admin_bar)
 {
@@ -3649,7 +3650,7 @@ function wp_load_image($file)
  * @param string $suffix Optional. File suffix.
  * @param string $dest_path Optional. New image file path.
  * @param int $jpeg_quality Optional, default is 90. Image quality percentage.
- * @return mixed WP_Error on failure. String with new destination path.
+ * @return mixed Error on failure. String with new destination path.
  */
 function image_resize($file, $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90)
 {

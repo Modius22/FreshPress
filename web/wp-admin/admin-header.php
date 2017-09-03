@@ -6,6 +6,9 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
+
 @header('Content-Type: ' . get_option('html_type') . '; charset=' . get_option('blog_charset'));
 if (!defined('WP_ADMIN')) {
     require_once(dirname(__FILE__) . '/admin.php');
@@ -16,8 +19,8 @@ if (!defined('WP_ADMIN')) {
  *
  * @global string $title
  * @global string $hook_suffix
- * @global WP_Screen $current_screen
- * @global WP_Locale $wp_locale
+ * @global Screen $current_screen
+ * @global Locale $wp_locale
  * @global string $pagenow
  * @global string $update_title
  * @global int $total_update_count

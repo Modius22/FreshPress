@@ -1,18 +1,20 @@
 <?php
 /**
- * Locale API: WP_Locale_Switcher class
+ * Locale API: LocaleSwitcher class
  *
  * @package WordPress
  * @subpackage i18n
  * @since 4.7.0
  */
 
+namespace Devtronic\FreshPress\Components\I18n;
+
 /**
  * Core class used for switching locales.
  *
  * @since 4.7.0
  */
-class WP_Locale_Switcher
+class LocaleSwitcher
 {
     /**
      * Locale stack.
@@ -21,7 +23,7 @@ class WP_Locale_Switcher
      * @access private
      * @var string[]
      */
-    private $locales = array();
+    private $locales = [];
 
     /**
      * Original locale.
@@ -39,7 +41,7 @@ class WP_Locale_Switcher
      * @access private
      * @var array An array of language codes (file names without the .mo extension).
      */
-    private $available_languages = array();
+    private $available_languages = [];
 
     /**
      * Constructor.
@@ -51,7 +53,7 @@ class WP_Locale_Switcher
     public function __construct()
     {
         $this->original_locale = is_admin() ? get_user_locale() : get_locale();
-        $this->available_languages = array_merge(array('en_US'), get_available_languages());
+        $this->available_languages = array_merge(['en_US'], get_available_languages());
     }
 
     /**
@@ -61,7 +63,7 @@ class WP_Locale_Switcher
      */
     public function init()
     {
-        add_filter('locale', array($this, 'filter_locale'));
+        add_filter('locale', [$this, 'filter_locale']);
     }
 
     /**
@@ -150,7 +152,7 @@ class WP_Locale_Switcher
             return false;
         }
 
-        $this->locales = array($this->original_locale);
+        $this->locales = [$this->original_locale];
 
         return $this->restore_previous_locale();
     }
@@ -194,7 +196,7 @@ class WP_Locale_Switcher
      * @since 4.7.0
      * @access private
      *
-     * @global Mo[] $l10n An array of all currently loaded text domains.
+     * @global POMO\MO[] $l10n An array of all currently loaded text domains.
      *
      * @param string $locale The locale to load translations for.
      */
@@ -202,7 +204,7 @@ class WP_Locale_Switcher
     {
         global $l10n;
 
-        $domains = $l10n ? array_keys($l10n) : array();
+        $domains = $l10n ? array_keys($l10n) : [];
 
         load_default_textdomain($locale);
 
@@ -225,7 +227,7 @@ class WP_Locale_Switcher
      * @since 4.7.0
      * @access private
      *
-     * @global WP_Locale $wp_locale The WordPress date and time locale object.
+     * @global Locale $wp_locale The WordPress date and time locale object.
      *
      * @param string $locale The locale to change to.
      */
@@ -236,7 +238,7 @@ class WP_Locale_Switcher
 
         $this->load_translations($locale);
 
-        $GLOBALS['wp_locale'] = new WP_Locale();
+        $GLOBALS['wp_locale'] = new Locale();
 
         /**
          * Fires when the locale is switched to or restored.

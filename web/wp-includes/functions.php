@@ -5,7 +5,12 @@
  * @package WordPress
  */
 
+use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Components\Util\ListUtil;
+use Devtronic\FreshPress\Core\Kernel;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -91,7 +96,7 @@ function current_time($type, $gmt = 0)
  *
  * @since 0.71
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param string $dateformatstring Format to display the date.
  * @param bool|int $unixtimestamp Optional. Unix timestamp. Default false.
@@ -225,7 +230,7 @@ function wp_maybe_decline_date($date)
  *
  * @since 2.3.0
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @param float $number The number to convert based on locale.
  * @param int $decimals Optional. Precision of the number of decimal places. Default 0.
@@ -1023,7 +1028,7 @@ function wp_remote_fopen($uri)
  *
  * @since 2.0.0
  *
- * @global WP $wp_locale
+ * @global Kernel $wp_locale
  * @global Query $wp_query
  * @global Query $wp_the_query
  *
@@ -2854,10 +2859,10 @@ function wp_nonce_ays($action)
  * @since 4.1.0 The `$title` and `$args` parameters were changed to optionally accept
  *              an integer to be used as the response code.
  *
- * @param string|WP_Error $message Optional. Error message. If this is a WP_Error object,
+ * @param string|Error $message Optional. Error message. If this is a Error object,
  *                                  and not an Ajax or XML-RPC request, the error's messages are used.
  *                                  Default empty.
- * @param string|int $title Optional. Error title. If `$message` is a `WP_Error` object,
+ * @param string|int $title Optional. Error title. If `$message` is a `Error` object,
  *                                  error data with the key 'title' may be used to specify the title.
  *                                  If `$title` is an integer, then it is treated as the response
  *                                  code. Default empty.
@@ -2922,7 +2927,7 @@ function wp_die($message = '', $title = '', $args = array())
  * @since 3.0.0
  * @access private
  *
- * @param string|WP_Error $message Error message or WP_Error object.
+ * @param string|Error $message Error message or Error object.
  * @param string $title Optional. Error title. Default empty.
  * @param string|array $args Optional. Arguments to control behavior. Default empty array.
  */
@@ -3447,13 +3452,13 @@ function wp_send_json_success($data = null, $status_code = null)
 /**
  * Send a JSON response back to an Ajax request, indicating failure.
  *
- * If the `$data` parameter is a WP_Error object, the errors
+ * If the `$data` parameter is a Error object, the errors
  * within the object are processed and output as an array of error
  * codes and corresponding messages. All other types are output
  * without further processing.
  *
  * @since 3.5.0
- * @since 4.1.0 The `$data` parameter is now processed if a WP_Error object is passed in.
+ * @since 4.1.0 The `$data` parameter is now processed if a Error object is passed in.
  * @since 4.7.0 The `$status_code` parameter was added.
  *
  * @param mixed $data Data to encode as JSON, then print and die.
@@ -3839,7 +3844,7 @@ function wp_is_numeric_array($data)
  * Filters a list of objects, based on a set of key => value arguments.
  *
  * @since 3.0.0
- * @since 4.7.0 Uses WP_List_Util class.
+ * @since 4.7.0 Uses ListUtil class.
  *
  * @param array $list An array of objects to filter
  * @param array $args Optional. An array of key => value arguments to match
@@ -3858,7 +3863,7 @@ function wp_filter_object_list($list, $args = array(), $operator = 'and', $field
         return array();
     }
 
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
 
     $util->filter($args, $operator);
 
@@ -3873,7 +3878,7 @@ function wp_filter_object_list($list, $args = array(), $operator = 'and', $field
  * Filters a list of objects, based on a set of key => value arguments.
  *
  * @since 3.1.0
- * @since 4.7.0 Uses WP_List_Util class.
+ * @since 4.7.0 Uses ListUtil class.
  *
  * @param array $list An array of objects to filter.
  * @param array $args Optional. An array of key => value arguments to match
@@ -3890,7 +3895,7 @@ function wp_list_filter($list, $args = array(), $operator = 'AND')
         return array();
     }
 
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
     return $util->filter($args, $operator);
 }
 
@@ -3902,7 +3907,7 @@ function wp_list_filter($list, $args = array(), $operator = 'AND')
  *
  * @since 3.1.0
  * @since 4.0.0 $index_key parameter added.
- * @since 4.7.0 Uses WP_List_Util class.
+ * @since 4.7.0 Uses ListUtil class.
  *
  * @param array $list List of objects or arrays
  * @param int|string $field Field from the object to place instead of the entire object
@@ -3914,7 +3919,7 @@ function wp_list_filter($list, $args = array(), $operator = 'AND')
  */
 function wp_list_pluck($list, $field, $index_key = null)
 {
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
     return $util->pluck($field, $index_key);
 }
 
@@ -3937,7 +3942,7 @@ function wp_list_sort($list, $orderby = array(), $order = 'ASC', $preserve_keys 
         return array();
     }
 
-    $util = new WP_List_Util($list);
+    $util = new ListUtil($list);
     return $util->sort($orderby, $order, $preserve_keys);
 }
 
@@ -5803,7 +5808,7 @@ function wp_auth_check_load()
      * @since 3.6.0
      *
      * @param bool $show Whether to load the authentication check.
-     * @param WP_Screen $screen The current screen object.
+     * @param Screen $screen The current screen object.
      */
     if (apply_filters('wp_auth_check_load', $show, $screen)) {
         wp_enqueue_style('wp-auth-check');

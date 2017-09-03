@@ -7,6 +7,8 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Core\Kernel;
+
 /**
  * Core class used for interacting with post types.
  *
@@ -568,7 +570,7 @@ final class WP_Post_Type
      * @access public
      *
      * @global WP_Rewrite $wp_rewrite WordPress Rewrite Component.
-     * @global WP $wp Current WordPress environment instance.
+     * @global Kernel $wp Current WordPress environment instance.
      */
     public function add_rewrite_rules()
     {
@@ -689,7 +691,7 @@ final class WP_Post_Type
      * @access public
      *
      * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
-     * @global WP $wp Current WordPress environment instance.
+     * @global Kernel $wp Current WordPress environment instance.
      * @global array $post_type_meta_caps Used to remove meta capabilities.
      */
     public function remove_rewrite_rules()

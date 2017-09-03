@@ -6,8 +6,12 @@
  * @subpackage Theme
  */
 
+use Devtronic\FreshPress\Components\Admin\CustomBackground;
+use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
@@ -277,7 +281,7 @@ function get_stylesheet_uri()
  *
  * @since 2.1.0
  *
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  *
  * @return string
  */
@@ -1876,7 +1880,7 @@ function wp_get_custom_css($stylesheet = '')
  * @type string $preprocessed Pre-processed CSS, stored in `post_content_filtered`. Normally empty string. Optional.
  * @type string $stylesheet Stylesheet (child theme) to update. Optional, defaults to current theme/stylesheet.
  * }
- * @return Post|WP_Error Post on success, error on failure.
+ * @return Post|Error Post on success, error on failure.
  */
 function wp_update_custom_css_post($css, $args = array())
 {
@@ -2661,8 +2665,8 @@ function add_theme_support($feature)
  * @since 3.4.0
  * @access private
  *
- * @global Custom_Image_Header $custom_image_header
- * @global Custom_Background $custom_background
+ * @global CustomImageHeader $custom_image_header
+ * @global CustomBackground $custom_background
  */
 function _custom_header_background_just_in_time()
 {
@@ -2678,8 +2682,7 @@ function _custom_header_background_just_in_time()
         }
 
         if (is_admin()) {
-            require_once(ABSPATH . 'wp-admin/custom-header.php');
-            $custom_image_header = new Custom_Image_Header(
+            $custom_image_header = new CustomImageHeader(
                 $args[0]['admin-head-callback'],
                 $args[0]['admin-preview-callback']
             );
@@ -2694,8 +2697,7 @@ function _custom_header_background_just_in_time()
         add_action('wp_head', $args[0]['wp-head-callback']);
 
         if (is_admin()) {
-            require_once(ABSPATH . 'wp-admin/custom-background.php');
-            $custom_background = new Custom_Background(
+            $custom_background = new CustomBackground(
                 $args[0]['admin-head-callback'],
                 $args[0]['admin-preview-callback']
             );
@@ -2796,8 +2798,8 @@ function remove_theme_support($feature)
  * @since 3.1.0
  *
  * @global array $_wp_theme_features
- * @global Custom_Image_Header $custom_image_header
- * @global Custom_Background $custom_background
+ * @global CustomImageHeader $custom_image_header
+ * @global CustomBackground $custom_background
  *
  * @param string $feature
  */

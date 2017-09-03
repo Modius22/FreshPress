@@ -6,6 +6,7 @@
  * @subpackage Publishing
  */
 
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Comment;
 use Devtronic\FreshPress\Entity\Post;
@@ -288,7 +289,7 @@ class wp_xmlrpc_server extends IXR_Server
         }
 
         if ($this->auth_failed) {
-            $user = new WP_Error('login_prevented');
+            $user = new Error('login_prevented');
         } else {
             $user = wp_authenticate($username, $password);
         }

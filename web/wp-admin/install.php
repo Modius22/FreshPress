@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\DependencyInjection\ServiceContainer;
 
 /**
@@ -173,7 +174,7 @@ if (defined('DO_NOT_UPGRADE_GLOBAL_TABLES')) {
 
 /**
  * @global string $wp_local_package
- * @global WP_Locale $wp_locale
+ * @global Locale $wp_locale
  */
 $language = '';
 if (!empty($_REQUEST['language'])) {
@@ -203,7 +204,7 @@ if ($step == 0 && wp_can_install_language_pack() && empty($language) && ($langua
         $loaded_language = wp_download_language_pack($language);
         if ($loaded_language) {
             load_default_textdomain($loaded_language);
-            $GLOBALS['wp_locale'] = new WP_Locale();
+            $GLOBALS['wp_locale'] = new Locale();
         }
     }
 
@@ -216,7 +217,7 @@ if ($step == 0 && wp_can_install_language_pack() && empty($language) && ($langua
     $loaded_language = 'en_US';
     if (!empty($language) && load_default_textdomain($language)) {
         $loaded_language = $language;
-        $GLOBALS['wp_locale'] = new WP_Locale();
+        $GLOBALS['wp_locale'] = new Locale();
     }
 
     if (!empty($wpdb->error)) {

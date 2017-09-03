@@ -277,7 +277,7 @@ abstract class MediaWidget extends Widget
 
             // @codeCoverageIgnoreStart
             if (is_wp_error($value)) {
-                continue; // Handle case when rest_sanitize_value_from_schema() ever returns WP_Error as its phpdoc @return tag indicates.
+                continue; // Handle case when rest_sanitize_value_from_schema() ever returns Error as its phpdoc @return tag indicates.
             }
 
             // @codeCoverageIgnoreEnd

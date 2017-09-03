@@ -11,7 +11,7 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
-use WP_Error;
+use Devtronic\FreshPress\Core\Error;
 
 /**
  * Core class used to manage a site's settings via the REST API.
@@ -83,7 +83,7 @@ class SettingsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return array|WP_Error Array on success, or WP_Error object on failure.
+     * @return array|Error Array on success, or Error object on failure.
      */
     public function get_item($request)
     {
@@ -160,7 +160,7 @@ class SettingsController extends Controller
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return array|WP_Error Array on success, or error object on failure.
+     * @return array|Error Array on success, or error object on failure.
      */
     public function update_item($request)
     {
@@ -210,7 +210,7 @@ class SettingsController extends Controller
                  * database.
                  */
                 if (!is_scalar(get_option($args['option_name'], false))) {
-                    return new WP_Error(
+                    return new Error(
                         'rest_invalid_stored_value',
                         sprintf(
                             __('The %s property has an invalid stored value, and cannot be updated to null.'),
@@ -329,7 +329,7 @@ class SettingsController extends Controller
      * @param  mixed $value The value for the setting.
      * @param  Request $request The request object.
      * @param  string $param The parameter name.
-     * @return mixed|WP_Error
+     * @return mixed|Error
      */
     public function sanitize_callback($value, $request, $param)
     {

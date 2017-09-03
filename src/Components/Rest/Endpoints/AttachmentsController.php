@@ -11,8 +11,8 @@ namespace Devtronic\FreshPress\Components\Rest\Endpoints;
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
+use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Error;
 
 /**
  * Core controller used to access attachments via the REST API.
@@ -71,7 +71,7 @@ class AttachmentsController extends PostsController
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|true Boolean true if the attachment may be created, or a WP_Error if not.
+     * @return Error|true Boolean true if the attachment may be created, or a Error if not.
      */
     public function create_item_permissions_check($request)
     {
@@ -82,7 +82,7 @@ class AttachmentsController extends PostsController
         }
 
         if (!current_user_can('upload_files')) {
-            return new WP_Error(
+            return new Error(
                 'rest_cannot_create',
                 __('Sorry, you are not allowed to upload media on this site.'),
                 ['status' => 400]
@@ -95,7 +95,7 @@ class AttachmentsController extends PostsController
             $post_parent_type = get_post_type_object($parent->post_type);
 
             if (!current_user_can($post_parent_type->cap->edit_post, $request['post'])) {
-                return new WP_Error(
+                return new Error(
                     'rest_cannot_edit',
                     __('Sorry, you are not allowed to upload media to this post.'),
                     ['status' => rest_authorization_required_code()]
@@ -113,7 +113,7 @@ class AttachmentsController extends PostsController
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|Response Response object on success, WP_Error object on failure.
+     * @return Error|Response Response object on success, Error object on failure.
      */
     public function create_item($request)
     {
@@ -122,7 +122,7 @@ class AttachmentsController extends PostsController
                 ['revision', 'attachment'],
                 true
             )) {
-            return new WP_Error('rest_invalid_param', __('Invalid parent type.'), ['status' => 400]);
+            return new Error('rest_invalid_param', __('Invalid parent type.'), ['status' => 400]);
         }
 
         // Get the file via $_FILES or raw data.
@@ -222,7 +222,7 @@ class AttachmentsController extends PostsController
      * @access public
      *
      * @param Request $request Full details about the request.
-     * @return WP_Error|Response Response object on success, WP_Error object on failure.
+     * @return Error|Response Response object on success, Error object on failure.
      */
     public function update_item($request)
     {
@@ -231,7 +231,7 @@ class AttachmentsController extends PostsController
                 ['revision', 'attachment'],
                 true
             )) {
-            return new WP_Error('rest_invalid_param', __('Invalid parent type.'), ['status' => 400]);
+            return new Error('rest_invalid_param', __('Invalid parent type.'), ['status' => 400]);
         }
 
         $response = parent::update_item($request);
@@ -272,7 +272,7 @@ class AttachmentsController extends PostsController
      * @access public
      *
      * @param Request $request Request object.
-     * @return WP_Error|\stdClass $prepared_attachment Post object.
+     * @return Error|\stdClass $prepared_attachment Post object.
      */
     protected function prepare_item_for_database($request)
     {
@@ -509,20 +509,20 @@ class AttachmentsController extends PostsController
      *
      * @param array $data Supplied file data.
      * @param array $headers HTTP headers from the request.
-     * @return array|WP_Error Data from wp_handle_sideload().
+     * @return array|Error Data from wp_handle_sideload().
      */
     protected function upload_from_data($data, $headers)
     {
         if (empty($data)) {
-            return new WP_Error('rest_upload_no_data', __('No data supplied.'), ['status' => 400]);
+            return new Error('rest_upload_no_data', __('No data supplied.'), ['status' => 400]);
         }
 
         if (empty($headers['content_type'])) {
-            return new WP_Error('rest_upload_no_content_type', __('No Content-Type supplied.'), ['status' => 400]);
+            return new Error('rest_upload_no_content_type', __('No Content-Type supplied.'), ['status' => 400]);
         }
 
         if (empty($headers['content_disposition'])) {
-            return new WP_Error(
+            return new Error(
                 'rest_upload_no_content_disposition',
                 __('No Content-Disposition supplied.'),
                 ['status' => 400]
@@ -532,7 +532,7 @@ class AttachmentsController extends PostsController
         $filename = self::get_filename_from_disposition($headers['content_disposition']);
 
         if (empty($filename)) {
-            return new WP_Error(
+            return new Error(
                 'rest_upload_invalid_disposition',
                 __('Invalid Content-Disposition supplied. Content-Disposition needs to be formatted as `attachment; filename="image.png"` or similar.'),
                 ['status' => 400]
@@ -545,7 +545,7 @@ class AttachmentsController extends PostsController
             $actual = md5($data);
 
             if ($expected !== $actual) {
-                return new WP_Error(
+                return new Error(
                     'rest_upload_hash_mismatch',
                     __('Content hash did not match expected.'),
                     ['status' => 412]
@@ -565,7 +565,7 @@ class AttachmentsController extends PostsController
         $fp = fopen($tmpfname, 'w+');
 
         if (!$fp) {
-            return new WP_Error('rest_upload_file_error', __('Could not open file handle.'), ['status' => 500]);
+            return new Error('rest_upload_file_error', __('Could not open file handle.'), ['status' => 500]);
         }
 
         fwrite($fp, $data);
@@ -588,7 +588,7 @@ class AttachmentsController extends PostsController
         if (isset($sideloaded['error'])) {
             @unlink($tmpfname);
 
-            return new WP_Error('rest_upload_sideload_error', $sideloaded['error'], ['status' => 500]);
+            return new Error('rest_upload_sideload_error', $sideloaded['error'], ['status' => 500]);
         }
 
         return $sideloaded;
@@ -706,7 +706,7 @@ class AttachmentsController extends PostsController
      * @param mixed $value Status value.
      * @param Request $request Request object.
      * @param string $parameter Additional parameter to pass for validation.
-     * @return WP_Error|bool True if the user may query, WP_Error if not.
+     * @return Error|bool True if the user may query, Error if not.
      */
     public function validate_user_can_query_private_statuses($value, $request, $parameter)
     {
@@ -725,12 +725,12 @@ class AttachmentsController extends PostsController
      *
      * @param array $files Data from the `$_FILES` superglobal.
      * @param array $headers HTTP headers from the request.
-     * @return array|WP_Error Data from wp_handle_upload().
+     * @return array|Error Data from wp_handle_upload().
      */
     protected function upload_from_file($files, $headers)
     {
         if (empty($files)) {
-            return new WP_Error('rest_upload_no_data', __('No data supplied.'), ['status' => 400]);
+            return new Error('rest_upload_no_data', __('No data supplied.'), ['status' => 400]);
         }
 
         // Verify hash, if given.
@@ -740,7 +740,7 @@ class AttachmentsController extends PostsController
             $actual = md5_file($files['file']['tmp_name']);
 
             if ($expected !== $actual) {
-                return new WP_Error(
+                return new Error(
                     'rest_upload_hash_mismatch',
                     __('Content hash did not match expected.'),
                     ['status' => 412]
@@ -764,7 +764,7 @@ class AttachmentsController extends PostsController
         $file = wp_handle_upload($files['file'], $overrides);
 
         if (isset($file['error'])) {
-            return new WP_Error('rest_upload_unknown_error', $file['error'], ['status' => 500]);
+            return new Error('rest_upload_unknown_error', $file['error'], ['status' => 500]);
         }
 
         return $file;
