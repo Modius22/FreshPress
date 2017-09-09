@@ -7,6 +7,7 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -43,7 +44,7 @@ function get_sitestats()
  * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param int $user_id The unique ID of the user
- * @return WP_Site|void The blog object
+ * @return Site|void The blog object
  */
 function get_active_blog_for_user($user_id)
 {

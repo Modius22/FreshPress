@@ -10,6 +10,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
+
 /**
  * Objects representing the current network and current site.
  *
@@ -24,9 +26,6 @@ global $current_site, $current_blog;
 
 /** WP_Network class */
 require_once(ABSPATH . WPINC . '/class-wp-network.php');
-
-/** WP_Site class */
-require_once(ABSPATH . WPINC . '/class-wp-site.php');
 
 /** Multisite loader */
 require_once(ABSPATH . WPINC . '/ms-load.php');
@@ -97,8 +96,8 @@ if (!$current_site instanceof WP_Network) {
     $current_site = new WP_Network($current_site);
 }
 
-if (!$current_blog instanceof WP_Site) {
-    $current_blog = new WP_Site($current_blog);
+if (!$current_blog instanceof Site) {
+    $current_blog = new Site($current_blog);
 }
 
 // Define upload directory constants

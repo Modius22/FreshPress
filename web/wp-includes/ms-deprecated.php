@@ -9,6 +9,7 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
 use Devtronic\FreshPress\Core\WPDB;
 
 /*
@@ -23,7 +24,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * @deprecated 3.1.0 Use get_site()
  * @see get_site()
  *
- * @return WP_Site Current site object.
+ * @return Site Current site object.
  */
 function get_dashboard_blog()
 {

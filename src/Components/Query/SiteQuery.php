@@ -322,7 +322,7 @@ class SiteQuery
          */
         $_sites = apply_filters_ref_array('the_sites', [$_sites, &$this]);
 
-        // Convert to WP_Site instances.
+        // Convert to Site instances.
         $this->sites = array_map('get_site', $_sites);
 
         return $this->sites;

@@ -8,6 +8,7 @@
  * @since MU
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
 use Devtronic\FreshPress\Components\Query\NetworkQuery;
 use Devtronic\FreshPress\Components\Query\SiteQuery;
 use Devtronic\FreshPress\Core\WPDB;
@@ -127,7 +128,7 @@ function get_id_from_blogname($slug)
  *                                  If not specified the current blog ID is used.
  * @param bool $get_all Whether to retrieve all details or only the details in the blogs table.
  *                                  Default is true.
- * @return WP_Site|false Blog details on success. False on failure.
+ * @return Site|false Blog details on success. False on failure.
  */
 function get_blog_details($fields = null, $get_all = true)
 {
@@ -242,7 +243,7 @@ function get_blog_details($fields = null, $get_all = true)
     }
 
     if (empty($details)) {
-        $details = WP_Site::get_instance($blog_id);
+        $details = Site::get_instance($blog_id);
         if (!$details) {
             // Set the full cache.
             wp_cache_set($blog_id, -1, 'blog-details');
@@ -250,8 +251,8 @@ function get_blog_details($fields = null, $get_all = true)
         }
     }
 
-    if (!$details instanceof WP_Site) {
-        $details = new WP_Site($details);
+    if (!$details instanceof Site) {
+        $details = new Site($details);
     }
 
     if (!$get_all) {
@@ -493,7 +494,7 @@ function update_blog_details($blog_id, $details = array())
  *
  * @global bool $_wp_suspend_cache_invalidation
  *
- * @param WP_Site $blog The site object to be cleared from cache.
+ * @param Site $blog The site object to be cleared from cache.
  */
 function clean_blog_cache($blog)
 {
@@ -521,7 +522,7 @@ function clean_blog_cache($blog)
      * @since 4.6.0
      *
      * @param int $id Blog ID.
-     * @param WP_Site $blog Site object.
+     * @param Site $blog Site object.
      * @param string $domain_path_key md5 hash of domain and path.
      */
     do_action('clean_site_cache', $blog_id, $blog, $domain_path_key);
@@ -555,8 +556,8 @@ function clean_site_details_cache($site_id = 0)
  *
  * @since 4.6.0
  *
- * @param WP_Site|int|null $site Optional. Site to retrieve. Default is the current site.
- * @return WP_Site|null The site object or null if not found.
+ * @param Site|int|null $site Optional. Site to retrieve. Default is the current site.
+ * @return Site|null The site object or null if not found.
  */
 function get_site($site = null)
 {
@@ -564,12 +565,12 @@ function get_site($site = null)
         $site = get_current_blog_id();
     }
 
-    if ($site instanceof WP_Site) {
+    if ($site instanceof Site) {
         $_site = $site;
     } elseif (is_object($site)) {
-        $_site = new WP_Site($site);
+        $_site = new Site($site);
     } else {
-        $_site = WP_Site::get_instance($site);
+        $_site = Site::get_instance($site);
     }
 
     if (!$_site) {
@@ -581,7 +582,7 @@ function get_site($site = null)
      *
      * @since 4.6.0
      *
-     * @param WP_Site $_site Site data.
+     * @param Site $_site Site data.
      */
     $_site = apply_filters('get_site', $_site);
 

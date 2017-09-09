@@ -1,11 +1,13 @@
 <?php
 /**
- * Site API: WP_Site class
+ * Site API: Site class
  *
  * @package WordPress
  * @subpackage Multisite
  * @since 4.5.0
  */
+
+namespace Devtronic\FreshPress\Components\Multisite;
 
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -24,7 +26,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * @property int $post_count
  * @property string $home
  */
-final class WP_Site
+class Site
 {
 
     /**
@@ -167,7 +169,7 @@ final class WP_Site
      * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $site_id The ID of the site to retrieve.
-     * @return WP_Site|false The site's object if found. False if not.
+     * @return Site|false The site's object if found. False if not.
      */
     public static function get_instance($site_id)
     {
@@ -193,11 +195,11 @@ final class WP_Site
             wp_cache_add($site_id, $_site, 'sites');
         }
 
-        return new WP_Site($_site);
+        return new Site($_site);
     }
 
     /**
-     * Creates a new WP_Site object.
+     * Creates a new Site object.
      *
      * Will populate object properties from the object provided and assign other
      * default properties based on that information.
@@ -205,7 +207,7 @@ final class WP_Site
      * @since 4.5.0
      * @access public
      *
-     * @param WP_Site|object $site A site object.
+     * @param Site|object $site A site object.
      */
     public function __construct($site)
     {
@@ -337,9 +339,9 @@ final class WP_Site
      * @since 4.6.0
      * @access private
      *
-     * @see WP_Site::__get()
+     * @see Site::__get()
      *
-     * @return stdClass A raw site object with all details included.
+     * @return \stdClass A raw site object with all details included.
      */
     private function get_details()
     {
@@ -348,7 +350,7 @@ final class WP_Site
         if (false === $details) {
             switch_to_blog($this->blog_id);
             // Create a raw copy of the object for backwards compatibility with the filter below.
-            $details = new stdClass();
+            $details = new \stdClass();
             foreach (get_object_vars($this) as $key => $value) {
                 $details->$key = $value;
             }
@@ -362,14 +364,14 @@ final class WP_Site
         }
 
         /** This filter is documented in wp-includes/ms-blogs.php */
-        $details = apply_filters_deprecated('blog_details', array($details), '4.7.0', 'site_details');
+        $details = apply_filters_deprecated('blog_details', [$details], '4.7.0', 'site_details');
 
         /**
          * Filters a site's extended properties.
          *
          * @since 4.6.0
          *
-         * @param stdClass $details The site details.
+         * @param \stdClass $details The site details.
          */
         $details = apply_filters('site_details', $details);
 
