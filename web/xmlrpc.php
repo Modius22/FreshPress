@@ -62,7 +62,6 @@ if (isset($_GET['rsd'])) { // http://cyber.law.harvard.edu/blogs/gems/tech/rsd.h
 }
 
 include_once(ABSPATH . 'wp-admin/includes/admin.php');
-include_once(ABSPATH . WPINC . '/class-wp-xmlrpc-server.php');
 
 /**
  * Posts submitted via the XML-RPC interface get that title
@@ -78,7 +77,7 @@ $post_default_title = "";
  *
  * @param string $class The name of the XML-RPC server class.
  */
-$wp_xmlrpc_server_class = apply_filters('wp_xmlrpc_server_class', 'wp_xmlrpc_server');
+$wp_xmlrpc_server_class = apply_filters('wp_xmlrpc_server_class', \Devtronic\FreshPress\Components\Misc\XmlRpcServer::class);
 $wp_xmlrpc_server = new $wp_xmlrpc_server_class;
 
 // Fire off the request

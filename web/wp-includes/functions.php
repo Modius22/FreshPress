@@ -7,10 +7,11 @@
 
 use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Components\Misc\XmlRpcServer;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Util\ListUtil;
-use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\Error;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -3140,7 +3141,7 @@ function _default_wp_die_handler($message, $title = '', $args = array())
  * @since 3.2.0
  * @access private
  *
- * @global wp_xmlrpc_server $wp_xmlrpc_server
+ * @global XmlRpcServer $wp_xmlrpc_server
  *
  * @param string $message Error message.
  * @param string $title Optional. Error title. Default empty.

@@ -183,6 +183,7 @@ $classes = array_change_key_case([
     'WP_Locale' => 'Devtronic\\FreshPress\\Components\\I18n\\Locale',
     'WP_Admin_Bar' => 'Devtronic\\FreshPress\\Components\\Admin\\AdminBar',
     'WP_Network' => 'Devtronic\\FreshPress\\Components\\Multisite\\Network',
+    'wp_xmlrpc_server' => 'Devtronic\\FreshPress\\Components\\Misc\\XmlRpcServer',
 ]);
 
 $abstractClasses = array_change_key_case([
