@@ -9,8 +9,6 @@
 
 namespace Devtronic\FreshPress\Components\Customize;
 
-use WP_Theme;
-
 /**
  * Customize Theme Control class.
  *
@@ -35,7 +33,7 @@ class ThemeControl extends Control
      *
      * @since 4.2.0
      * @access public
-     * @var WP_Theme
+     * @var Theme
      */
     public $theme;
 

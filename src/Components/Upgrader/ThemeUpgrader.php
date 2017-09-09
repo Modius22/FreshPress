@@ -9,9 +9,9 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
 use Devtronic\FreshPress\Core\Error;
-use WP_Theme;
 
 /**
  * Core class used for upgrading/installing themes.
@@ -635,7 +635,7 @@ class ThemeUpgrader extends Upgrader
     }
 
     /**
-     * Get the WP_Theme object for a theme.
+     * Get the Theme object for a theme.
      *
      * @since 2.8.0
      * @since 3.0.0 The `$theme` argument was added.
@@ -643,7 +643,7 @@ class ThemeUpgrader extends Upgrader
      *
      * @param string $theme The directory name of the theme. This is optional, and if not supplied,
      *                      the directory name from the last result will be used.
-     * @return WP_Theme|false The theme's info object, or false `$theme` is not supplied
+     * @return Theme|false The theme's info object, or false `$theme` is not supplied
      *                        and the last result isn't set.
      */
     public function theme_info($theme = null)

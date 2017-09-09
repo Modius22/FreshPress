@@ -14,7 +14,6 @@ use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
-use WP_Theme;
 
 /**
  * Customize Manager class.
@@ -36,7 +35,7 @@ class Manager
      *
      * @since 3.4.0
      * @access protected
-     * @var WP_Theme
+     * @var Theme
      */
     protected $theme;
 
@@ -641,7 +640,7 @@ class Manager
      *
      * @since 3.4.0
      *
-     * @return WP_Theme
+     * @return Theme
      */
     public function theme()
     {

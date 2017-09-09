@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Components\Admin\AdminBar;
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\Http\Http;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -3474,7 +3475,7 @@ function remove_custom_background()
 function get_theme_data($theme_file)
 {
     _deprecated_function(__FUNCTION__, '3.4.0', 'wp_get_theme()');
-    $theme = new WP_Theme(basename(dirname($theme_file)), dirname(dirname($theme_file)));
+    $theme = new Theme(basename(dirname($theme_file)), dirname(dirname($theme_file)));
 
     $theme_data = array(
         'Name' => $theme->get('Name'),

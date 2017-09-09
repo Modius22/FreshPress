@@ -3813,7 +3813,7 @@ function wp_ajax_install_theme()
     }
 
     /*
-     * See Devtronic\FreshPress\Components\ListTables\WP_Theme_Install_List_Table::_get_theme_status() if we wanted to check
+     * See Devtronic\FreshPress\Components\ListTables\ThemeInstallListTable::_get_theme_status() if we wanted to check
      * on post-install status.
      */
     wp_send_json_success($status);

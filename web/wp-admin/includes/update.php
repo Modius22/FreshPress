@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
 use Devtronic\FreshPress\Components\ListTables\PluginsListTable;
 use Devtronic\FreshPress\Components\Upgrader\AutomaticUpdater;
@@ -564,7 +565,7 @@ function wp_theme_update_rows()
  * Displays update information for a theme.
  *
  * @param string $theme_key Theme stylesheet.
- * @param WP_Theme $theme Theme object.
+ * @param Theme $theme Theme object.
  * @return false|void
  */
 function wp_theme_update_row($theme_key, $theme)
@@ -648,7 +649,7 @@ function wp_theme_update_row($theme_key, $theme)
      *
      * @since 3.1.0
      *
-     * @param WP_Theme $theme The WP_Theme object.
+     * @param Theme $theme The Theme object.
      * @param array $response {
      *     An array of metadata about the available theme update.
      *

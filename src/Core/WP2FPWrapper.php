@@ -205,6 +205,7 @@ $finalClasses = array_change_key_case([
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
     'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
     'WP_Screen' => 'Devtronic\\FreshPress\\Components\\Admin\\Screen',
+    'WP_Theme' => 'Devtronic\\FreshPress\\Customize\\Theme',
 ]);
 
 // Only for compatibility, remove in 2.x

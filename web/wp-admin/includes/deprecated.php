@@ -12,8 +12,9 @@
  * Deprecated functions come here to die.
  */
 
-use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\Admin\AdminBar;
+use Devtronic\FreshPress\Components\Admin\Screen;
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -1114,7 +1115,7 @@ function get_broken_themes()
  * @deprecated 3.4.0 Use wp_get_theme()
  * @see wp_get_theme()
  *
- * @return WP_Theme
+ * @return Theme
  */
 function current_theme_info()
 {

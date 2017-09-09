@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Theme;
+use Devtronic\FreshPress\Components\Customize\Theme;
 
 /**
  * Core class used to implement displaying themes in a list table for the network admin.
@@ -102,12 +102,12 @@ class MSThemesListTable extends ListTable
 
         $themes = [
             /**
-             * Filters the full array of WP_Theme objects to list in the Multisite
+             * Filters the full array of Theme objects to list in the Multisite
              * themes list table.
              *
              * @since 3.1.0
              *
-             * @param array $all An array of WP_Theme objects to display in the list table.
+             * @param array $all An array of Theme objects to display in the list table.
              */
             'all' => apply_filters('all_themes', wp_get_themes()),
             'search' => [],
@@ -160,7 +160,7 @@ class MSThemesListTable extends ListTable
         }
 
         $this->items = $themes[$status];
-        WP_Theme::sort_by_name($this->items);
+        Theme::sort_by_name($this->items);
 
         $this->has_items = !empty($themes['all']);
         $total_this_page = $totals[$status];
@@ -197,7 +197,7 @@ class MSThemesListTable extends ListTable
 
     /**
      * @staticvar string $term
-     * @param WP_Theme $theme
+     * @param Theme $theme
      * @return bool
      */
     public function _search_callback($theme)
@@ -418,7 +418,7 @@ class MSThemesListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Theme $theme The current WP_Theme object.
+     * @param Theme $theme The current Theme object.
      */
     public function column_cb($theme)
     {
@@ -440,7 +440,7 @@ class MSThemesListTable extends ListTable
      * @global int $page
      * @global string $s
      *
-     * @param WP_Theme $theme The current WP_Theme object.
+     * @param Theme $theme The current Theme object.
      */
     public function column_name($theme)
     {
@@ -569,7 +569,7 @@ class MSThemesListTable extends ListTable
          * @since 2.8.0
          *
          * @param array $actions An array of action links.
-         * @param WP_Theme $theme The current WP_Theme object.
+         * @param Theme $theme The current Theme object.
          * @param string $context Status of the theme.
          */
         $actions = apply_filters('theme_action_links', array_filter($actions), $theme, $context);
@@ -585,7 +585,7 @@ class MSThemesListTable extends ListTable
          * @since 3.1.0
          *
          * @param array $actions An array of action links.
-         * @param WP_Theme $theme The current WP_Theme object.
+         * @param Theme $theme The current Theme object.
          * @param string $context Status of the theme.
          */
         $actions = apply_filters("theme_action_links_{$stylesheet}", $actions, $theme, $context);
@@ -602,7 +602,7 @@ class MSThemesListTable extends ListTable
      * @global string $status
      * @global array $totals
      *
-     * @param WP_Theme $theme The current WP_Theme object.
+     * @param Theme $theme The current Theme object.
      */
     public function column_description($theme)
     {
@@ -655,7 +655,7 @@ class MSThemesListTable extends ListTable
          *                             including the version, author, and
          *                             theme URI.
          * @param string $stylesheet Directory name of the theme.
-         * @param WP_Theme $theme WP_Theme object.
+         * @param Theme $theme Theme object.
          * @param string $status Status of the theme.
          */
         $theme_meta = apply_filters('theme_row_meta', $theme_meta, $stylesheet, $theme, $status);
@@ -670,7 +670,7 @@ class MSThemesListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Theme $theme The current WP_Theme object.
+     * @param Theme $theme The current Theme object.
      * @param string $column_name The current column name.
      */
     public function column_default($theme, $column_name)
@@ -684,7 +684,7 @@ class MSThemesListTable extends ListTable
          *
          * @param string $column_name Name of the column.
          * @param string $stylesheet Directory name of the theme.
-         * @param WP_Theme $theme Current WP_Theme object.
+         * @param Theme $theme Current Theme object.
          */
         do_action('manage_themes_custom_column', $column_name, $stylesheet, $theme);
     }
@@ -695,7 +695,7 @@ class MSThemesListTable extends ListTable
      * @since 4.3.0
      * @access public
      *
-     * @param WP_Theme $item The current WP_Theme object.
+     * @param Theme $item The current Theme object.
      */
     public function single_row_columns($item)
     {
@@ -747,7 +747,7 @@ class MSThemesListTable extends ListTable
      * @global string $status
      * @global array $totals
      *
-     * @param WP_Theme $theme
+     * @param Theme $theme
      */
     public function single_row($theme)
     {
@@ -786,7 +786,7 @@ class MSThemesListTable extends ListTable
          * @since 3.1.0
          *
          * @param string $stylesheet Directory name of the theme.
-         * @param WP_Theme $theme Current WP_Theme object.
+         * @param Theme $theme Current Theme object.
          * @param string $status Status of the theme.
          */
         do_action('after_theme_row', $stylesheet, $theme, $status);
@@ -801,7 +801,7 @@ class MSThemesListTable extends ListTable
          * @since 3.5.0
          *
          * @param string $stylesheet Directory name of the theme.
-         * @param WP_Theme $theme Current WP_Theme object.
+         * @param Theme $theme Current Theme object.
          * @param string $status Status of the theme.
          */
         do_action("after_theme_row_{$stylesheet}", $stylesheet, $theme, $status);
