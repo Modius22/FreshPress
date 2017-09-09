@@ -278,7 +278,7 @@ class NetworkQuery
          */
         $_networks = apply_filters_ref_array('the_networks', [$_networks, &$this]);
 
-        // Convert to WP_Network instances
+        // Convert to Network instances
         $this->networks = array_map('get_network', $_networks);
 
         return $this->networks;

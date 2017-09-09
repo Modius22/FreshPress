@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Components\Multisite\Site;
+use Devtronic\FreshPress\Components\Multisite\Network;
 use Devtronic\FreshPress\Components\Query\NetworkQuery;
 use Devtronic\FreshPress\Components\Query\SiteQuery;
 use Devtronic\FreshPress\Core\WPDB;
@@ -1256,10 +1257,10 @@ function get_networks($args = array())
  *
  * @since 4.6.0
  *
- * @global WP_Network $current_site
+ * @global Network $current_site
  *
- * @param WP_Network|int|null $network Optional. Network to retrieve. Default is the current network.
- * @return WP_Network|null The network object or null if not found.
+ * @param Network|int|null $network Optional. Network to retrieve. Default is the current network.
+ * @return Network|null The network object or null if not found.
  */
 function get_network($network = null)
 {
@@ -1268,12 +1269,12 @@ function get_network($network = null)
         $network = $current_site;
     }
 
-    if ($network instanceof WP_Network) {
+    if ($network instanceof Network) {
         $_network = $network;
     } elseif (is_object($network)) {
-        $_network = new WP_Network($network);
+        $_network = new Network($network);
     } else {
-        $_network = WP_Network::get_instance($network);
+        $_network = Network::get_instance($network);
     }
 
     if (!$_network) {
@@ -1285,7 +1286,7 @@ function get_network($network = null)
      *
      * @since 4.6.0
      *
-     * @param WP_Network $_network Network data.
+     * @param Network $_network Network data.
      */
     $_network = apply_filters('get_network', $_network);
 

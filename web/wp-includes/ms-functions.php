@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Multisite\Site;
+use Devtronic\FreshPress\Components\Multisite\Network;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -1867,9 +1868,9 @@ function wpmu_welcome_user_notification($user_id, $password, $meta = array())
  *
  * @since MU
  *
- * @global WP_Network $current_site
+ * @global Network $current_site
  *
- * @return WP_Network
+ * @return Network
  */
 function get_current_site()
 {
