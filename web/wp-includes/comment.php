@@ -6,6 +6,7 @@
  * @subpackage Comment
  */
 
+use Devtronic\FreshPress\Components\Misc\CustomIxrClient;
 use Devtronic\FreshPress\Components\Query\CommentQuery;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\Error;
@@ -2782,8 +2783,6 @@ function generic_ping($post_id = 0)
  */
 function pingback($content, $post_id)
 {
-    include_once(ABSPATH . WPINC . '/class-wp-http-ixr-client.php');
-
     // original code by Mort (http://mort.mine.nu:8080)
     $post_links = array();
 
@@ -2848,7 +2847,7 @@ function pingback($content, $post_id)
             $pagelinkedfrom = get_permalink($post);
 
             // using a timeout of 3 seconds should be enough to cover slow servers
-            $client = new WP_HTTP_IXR_Client($pingback_server_url);
+            $client = new CustomIxrClient($pingback_server_url);
             $client->timeout = 3;
             /**
              * Filters the user agent sent when pinging-back a URL.
@@ -2961,10 +2960,8 @@ function trackback($trackback_url, $title, $excerpt, $ID)
  */
 function weblog_ping($server = '', $path = '')
 {
-    include_once(ABSPATH . WPINC . '/class-wp-http-ixr-client.php');
-
     // using a timeout of 3 seconds should be enough to cover slow servers
-    $client = new WP_HTTP_IXR_Client($server, ((!strlen(trim($path)) || ('/' == $path)) ? false : $path));
+    $client = new CustomIxrClient($server, ((!strlen(trim($path)) || ('/' == $path)) ? false : $path));
     $client->timeout = 3;
     $client->useragent .= ' -- WordPress/' . get_bloginfo('version');
 

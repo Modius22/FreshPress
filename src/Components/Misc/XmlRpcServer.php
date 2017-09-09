@@ -2551,7 +2551,6 @@ class XmlRpcServer extends \IXR_Server
         if (isset($args[4])) {
             $fields = $args[4];
         } else {
-            
             $fields = apply_filters(
                 'xmlrpc_default_taxonomy_fields',
                 ['labels', 'cap', 'object_type'],
@@ -2704,7 +2703,6 @@ class XmlRpcServer extends \IXR_Server
         if (isset($args[4])) {
             $fields = $args[4];
         } else {
-            
             $fields = apply_filters('xmlrpc_default_user_fields', ['all'], 'wp.getUsers');
         }
 
@@ -2784,7 +2782,6 @@ class XmlRpcServer extends \IXR_Server
         if (isset($args[3])) {
             $fields = $args[3];
         } else {
-            
             $fields = apply_filters('xmlrpc_default_user_fields', ['all'], 'wp.getProfile');
         }
 
@@ -4533,7 +4530,6 @@ class XmlRpcServer extends \IXR_Server
         if (isset($args[4])) {
             $fields = $args[4];
         } else {
-            
             $fields = apply_filters(
                 'xmlrpc_default_posttype_fields',
                 ['labels', 'cap', 'taxonomies'],
@@ -6669,7 +6665,6 @@ class XmlRpcServer extends \IXR_Server
      */
     public function mt_supportedMethods()
     {
-        
         do_action('xmlrpc_call', 'mt.supportedMethods');
 
         return array_keys($this->methods);
@@ -6682,7 +6677,6 @@ class XmlRpcServer extends \IXR_Server
      */
     public function mt_supportedTextFilters()
     {
-        
         do_action('xmlrpc_call', 'mt.supportedTextFilters');
 
         /**

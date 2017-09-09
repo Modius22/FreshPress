@@ -184,6 +184,7 @@ $classes = array_change_key_case([
     'WP_Admin_Bar' => 'Devtronic\\FreshPress\\Components\\Admin\\AdminBar',
     'WP_Network' => 'Devtronic\\FreshPress\\Components\\Multisite\\Network',
     'wp_xmlrpc_server' => 'Devtronic\\FreshPress\\Components\\Misc\\XmlRpcServer',
+    'WP_HTTP_IXR_Client' => 'Devtronic\\FreshPress\\Components\\Misc\\CustomIxrClient',
 ]);
 
 $abstractClasses = array_change_key_case([

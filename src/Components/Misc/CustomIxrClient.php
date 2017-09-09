@@ -1,13 +1,17 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Misc;
+
+use IXR_Error;
+
 /**
- * WP_HTTP_IXR_Client
+ * CustomIxrClient
  *
  * @package WordPress
  * @since 3.1.0
  *
  */
-class WP_HTTP_IXR_Client extends IXR_Client
+class CustomIxrClient extends \IXR_Client
 {
     public $scheme;
     /**
@@ -56,16 +60,16 @@ class WP_HTTP_IXR_Client extends IXR_Client
     {
         $args = func_get_args();
         $method = array_shift($args);
-        $request = new IXR_Request($method, $args);
+        $request = new \IXR_Request($method, $args);
         $xml = $request->getXml();
 
         $port = $this->port ? ":$this->port" : '';
         $url = $this->scheme . '://' . $this->server . $port . $this->path;
-        $args = array(
-            'headers' => array('Content-Type' => 'text/xml'),
+        $args = [
+            'headers' => ['Content-Type' => 'text/xml'],
             'user-agent' => $this->useragent,
             'body' => $xml,
-        );
+        ];
 
         // Merge Custom headers ala #8145
         foreach ($this->headers as $header => $value) {
@@ -112,7 +116,7 @@ class WP_HTTP_IXR_Client extends IXR_Client
         }
 
         // Now parse what we've got back
-        $this->message = new IXR_Message(wp_remote_retrieve_body($response));
+        $this->message = new \IXR_Message(wp_remote_retrieve_body($response));
         if (!$this->message->parse()) {
             // XML error
             $this->error = new IXR_Error(-32700, 'parse error. not well formed');
