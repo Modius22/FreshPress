@@ -39,7 +39,6 @@
             "web/wp-includes/class-wp-ajax-response.php",
             "web/wp-includes/class-wp-roles.php",
             "web/wp-includes/class-wp-role.php",
-            "web/wp-includes/class-wp-metadata-lazyloader.php",
             "web/wp-includes/class-wp-taxonomy.php"
         ]
     }

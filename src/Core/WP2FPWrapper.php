@@ -189,6 +189,7 @@ $classes = array_change_key_case([
     'WP_oEmbed' => 'Devtronic\\FreshPress\\Components\\Misc\\OEmbed',
     'WP_Rewrite' => 'Devtronic\\FreshPress\\Components\\Misc\\Rewrite',
     'WP_MatchesMapRegex' => 'Devtronic\\FreshPress\\Components\\Misc\\MatchesMapRegex',
+    'WP_Metadata_Lazyloader' => 'Devtronic\\FreshPress\\Components\\Misc\\MetadataLazyloader',
 ]);
 
 $abstractClasses = array_change_key_case([
