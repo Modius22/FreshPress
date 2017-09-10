@@ -213,6 +213,7 @@ $finalClasses = array_change_key_case([
     'WP_Theme' => 'Devtronic\\FreshPress\\Customize\\Theme',
     'WP_Site' => 'Devtronic\\FreshPress\\Components\\Multisite\\Site',
     'WP_Internal_Pointers' => 'Devtronic\\FreshPress\\Components\\Misc\\InternalPointers',
+    '_WP_Editors' => 'Devtronic\\FreshPress\\Components\\Misc\\Editors',
 ]);
 
 // Only for compatibility, remove in 2.x

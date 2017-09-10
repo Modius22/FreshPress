@@ -18,6 +18,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Misc\Editors;
 use Devtronic\FreshPress\Components\Misc\Embed;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Session\SessionTokens;
@@ -1736,11 +1737,7 @@ function wp_ajax_wp_link_ajax()
 
     $args['pagenum'] = !empty($_POST['page']) ? absint($_POST['page']) : 1;
 
-    if (!class_exists('_WP_Editors', false)) {
-        require(ABSPATH . WPINC . '/class-wp-editor.php');
-    }
-
-    $results = _WP_Editors::wp_link_query($args);
+    $results = Editors::wp_link_query($args);
 
     if (!isset($results)) {
         wp_die(0);

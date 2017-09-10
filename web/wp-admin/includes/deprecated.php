@@ -15,6 +15,7 @@
 use Devtronic\FreshPress\Components\Admin\AdminBar;
 use Devtronic\FreshPress\Components\Admin\Screen;
 use Devtronic\FreshPress\Components\Customize\Theme;
+use Devtronic\FreshPress\Components\Misc\Editors;
 use Devtronic\FreshPress\Components\Upgrader\CoreUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\PluginUpgrader;
 use Devtronic\FreshPress\Components\Upgrader\ThemeUpgrader;
@@ -806,10 +807,6 @@ function wp_tiny_mce($teeny = false, $settings = false)
 
     static $num = 1;
 
-    if (!class_exists('_WP_Editors', false)) {
-        require_once(ABSPATH . WPINC . '/class-wp-editor.php');
-    }
-
     $editor_id = 'content' . $num++;
 
     $set = array(
@@ -818,8 +815,8 @@ function wp_tiny_mce($teeny = false, $settings = false)
         'quicktags' => false
     );
 
-    $set = _WP_Editors::parse_settings($editor_id, $set);
-    _WP_Editors::editor_settings($editor_id, $set);
+    $set = Editors::parse_settings($editor_id, $set);
+    Editors::editor_settings($editor_id, $set);
 }
 
 /**
