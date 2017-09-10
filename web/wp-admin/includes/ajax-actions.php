@@ -19,9 +19,10 @@ use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
 use Devtronic\FreshPress\Components\Misc\AjaxResponse;
+use Devtronic\FreshPress\Components\Misc\CommunityEvents;
 use Devtronic\FreshPress\Components\Misc\Editors;
 use Devtronic\FreshPress\Components\Misc\Embed;
-use Devtronic\FreshPress\Components\Misc\CommunityEvents;
+use Devtronic\FreshPress\Components\Misc\PressThis;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
@@ -3541,9 +3542,8 @@ function wp_ajax_destroy_sessions()
  */
 function wp_ajax_press_this_save_post()
 {
-    include(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-    $wp_press_this = new WP_Press_This();
-    $wp_press_this->save_post();
+    $pressThis = new PressThis();
+    $pressThis->save_post();
 }
 
 /**
@@ -3553,9 +3553,8 @@ function wp_ajax_press_this_save_post()
  */
 function wp_ajax_press_this_add_category()
 {
-    include(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-    $wp_press_this = new WP_Press_This();
-    $wp_press_this->add_category();
+    $pressThis = new PressThis();
+    $pressThis->add_category();
 }
 
 /**

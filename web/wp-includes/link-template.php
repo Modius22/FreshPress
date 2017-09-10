@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Misc\Rewrite;
+use Devtronic\FreshPress\Components\Misc\PressThis;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Comment;
@@ -3185,8 +3186,6 @@ function get_shortcut_link()
 {
     global $is_IE;
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-
     $link = '';
 
     if ($is_IE) {
@@ -3204,7 +3203,7 @@ function get_shortcut_link()
 
             $link = 'javascript:var d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,' .
                 's=(e?e():(k)?k():(x?x.createRange().text:0)),f=' . $url . ',l=d.location,e=encodeURIComponent,' .
-                'u=f+"?u="+e(l.href)+"&t="+e(d.title)+"&s="+e(s)+"&v=' . WP_Press_This::VERSION . '";' .
+                'u=f+"?u="+e(l.href)+"&t="+e(d.title)+"&s="+e(s)+"&v=' . PressThis::VERSION . '";' .
                 'a=function(){if(!w.open(u,"t","toolbar=0,resizable=1,scrollbars=1,status=1,width=600,height=700"))l.href=u;};' .
                 'if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();void(0)';
         }
@@ -3214,7 +3213,7 @@ function get_shortcut_link()
         $src = @file_get_contents(ABSPATH . 'wp-admin/assets/js/bookmarklet.min.js');
 
         if ($src) {
-            $url = wp_json_encode(admin_url('press-this.php') . '?v=' . WP_Press_This::VERSION);
+            $url = wp_json_encode(admin_url('press-this.php') . '?v=' . PressThis::VERSION);
             $link = 'javascript:' . str_replace('window.pt_url', $url, $src);
         }
     }

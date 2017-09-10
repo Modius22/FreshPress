@@ -193,6 +193,7 @@ $classes = array_change_key_case([
     'WP_Ajax_Response' => 'Devtronic\\FreshPress\\Components\\Misc\\AjaxResponse',
     'WP_Community_Events' => 'Devtronic\\FreshPress\\Components\\Misc\\CommunityEvents',
     'WP_Importer' => 'Devtronic\\FreshPress\\Components\\Misc\\Importer',
+    'WP_Press_This' => 'Devtronic\\FreshPress\\Components\\Misc\\PressThis',
 ]);
 
 $abstractClasses = array_change_key_case([
