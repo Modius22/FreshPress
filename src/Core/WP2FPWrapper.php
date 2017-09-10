@@ -187,6 +187,8 @@ $classes = array_change_key_case([
     'WP_HTTP_IXR_Client' => 'Devtronic\\FreshPress\\Components\\Misc\\CustomIxrClient',
     'WP_Embed' => 'Devtronic\\FreshPress\\Components\\Misc\\Embed',
     'WP_oEmbed' => 'Devtronic\\FreshPress\\Components\\Misc\\OEmbed',
+    'WP_Rewrite' => 'Devtronic\\FreshPress\\Components\\Misc\\Rewrite',
+    'WP_MatchesMapRegex' => 'Devtronic\\FreshPress\\Components\\Misc\\MatchesMapRegex',
 ]);
 
 $abstractClasses = array_change_key_case([

@@ -7,6 +7,7 @@
  */
 
 use Devtronic\FreshPress\Components\Misc\Rewrite;
+use Devtronic\FreshPress\Components\Misc\MatchesMapRegex;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Entity\Post;
@@ -601,7 +602,7 @@ function url_to_postid($url)
             $query = preg_replace("!^.+\?!", '', $query);
 
             // Substitute the substring matches into the query.
-            $query = addslashes(WP_MatchesMapRegex::apply($query, $matches));
+            $query = addslashes(MatchesMapRegex::apply($query, $matches));
 
             // Filter out non-public query vars
             global $wp;
