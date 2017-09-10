@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Response;
+use Devtronic\FreshPress\Components\Misc\Embed;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
@@ -19,7 +20,7 @@ use Devtronic\FreshPress\Entity\Post;
  *
  * @since 2.9.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  *
  * @param string $id An internal ID/name for the handler. Needs to be unique.
  * @param string $regex The regex that will be used to see if this handler should be used for a URL.
@@ -38,7 +39,7 @@ function wp_embed_register_handler($id, $regex, $callback, $priority = 10)
  *
  * @since 2.9.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  *
  * @param string $id The handler ID that should be removed.
  * @param int $priority Optional. The priority of the handler to be removed. Default 10.
@@ -244,7 +245,7 @@ function wp_maybe_load_embeds()
  *
  * @since 4.0.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  *
  * @param array $matches The RegEx matches from the provided regex when calling
  *                        wp_embed_register_handler().

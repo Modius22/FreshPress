@@ -18,6 +18,7 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Misc\Embed;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
@@ -263,7 +264,7 @@ function wp_ajax_imgedit_preview()
  *
  * @since 3.1.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  */
 function wp_ajax_oembed_cache()
 {
@@ -3043,7 +3044,7 @@ function wp_ajax_send_attachment_to_editor()
  * @since 3.5.0
  *
  * @global Post $post
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  */
 function wp_ajax_send_link_to_editor()
 {
@@ -3331,7 +3332,7 @@ function wp_ajax_query_themes()
  * @since 4.0.0
  *
  * @global Post $post Global $post.
- * @global WP_Embed $wp_embed Embed API instance.
+ * @global Embed $wp_embed Embed API instance.
  * @global Scripts $wp_scripts
  */
 function wp_ajax_parse_embed()

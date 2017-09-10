@@ -8,8 +8,9 @@
  * @package WordPress
  */
 
-use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
 use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
+use Devtronic\FreshPress\Components\Misc\Embed;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\Core\Kernel;
@@ -181,7 +182,7 @@ require(ABSPATH . WPINC . '/nav-menu-template.php');
 require(ABSPATH . WPINC . '/admin-bar.php');
 require(ABSPATH . WPINC . '/rest-api.php');
 
-$GLOBALS['wp_embed'] = new WP_Embed();
+$GLOBALS['wp_embed'] = new Embed();
 
 // Load multisite-specific files.
 if (is_multisite()) {

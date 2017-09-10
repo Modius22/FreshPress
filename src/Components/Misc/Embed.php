@@ -1,5 +1,7 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Misc;
+
 /**
  * API for easily embedding rich media such as videos and images into content.
  *
@@ -7,13 +9,13 @@
  * @subpackage Embed
  * @since 2.9.0
  */
-class WP_Embed
+class Embed
 {
-    public $handlers = array();
+    public $handlers = [];
     public $post_ID;
     public $usecache = true;
     public $linkifunknown = true;
-    public $last_attr = array();
+    public $last_attr = [];
     public $last_url = '';
 
     /**
@@ -33,17 +35,17 @@ class WP_Embed
     public function __construct()
     {
         // Hack to get the [embed] shortcode to run before wpautop()
-        add_filter('the_content', array($this, 'run_shortcode'), 8);
+        add_filter('the_content', [$this, 'run_shortcode'], 8);
 
         // Shortcode placeholder for strip_shortcodes()
         add_shortcode('embed', '__return_false');
 
         // Attempts to embed all URLs in a post
-        add_filter('the_content', array($this, 'autoembed'), 8);
+        add_filter('the_content', [$this, 'autoembed'], 8);
 
         // After a post is saved, cache oEmbed items via Ajax
-        add_action('edit_form_advanced', array($this, 'maybe_run_ajax_cache'));
-        add_action('edit_page_form', array($this, 'maybe_run_ajax_cache'));
+        add_action('edit_form_advanced', [$this, 'maybe_run_ajax_cache']);
+        add_action('edit_page_form', [$this, 'maybe_run_ajax_cache']);
     }
 
     /**
@@ -66,7 +68,7 @@ class WP_Embed
         $orig_shortcode_tags = $shortcode_tags;
         remove_all_shortcodes();
 
-        add_shortcode('embed', array($this, 'shortcode'));
+        add_shortcode('embed', [$this, 'shortcode']);
 
         // Do the shortcode (only the [embed] one is registered)
         $content = do_shortcode($content, true);
@@ -79,7 +81,7 @@ class WP_Embed
 
     /**
      * If a post/page was saved, then output JavaScript to make
-     * an Ajax request that will call WP_Embed::cache_oembed().
+     * an Ajax request that will call Embed::cache_oembed().
      */
     public function maybe_run_ajax_cache()
     {
@@ -110,10 +112,10 @@ class WP_Embed
      */
     public function register_handler($id, $regex, $callback, $priority = 10)
     {
-        $this->handlers[$priority][$id] = array(
+        $this->handlers[$priority][$id] = [
             'regex' => $regex,
             'callback' => $callback,
-        );
+        ];
     }
 
     /**
@@ -180,7 +182,7 @@ class WP_Embed
                      *
                      * @since 2.9.0
                      *
-                     * @see WP_Embed::shortcode()
+                     * @see Embed::shortcode()
                      *
                      * @param mixed $return The shortcode callback function to call.
                      * @param string $url The attempted embed URL.
@@ -193,7 +195,7 @@ class WP_Embed
         }
 
         $post_ID = (!empty($post->ID)) ? $post->ID : null;
-        if (!empty($this->post_ID)) { // Potentially set by WP_Embed::cache_oembed()
+        if (!empty($this->post_ID)) { // Potentially set by Embed::cache_oembed()
             $post_ID = $this->post_ID;
         }
 
@@ -238,7 +240,7 @@ class WP_Embed
                      *
                      * @since 2.9.0
                      *
-                     * @see WP_Embed::shortcode()
+                     * @see Embed::shortcode()
                      *
                      * @param mixed $cache The cached HTML result, stored in post meta.
                      * @param string $url The attempted embed URL.
@@ -274,7 +276,6 @@ class WP_Embed
 
             // If there was a result, return it
             if ($html) {
-                /** This filter is documented in wp-includes/class-wp-embed.php */
                 return apply_filters('embed_oembed_html', $html, $url, $attr, $post_ID);
             }
         }
@@ -311,7 +312,7 @@ class WP_Embed
     {
         $post = get_post($post_ID);
 
-        $post_types = get_post_types(array('show_ui' => true));
+        $post_types = get_post_types(['show_ui' => true]);
         /**
          * Filters the array of post types to cache oEmbed results for.
          *
@@ -336,9 +337,9 @@ class WP_Embed
     }
 
     /**
-     * Passes any unlinked URLs that are on their own line to WP_Embed::shortcode() for potential embedding.
+     * Passes any unlinked URLs that are on their own line to Embed::shortcode() for potential embedding.
      *
-     * @see WP_Embed::autoembed_callback()
+     * @see Embed::autoembed_callback()
      *
      * @param string $content The content to be searched.
      * @return string Potentially modified $content.
@@ -346,19 +347,19 @@ class WP_Embed
     public function autoembed($content)
     {
         // Replace line breaks from all HTML elements with placeholders.
-        $content = wp_replace_in_html_tags($content, array("\n" => '<!-- wp-line-break -->'));
+        $content = wp_replace_in_html_tags($content, ["\n" => '<!-- wp-line-break -->']);
 
         if (preg_match('#(^|\s|>)https?://#i', $content)) {
             // Find URLs on their own line.
             $content = preg_replace_callback(
                 '|^(\s*)(https?://[^\s<>"]+)(\s*)$|im',
-                array($this, 'autoembed_callback'),
+                [$this, 'autoembed_callback'],
                 $content
             );
             // Find URLs in their own paragraph.
             $content = preg_replace_callback(
                 '|(<p(?: [^>]*)?>\s*)(https?://[^\s<>"]+)(\s*<\/p>)|i',
-                array($this, 'autoembed_callback'),
+                [$this, 'autoembed_callback'],
                 $content
             );
         }
@@ -368,7 +369,7 @@ class WP_Embed
     }
 
     /**
-     * Callback function for WP_Embed::autoembed().
+     * Callback function for Embed::autoembed().
      *
      * @param array $match A regex match array.
      * @return string The embed HTML on success, otherwise the original URL.
@@ -377,7 +378,7 @@ class WP_Embed
     {
         $oldval = $this->linkifunknown;
         $this->linkifunknown = false;
-        $return = $this->shortcode(array(), $match[2]);
+        $return = $this->shortcode([], $match[2]);
         $this->linkifunknown = $oldval;
 
         return $match[1] . $return . $match[3];
