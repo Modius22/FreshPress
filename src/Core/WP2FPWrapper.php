@@ -191,6 +191,8 @@ $classes = array_change_key_case([
     'WP_MatchesMapRegex' => 'Devtronic\\FreshPress\\Components\\Misc\\MatchesMapRegex',
     'WP_Metadata_Lazyloader' => 'Devtronic\\FreshPress\\Components\\Misc\\MetadataLazyloader',
     'WP_Ajax_Response' => 'Devtronic\\FreshPress\\Components\\Misc\\AjaxResponse',
+    'WP_Community_Events' => 'Devtronic\\FreshPress\\Components\\Misc\\CommunityEvents',
+    'WP_Importer' => 'Devtronic\\FreshPress\\Components\\Misc\\Importer',
 ]);
 
 $abstractClasses = array_change_key_case([
