@@ -7,6 +7,7 @@
  * @since 4.4.0
  */
 
+use Devtronic\FreshPress\Components\Misc\OEmbed;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Core\Error;
@@ -163,7 +164,7 @@ final class WP_oEmbed_Controller
      * @since 4.8.0
      * @access public
      *
-     * @see WP_oEmbed::get_html()
+     * @see OEmbed::get_html()
      * @param Request $request Full data about the request.
      * @return Error|array oEmbed response data or Error on failure.
      */

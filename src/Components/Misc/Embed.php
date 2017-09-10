@@ -136,7 +136,7 @@ class Embed
      *
      * Attempts to convert a URL into embed HTML. Starts by checking the URL against the regex of
      * the registered embed handlers. If none of the regex matches and it's enabled, then the URL
-     * will be given to the WP_oEmbed class.
+     * will be given to the OEmbed class.
      *
      * @param array $attr {
      *     Shortcode attributes. Optional.
@@ -257,7 +257,7 @@ class Embed
              * @since 2.9.0
              * @since 4.4.0 The default value changed to true.
              *
-             * @see WP_oEmbed::discover()
+             * @see OEmbed::discover()
              *
              * @param bool $enable Whether to enable `<link>` tag discovery. Default true.
              */

@@ -9,6 +9,7 @@
 
 use Devtronic\FreshPress\Components\Http\Response;
 use Devtronic\FreshPress\Components\Misc\Embed;
+use Devtronic\FreshPress\Components\Misc\OEmbed;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
@@ -97,7 +98,7 @@ function wp_embed_defaults($url = '')
  *
  * @since 2.9.0
  *
- * @see WP_oEmbed
+ * @see OEmbed
  *
  * @param string $url The URL that should be embedded.
  * @param array $args Optional. Additional arguments and parameters for retrieving embed HTML.
@@ -111,21 +112,21 @@ function wp_oembed_get($url, $args = '')
 }
 
 /**
- * Returns the initialized WP_oEmbed object.
+ * Returns the initialized OEmbed object.
  *
  * @since 2.9.0
  * @access private
  *
- * @staticvar WP_oEmbed $wp_oembed
+ * @staticvar OEmbed $wp_oembed
  *
- * @return WP_oEmbed object.
+ * @return OEmbed object.
  */
 function _wp_oembed_get_object()
 {
     static $wp_oembed = null;
 
     if (is_null($wp_oembed)) {
-        $wp_oembed = new WP_oEmbed();
+        $wp_oembed = new OEmbed();
     }
     return $wp_oembed;
 }
@@ -135,7 +136,7 @@ function _wp_oembed_get_object()
  *
  * @since 2.9.0
  *
- * @see WP_oEmbed
+ * @see OEmbed
  *
  * @param string $format The format of URL that this provider can handle. You can use asterisks
  *                          as wildcards.
@@ -148,7 +149,7 @@ function wp_oembed_add_provider($format, $provider, $regex = false)
         $oembed = _wp_oembed_get_object();
         $oembed->providers[$format] = array($provider, $regex);
     } else {
-        WP_oEmbed::_add_provider_early($format, $provider, $regex);
+        OEmbed::_add_provider_early($format, $provider, $regex);
     }
 }
 
@@ -157,7 +158,7 @@ function wp_oembed_add_provider($format, $provider, $regex = false)
  *
  * @since 3.5.0
  *
- * @see WP_oEmbed
+ * @see OEmbed
  *
  * @param string $format The URL format for the oEmbed provider to remove.
  * @return bool Was the provider removed successfully?
@@ -172,7 +173,7 @@ function wp_oembed_remove_provider($format)
             return true;
         }
     } else {
-        WP_oEmbed::_remove_provider_early($format);
+        OEmbed::_remove_provider_early($format);
     }
 
     return false;
