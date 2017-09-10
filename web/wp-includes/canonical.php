@@ -9,6 +9,7 @@
  * @since 2.3.0
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -31,7 +32,7 @@ use Devtronic\FreshPress\Core\WPDB;
  *
  * @since 2.3.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  * @global bool $is_IIS
  * @global Query $wp_query
  * @global WPDB $wpdb WordPress database abstraction object.
@@ -765,7 +766,7 @@ function redirect_guess_404_permalink()
  *
  * @since 3.4.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  */
 function wp_redirect_admin_locations()
 {

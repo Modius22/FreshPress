@@ -6,11 +6,12 @@
  * @subpackage Taxonomy
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\TaxQuery;
 use Devtronic\FreshPress\Components\Query\TermQuery;
 use Devtronic\FreshPress\Components\Rest\Endpoints\TermsController;
-use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\Error;
+use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\Term;
@@ -28,7 +29,7 @@ use Devtronic\FreshPress\Entity\Term;
  *
  * @since 2.8.0
  *
- * @global WP_Rewrite $wp_rewrite The WordPress rewrite class.
+ * @global Rewrite $wp_rewrite The WordPress rewrite class.
  */
 function create_initial_taxonomies()
 {
@@ -370,7 +371,7 @@ function is_taxonomy_hierarchical($taxonomy)
  *         rewrite, set to false. To specify rewrite rules, an array can be passed with any of these keys:
  *
  * @type string $slug Customize the permastruct slug. Default `$taxonomy` key.
- * @type bool $with_front Should the permastruct be prepended with WP_Rewrite::$front. Default true.
+ * @type bool $with_front Should the permastruct be prepended with Rewrite::$front. Default true.
  * @type bool $hierarchical Either hierarchical rewrite tag or not. Default false.
  * @type int $ep_mask Assign an endpoint mask. Default `EP_NONE`.
  *     }
@@ -4133,7 +4134,7 @@ function wp_term_is_shared($term_id)
  *
  * @since 2.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param object|int|string $term The term object, ID, or slug whose link will be retrieved.
  * @param string $taxonomy Optional. Taxonomy. Default empty.

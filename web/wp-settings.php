@@ -11,6 +11,7 @@
 use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
 use Devtronic\FreshPress\Components\Misc\Embed;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\Core\Kernel;
@@ -297,10 +298,10 @@ $GLOBALS['wp_query'] = $GLOBALS['wp_the_query'];
 
 /**
  * Holds the WordPress Rewrite object for creating pretty URLs
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  * @since 1.5.0
  */
-$GLOBALS['wp_rewrite'] = new WP_Rewrite();
+$GLOBALS['wp_rewrite'] = new Rewrite();
 
 /**
  * WordPress Object

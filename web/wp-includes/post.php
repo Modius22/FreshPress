@@ -6,6 +6,7 @@
  * @subpackage Post
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Rest\Endpoints\AttachmentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
@@ -1169,7 +1170,7 @@ function get_post_types($args = array(), $output = 'names', $operator = 'and')
  *         passed with any of these keys:
  *
  * @type string $slug Customize the permastruct slug. Defaults to $post_type key.
- * @type bool $with_front Whether the permastruct should be prepended with WP_Rewrite::$front.
+ * @type bool $with_front Whether the permastruct should be prepended with Rewrite::$front.
  *                                  Default true.
  * @type bool $feeds Whether the feed permastruct should be built for this post type.
  *                                  Default is value of $has_archive.
@@ -3992,7 +3993,7 @@ function check_and_publish_future_post($post_id)
  * @since 2.8.0
  *
  * @global WPDB $wpdb WordPress database abstraction object.
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $slug The desired slug (post_name).
  * @param int $post_ID Post ID.

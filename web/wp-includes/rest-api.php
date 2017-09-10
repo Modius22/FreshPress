@@ -8,6 +8,7 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Response as HttpResponse;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Rest\Endpoints\CommentsController;
 use Devtronic\FreshPress\Components\Rest\Endpoints\Controller;
 use Devtronic\FreshPress\Components\Rest\Endpoints\PostsController;
@@ -21,8 +22,8 @@ use Devtronic\FreshPress\Components\Rest\Endpoints\UsersController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Response;
 use Devtronic\FreshPress\Components\Rest\Server;
-use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Core\Error;
+use Devtronic\FreshPress\Core\Kernel;
 
 /**
  * Version number for our API.
@@ -167,7 +168,7 @@ function rest_api_init()
  * @since 4.4.0
  *
  * @see add_rewrite_rule()
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  */
 function rest_api_register_rewrites()
 {
@@ -335,7 +336,7 @@ function rest_get_url_prefix()
  * @since 4.4.0
  *
  * @todo Check if this is even necessary
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $blog_id Optional. Blog ID. Default of null returns URL for current blog.
  * @param string $path Optional. REST route. Default '/'.

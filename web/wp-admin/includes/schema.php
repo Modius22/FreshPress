@@ -9,6 +9,7 @@
  */
 
 use Devtronic\FreshPress\Components\Customize\Theme;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -985,7 +986,7 @@ endif;
  * @global WPDB $wpdb
  * @global object $current_site
  * @global int $wp_db_version
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $network_id ID of network to populate.
  * @param string $domain The domain name for the network (eg. "example.com").

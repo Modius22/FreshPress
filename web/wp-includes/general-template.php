@@ -11,6 +11,7 @@ use Devtronic\FreshPress\Components\Dependencies\Dependency;
 use Devtronic\FreshPress\Components\Dependencies\Styles;
 use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Misc\Editors;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -3415,7 +3416,7 @@ function language_attributes($doctype = 'html')
  * @since 2.1.0
  *
  * @global Query $wp_query
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string|array $args {
  *     Optional. Array or string of arguments for generating paginated links for archives.

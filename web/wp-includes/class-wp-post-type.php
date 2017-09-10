@@ -7,6 +7,7 @@
  * @since 4.6.0
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Core\Kernel;
 
 /**
@@ -569,7 +570,7 @@ final class WP_Post_Type
      * @since 4.6.0
      * @access public
      *
-     * @global WP_Rewrite $wp_rewrite WordPress Rewrite Component.
+     * @global Rewrite $wp_rewrite WordPress Rewrite Component.
      * @global Kernel $wp Current WordPress environment instance.
      */
     public function add_rewrite_rules()
@@ -690,7 +691,7 @@ final class WP_Post_Type
      * @since 4.6.0
      * @access public
      *
-     * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+     * @global Rewrite $wp_rewrite WordPress rewrite component.
      * @global Kernel $wp Current WordPress environment instance.
      * @global array $post_type_meta_caps Used to remove meta capabilities.
      */

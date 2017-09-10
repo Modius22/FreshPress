@@ -6,6 +6,7 @@
  * @subpackage Post
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Core\Error;
 
 /**
@@ -192,7 +193,7 @@ function _post_format_request($qvs)
  * @access private
  * @since 3.1.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $link
  * @param object $term

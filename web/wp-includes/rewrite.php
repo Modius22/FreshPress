@@ -6,6 +6,7 @@
  * @subpackage Rewrite
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\Kernel;
 use Devtronic\FreshPress\Entity\Post;
@@ -131,7 +132,7 @@ define('EP_ALL', EP_PERMALINK | EP_ATTACHMENT | EP_ROOT | EP_COMMENTS | EP_SEARC
  * @since 2.1.0
  * @since 4.4.0 Array support was added to the `$query` parameter.
  *
- * @global WP_Rewrite $wp_rewrite WordPress Rewrite Component.
+ * @global Rewrite $wp_rewrite WordPress Rewrite Component.
  *
  * @param string $regex Regular expression to match request against.
  * @param string|array $query The corresponding query vars for this rewrite rule.
@@ -154,7 +155,7 @@ function add_rewrite_rule($regex, $query, $after = 'bottom')
  *
  * @since 2.1.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  * @global Kernel $wp
  *
  * @param string $tag Name of the new rewrite tag.
@@ -184,7 +185,7 @@ function add_rewrite_tag($tag, $regex, $query = '')
  *
  * @since 4.5.0
  *
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ * @global Rewrite $wp_rewrite WordPress rewrite component.
  *
  * @param string $tag Name of the rewrite tag.
  */
@@ -199,13 +200,13 @@ function remove_rewrite_tag($tag)
  *
  * @since 3.0.0
  *
- * @see WP_Rewrite::add_permastruct()
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ * @see Rewrite::add_permastruct()
+ * @global Rewrite $wp_rewrite WordPress rewrite component.
  *
  * @param string $name Name for permalink structure.
  * @param string $struct Permalink structure.
  * @param array $args Optional. Arguments for building the rules from the permalink structure,
- *                       see WP_Rewrite::add_permastruct() for full details. Default empty array.
+ *                       see Rewrite::add_permastruct() for full details. Default empty array.
  */
 function add_permastruct($name, $struct, $args = array())
 {
@@ -230,8 +231,8 @@ function add_permastruct($name, $struct, $args = array())
  *
  * @since 4.5.0
  *
- * @see WP_Rewrite::remove_permastruct()
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ * @see Rewrite::remove_permastruct()
+ * @global Rewrite $wp_rewrite WordPress rewrite component.
  *
  * @param string $name Name for permalink structure.
  */
@@ -247,7 +248,7 @@ function remove_permastruct($name)
  *
  * @since 2.1.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $feedname Feed name.
  * @param callable $function Callback to run on feed display.
@@ -276,7 +277,7 @@ function add_feed($feedname, $function)
  *
  * @since 3.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param bool $hard Whether to update .htaccess (hard flush) or just update
  *                     rewrite_rules transient (soft flush). Default is true (hard).
@@ -312,7 +313,7 @@ function flush_rewrite_rules($hard = true)
  * @since 2.1.0
  * @since 4.3.0 Added support for skipping query var registration by passing `false` to `$query_var`.
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $name Name of the endpoint.
  * @param int $places Endpoint mask describing the places the endpoint should be added.
@@ -474,7 +475,7 @@ function wp_resolve_numeric_slug_conflicts($query_vars = array())
  *
  * @since 1.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  * @global Kernel $wp
  *
  * @param string $url Permalink to check.

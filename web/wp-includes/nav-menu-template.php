@@ -7,6 +7,7 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\NavMenuWalker;
 use Devtronic\FreshPress\Entity\Term;
@@ -293,7 +294,7 @@ function wp_nav_menu($args = array())
  * @since 3.0.0
  *
  * @global Query $wp_query
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param array $menu_items The current menu item objects to which to add the class property information.
  */
