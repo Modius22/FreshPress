@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\CommentQuery;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\CommentWalker;
@@ -719,7 +720,7 @@ function comment_ID()
  *
  * @see get_page_of_comment()
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  * @global bool $in_comment_loop
  *
  * @param Comment|int|null $comment Comment to retrieve. Default current comment.

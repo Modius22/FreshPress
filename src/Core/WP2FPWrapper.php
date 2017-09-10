@@ -182,6 +182,18 @@ $classes = array_change_key_case([
     'WP_Locale_Switcher' => 'Devtronic\\FreshPress\\Components\\I18n\\LocaleSwitcher',
     'WP_Locale' => 'Devtronic\\FreshPress\\Components\\I18n\\Locale',
     'WP_Admin_Bar' => 'Devtronic\\FreshPress\\Components\\Admin\\AdminBar',
+    'WP_Network' => 'Devtronic\\FreshPress\\Components\\Multisite\\Network',
+    'wp_xmlrpc_server' => 'Devtronic\\FreshPress\\Components\\Misc\\XmlRpcServer',
+    'WP_HTTP_IXR_Client' => 'Devtronic\\FreshPress\\Components\\Misc\\CustomIxrClient',
+    'WP_Embed' => 'Devtronic\\FreshPress\\Components\\Misc\\Embed',
+    'WP_oEmbed' => 'Devtronic\\FreshPress\\Components\\Misc\\OEmbed',
+    'WP_Rewrite' => 'Devtronic\\FreshPress\\Components\\Misc\\Rewrite',
+    'WP_MatchesMapRegex' => 'Devtronic\\FreshPress\\Components\\Misc\\MatchesMapRegex',
+    'WP_Metadata_Lazyloader' => 'Devtronic\\FreshPress\\Components\\Misc\\MetadataLazyloader',
+    'WP_Ajax_Response' => 'Devtronic\\FreshPress\\Components\\Misc\\AjaxResponse',
+    'WP_Community_Events' => 'Devtronic\\FreshPress\\Components\\Misc\\CommunityEvents',
+    'WP_Importer' => 'Devtronic\\FreshPress\\Components\\Misc\\Importer',
+    'WP_Press_This' => 'Devtronic\\FreshPress\\Components\\Misc\\PressThis',
 ]);
 
 $abstractClasses = array_change_key_case([
@@ -205,6 +217,11 @@ $finalClasses = array_change_key_case([
     'WP_Term' => 'Devtronic\\FreshPress\\Entity\\Term',
     'WP_Post' => 'Devtronic\\FreshPress\\Entity\\Post',
     'WP_Screen' => 'Devtronic\\FreshPress\\Components\\Admin\\Screen',
+    'WP_Theme' => 'Devtronic\\FreshPress\\Customize\\Theme',
+    'WP_Site' => 'Devtronic\\FreshPress\\Components\\Multisite\\Site',
+    'WP_Internal_Pointers' => 'Devtronic\\FreshPress\\Components\\Misc\\InternalPointers',
+    '_WP_Editors' => 'Devtronic\\FreshPress\\Components\\Misc\\Editors',
+    'WP_oEmbed_Controller' => 'Devtronic\\FreshPress\\Components\\Misc\\OEmbedController',
 ]);
 
 // Only for compatibility, remove in 2.x

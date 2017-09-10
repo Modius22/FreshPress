@@ -10,23 +10,20 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
+use Devtronic\FreshPress\Components\Multisite\Network;
+
 /**
  * Objects representing the current network and current site.
  *
  * These may be populated through a custom `sunrise.php`. If not, then this
  * file will attempt to populate them based on the current request.
  *
- * @global WP_Network $current_site The current network.
+ * @global Network $current_site The current network.
  * @global object $current_blog The current site.
  * @since 3.0.0
  */
 global $current_site, $current_blog;
-
-/** WP_Network class */
-require_once(ABSPATH . WPINC . '/class-wp-network.php');
-
-/** WP_Site class */
-require_once(ABSPATH . WPINC . '/class-wp-site.php');
 
 /** Multisite loader */
 require_once(ABSPATH . WPINC . '/ms-load.php');
@@ -93,12 +90,12 @@ $switched = false;
 // need to init cache again after blog_id is set
 wp_start_object_cache();
 
-if (!$current_site instanceof WP_Network) {
-    $current_site = new WP_Network($current_site);
+if (!$current_site instanceof Network) {
+    $current_site = new Network($current_site);
 }
 
-if (!$current_blog instanceof WP_Site) {
-    $current_blog = new WP_Site($current_blog);
+if (!$current_blog instanceof Site) {
+    $current_blog = new Site($current_blog);
 }
 
 // Define upload directory constants

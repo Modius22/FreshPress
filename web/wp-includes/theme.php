@@ -9,6 +9,7 @@
 use Devtronic\FreshPress\Components\Admin\CustomBackground;
 use Devtronic\FreshPress\Components\Admin\CustomImageHeader;
 use Devtronic\FreshPress\Components\Customize\Manager;
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\Error;
@@ -16,7 +17,7 @@ use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
 /**
- * Returns an array of WP_Theme objects based on the arguments.
+ * Returns an array of Theme objects based on the arguments.
  *
  * Despite advances over get_themes(), this function is quite expensive, and grows
  * linearly with additional themes. Stick to wp_get_theme() if possible.
@@ -34,7 +35,7 @@ use Devtronic\FreshPress\Entity\Post;
  *                      to return only network-allowed themes. Null to return all themes. Defaults to null.
  * - blog_id     int    (Multisite) The blog ID used to calculate which themes are allowed. Defaults to 0,
  *                      synonymous for the current blog.
- * @return array Array of WP_Theme objects.
+ * @return array Array of Theme objects.
  */
 function wp_get_themes($args = array())
 {
@@ -65,16 +66,16 @@ function wp_get_themes($args = array())
     if (is_multisite() && null !== $args['allowed']) {
         $allowed = $args['allowed'];
         if ('network' === $allowed) {
-            $theme_directories = array_intersect_key($theme_directories, WP_Theme::get_allowed_on_network());
+            $theme_directories = array_intersect_key($theme_directories, Theme::get_allowed_on_network());
         } elseif ('site' === $allowed) {
             $theme_directories = array_intersect_key(
                 $theme_directories,
-                WP_Theme::get_allowed_on_site($args['blog_id'])
+                Theme::get_allowed_on_site($args['blog_id'])
             );
         } elseif ($allowed) {
-            $theme_directories = array_intersect_key($theme_directories, WP_Theme::get_allowed($args['blog_id']));
+            $theme_directories = array_intersect_key($theme_directories, Theme::get_allowed($args['blog_id']));
         } else {
-            $theme_directories = array_diff_key($theme_directories, WP_Theme::get_allowed($args['blog_id']));
+            $theme_directories = array_diff_key($theme_directories, Theme::get_allowed($args['blog_id']));
         }
     }
 
@@ -85,7 +86,7 @@ function wp_get_themes($args = array())
         if (isset($_themes[$theme_root['theme_root'] . '/' . $theme])) {
             $themes[$theme] = $_themes[$theme_root['theme_root'] . '/' . $theme];
         } else {
-            $themes[$theme] = $_themes[$theme_root['theme_root'] . '/' . $theme] = new WP_Theme(
+            $themes[$theme] = $_themes[$theme_root['theme_root'] . '/' . $theme] = new Theme(
                 $theme,
                 $theme_root['theme_root']
             );
@@ -104,7 +105,7 @@ function wp_get_themes($args = array())
 }
 
 /**
- * Gets a WP_Theme object for a theme.
+ * Gets a Theme object for a theme.
  *
  * @since 3.4.0
  *
@@ -113,7 +114,7 @@ function wp_get_themes($args = array())
  * @param string $stylesheet Directory name for the theme. Optional. Defaults to current theme.
  * @param string $theme_root Absolute path of the theme root to look in. Optional. If not specified, get_raw_theme_root()
  *                             is used to calculate the theme root for the $stylesheet provided (or current theme).
- * @return WP_Theme Theme object. Be sure to check the object's exists() method if you need to confirm the theme's existence.
+ * @return Theme Theme object. Be sure to check the object's exists() method if you need to confirm the theme's existence.
  */
 function wp_get_theme($stylesheet = null, $theme_root = null)
 {
@@ -132,11 +133,11 @@ function wp_get_theme($stylesheet = null, $theme_root = null)
         }
     }
 
-    return new WP_Theme($stylesheet, $theme_root);
+    return new Theme($stylesheet, $theme_root);
 }
 
 /**
- * Clears the cache held by get_theme_roots() and WP_Theme.
+ * Clears the cache held by get_theme_roots() and Theme.
  *
  * @since 3.5.0
  * @param bool $clear_update_cache Whether to clear the Theme updates cache
@@ -551,7 +552,7 @@ function search_theme_directories($force = false)
                     $found_theme = true;
                 }
                 // Never mind the above, it's just a theme missing a style.css.
-                // Return it; WP_Theme will catch the error.
+                // Return it; Theme will catch the error.
                 if (!$found_theme) {
                     $found_themes[$dir] = array(
                         'theme_file' => $dir . '/style.css',
@@ -811,8 +812,8 @@ function switch_theme($stylesheet)
      * @since 4.5.0 Introduced the `$old_theme` parameter.
      *
      * @param string $new_name Name of the new theme.
-     * @param WP_Theme $new_theme WP_Theme instance of the new theme.
-     * @param WP_Theme $old_theme WP_Theme instance of the old theme.
+     * @param Theme $new_theme Theme instance of the new theme.
+     * @param Theme $old_theme Theme instance of the old theme.
      */
     do_action('switch_theme', $new_name, $new_theme, $old_theme);
 }
@@ -871,7 +872,7 @@ function validate_current_theme()
      * checks against WP_DEFAULT_THEME above, also.) We also can't do anything
      * if it turns out there is no default theme installed. (That's `false`.)
      */
-    $default = WP_Theme::get_core_default_theme();
+    $default = Theme::get_core_default_theme();
     if (false === $default || get_stylesheet() == $default->get_stylesheet()) {
         return true;
     }
@@ -3007,7 +3008,7 @@ function check_theme_switched()
              * @since 3.3.0
              *
              * @param string $old_name Old theme name.
-             * @param WP_Theme $old_theme WP_Theme instance of the old theme.
+             * @param Theme $old_theme Theme instance of the old theme.
              */
             do_action('after_switch_theme', $old_theme->get('Name'), $old_theme);
         } else {
@@ -3075,7 +3076,7 @@ function _wp_customize_include()
         $changeset_uuid = sanitize_key($input_vars['customize_changeset_uuid']);
     }
 
-    // Note that theme will be sanitized via WP_Theme.
+    // Note that theme will be sanitized via Theme.
     if ($is_customize_admin_page && isset($input_vars['theme'])) {
         $theme = $input_vars['theme'];
     } elseif (isset($input_vars['customize_theme'])) {

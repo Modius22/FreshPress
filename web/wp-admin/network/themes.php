@@ -7,6 +7,7 @@
  * @since 3.1.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\ListTables\MSThemesListTable;
 
 /** Load WordPress Administration Bootstrap */
@@ -32,7 +33,7 @@ if ($action) {
     switch ($action) {
         case 'enable':
             check_admin_referer('enable-theme_' . $_GET['theme']);
-            WP_Theme::network_enable_theme($_GET['theme']);
+            Theme::network_enable_theme($_GET['theme']);
             if (false === strpos($referer, '/network/themes.php')) {
                 wp_redirect(network_admin_url('themes.php?enabled=1'));
             } else {
@@ -41,7 +42,7 @@ if ($action) {
             exit;
         case 'disable':
             check_admin_referer('disable-theme_' . $_GET['theme']);
-            WP_Theme::network_disable_theme($_GET['theme']);
+            Theme::network_disable_theme($_GET['theme']);
             wp_safe_redirect(add_query_arg('disabled', '1', $referer));
             exit;
         case 'enable-selected':
@@ -51,7 +52,7 @@ if ($action) {
                 wp_safe_redirect(add_query_arg('error', 'none', $referer));
                 exit;
             }
-            WP_Theme::network_enable_theme((array)$themes);
+            Theme::network_enable_theme((array)$themes);
             wp_safe_redirect(add_query_arg('enabled', count($themes), $referer));
             exit;
         case 'disable-selected':
@@ -61,7 +62,7 @@ if ($action) {
                 wp_safe_redirect(add_query_arg('error', 'none', $referer));
                 exit;
             }
-            WP_Theme::network_disable_theme((array)$themes);
+            Theme::network_disable_theme((array)$themes);
             wp_safe_redirect(add_query_arg('disabled', count($themes), $referer));
             exit;
         case 'update-selected':

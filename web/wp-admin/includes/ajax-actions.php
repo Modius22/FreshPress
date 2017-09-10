@@ -18,6 +18,11 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Misc\AjaxResponse;
+use Devtronic\FreshPress\Components\Misc\CommunityEvents;
+use Devtronic\FreshPress\Components\Misc\Editors;
+use Devtronic\FreshPress\Components\Misc\Embed;
+use Devtronic\FreshPress\Components\Misc\PressThis;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
@@ -263,7 +268,7 @@ function wp_ajax_imgedit_preview()
  *
  * @since 3.1.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  */
 function wp_ajax_oembed_cache()
 {
@@ -341,15 +346,13 @@ function wp_ajax_autocomplete_user()
  */
 function wp_ajax_get_community_events()
 {
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-community-events.php');
-
     check_ajax_referer('community_events');
 
     $search = isset($_POST['location']) ? wp_unslash($_POST['location']) : '';
     $timezone = isset($_POST['timezone']) ? wp_unslash($_POST['timezone']) : '';
     $user_id = get_current_user_id();
     $saved_location = get_user_option('community-events-location', $user_id);
-    $events_client = new WP_Community_Events($user_id, $saved_location);
+    $events_client = new CommunityEvents($user_id, $saved_location);
     $events = $events_client->get_events($search, $timezone);
     $ip_changed = false;
 
@@ -456,7 +459,7 @@ function _wp_ajax_delete_comment_response($comment_id, $delta = -1)
 
         $counts = wp_count_comments();
 
-        $x = new WP_Ajax_Response(array(
+        $x = new AjaxResponse(array(
             'what' => 'comment',
             // Here for completeness - not used.
             'id' => $comment_id,
@@ -519,7 +522,7 @@ function _wp_ajax_delete_comment_response($comment_id, $delta = -1)
     $time = time();
     $comment = get_comment($comment_id);
 
-    $x = new WP_Ajax_Response(array(
+    $x = new AjaxResponse(array(
         'what' => 'comment',
         // Here for completeness - not used.
         'id' => $comment_id,
@@ -650,7 +653,7 @@ function _wp_ajax_add_hierarchical_term()
 
     $add['supplemental'] = array('newcat_parent' => $sup);
 
-    $x = new WP_Ajax_Response($add);
+    $x = new AjaxResponse($add);
     $x->send();
 }
 
@@ -911,7 +914,7 @@ function wp_ajax_dim_comment()
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 
     if (!$comment = get_comment($id)) {
-        $x = new WP_Ajax_Response(array(
+        $x = new AjaxResponse(array(
             'what' => 'comment',
             'id' => new Error('invalid_comment', sprintf(__('Comment %d does not exist'), $id))
         ));
@@ -935,7 +938,7 @@ function wp_ajax_dim_comment()
     }
 
     if (is_wp_error($result)) {
-        $x = new WP_Ajax_Response(array(
+        $x = new AjaxResponse(array(
             'what' => 'comment',
             'id' => $result
         ));
@@ -965,7 +968,7 @@ function wp_ajax_add_link_category($action)
         wp_die(-1);
     }
     $names = explode(',', wp_unslash($_POST['newcat']));
-    $x = new WP_Ajax_Response();
+    $x = new AjaxResponse();
     foreach ($names as $cat_name) {
         $cat_name = trim($cat_name);
         $slug = sanitize_title($cat_name);
@@ -1005,7 +1008,7 @@ function wp_ajax_add_tag()
         wp_die(-1);
     }
 
-    $x = new WP_Ajax_Response();
+    $x = new AjaxResponse();
 
     $tag = wp_insert_term($_POST['tag-name'], $taxonomy, $_POST);
 
@@ -1136,7 +1139,7 @@ function wp_ajax_get_comments($action)
         wp_die(1);
     }
 
-    $x = new WP_Ajax_Response();
+    $x = new AjaxResponse();
     ob_start();
     foreach ($wp_list_table->items as $comment) {
         if (!current_user_can('edit_comment', $comment->comment_ID) && 0 === $comment->comment_approved) {
@@ -1289,7 +1292,7 @@ function wp_ajax_replyto_comment($action)
         $response['supplemental']['parent_post_id'] = $parent->comment_post_ID;
     }
 
-    $x = new WP_Ajax_Response();
+    $x = new AjaxResponse();
     $x->add($response);
     $x->send();
 }
@@ -1333,7 +1336,7 @@ function wp_ajax_edit_comment()
     $wp_list_table->single_row($comment);
     $comment_list_item = ob_get_clean();
 
-    $x = new WP_Ajax_Response();
+    $x = new AjaxResponse();
 
     $x->add(array(
         'what' => 'edit_comment',
@@ -1468,7 +1471,7 @@ function wp_ajax_add_meta()
             $pid = edit_post($post_data);
             if ($pid) {
                 if (is_wp_error($pid)) {
-                    $x = new WP_Ajax_Response(array(
+                    $x = new AjaxResponse(array(
                         'what' => 'meta',
                         'data' => $pid
                     ));
@@ -1488,7 +1491,7 @@ function wp_ajax_add_meta()
         $meta = get_metadata_by_mid('post', $mid);
         $pid = (int)$meta->post_id;
         $meta = get_object_vars($meta);
-        $x = new WP_Ajax_Response(array(
+        $x = new AjaxResponse(array(
             'what' => 'meta',
             'id' => $mid,
             'data' => _list_meta_row($meta, $c),
@@ -1519,7 +1522,7 @@ function wp_ajax_add_meta()
             } // We know meta exists; we also know it's unchanged (or DB error, in which case there are bigger problems).
         }
 
-        $x = new WP_Ajax_Response(array(
+        $x = new AjaxResponse(array(
             'what' => 'meta',
             'id' => $mid,
             'old_id' => $mid,
@@ -1555,7 +1558,7 @@ function wp_ajax_add_user($action)
     if (!$user_id = edit_user()) {
         wp_die(0);
     } elseif (is_wp_error($user_id)) {
-        $x = new WP_Ajax_Response(array(
+        $x = new AjaxResponse(array(
             'what' => 'user',
             'id' => $user_id
         ));
@@ -1567,7 +1570,7 @@ function wp_ajax_add_user($action)
 
     $role = current($user_object->roles);
 
-    $x = new WP_Ajax_Response(array(
+    $x = new AjaxResponse(array(
         'what' => 'user',
         'id' => $user_id,
         'data' => $wp_list_table->single_row($user_object, '', $role),
@@ -1735,11 +1738,7 @@ function wp_ajax_wp_link_ajax()
 
     $args['pagenum'] = !empty($_POST['page']) ? absint($_POST['page']) : 1;
 
-    if (!class_exists('_WP_Editors', false)) {
-        require(ABSPATH . WPINC . '/class-wp-editor.php');
-    }
-
-    $results = _WP_Editors::wp_link_query($args);
+    $results = Editors::wp_link_query($args);
 
     if (!isset($results)) {
         wp_die(0);
@@ -3043,7 +3042,7 @@ function wp_ajax_send_attachment_to_editor()
  * @since 3.5.0
  *
  * @global Post $post
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  */
 function wp_ajax_send_link_to_editor()
 {
@@ -3331,7 +3330,7 @@ function wp_ajax_query_themes()
  * @since 4.0.0
  *
  * @global Post $post Global $post.
- * @global WP_Embed $wp_embed Embed API instance.
+ * @global Embed $wp_embed Embed API instance.
  * @global Scripts $wp_scripts
  */
 function wp_ajax_parse_embed()
@@ -3543,9 +3542,8 @@ function wp_ajax_destroy_sessions()
  */
 function wp_ajax_press_this_save_post()
 {
-    include(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-    $wp_press_this = new WP_Press_This();
-    $wp_press_this->save_post();
+    $pressThis = new PressThis();
+    $pressThis->save_post();
 }
 
 /**
@@ -3555,9 +3553,8 @@ function wp_ajax_press_this_save_post()
  */
 function wp_ajax_press_this_add_category()
 {
-    include(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-    $wp_press_this = new WP_Press_This();
-    $wp_press_this->add_category();
+    $pressThis = new PressThis();
+    $pressThis->add_category();
 }
 
 /**
@@ -3813,7 +3810,7 @@ function wp_ajax_install_theme()
     }
 
     /*
-     * See Devtronic\FreshPress\Components\ListTables\WP_Theme_Install_List_Table::_get_theme_status() if we wanted to check
+     * See Devtronic\FreshPress\Components\ListTables\ThemeInstallListTable::_get_theme_status() if we wanted to check
      * on post-install status.
      */
     wp_send_json_success($status);

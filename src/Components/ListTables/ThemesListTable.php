@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Theme;
+use Devtronic\FreshPress\Components\Customize\Theme;
 
 /**
  * Core class used to implement displaying installed themes in a list table.
@@ -79,7 +79,7 @@ class ThemesListTable extends ListTable
         }
 
         unset($themes[get_option('stylesheet')]);
-        WP_Theme::sort_by_name($themes);
+        Theme::sort_by_name($themes);
 
         $per_page = 36;
         $page = $this->get_pagenum();
@@ -291,7 +291,7 @@ class ThemesListTable extends ListTable
     }
 
     /**
-     * @param WP_Theme $theme
+     * @param Theme $theme
      * @return bool
      */
     public function search_theme($theme)

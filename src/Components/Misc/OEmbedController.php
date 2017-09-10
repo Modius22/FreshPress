@@ -1,11 +1,13 @@
 <?php
 /**
- * WP_oEmbed_Controller class, used to provide an oEmbed endpoint.
+ * OEmbedController class, used to provide an oEmbed endpoint.
  *
  * @package WordPress
  * @subpackage Embeds
  * @since 4.4.0
  */
+
+namespace Devtronic\FreshPress\Components\Misc;
 
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
@@ -19,7 +21,7 @@ use Devtronic\FreshPress\Core\Error;
  *
  * @since 4.4.0
  */
-final class WP_oEmbed_Controller
+class OEmbedController
 {
     /**
      * Register the oEmbed REST API route.
@@ -38,67 +40,67 @@ final class WP_oEmbed_Controller
          */
         $maxwidth = apply_filters('oembed_default_width', 600);
 
-        register_rest_route('oembed/1.0', '/embed', array(
-            array(
+        register_rest_route('oembed/1.0', '/embed', [
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_item'),
-                'args' => array(
-                    'url' => array(
+                'callback' => [$this, 'get_item'],
+                'args' => [
+                    'url' => [
                         'required' => true,
                         'sanitize_callback' => 'esc_url_raw',
-                    ),
-                    'format' => array(
+                    ],
+                    'format' => [
                         'default' => 'json',
                         'sanitize_callback' => 'wp_oembed_ensure_format',
-                    ),
-                    'maxwidth' => array(
+                    ],
+                    'maxwidth' => [
                         'default' => $maxwidth,
                         'sanitize_callback' => 'absint',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        register_rest_route('oembed/1.0', '/proxy', array(
-            array(
+        register_rest_route('oembed/1.0', '/proxy', [
+            [
                 'methods' => Server::READABLE,
-                'callback' => array($this, 'get_proxy_item'),
-                'permission_callback' => array($this, 'get_proxy_item_permissions_check'),
-                'args' => array(
-                    'url' => array(
+                'callback' => [$this, 'get_proxy_item'],
+                'permission_callback' => [$this, 'get_proxy_item_permissions_check'],
+                'args' => [
+                    'url' => [
                         'description' => __('The URL of the resource for which to fetch oEmbed data.'),
                         'type' => 'string',
                         'required' => true,
                         'sanitize_callback' => 'esc_url_raw',
-                    ),
-                    'format' => array(
+                    ],
+                    'format' => [
                         'description' => __('The oEmbed format to use.'),
                         'type' => 'string',
                         'default' => 'json',
-                        'enum' => array(
+                        'enum' => [
                             'json',
                             'xml',
-                        ),
-                    ),
-                    'maxwidth' => array(
+                        ],
+                    ],
+                    'maxwidth' => [
                         'description' => __('The maximum width of the embed frame in pixels.'),
                         'type' => 'integer',
                         'default' => $maxwidth,
                         'sanitize_callback' => 'absint',
-                    ),
-                    'maxheight' => array(
+                    ],
+                    'maxheight' => [
                         'description' => __('The maximum height of the embed frame in pixels.'),
                         'type' => 'integer',
                         'sanitize_callback' => 'absint',
-                    ),
-                    'discover' => array(
+                    ],
+                    'discover' => [
                         'description' => __('Whether to perform an oEmbed discovery request for non-whitelisted providers.'),
                         'type' => 'boolean',
                         'default' => true,
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -129,7 +131,7 @@ final class WP_oEmbed_Controller
         $data = get_oembed_response_data($post_id, $request['maxwidth']);
 
         if (!$data) {
-            return new Error('oembed_invalid_url', get_status_header_desc(404), array('status' => 404));
+            return new Error('oembed_invalid_url', get_status_header_desc(404), ['status' => 404]);
         }
 
         return $data;
@@ -149,7 +151,7 @@ final class WP_oEmbed_Controller
             return new Error(
                 'rest_forbidden',
                 __('Sorry, you are not allowed to make proxied oEmbed requests.'),
-                array('status' => rest_authorization_required_code())
+                ['status' => rest_authorization_required_code()]
             );
         }
         return true;
@@ -163,7 +165,7 @@ final class WP_oEmbed_Controller
      * @since 4.8.0
      * @access public
      *
-     * @see WP_oEmbed::get_html()
+     * @see OEmbed::get_html()
      * @param Request $request Full data about the request.
      * @return Error|array oEmbed response data or Error on failure.
      */
@@ -184,7 +186,7 @@ final class WP_oEmbed_Controller
         $data = _wp_oembed_get_object()->get_data($url, $args);
 
         if (false === $data) {
-            return new Error('oembed_invalid_url', get_status_header_desc(404), array('status' => 404));
+            return new Error('oembed_invalid_url', get_status_header_desc(404), ['status' => 404]);
         }
 
         /**

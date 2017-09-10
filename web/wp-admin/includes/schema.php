@@ -8,6 +8,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Customize\Theme;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -379,7 +381,7 @@ function populate_options()
     $stylesheet = $template = WP_DEFAULT_THEME;
     $theme = wp_get_theme(WP_DEFAULT_THEME);
     if (!$theme->exists()) {
-        $theme = WP_Theme::get_core_default_theme();
+        $theme = Theme::get_core_default_theme();
     }
 
     // If we can't find a core default theme, WP_DEFAULT_THEME is the best we can do.
@@ -984,7 +986,7 @@ endif;
  * @global WPDB $wpdb
  * @global object $current_site
  * @global int $wp_db_version
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $network_id ID of network to populate.
  * @param string $domain The domain name for the network (eg. "example.com").
@@ -1048,7 +1050,7 @@ function populate_network(
 
     // If WP_DEFAULT_THEME doesn't exist, also whitelist the latest core default theme.
     if (!wp_get_theme(WP_DEFAULT_THEME)->exists()) {
-        if ($core_default = WP_Theme::get_core_default_theme()) {
+        if ($core_default = Theme::get_core_default_theme()) {
             $allowed_themes[$core_default->get_stylesheet()] = true;
         }
     }

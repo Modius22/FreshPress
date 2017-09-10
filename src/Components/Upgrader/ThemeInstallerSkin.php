@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\Upgrader;
 
-use WP_Theme;
+use Devtronic\FreshPress\Components\Customize\Theme;
 
 /**
  * Theme Installer Skin for the WordPress Theme Installer.
@@ -116,7 +116,7 @@ class ThemeInstallerSkin extends UpgraderSkin
          * @param array $install_actions Array of theme action links.
          * @param object $api Object containing WordPress.org API theme data.
          * @param string $stylesheet Theme directory name.
-         * @param WP_Theme $theme_info Theme object.
+         * @param Theme $theme_info Theme object.
          */
         $install_actions = apply_filters(
             'install_theme_complete_actions',

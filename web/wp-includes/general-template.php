@@ -10,6 +10,8 @@ use Devtronic\FreshPress\Components\Dependencies\Dependencies;
 use Devtronic\FreshPress\Components\Dependencies\Dependency;
 use Devtronic\FreshPress\Components\Dependencies\Styles;
 use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Components\Misc\Editors;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
@@ -3224,7 +3226,7 @@ function wp_default_editor()
  * Renders an editor.
  *
  * Using this function is the proper way to output all needed components for both TinyMCE and Quicktags.
- * _WP_Editors should not be used directly. See https://core.trac.wordpress.org/ticket/17144.
+ * Editors should not be used directly. See https://core.trac.wordpress.org/ticket/17144.
  *
  * NOTE: Once initialized the TinyMCE editor cannot be safely moved in the DOM. For that reason
  * running wp_editor() inside of a meta box is not a good idea unless only Quicktags is used.
@@ -3232,19 +3234,16 @@ function wp_default_editor()
  * containing TinyMCE: 'edit_page_form', 'edit_form_advanced' and 'dbx_post_sidebar'.
  * See https://core.trac.wordpress.org/ticket/19173 for more information.
  *
- * @see _WP_Editors::editor()
+ * @see Editors::editor()
  * @since 3.3.0
  *
  * @param string $content Initial content for the editor.
  * @param string $editor_id HTML ID attribute value for the textarea and TinyMCE. Can only be /[a-z]+/.
- * @param array $settings See _WP_Editors::editor().
+ * @param array $settings See Editors::editor().
  */
 function wp_editor($content, $editor_id, $settings = array())
 {
-    if (!class_exists('_WP_Editors', false)) {
-        require(ABSPATH . WPINC . '/class-wp-editor.php');
-    }
-    _WP_Editors::editor($content, $editor_id, $settings);
+    Editors::editor($content, $editor_id, $settings);
 }
 
 /**
@@ -3253,16 +3252,12 @@ function wp_editor($content, $editor_id, $settings = array())
  * The editor can be initialized when needed after page load.
  * See wp.editor.initialize() in wp-admin/assets/js/editor.js for initialization options.
  *
- * @uses _WP_Editors
+ * @uses Editors
  * @since 4.8.0
  */
 function wp_enqueue_editor()
 {
-    if (!class_exists('_WP_Editors', false)) {
-        require(ABSPATH . WPINC . '/class-wp-editor.php');
-    }
-
-    _WP_Editors::enqueue_default_editor();
+    Editors::enqueue_default_editor();
 }
 
 /**
@@ -3421,7 +3416,7 @@ function language_attributes($doctype = 'html')
  * @since 2.1.0
  *
  * @global Query $wp_query
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string|array $args {
  *     Optional. Array or string of arguments for generating paginated links for archives.

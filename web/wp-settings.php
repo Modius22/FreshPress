@@ -8,8 +8,10 @@
  * @package WordPress
  */
 
-use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
 use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Components\I18n\LocaleSwitcher;
+use Devtronic\FreshPress\Components\Misc\Embed;
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Widgets\WidgetFactory;
 use Devtronic\FreshPress\Core\Kernel;
@@ -172,7 +174,6 @@ require(ABSPATH . WPINC . '/update.php');
 require(ABSPATH . WPINC . '/canonical.php');
 require(ABSPATH . WPINC . '/shortcodes.php');
 require(ABSPATH . WPINC . '/embed.php');
-require(ABSPATH . WPINC . '/class-oembed.php');
 require(ABSPATH . WPINC . '/media.php');
 require(ABSPATH . WPINC . '/http.php');
 require(ABSPATH . WPINC . '/widgets.php');
@@ -181,7 +182,7 @@ require(ABSPATH . WPINC . '/nav-menu-template.php');
 require(ABSPATH . WPINC . '/admin-bar.php');
 require(ABSPATH . WPINC . '/rest-api.php');
 
-$GLOBALS['wp_embed'] = new WP_Embed();
+$GLOBALS['wp_embed'] = new Embed();
 
 // Load multisite-specific files.
 if (is_multisite()) {
@@ -297,10 +298,10 @@ $GLOBALS['wp_query'] = $GLOBALS['wp_the_query'];
 
 /**
  * Holds the WordPress Rewrite object for creating pretty URLs
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  * @since 1.5.0
  */
-$GLOBALS['wp_rewrite'] = new WP_Rewrite();
+$GLOBALS['wp_rewrite'] = new Rewrite();
 
 /**
  * WordPress Object

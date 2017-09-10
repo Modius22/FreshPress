@@ -8,6 +8,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\User;
 
@@ -146,7 +147,7 @@ if (!function_exists('wp_install_defaults')) :
      * @since 2.1.0
      *
      * @global WPDB $wpdb
-     * @global WP_Rewrite $wp_rewrite
+     * @global Rewrite $wp_rewrite
      * @global string $table_prefix
      *
      * @param int $user_id User ID.
@@ -374,7 +375,7 @@ endif;
  *
  * @since 4.2.0
  *
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ * @global Rewrite $wp_rewrite WordPress rewrite component.
  *
  * @return bool Whether pretty permalinks are enabled. False otherwise.
  */

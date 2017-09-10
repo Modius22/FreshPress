@@ -7,6 +7,7 @@
  * @since 1.2.0
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Walker\CategoryDropdownWalker;
 use Devtronic\FreshPress\Components\Walker\CategoryWalker;
 use Devtronic\FreshPress\Components\Walker\Walker;
@@ -129,7 +130,7 @@ function get_the_category_by_ID($cat_ID)
  *
  * @since 1.5.1
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $separator Optional. Separator between the categories. By default, the links are placed
  *                          in an unordered list. An empty string will result in the default behavior.

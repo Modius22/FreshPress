@@ -8,6 +8,7 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Walker\PageDropdownWalker;
 use Devtronic\FreshPress\Components\Walker\PageWalker;
@@ -1006,7 +1007,7 @@ function wp_link_pages($args = '')
  * @since 3.1.0
  * @access private
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $i Page number.
  * @return string Link.

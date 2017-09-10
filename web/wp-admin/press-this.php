@@ -6,6 +6,8 @@
  * @subpackage Press_This
  */
 
+use Devtronic\FreshPress\Components\Misc\PressThis;
+
 define('IFRAME_REQUEST', true);
 
 /** WordPress Administration Bootstrap */
@@ -19,6 +21,5 @@ if (!current_user_can('edit_posts') || !current_user_can(get_post_type_object('p
     );
 }
 
-include(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-$wp_press_this = new WP_Press_This();
-$wp_press_this->html();
+$pressThis = new PressThis();
+$pressThis->html();

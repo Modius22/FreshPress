@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Customize\Theme;
 use Devtronic\FreshPress\Components\FileSystem\BaseFilesystem;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
@@ -100,7 +101,7 @@ function delete_theme($stylesheet, $redirect = '')
 
     // Remove the theme from allowed themes on the network.
     if (is_multisite()) {
-        WP_Theme::network_disable_theme($stylesheet);
+        Theme::network_disable_theme($stylesheet);
     }
 
     // Force refresh of theme update information.
@@ -147,7 +148,7 @@ function _get_template_edit_filename($fullpath, $containingfolder)
  * @since 2.7.0
  * @see get_theme_update_available()
  *
- * @param WP_Theme $theme Theme data object.
+ * @param Theme $theme Theme data object.
  */
 function theme_update_available($theme)
 {
@@ -163,7 +164,7 @@ function theme_update_available($theme)
  *
  * @staticvar object $themes_update
  *
- * @param WP_Theme $theme WP_Theme object.
+ * @param Theme $theme Theme object.
  * @return false|string HTML for the update link, or false if invalid info was passed.
  */
 function get_theme_update_available($theme)
@@ -178,7 +179,7 @@ function get_theme_update_available($theme)
         $themes_update = get_site_transient('update_themes');
     }
 
-    if (!($theme instanceof WP_Theme)) {
+    if (!($theme instanceof Theme)) {
         return false;
     }
 
@@ -556,7 +557,7 @@ function themes_api($action, $args = array())
  *
  * @since 3.8.0
  *
- * @param array $themes Optional. Array of WP_Theme objects to prepare.
+ * @param array $themes Optional. Array of Theme objects to prepare.
  *                      Defaults to all allowed themes.
  *
  * @return array An associative array of theme data, sorted by name.
@@ -574,7 +575,7 @@ function wp_prepare_themes_for_js($themes = null)
      * @since 4.2.0
      *
      * @param array $prepared_themes An associative array of theme data. Default empty array.
-     * @param null|array $themes An array of WP_Theme objects to prepare, if any.
+     * @param null|array $themes An array of Theme objects to prepare, if any.
      * @param string $current_theme The current theme slug.
      */
     $prepared_themes = (array)apply_filters('pre_prepare_themes_for_js', array(), $themes, $current_theme);
@@ -601,7 +602,7 @@ function wp_prepare_themes_for_js($themes = null)
         }
     }
 
-    WP_Theme::sort_by_name($themes);
+    Theme::sort_by_name($themes);
 
     $parents = array();
 

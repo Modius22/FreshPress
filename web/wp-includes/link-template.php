@@ -6,6 +6,8 @@
  * @subpackage Template
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
+use Devtronic\FreshPress\Components\Misc\PressThis;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Comment;
@@ -45,7 +47,7 @@ function the_permalink($post = 0)
  *
  * @since 2.2.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $string URL with or without a trailing slash.
  * @param string $type_of_url Optional. The type of URL being considered (e.g. single, category, etc)
@@ -261,7 +263,7 @@ function get_permalink($post = 0, $leavename = false)
  *
  * @since 3.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $id Optional. Post ID. Default uses the global `$post`.
  * @param bool $leavename Optional, defaults to false. Whether to keep post name. Default false.
@@ -363,7 +365,7 @@ function get_page_link($post = false, $leavename = false, $sample = false)
  * @since 2.1.0
  * @access private
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int|Post $post Optional. Post ID or object. Default uses the global `$post`.
  * @param bool $leavename Optional. Whether to keep the page name. Default false.
@@ -410,7 +412,7 @@ function _get_page_link($post = false, $leavename = false, $sample = false)
  *
  * @since 2.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int|object $post Optional. Post ID or object. Default uses the global `$post`.
  * @param bool $leavename Optional. Whether to keep the page name. Default false.
@@ -474,7 +476,7 @@ function get_attachment_link($post = null, $leavename = false)
  *
  * @since 1.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int|bool $year False for current year or year for permalink.
  * @return string The permalink for the specified year archive.
@@ -509,7 +511,7 @@ function get_year_link($year)
  *
  * @since 1.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param bool|int $year False for current year. Integer of year.
  * @param bool|int $month False for current month. Integer of month.
@@ -550,7 +552,7 @@ function get_month_link($year, $month)
  *
  * @since 1.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param bool|int $year False for current year. Integer of year.
  * @param bool|int $month False for current month. Integer of month.
@@ -622,7 +624,7 @@ function the_feed_link($anchor, $feed = '')
  *
  * @since 1.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $feed Optional. Feed type. Default empty.
  * @return string The feed permalink.
@@ -1085,7 +1087,7 @@ function edit_term_link($link = '', $before = '', $after = '', $term = null, $ec
  *
  * @since  3.0.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $query Optional. The query string to use. If empty the current query is used. Default empty.
  * @return string The search permalink.
@@ -1127,7 +1129,7 @@ function get_search_link($query = '')
  *
  * @since 2.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $search_query Optional. Search query. Default empty.
  * @param string $feed Optional. Feed type. Default empty.
@@ -1168,7 +1170,7 @@ function get_search_feed_link($search_query = '', $feed = '')
  *
  * @since 2.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $search_query Optional. Search query. Default empty.
  * @param string $feed Optional. Feed type. Default empty.
@@ -1202,7 +1204,7 @@ function get_search_comments_feed_link($search_query = '', $feed = '')
  * @since 3.1.0
  * @since 4.5.0 Support for posts was added.
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string $post_type Post type.
  * @return string|false The post type archive permalink.
@@ -2274,7 +2276,7 @@ function adjacent_post_link(
  *
  * @since 1.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $pagenum Optional. Page ID. Default 1.
  * @param bool $escape Optional. Whether to escape the URL for display, with esc_url(). Defaults to true.
@@ -2850,7 +2852,7 @@ function _navigation_markup($links, $class = 'posts-navigation', $screen_reader_
  *
  * @since 2.7.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param int $pagenum Optional. Page number. Default 1.
  * @param int $max_page Optional. The maximum number of comment pages. Default 0.
@@ -3027,7 +3029,7 @@ function previous_comments_link($label = '')
  * @see paginate_links()
  * @since 2.7.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @param string|array $args Optional args. See paginate_links(). Default empty array.
  * @return string|void Markup for pagination links.
@@ -3184,8 +3186,6 @@ function get_shortcut_link()
 {
     global $is_IE;
 
-    include_once(ABSPATH . 'wp-admin/includes/class-wp-press-this.php');
-
     $link = '';
 
     if ($is_IE) {
@@ -3203,7 +3203,7 @@ function get_shortcut_link()
 
             $link = 'javascript:var d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,' .
                 's=(e?e():(k)?k():(x?x.createRange().text:0)),f=' . $url . ',l=d.location,e=encodeURIComponent,' .
-                'u=f+"?u="+e(l.href)+"&t="+e(d.title)+"&s="+e(s)+"&v=' . WP_Press_This::VERSION . '";' .
+                'u=f+"?u="+e(l.href)+"&t="+e(d.title)+"&s="+e(s)+"&v=' . PressThis::VERSION . '";' .
                 'a=function(){if(!w.open(u,"t","toolbar=0,resizable=1,scrollbars=1,status=1,width=600,height=700"))l.href=u;};' .
                 'if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();void(0)';
         }
@@ -3213,7 +3213,7 @@ function get_shortcut_link()
         $src = @file_get_contents(ABSPATH . 'wp-admin/assets/js/bookmarklet.min.js');
 
         if ($src) {
-            $url = wp_json_encode(admin_url('press-this.php') . '?v=' . WP_Press_This::VERSION);
+            $url = wp_json_encode(admin_url('press-this.php') . '?v=' . PressThis::VERSION);
             $link = 'javascript:' . str_replace('window.pt_url', $url, $src);
         }
     }

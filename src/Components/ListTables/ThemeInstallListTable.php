@@ -9,7 +9,7 @@
 
 namespace Devtronic\FreshPress\Components\ListTables;
 
-use WP_Theme;
+use Devtronic\FreshPress\Components\Customize\Theme;
 
 /**
  * Core class used to implement displaying themes to install in a list table.
@@ -321,7 +321,7 @@ class ThemeInstallListTable extends ThemesListTable
          *
          * @param array $actions An array of theme action hyperlinks. Defaults are
          *                          links to Install Now, Preview, and Details.
-         * @param WP_Theme $theme Theme object.
+         * @param Theme $theme Theme object.
          */
         $actions = apply_filters('theme_install_actions', $actions, $theme); ?>
         <a class="screenshot install-theme-preview" href="<?php echo esc_url($preview_url); ?>"

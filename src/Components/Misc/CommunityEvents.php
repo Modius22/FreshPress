@@ -7,16 +7,18 @@
  * @since 4.8.0
  */
 
+namespace Devtronic\FreshPress\Components\Misc;
+
 use Devtronic\FreshPress\Core\Error;
 
 /**
- * Class WP_Community_Events.
+ * Class CommunityEvents.
  *
  * A client for api.wordpress.org/events.
  *
  * @since 4.8.0
  */
-class WP_Community_Events
+class CommunityEvents
 {
     /**
      * ID for a WordPress user account.
@@ -39,7 +41,7 @@ class WP_Community_Events
     protected $user_location = false;
 
     /**
-     * Constructor for WP_Community_Events.
+     * Constructor for CommunityEvents.
      *
      * @since 4.8.0
      *
@@ -156,9 +158,9 @@ class WP_Community_Events
              * one can be used instead.
              */
             if ($this->coordinates_match(
-                $request_args['body'],
+                    $request_args['body'],
                     $response_body['location']
-            ) && empty($response_body['location']['description'])) {
+                ) && empty($response_body['location']['description'])) {
                 $response_body['location']['description'] = $this->user_location['description'];
             }
 
@@ -188,10 +190,10 @@ class WP_Community_Events
      */
     protected function get_request_args($search = '', $timezone = '')
     {
-        $args = array(
+        $args = [
             'number' => 5, // Get more than three in case some get trimmed out.
             'ip' => self::get_unsafe_client_ip(),
-        );
+        ];
 
         /*
          * Include the minimal set of necessary arguments, in order to increase the
@@ -213,9 +215,9 @@ class WP_Community_Events
         }
 
         // Wrap the args in an array compatible with the second parameter of `wp_remote_get()`.
-        return array(
+        return [
             'body' => $args
-        );
+        ];
     }
 
     /**
@@ -249,7 +251,7 @@ class WP_Community_Events
         $client_ip = false;
 
         // In order of preference, with the best ones for this purpose first.
-        $address_headers = array(
+        $address_headers = [
             'HTTP_CLIENT_IP',
             'HTTP_X_FORWARDED_FOR',
             'HTTP_X_FORWARDED',
@@ -257,7 +259,7 @@ class WP_Community_Events
             'HTTP_FORWARDED_FOR',
             'HTTP_FORWARDED',
             'REMOTE_ADDR',
-        );
+        ];
 
         foreach ($address_headers as $header) {
             if (array_key_exists($header, $_SERVER)) {

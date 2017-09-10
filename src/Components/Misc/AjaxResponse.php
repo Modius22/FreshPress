@@ -1,5 +1,7 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Misc;
+
 use Devtronic\FreshPress\Core\Error;
 
 /**
@@ -8,7 +10,7 @@ use Devtronic\FreshPress\Core\Error;
  * @package WordPress
  * @since 2.1.0
  */
-class WP_Ajax_Response
+class AjaxResponse
 {
     /**
      * Store XML responses to send.
@@ -16,13 +18,13 @@ class WP_Ajax_Response
      * @since 2.1.0
      * @var array
      */
-    public $responses = array();
+    public $responses = [];
 
     /**
-     * Constructor - Passes args to WP_Ajax_Response::add().
+     * Constructor - Passes args to AjaxResponse::add().
      *
      * @since 2.1.0
-     * @see WP_Ajax_Response::add()
+     * @see AjaxResponse::add()
      *
      * @param string|array $args Optional. Will be passed to add() method.
      */
@@ -70,15 +72,15 @@ class WP_Ajax_Response
      */
     public function add($args = '')
     {
-        $defaults = array(
+        $defaults = [
             'what' => 'object',
             'action' => false,
             'id' => '0',
             'old_id' => false,
             'position' => 1,
             'data' => '',
-            'supplemental' => array()
-        );
+            'supplemental' => []
+        ];
 
         $r = wp_parse_args($args, $defaults);
 

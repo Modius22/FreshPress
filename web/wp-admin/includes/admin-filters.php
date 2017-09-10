@@ -9,6 +9,7 @@
 
 // Bookmark hooks.
 use Devtronic\FreshPress\Components\Upgrader\LanguageUpgrader;
+use Devtronic\FreshPress\Components\Misc\InternalPointers;
 
 add_action('admin_page_access_denied', 'wp_link_manager_disabled_message');
 
@@ -82,8 +83,8 @@ add_action('install_plugins_favorites', 'display_plugins_table');
 add_action('install_plugins_pre_plugin-information', 'install_plugin_information');
 
 // Template hooks.
-add_action('admin_enqueue_scripts', array('WP_Internal_Pointers', 'enqueue_scripts'));
-add_action('user_register', array('WP_Internal_Pointers', 'dismiss_pointers_for_new_users'));
+add_action('admin_enqueue_scripts', array(InternalPointers::class, 'enqueue_scripts'));
+add_action('user_register', array(InternalPointers::class, 'dismiss_pointers_for_new_users'));
 
 // Theme hooks.
 add_action('customize_controls_print_footer_scripts', 'customize_themes_print_templates');

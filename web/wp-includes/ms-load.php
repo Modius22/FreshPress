@@ -8,6 +8,8 @@
  * @subpackage Multisite
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
+use Devtronic\FreshPress\Components\Multisite\Network;
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
@@ -135,16 +137,16 @@ function ms_site_check()
  *
  * @since 3.9.0
  *
- * @internal In 4.4.0, converted to a wrapper for WP_Network::get_by_path()
+ * @internal In 4.4.0, converted to a wrapper for Network::get_by_path()
  *
  * @param string $domain Domain to check.
  * @param string $path Path to check.
  * @param int|null $segments Path segments to use. Defaults to null, or the full path.
- * @return WP_Network|false Network object if successful. False when no network is found.
+ * @return Network|false Network object if successful. False when no network is found.
  */
 function get_network_by_path($domain, $path, $segments = null)
 {
-    return WP_Network::get_by_path($domain, $path, $segments);
+    return Network::get_by_path($domain, $path, $segments);
 }
 
 /**
@@ -158,14 +160,14 @@ function get_network_by_path($domain, $path, $segments = null)
  * requested site address
  *
  * @since 3.9.0
- * @since 4.7.0 Updated to always return a `WP_Site` object.
+ * @since 4.7.0 Updated to always return a `Site` object.
  *
  * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $domain Domain to check.
  * @param string $path Path to check.
  * @param int|null $segments Path segments to use. Defaults to null, or the full path.
- * @return WP_Site|false Site object if successful. False when no site is found.
+ * @return Site|false Site object if successful. False when no site is found.
  */
 function get_site_by_path($domain, $path, $segments = null)
 {
@@ -209,7 +211,7 @@ function get_site_by_path($domain, $path, $segments = null)
      *
      * @since 3.9.0
      *
-     * @param null|bool|WP_Site $site Site value to return by path.
+     * @param null|bool|Site $site Site value to return by path.
      * @param string $domain The requested domain.
      * @param string $path The requested path, in full.
      * @param int|null $segments The suggested number of paths to consult.
@@ -218,8 +220,8 @@ function get_site_by_path($domain, $path, $segments = null)
      */
     $pre = apply_filters('pre_get_site_by_path', null, $domain, $path, $segments, $paths);
     if (null !== $pre) {
-        if (false !== $pre && !$pre instanceof WP_Site) {
-            $pre = new WP_Site($pre);
+        if (false !== $pre && !$pre instanceof Site) {
+            $pre = new Site($pre);
         }
         return $pre;
     }
@@ -284,8 +286,8 @@ function get_site_by_path($domain, $path, $segments = null)
  * @access private
  *
  * @global WPDB $wpdb WordPress database abstraction object.
- * @global WP_Network $current_site The current network.
- * @global WP_Site $current_blog The current site.
+ * @global Network $current_site The current network.
+ * @global Site $current_blog The current site.
  *
  * @param string $domain The requested domain.
  * @param string $path The requested path.
@@ -334,7 +336,7 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
             // Are there even two networks installed?
             $one_network = $wpdb->get_row("SELECT * FROM $wpdb->site LIMIT 2"); // [sic]
             if (1 === $wpdb->num_rows) {
-                $current_site = new WP_Network($one_network);
+                $current_site = new Network($one_network);
                 wp_cache_add('current_network', $current_site, 'site-options');
             } elseif (0 === $wpdb->num_rows) {
                 // A network not found hook should fire here.
@@ -343,7 +345,7 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
         }
 
         if (empty($current_site)) {
-            $current_site = WP_Network::get_by_path($domain, $path, 1);
+            $current_site = Network::get_by_path($domain, $path, 1);
         }
 
         if (empty($current_site)) {
@@ -371,16 +373,16 @@ function ms_load_current_site_and_network($domain, $path, $subdomain = false)
         // Find the site by the domain and at most the first path segment.
         $current_blog = get_site_by_path($domain, $path, 1);
         if ($current_blog) {
-            $current_site = WP_Network::get_instance($current_blog->site_id ? $current_blog->site_id : 1);
+            $current_site = Network::get_instance($current_blog->site_id ? $current_blog->site_id : 1);
         } else {
             // If you don't have a site with the same domain/path as a network, you're pretty screwed, but:
-            $current_site = WP_Network::get_by_path($domain, $path, 1);
+            $current_site = Network::get_by_path($domain, $path, 1);
         }
     }
 
     // The network declared by the site trumps any constants.
     if ($current_blog && $current_blog->site_id != $current_site->id) {
-        $current_site = WP_Network::get_instance($current_blog->site_id);
+        $current_site = Network::get_instance($current_blog->site_id);
     }
 
     // No network has been found, bail.
@@ -573,7 +575,7 @@ function wpmu_current_site()
  * @internal In 4.6.0, converted to use get_network()
  *
  * @param object|int $network The network's database row or ID.
- * @return WP_Network|false Object containing network information if found, false if not.
+ * @return Network|false Object containing network information if found, false if not.
  */
 function wp_get_network($network)
 {

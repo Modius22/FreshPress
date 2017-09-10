@@ -7,6 +7,8 @@
  * @since 4.2.0
  */
 
+namespace Devtronic\FreshPress\Components\Misc;
+
 use Devtronic\FreshPress\Components\I18n\Locale;
 use Devtronic\FreshPress\Core\Error;
 use Devtronic\FreshPress\Entity\Post;
@@ -16,15 +18,15 @@ use Devtronic\FreshPress\Entity\Post;
  *
  * @since 4.2.0
  */
-class WP_Press_This
+class PressThis
 {
     // Used to trigger the bookmarklet update notice.
     const VERSION = 8;
     public $version = 8;
 
-    private $images = array();
+    private $images = [];
 
-    private $embeds = array();
+    private $embeds = [];
 
     private $domain = '';
 
@@ -48,7 +50,7 @@ class WP_Press_This
      */
     public function site_settings()
     {
-        return array(
+        return [
             /**
              * Filters whether or not Press This should redirect the user in the parent window upon save.
              *
@@ -57,7 +59,7 @@ class WP_Press_This
              * @param bool $redirect Whether to redirect in parent window or not. Default false.
              */
             'redirInParent' => apply_filters('press_this_redirect_in_parent', false),
-        );
+        ];
     }
 
     /**
@@ -113,27 +115,27 @@ class WP_Press_This
     public function save_post()
     {
         if (empty($_POST['post_ID']) || !$post_id = (int)$_POST['post_ID']) {
-            wp_send_json_error(array('errorMessage' => __('Missing post ID.')));
+            wp_send_json_error(['errorMessage' => __('Missing post ID.')]);
         }
 
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'update-post_' . $post_id) ||
             !current_user_can('edit_post', $post_id)) {
-            wp_send_json_error(array('errorMessage' => __('Invalid post.')));
+            wp_send_json_error(['errorMessage' => __('Invalid post.')]);
         }
 
-        $post_data = array(
+        $post_data = [
             'ID' => $post_id,
             'post_title' => (!empty($_POST['post_title'])) ? sanitize_text_field(trim($_POST['post_title'])) : '',
             'post_content' => (!empty($_POST['post_content'])) ? trim($_POST['post_content']) : '',
             'post_type' => 'post',
             'post_status' => 'draft',
             'post_format' => (!empty($_POST['post_format'])) ? sanitize_text_field($_POST['post_format']) : '',
-        );
+        ];
 
         // Only accept categories if the user actually can assign
         $category_tax = get_taxonomy('category');
         if (current_user_can($category_tax->cap->assign_terms)) {
-            $post_data['post_category'] = (!empty($_POST['post_category'])) ? $_POST['post_category'] : array();
+            $post_data['post_category'] = (!empty($_POST['post_category'])) ? $_POST['post_category'] : [];
         }
 
         // Only accept taxonomies if the user can actually assign
@@ -174,7 +176,7 @@ class WP_Press_This
         $updated = wp_update_post($post_data, true);
 
         if (is_wp_error($updated)) {
-            wp_send_json_error(array('errorMessage' => $updated->get_error_message()));
+            wp_send_json_error(['errorMessage' => $updated->get_error_message()]);
         } else {
             if (isset($post_data['post_format'])) {
                 if (current_theme_supports('post-formats', $post_data['post_format'])) {
@@ -208,9 +210,9 @@ class WP_Press_This
             $redirect = apply_filters('press_this_save_redirect', $redirect, $post_id, $post_data['post_status']);
 
             if ($redirect) {
-                wp_send_json_success(array('redirect' => $redirect, 'force' => $forceRedirect));
+                wp_send_json_success(['redirect' => $redirect, 'force' => $forceRedirect]);
             } else {
-                wp_send_json_success(array('postSaved' => true));
+                wp_send_json_success(['postSaved' => true]);
             }
         }
     }
@@ -235,7 +237,7 @@ class WP_Press_This
 
         $parent = isset($_POST['parent']) && (int)$_POST['parent'] > 0 ? (int)$_POST['parent'] : 0;
         $names = explode(',', $_POST['name']);
-        $added = $data = array();
+        $added = $data = [];
 
         foreach ($names as $cat_name) {
             $cat_name = trim($cat_name);
@@ -248,13 +250,13 @@ class WP_Press_This
             // @todo Find a more performant way to check existence, maybe get_term() with a separate parent check.
             if (term_exists($cat_name, $taxonomy->name, $parent)) {
                 if (count($names) === 1) {
-                    wp_send_json_error(array('errorMessage' => __('This category already exists.')));
+                    wp_send_json_error(['errorMessage' => __('This category already exists.')]);
                 } else {
                     continue;
                 }
             }
 
-            $cat_id = wp_insert_term($cat_name, $taxonomy->name, array('parent' => $parent));
+            $cat_id = wp_insert_term($cat_name, $taxonomy->name, ['parent' => $parent]);
 
             if (is_wp_error($cat_id)) {
                 continue;
@@ -266,21 +268,21 @@ class WP_Press_This
         }
 
         if (empty($added)) {
-            wp_send_json_error(array('errorMessage' => __('This category cannot be added. Please change the name and try again.')));
+            wp_send_json_error(['errorMessage' => __('This category cannot be added. Please change the name and try again.')]);
         }
 
         foreach ($added as $new_cat_id) {
             $new_cat = get_category($new_cat_id);
 
             if (is_wp_error($new_cat)) {
-                wp_send_json_error(array('errorMessage' => __('Error while adding the category. Please try again later.')));
+                wp_send_json_error(['errorMessage' => __('Error while adding the category. Please try again later.')]);
             }
 
-            $data[] = array(
+            $data[] = [
                 'term_id' => $new_cat->term_id,
                 'name' => $new_cat->name,
                 'parent' => $new_cat->parent,
-            );
+            ];
         }
         wp_send_json_success($data);
     }
@@ -300,36 +302,36 @@ class WP_Press_This
             return new Error('invalid-url', __('A valid URL was not provided.'));
         }
 
-        $remote_url = wp_safe_remote_get($url, array(
+        $remote_url = wp_safe_remote_get($url, [
             'timeout' => 30,
             // Use an explicit user-agent for Press This
             'user-agent' => 'Press This (WordPress/' . get_bloginfo('version') . '); ' . get_bloginfo('url')
-        ));
+        ]);
 
         if (is_wp_error($remote_url)) {
             return $remote_url;
         }
 
-        $allowed_elements = array(
-            'img' => array(
+        $allowed_elements = [
+            'img' => [
                 'src' => true,
                 'width' => true,
                 'height' => true,
-            ),
-            'iframe' => array(
+            ],
+            'iframe' => [
                 'src' => true,
-            ),
-            'link' => array(
+            ],
+            'link' => [
                 'rel' => true,
                 'itemprop' => true,
                 'href' => true,
-            ),
-            'meta' => array(
+            ],
+            'meta' => [
                 'property' => true,
                 'name' => true,
                 'content' => true,
-            )
-        );
+            ]
+        ];
 
         $source_content = wp_remote_retrieve_body($remote_url);
         $source_content = wp_kses($source_content, $allowed_elements);
@@ -356,7 +358,7 @@ class WP_Press_This
             return $value;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -427,7 +429,7 @@ class WP_Press_This
             return '';
         }
 
-        return esc_url_raw($url, array('http', 'https'));
+        return esc_url_raw($url, ['http', 'https']);
     }
 
     /**
@@ -543,7 +545,7 @@ class WP_Press_This
                         } else {
                             $oembed = _wp_oembed_get_object();
 
-                            if (!$oembed->get_provider($src, array('discover' => false))) {
+                            if (!$oembed->get_provider($src, ['discover' => false])) {
                                 $src = '';
                             }
                         }
@@ -578,7 +580,7 @@ class WP_Press_This
                     $meta_value = $this->_limit_embed($meta_value);
 
                     if (!isset($data['_embeds'])) {
-                        $data['_embeds'] = array();
+                        $data['_embeds'] = [];
                     }
 
                     if (!empty($meta_value) && !in_array($meta_value, $data['_embeds'])) {
@@ -595,7 +597,7 @@ class WP_Press_This
                     $meta_value = $this->_limit_img($meta_value);
 
                     if (!isset($data['_images'])) {
-                        $data['_images'] = array();
+                        $data['_images'] = [];
                     }
 
                     if (!empty($meta_value) && !in_array($meta_value, $data['_images'])) {
@@ -619,21 +621,21 @@ class WP_Press_This
      * @param array $data Optional. Existing data array if you have one. Default empty array.
      * @return array New data array.
      */
-    public function source_data_fetch_fallback($url, $data = array())
+    public function source_data_fetch_fallback($url, $data = [])
     {
         if (empty($url)) {
-            return array();
+            return [];
         }
 
         // Download source page to tmp file.
         $source_content = $this->fetch_source_html($url);
         if (is_wp_error($source_content)) {
-            return array('errors' => $source_content->get_error_messages());
+            return ['errors' => $source_content->get_error_messages()];
         }
 
         // Fetch and gather <meta> data first, so discovered media is offered 1st to user.
         if (empty($data['_meta'])) {
-            $data['_meta'] = array();
+            $data['_meta'] = [];
         }
 
         if (preg_match_all('/<meta [^>]+>/', $source_content, $matches)) {
@@ -656,7 +658,7 @@ class WP_Press_This
 
         // Fetch and gather <img> data.
         if (empty($data['_images'])) {
-            $data['_images'] = array();
+            $data['_images'] = [];
         }
 
         if (preg_match_all('/<img [^>]+>/', $source_content, $matches)) {
@@ -679,7 +681,7 @@ class WP_Press_This
 
         // Fetch and gather <iframe> data.
         if (empty($data['_embeds'])) {
-            $data['_embeds'] = array();
+            $data['_embeds'] = [];
         }
 
         if (preg_match_all('/<iframe [^>]+>/', $source_content, $matches)) {
@@ -698,7 +700,7 @@ class WP_Press_This
 
         // Fetch and gather <link> data.
         if (empty($data['_links'])) {
-            $data['_links'] = array();
+            $data['_links'] = [];
         }
 
         if (preg_match_all('/<link [^>]+>/', $source_content, $matches)) {
@@ -706,10 +708,10 @@ class WP_Press_This
 
             foreach ($items as $value) {
                 if (preg_match(
-                    '/rel=["\'](canonical|shortlink|icon)["\']/i',
-                    $value,
+                        '/rel=["\'](canonical|shortlink|icon)["\']/i',
+                        $value,
                         $matches_rel
-                ) && preg_match('/href=[\'"]([^\'" ]+)[\'"]/i', $value, $matches_url)) {
+                    ) && preg_match('/href=[\'"]([^\'" ]+)[\'"]/i', $value, $matches_url)) {
                     $rel = $matches_rel[1];
                     $url = $this->_limit_url($matches_url[1]);
 
@@ -734,10 +736,10 @@ class WP_Press_This
     public function merge_or_fetch_data()
     {
         // Get data from $_POST and $_GET, as appropriate ($_POST > $_GET), to remain backward compatible.
-        $data = array();
+        $data = [];
 
         // Only instantiate the keys we want. Sanity check and sanitize each one.
-        foreach (array('u', 's', 't', 'v') as $key) {
+        foreach (['u', 's', 't', 'v'] as $key) {
             if (!empty($_POST[$key])) {
                 $value = wp_unslash($_POST[$key]);
             } else {
@@ -782,12 +784,12 @@ class WP_Press_This
                     $data['errors'] = 'missing nonce';
                 }
             } else {
-                foreach (array('_images', '_embeds') as $type) {
+                foreach (['_images', '_embeds'] as $type) {
                     if (empty($_POST[$type])) {
                         continue;
                     }
 
-                    $data[$type] = array();
+                    $data[$type] = [];
                     $items = $this->_limit_array($_POST[$type]);
 
                     foreach ($items as $key => $value) {
@@ -803,12 +805,12 @@ class WP_Press_This
                     }
                 }
 
-                foreach (array('_meta', '_links') as $type) {
+                foreach (['_meta', '_links'] as $type) {
                     if (empty($_POST[$type])) {
                         continue;
                     }
 
-                    $data[$type] = array();
+                    $data[$type] = [];
                     $items = $this->_limit_array($_POST[$type]);
 
                     foreach ($items as $key => $value) {
@@ -824,7 +826,7 @@ class WP_Press_This
                                 $data = $this->_process_meta_entry($key, $value, $data);
                             }
                         } else {
-                            if (in_array($key, array('canonical', 'shortlink', 'icon'), true)) {
+                            if (in_array($key, ['canonical', 'shortlink', 'icon'], true)) {
                                 $data[$type][$key] = $this->_limit_url(wp_unslash($value));
                             }
                         }
@@ -835,7 +837,7 @@ class WP_Press_This
             // Support passing a single image src as `i`
             if (!empty($_REQUEST['i']) && ($img_src = $this->_limit_img(wp_unslash($_REQUEST['i'])))) {
                 if (empty($data['_images'])) {
-                    $data['_images'] = array($img_src);
+                    $data['_images'] = [$img_src];
                 } elseif (!in_array($img_src, $data['_images'], true)) {
                     array_unshift($data['_images'], $img_src);
                 }
@@ -959,14 +961,14 @@ class WP_Press_This
                        for="new-category-parent"><?php echo $taxonomy->labels->parent_item_colon; ?></label>
                 <div class="postform-wrapper">
                     <?php
-                    wp_dropdown_categories(array(
+                    wp_dropdown_categories([
                         'taxonomy' => 'category',
                         'hide_empty' => 0,
                         'name' => 'new-category-parent',
                         'orderby' => 'name',
                         'hierarchical' => 1,
                         'show_option_none' => '&mdash; ' . $taxonomy->labels->parent_item . ' &mdash;'
-                    )); ?>
+                    ]); ?>
                 </div>
                 <button type="button" class="add-cat-submit"><?php _e('Add'); ?></button>
             </div>
@@ -982,7 +984,7 @@ class WP_Press_This
         </div>
         <div aria-label="<?php esc_attr_e('Categories'); ?>">
             <ul class="categories-select">
-                <?php wp_terms_checklist($post->ID, array('taxonomy' => 'category', 'list_only' => true)); ?>
+                <?php wp_terms_checklist($post->ID, ['taxonomy' => 'category', 'list_only' => true]); ?>
             </ul>
         </div>
         <?php
@@ -1008,7 +1010,7 @@ class WP_Press_This
         <div class="tagsdiv" id="post_tag">
             <div class="jaxtag">
                 <input type="hidden" name="tax_input[post_tag]" class="the-tags"
-                       value="<?php echo $esc_tags; // escaped in get_terms_to_edit()?>">
+                       value="<?php echo $esc_tags; // escaped in get_terms_to_edit() ?>">
                 <?php
 
                 if ($user_can_assign_terms) {
@@ -1051,7 +1053,7 @@ class WP_Press_This
      */
     public function get_embeds($data)
     {
-        $selected_embeds = array();
+        $selected_embeds = [];
 
         // Make sure to add the Pressed page if it's a valid oembed itself
         if (!empty($data['u']) && $this->_limit_embed($data['u'])) {
@@ -1085,7 +1087,7 @@ class WP_Press_This
      */
     public function get_images($data)
     {
-        $selected_images = array();
+        $selected_images = [];
 
         if (!empty($data['_images'])) {
             foreach ($data['_images'] as $src) {
@@ -1239,7 +1241,7 @@ class WP_Press_This
             }
         }
 
-        $default_html = array('quote' => '', 'link' => '', 'embed' => '');
+        $default_html = ['quote' => '', 'link' => '', 'embed' => ''];
 
         if (!empty($data['u']) && $this->_limit_embed($data['u'])) {
             $default_html['embed'] = '<p>[embed]' . $data['u'] . '[/embed]</p>';
@@ -1251,9 +1253,9 @@ class WP_Press_This
         } else {
             $default_html['quote'] = '<blockquote>%1$s</blockquote>';
             $default_html['link'] = '<p>' . _x(
-                'Source:',
+                    'Source:',
                     'Used in Press This to indicate where the content comes from.'
-            ) .
+                ) .
                 ' <em><a href="%1$s">%2$s</a></em></p>';
         }
 
@@ -1327,11 +1329,11 @@ class WP_Press_This
         $images = $this->get_images($data);
         $embeds = $this->get_embeds($data);
 
-        $site_data = array(
+        $site_data = [
             'v' => !empty($data['v']) ? $data['v'] : '',
             'u' => !empty($data['u']) ? $data['u'] : '',
             'hasData' => !empty($data) && !isset($data['errors']),
-        );
+        ];
 
         if (!empty($images)) {
             $site_data['_images'] = $images;
@@ -1344,7 +1346,7 @@ class WP_Press_This
         // Add press-this-editor.css and remove theme's editor-style.css, if any.
         remove_editor_styles();
 
-        add_filter('mce_css', array($this, 'add_editor_style'));
+        add_filter('mce_css', [$this, 'add_editor_style']);
 
         if (!empty($GLOBALS['is_IE'])) {
             @header('X-UA-Compatible: IE=edge');
@@ -1387,7 +1389,7 @@ class WP_Press_This
                 $post = get_default_post_to_edit('post', true);
         $post_ID = (int)$post->ID;
 
-        wp_enqueue_media(array('post' => $post_ID));
+        wp_enqueue_media(['post' => $post_ID]);
         wp_enqueue_style('press-this');
         wp_enqueue_script('press-this');
         wp_enqueue_script('json2');
@@ -1435,7 +1437,7 @@ class WP_Press_This
 
             $admin_body_class = 'press-this';
         $admin_body_class .= (is_rtl()) ? ' rtl' : '';
-        $admin_body_class .= ' branch-' . str_replace(array('.', ','), '-', floatval($wp_version));
+        $admin_body_class .= ' branch-' . str_replace(['.', ','], '-', floatval($wp_version));
         $admin_body_class .= ' version-' . str_replace('.', '-', preg_replace('/^([.0-9]+).*/', '$1', $wp_version));
         $admin_body_class .= ' admin-color-' . sanitize_html_class(get_user_option('admin_color'), 'fresh');
         $admin_body_class .= ' locale-' . sanitize_html_class(strtolower(str_replace('_', '-', get_user_locale())));
@@ -1493,9 +1495,9 @@ class WP_Press_This
                                     ?>
                                     <p class="alert is-notice">
                                         <?php printf(
-                                        __('You should upgrade <a href="%s" target="_blank">your bookmarklet</a> to the latest version!'),
+                                            __('You should upgrade <a href="%s" target="_blank">your bookmarklet</a> to the latest version!'),
                                             admin_url('tools.php')
-                                    ); ?>
+                                        ); ?>
                                     </p>
                                     <?php
                                 } ?>
@@ -1516,13 +1518,13 @@ class WP_Press_This
                                 </div>
 
                                 <?php
-                                wp_editor($post_content, 'pressthis', array(
+                                wp_editor($post_content, 'pressthis', [
                                     'drag_drop_upload' => true,
                                     'editor_height' => 600,
                                     'media_buttons' => false,
                                     'textarea_name' => 'post_content',
                                     'teeny' => true,
-                                    'tinymce' => array(
+                                    'tinymce' => [
                                         'resize' => false,
                                         'wordpress_adv_hidden' => false,
                                         'add_unload_trigger' => false,
@@ -1532,11 +1534,11 @@ class WP_Press_This
                                         'plugins' => 'lists,media,paste,tabfocus,fullscreen,wordpress,wpautoresize,wpeditimage,wpgallery,wplink,wptextpattern,wpview',
                                         'toolbar1' => 'bold,italic,bullist,numlist,blockquote,link,unlink',
                                         'toolbar2' => 'undo,redo',
-                                    ),
-                                    'quicktags' => array(
+                                    ],
+                                    'quicktags' => [
                                         'buttons' => 'strong,em,link,block,del,ins,img,ul,ol,li,code,more',
-                                    ),
-                                )); ?>
+                                    ],
+                                ]); ?>
                             </div>
                         </div>
 
@@ -1576,9 +1578,9 @@ class WP_Press_This
                                     <button type="button" class="modal-close">
                                         <span class="dashicons post-option-back"></span>
                                         <span class="setting-title" aria-hidden="true"><?php _ex(
-                                    'Format',
+                                                'Format',
                                                 'post format'
-                                ); ?></span>
+                                            ); ?></span>
                                         <span class="screen-reader-text"><?php _e('Back to post options') ?></span>
                                     </button>
                                     <?php $this->post_formats_html($post); ?>

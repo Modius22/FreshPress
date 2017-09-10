@@ -1,11 +1,13 @@
 <?php
 
+namespace Devtronic\FreshPress\Components\Misc;
+
 use Devtronic\FreshPress\Core\WPDB;
 
 /**
- * WP_Importer base class
+ * Importer base class
  */
-class WP_Importer
+class Importer
 {
     /**
      * Class Constructor
@@ -28,7 +30,7 @@ class WP_Importer
     {
         global $wpdb;
 
-        $hashtable = array();
+        $hashtable = [];
 
         $limit = 100;
         $offset = 0;
@@ -104,7 +106,7 @@ class WP_Importer
     {
         global $wpdb;
 
-        $hashtable = array();
+        $hashtable = [];
 
         $limit = 100;
         $offset = 0;
@@ -155,7 +157,7 @@ class WP_Importer
             if (empty($parsed['path'])) {
                 $parsed['path'] = '/';
             }
-            $blogs = get_sites(array('domain' => $parsed['host'], 'number' => 1, 'path' => $parsed['path']));
+            $blogs = get_sites(['domain' => $parsed['host'], 'number' => 1, 'path' => $parsed['path']]);
             if (!$blogs) {
                 fwrite(STDERR, "Error: Could not find blog\n");
                 exit();
@@ -218,10 +220,10 @@ class WP_Importer
     public function get_page($url, $username = '', $password = '', $head = false)
     {
         // Increase the timeout
-        add_filter('http_request_timeout', array($this, 'bump_request_timeout'));
+        add_filter('http_request_timeout', [$this, 'bump_request_timeout']);
 
-        $headers = array();
-        $args = array();
+        $headers = [];
+        $args = [];
         if (true === $head) {
             $args['method'] = 'HEAD';
         }
@@ -282,67 +284,8 @@ class WP_Importer
     {
         global $wpdb, $wp_actions;
         // Or define( 'WP_IMPORTING', true );
-        $wpdb->queries = array();
+        $wpdb->queries = [];
         // Reset $wp_actions to keep it from growing out of control
-        $wp_actions = array();
+        $wp_actions = [];
     }
-}
-
-/**
- * Returns value of command line params.
- * Exits when a required param is not set.
- *
- * @param string $param
- * @param bool $required
- * @return mixed
- */
-function get_cli_args($param, $required = false)
-{
-    $args = $_SERVER['argv'];
-
-    $out = array();
-
-    $last_arg = null;
-    $return = null;
-
-    $il = sizeof($args);
-
-    for ($i = 1, $il; $i < $il; $i++) {
-        if ((bool)preg_match("/^--(.+)/", $args[$i], $match)) {
-            $parts = explode("=", $match[1]);
-            $key = preg_replace("/[^a-z0-9]+/", "", $parts[0]);
-
-            if (isset($parts[1])) {
-                $out[$key] = $parts[1];
-            } else {
-                $out[$key] = true;
-            }
-
-            $last_arg = $key;
-        } elseif ((bool)preg_match("/^-([a-zA-Z0-9]+)/", $args[$i], $match)) {
-            for ($j = 0, $jl = strlen($match[1]); $j < $jl; $j++) {
-                $key = $match[1]{$j};
-                $out[$key] = true;
-            }
-
-            $last_arg = $key;
-        } elseif ($last_arg !== null) {
-            $out[$last_arg] = $args[$i];
-        }
-    }
-
-    // Check array for specified param
-    if (isset($out[$param])) {
-        // Set return value
-        $return = $out[$param];
-    }
-
-    // Check for missing required param
-    if (!isset($out[$param]) && $required) {
-        // Display message and exit
-        echo "\"$param\" parameter is required but was not specified\n";
-        exit();
-    }
-
-    return $return;
 }

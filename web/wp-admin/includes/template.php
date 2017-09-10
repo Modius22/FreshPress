@@ -17,9 +17,6 @@ use Devtronic\FreshPress\Components\Walker\CategoryChecklistWalker;
 use Devtronic\FreshPress\Core\WPDB;
 use Devtronic\FreshPress\Entity\Post;
 
-/** WP_Internal_Pointers class */
-require_once(ABSPATH . 'wp-admin/includes/class-wp-internal-pointers.php');
-
 //
 // Category Checklists
 //

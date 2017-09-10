@@ -6,6 +6,8 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Customize\Theme;
+
 /** WordPress Administration Bootstrap */
 require_once(dirname(__FILE__) . '/admin.php');
 
@@ -75,7 +77,7 @@ $default_types = array('php', 'css');
  * @since 4.4.0
  *
  * @param array $default_types List of file types. Default types include 'php' and 'css'.
- * @param WP_Theme $theme The current Theme object.
+ * @param Theme $theme The current Theme object.
  */
 $file_types = apply_filters('wp_theme_editor_filetypes', $default_types, $theme);
 

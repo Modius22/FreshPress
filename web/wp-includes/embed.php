@@ -8,6 +8,9 @@
  */
 
 use Devtronic\FreshPress\Components\Http\Response;
+use Devtronic\FreshPress\Components\Misc\Embed;
+use Devtronic\FreshPress\Components\Misc\OEmbed;
+use Devtronic\FreshPress\Components\Misc\OEmbedController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
@@ -19,7 +22,7 @@ use Devtronic\FreshPress\Entity\Post;
  *
  * @since 2.9.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  *
  * @param string $id An internal ID/name for the handler. Needs to be unique.
  * @param string $regex The regex that will be used to see if this handler should be used for a URL.
@@ -38,7 +41,7 @@ function wp_embed_register_handler($id, $regex, $callback, $priority = 10)
  *
  * @since 2.9.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  *
  * @param string $id The handler ID that should be removed.
  * @param int $priority Optional. The priority of the handler to be removed. Default 10.
@@ -96,7 +99,7 @@ function wp_embed_defaults($url = '')
  *
  * @since 2.9.0
  *
- * @see WP_oEmbed
+ * @see OEmbed
  *
  * @param string $url The URL that should be embedded.
  * @param array $args Optional. Additional arguments and parameters for retrieving embed HTML.
@@ -110,21 +113,21 @@ function wp_oembed_get($url, $args = '')
 }
 
 /**
- * Returns the initialized WP_oEmbed object.
+ * Returns the initialized OEmbed object.
  *
  * @since 2.9.0
  * @access private
  *
- * @staticvar WP_oEmbed $wp_oembed
+ * @staticvar OEmbed $wp_oembed
  *
- * @return WP_oEmbed object.
+ * @return OEmbed object.
  */
 function _wp_oembed_get_object()
 {
     static $wp_oembed = null;
 
     if (is_null($wp_oembed)) {
-        $wp_oembed = new WP_oEmbed();
+        $wp_oembed = new OEmbed();
     }
     return $wp_oembed;
 }
@@ -134,7 +137,7 @@ function _wp_oembed_get_object()
  *
  * @since 2.9.0
  *
- * @see WP_oEmbed
+ * @see OEmbed
  *
  * @param string $format The format of URL that this provider can handle. You can use asterisks
  *                          as wildcards.
@@ -147,7 +150,7 @@ function wp_oembed_add_provider($format, $provider, $regex = false)
         $oembed = _wp_oembed_get_object();
         $oembed->providers[$format] = array($provider, $regex);
     } else {
-        WP_oEmbed::_add_provider_early($format, $provider, $regex);
+        OEmbed::_add_provider_early($format, $provider, $regex);
     }
 }
 
@@ -156,7 +159,7 @@ function wp_oembed_add_provider($format, $provider, $regex = false)
  *
  * @since 3.5.0
  *
- * @see WP_oEmbed
+ * @see OEmbed
  *
  * @param string $format The URL format for the oEmbed provider to remove.
  * @return bool Was the provider removed successfully?
@@ -171,7 +174,7 @@ function wp_oembed_remove_provider($format)
             return true;
         }
     } else {
-        WP_oEmbed::_remove_provider_early($format);
+        OEmbed::_remove_provider_early($format);
     }
 
     return false;
@@ -244,7 +247,7 @@ function wp_maybe_load_embeds()
  *
  * @since 4.0.0
  *
- * @global WP_Embed $wp_embed
+ * @global Embed $wp_embed
  *
  * @param array $matches The RegEx matches from the provided regex when calling
  *                        wp_embed_register_handler().
@@ -341,7 +344,7 @@ function wp_embed_handler_video($matches, $attr, $url, $rawattr)
  */
 function wp_oembed_register_route()
 {
-    $controller = new WP_oEmbed_Controller();
+    $controller = new OEmbedController();
     $controller->register_routes();
 }
 
@@ -1577,7 +1580,6 @@ function wp_filter_pre_oembed_result($result, $url, $args)
 {
     $post_id = url_to_postid($url);
 
-    /** This filter is documented in wp-includes/class-wp-oembed-controller.php */
     $post_id = apply_filters('oembed_request_post_id', $post_id, $url);
 
     if (!$post_id) {

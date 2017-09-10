@@ -2,11 +2,11 @@
 
 namespace Devtronic\FreshPress\Core;
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
+use Devtronic\FreshPress\Components\Misc\MatchesMapRegex;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Entity\Post;
 use Devtronic\FreshPress\Entity\User;
-use WP_MatchesMapRegex;
-use WP_Rewrite;
 
 /**
  * WordPress environment setup class.
@@ -226,7 +226,7 @@ class Kernel
      * @since 2.0.0
      * @access public
      *
-     * @global WP_Rewrite $wp_rewrite
+     * @global Rewrite $wp_rewrite
      *
      * @param array|string $extra_query_vars Set the extra query variables.
      */
@@ -355,7 +355,7 @@ class Kernel
                 $query = preg_replace("!^.+\?!", '', $query);
 
                 // Substitute the substring matches into the query.
-                $query = addslashes(WP_MatchesMapRegex::apply($query, $matches));
+                $query = addslashes(MatchesMapRegex::apply($query, $matches));
 
                 $this->matched_query = $query;
 

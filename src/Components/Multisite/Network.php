@@ -1,11 +1,13 @@
 <?php
 /**
- * Network API: WP_Network class
+ * Network API: Network class
  *
  * @package WordPress
  * @subpackage Multisite
  * @since 4.4.0
  */
+
+namespace Devtronic\FreshPress\Components\Multisite;
 
 use Devtronic\FreshPress\Core\WPDB;
 
@@ -23,7 +25,7 @@ use Devtronic\FreshPress\Core\WPDB;
  * @property int $id
  * @property int $site_id
  */
-class WP_Network
+class Network
 {
 
     /**
@@ -99,7 +101,7 @@ class WP_Network
      * @global WPDB $wpdb WordPress database abstraction object.
      *
      * @param int $network_id The ID of the network to retrieve.
-     * @return WP_Network|bool The network's object if found. False if not.
+     * @return Network|bool The network's object if found. False if not.
      */
     public static function get_instance($network_id)
     {
@@ -125,11 +127,11 @@ class WP_Network
             wp_cache_add($network_id, $_network, 'networks');
         }
 
-        return new WP_Network($_network);
+        return new Network($_network);
     }
 
     /**
-     * Create a new WP_Network object.
+     * Create a new Network object.
      *
      * Will populate object properties from the object provided and assign other
      * default properties based on that information.
@@ -137,7 +139,7 @@ class WP_Network
      * @since 4.4.0
      * @access public
      *
-     * @param WP_Network|object $network A network object.
+     * @param Network|object $network A network object.
      */
     public function __construct($network)
     {
@@ -277,11 +279,11 @@ class WP_Network
      * @param string $domain Domain to check.
      * @param string $path Path to check.
      * @param int|null $segments Path segments to use. Defaults to null, or the full path.
-     * @return WP_Network|bool Network object if successful. False when no network is found.
+     * @return Network|bool Network object if successful. False when no network is found.
      */
     public static function get_by_path($domain = '', $path = '', $segments = null)
     {
-        $domains = array($domain);
+        $domains = [$domain];
         $pieces = explode('.', $domain);
 
         /*
@@ -307,16 +309,16 @@ class WP_Network
         if (wp_using_ext_object_cache()) {
             $using_paths = wp_cache_get('networks_have_paths', 'site-options');
             if (false === $using_paths) {
-                $using_paths = get_networks(array(
+                $using_paths = get_networks([
                     'number' => 1,
                     'count' => true,
                     'path__not_in' => '/',
-                ));
+                ]);
                 wp_cache_add('networks_have_paths', $using_paths, 'site-options');
             }
         }
 
-        $paths = array();
+        $paths = [];
         if ($using_paths) {
             $path_segments = array_filter(explode('/', trim($path, '/')));
 
@@ -370,13 +372,13 @@ class WP_Network
         }
 
         if (!$using_paths) {
-            $networks = get_networks(array(
+            $networks = get_networks([
                 'number' => 1,
-                'orderby' => array(
+                'orderby' => [
                     'domain_length' => 'DESC',
-                ),
+                ],
                 'domain__in' => $domains,
-            ));
+            ]);
 
             if (!empty($networks)) {
                 return array_shift($networks);
@@ -385,14 +387,14 @@ class WP_Network
             return false;
         }
 
-        $networks = get_networks(array(
-            'orderby' => array(
+        $networks = get_networks([
+            'orderby' => [
                 'domain_length' => 'DESC',
                 'path_length' => 'DESC',
-            ),
+            ],
             'domain__in' => $domains,
             'path__in' => $paths,
-        ));
+        ]);
 
         /*
          * Domains are sorted by length of domain, then by length of path.

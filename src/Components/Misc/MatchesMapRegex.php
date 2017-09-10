@@ -1,17 +1,19 @@
 <?php
 /**
- * WP_MatchesMapRegex helper class
+ * MatchesMapRegex helper class
  *
  * @package WordPress
  * @since 4.7.0
  */
+
+namespace Devtronic\FreshPress\Components\Misc;
 
 /**
  * Helper class to remove the need to use eval to replace $matches[] in query strings.
  *
  * @since 2.9.0
  */
-class WP_MatchesMapRegex
+class MatchesMapRegex
 {
     /**
      * store for matches
@@ -71,7 +73,7 @@ class WP_MatchesMapRegex
      */
     public static function apply($subject, $matches)
     {
-        $oSelf = new WP_MatchesMapRegex($subject, $matches);
+        $oSelf = new MatchesMapRegex($subject, $matches);
         return $oSelf->output;
     }
 
@@ -83,7 +85,7 @@ class WP_MatchesMapRegex
      */
     private function _map()
     {
-        $callback = array($this, 'callback');
+        $callback = [$this, 'callback'];
         return preg_replace_callback($this->_pattern, $callback, $this->_subject);
     }
 

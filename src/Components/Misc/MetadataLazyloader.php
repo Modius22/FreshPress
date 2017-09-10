@@ -1,11 +1,13 @@
 <?php
 /**
- * Meta API: WP_Metadata_Lazyloader class
+ * Meta API: MetadataLazyloader class
  *
  * @package WordPress
  * @subpackage Meta
  * @since 4.5.0
  */
+
+namespace Devtronic\FreshPress\Components\Misc;
 
 use Devtronic\FreshPress\Core\Error;
 
@@ -23,14 +25,14 @@ use Devtronic\FreshPress\Core\Error;
  * cache in the comments section of a post until the first time get_comment_meta() is called in the
  * context of the comment loop.
  *
- * WP uses the WP_Metadata_Lazyloader class to queue objects for metadata cache priming. The class
+ * WP uses the MetadataLazyloader class to queue objects for metadata cache priming. The class
  * then detects the relevant get_*_meta() function call, and queries the metadata of all queued objects.
  *
  * Do not access this class directly. Use the wp_metadata_lazyloader() function.
  *
  * @since 4.5.0
  */
-class WP_Metadata_Lazyloader
+class MetadataLazyloader
 {
     /**
      * Pending objects queue.
@@ -48,7 +50,7 @@ class WP_Metadata_Lazyloader
      * @access protected
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Constructor.
@@ -58,16 +60,16 @@ class WP_Metadata_Lazyloader
      */
     public function __construct()
     {
-        $this->settings = array(
-            'term' => array(
+        $this->settings = [
+            'term' => [
                 'filter' => 'get_term_metadata',
-                'callback' => array($this, 'lazyload_term_meta'),
-            ),
-            'comment' => array(
+                'callback' => [$this, 'lazyload_term_meta'],
+            ],
+            'comment' => [
                 'filter' => 'get_comment_metadata',
-                'callback' => array($this, 'lazyload_comment_meta'),
-            ),
-        );
+                'callback' => [$this, 'lazyload_comment_meta'],
+            ],
+        ];
     }
 
     /**
@@ -89,7 +91,7 @@ class WP_Metadata_Lazyloader
         $type_settings = $this->settings[$object_type];
 
         if (!isset($this->pending_objects[$object_type])) {
-            $this->pending_objects[$object_type] = array();
+            $this->pending_objects[$object_type] = [];
         }
 
         foreach ($object_ids as $object_id) {
@@ -108,7 +110,7 @@ class WP_Metadata_Lazyloader
          *
          * @param array $object_ids Object IDs.
          * @param string $object_type Type of object being queued.
-         * @param WP_Metadata_Lazyloader $lazyloader The lazy-loader object.
+         * @param MetadataLazyloader $lazyloader The lazy-loader object.
          */
         do_action('metadata_lazyloader_queued_objects', $object_ids, $object_type, $this);
     }
@@ -130,7 +132,7 @@ class WP_Metadata_Lazyloader
 
         $type_settings = $this->settings[$object_type];
 
-        $this->pending_objects[$object_type] = array();
+        $this->pending_objects[$object_type] = [];
         remove_filter($type_settings['filter'], $type_settings['callback']);
     }
 

@@ -10,6 +10,8 @@
  * @since 3.0.0
  */
 
+use Devtronic\FreshPress\Components\Customize\Theme;
+
 /**
  * Outputs the WPMU menu.
  *
@@ -85,25 +87,25 @@ function is_wpmu_sitewide_plugin($file)
 /**
  * Deprecated functionality for getting themes network-enabled themes.
  *
- * @deprecated 3.4.0 Use WP_Theme::get_allowed_on_network()
- * @see WP_Theme::get_allowed_on_network()
+ * @deprecated 3.4.0 Use Theme::get_allowed_on_network()
+ * @see Theme::get_allowed_on_network()
  */
 function get_site_allowed_themes()
 {
-    _deprecated_function(__FUNCTION__, '3.4.0', 'WP_Theme::get_allowed_on_network()');
-    return array_map('intval', WP_Theme::get_allowed_on_network());
+    _deprecated_function(__FUNCTION__, '3.4.0', 'Theme::get_allowed_on_network()');
+    return array_map('intval', Theme::get_allowed_on_network());
 }
 
 /**
  * Deprecated functionality for getting themes allowed on a specific site.
  *
- * @deprecated 3.4.0 Use WP_Theme::get_allowed_on_site()
- * @see WP_Theme::get_allowed_on_site()
+ * @deprecated 3.4.0 Use Theme::get_allowed_on_site()
+ * @see Theme::get_allowed_on_site()
  */
 function wpmu_get_blog_allowedthemes($blog_id = 0)
 {
-    _deprecated_function(__FUNCTION__, '3.4.0', 'WP_Theme::get_allowed_on_site()');
-    return array_map('intval', WP_Theme::get_allowed_on_site($blog_id));
+    _deprecated_function(__FUNCTION__, '3.4.0', 'Theme::get_allowed_on_site()');
+    return array_map('intval', Theme::get_allowed_on_site($blog_id));
 }
 
 /**

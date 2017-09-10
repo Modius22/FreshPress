@@ -6,6 +6,7 @@
  * @subpackage Administration
  */
 
+use Devtronic\FreshPress\Components\Misc\Rewrite;
 use Devtronic\FreshPress\Core\Error;
 
 /**
@@ -202,7 +203,7 @@ function insert_with_markers($filename, $marker, $insertion)
  *
  * @since 1.5.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  */
 function save_mod_rewrite_rules()
 {
@@ -235,7 +236,7 @@ function save_mod_rewrite_rules()
  *
  * @since 2.8.0
  *
- * @global WP_Rewrite $wp_rewrite
+ * @global Rewrite $wp_rewrite
  *
  * @return bool True if web.config was updated successfully
  */

@@ -8,6 +8,8 @@
  * @since MU
  */
 
+use Devtronic\FreshPress\Components\Multisite\Site;
+use Devtronic\FreshPress\Components\Multisite\Network;
 use Devtronic\FreshPress\Components\Query\NetworkQuery;
 use Devtronic\FreshPress\Components\Query\SiteQuery;
 use Devtronic\FreshPress\Core\WPDB;
@@ -127,7 +129,7 @@ function get_id_from_blogname($slug)
  *                                  If not specified the current blog ID is used.
  * @param bool $get_all Whether to retrieve all details or only the details in the blogs table.
  *                                  Default is true.
- * @return WP_Site|false Blog details on success. False on failure.
+ * @return Site|false Blog details on success. False on failure.
  */
 function get_blog_details($fields = null, $get_all = true)
 {
@@ -242,7 +244,7 @@ function get_blog_details($fields = null, $get_all = true)
     }
 
     if (empty($details)) {
-        $details = WP_Site::get_instance($blog_id);
+        $details = Site::get_instance($blog_id);
         if (!$details) {
             // Set the full cache.
             wp_cache_set($blog_id, -1, 'blog-details');
@@ -250,8 +252,8 @@ function get_blog_details($fields = null, $get_all = true)
         }
     }
 
-    if (!$details instanceof WP_Site) {
-        $details = new WP_Site($details);
+    if (!$details instanceof Site) {
+        $details = new Site($details);
     }
 
     if (!$get_all) {
@@ -493,7 +495,7 @@ function update_blog_details($blog_id, $details = array())
  *
  * @global bool $_wp_suspend_cache_invalidation
  *
- * @param WP_Site $blog The site object to be cleared from cache.
+ * @param Site $blog The site object to be cleared from cache.
  */
 function clean_blog_cache($blog)
 {
@@ -521,7 +523,7 @@ function clean_blog_cache($blog)
      * @since 4.6.0
      *
      * @param int $id Blog ID.
-     * @param WP_Site $blog Site object.
+     * @param Site $blog Site object.
      * @param string $domain_path_key md5 hash of domain and path.
      */
     do_action('clean_site_cache', $blog_id, $blog, $domain_path_key);
@@ -555,8 +557,8 @@ function clean_site_details_cache($site_id = 0)
  *
  * @since 4.6.0
  *
- * @param WP_Site|int|null $site Optional. Site to retrieve. Default is the current site.
- * @return WP_Site|null The site object or null if not found.
+ * @param Site|int|null $site Optional. Site to retrieve. Default is the current site.
+ * @return Site|null The site object or null if not found.
  */
 function get_site($site = null)
 {
@@ -564,12 +566,12 @@ function get_site($site = null)
         $site = get_current_blog_id();
     }
 
-    if ($site instanceof WP_Site) {
+    if ($site instanceof Site) {
         $_site = $site;
     } elseif (is_object($site)) {
-        $_site = new WP_Site($site);
+        $_site = new Site($site);
     } else {
-        $_site = WP_Site::get_instance($site);
+        $_site = Site::get_instance($site);
     }
 
     if (!$_site) {
@@ -581,7 +583,7 @@ function get_site($site = null)
      *
      * @since 4.6.0
      *
-     * @param WP_Site $_site Site data.
+     * @param Site $_site Site data.
      */
     $_site = apply_filters('get_site', $_site);
 
@@ -1255,10 +1257,10 @@ function get_networks($args = array())
  *
  * @since 4.6.0
  *
- * @global WP_Network $current_site
+ * @global Network $current_site
  *
- * @param WP_Network|int|null $network Optional. Network to retrieve. Default is the current network.
- * @return WP_Network|null The network object or null if not found.
+ * @param Network|int|null $network Optional. Network to retrieve. Default is the current network.
+ * @return Network|null The network object or null if not found.
  */
 function get_network($network = null)
 {
@@ -1267,12 +1269,12 @@ function get_network($network = null)
         $network = $current_site;
     }
 
-    if ($network instanceof WP_Network) {
+    if ($network instanceof Network) {
         $_network = $network;
     } elseif (is_object($network)) {
-        $_network = new WP_Network($network);
+        $_network = new Network($network);
     } else {
-        $_network = WP_Network::get_instance($network);
+        $_network = Network::get_instance($network);
     }
 
     if (!$_network) {
@@ -1284,7 +1286,7 @@ function get_network($network = null)
      *
      * @since 4.6.0
      *
-     * @param WP_Network $_network Network data.
+     * @param Network $_network Network data.
      */
     $_network = apply_filters('get_network', $_network);
 
