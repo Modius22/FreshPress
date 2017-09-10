@@ -19,6 +19,7 @@
 use Devtronic\FreshPress\Components\Dependencies\Scripts;
 use Devtronic\FreshPress\Components\Dependencies\Styles;
 use Devtronic\FreshPress\Components\I18n\Locale;
+use Devtronic\FreshPress\Components\Misc\CommunityEvents;
 
 /** WordPress Scripts Functions */
 require(ABSPATH . WPINC . '/functions.wp-scripts.php');
@@ -1609,12 +1610,10 @@ function wp_localize_community_events()
         return;
     }
 
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-community-events.php');
-
     $user_id = get_current_user_id();
     $saved_location = get_user_option('community-events-location', $user_id);
     $saved_ip_address = isset($saved_location['ip']) ? $saved_location['ip'] : false;
-    $current_ip_address = WP_Community_Events::get_unsafe_client_ip();
+    $current_ip_address = CommunityEvents::get_unsafe_client_ip();
 
     /*
      * If the user's location is based on their IP address, then update their
@@ -1628,7 +1627,7 @@ function wp_localize_community_events()
         update_user_option($user_id, 'community-events-location', $saved_location, true);
     }
 
-    $events_client = new WP_Community_Events($user_id, $saved_location);
+    $events_client = new CommunityEvents($user_id, $saved_location);
 
     wp_localize_script('dashboard', 'communityEventsData', array(
         'nonce' => wp_create_nonce('community_events'),

@@ -18,9 +18,10 @@ use Devtronic\FreshPress\Components\ListTables\PostCommentsListTable;
 use Devtronic\FreshPress\Components\ListTables\PostsListTable;
 use Devtronic\FreshPress\Components\ListTables\TermsListTable;
 use Devtronic\FreshPress\Components\ListTables\UsersListTable;
+use Devtronic\FreshPress\Components\Misc\AjaxResponse;
 use Devtronic\FreshPress\Components\Misc\Editors;
 use Devtronic\FreshPress\Components\Misc\Embed;
-use Devtronic\FreshPress\Components\Misc\AjaxResponse;
+use Devtronic\FreshPress\Components\Misc\CommunityEvents;
 use Devtronic\FreshPress\Components\Query\Query;
 use Devtronic\FreshPress\Components\Session\SessionTokens;
 use Devtronic\FreshPress\Components\Upgrader\AjaxUpgraderSkin;
@@ -344,15 +345,13 @@ function wp_ajax_autocomplete_user()
  */
 function wp_ajax_get_community_events()
 {
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-community-events.php');
-
     check_ajax_referer('community_events');
 
     $search = isset($_POST['location']) ? wp_unslash($_POST['location']) : '';
     $timezone = isset($_POST['timezone']) ? wp_unslash($_POST['timezone']) : '';
     $user_id = get_current_user_id();
     $saved_location = get_user_option('community-events-location', $user_id);
-    $events_client = new WP_Community_Events($user_id, $saved_location);
+    $events_client = new CommunityEvents($user_id, $saved_location);
     $events = $events_client->get_events($search, $timezone);
     $ip_changed = false;
 
