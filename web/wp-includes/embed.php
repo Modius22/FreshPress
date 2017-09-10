@@ -10,6 +10,7 @@
 use Devtronic\FreshPress\Components\Http\Response;
 use Devtronic\FreshPress\Components\Misc\Embed;
 use Devtronic\FreshPress\Components\Misc\OEmbed;
+use Devtronic\FreshPress\Components\Misc\OEmbedController;
 use Devtronic\FreshPress\Components\Rest\Request;
 use Devtronic\FreshPress\Components\Rest\Server;
 use Devtronic\FreshPress\Entity\Post;
@@ -343,7 +344,7 @@ function wp_embed_handler_video($matches, $attr, $url, $rawattr)
  */
 function wp_oembed_register_route()
 {
-    $controller = new WP_oEmbed_Controller();
+    $controller = new OEmbedController();
     $controller->register_routes();
 }
 
@@ -1579,7 +1580,6 @@ function wp_filter_pre_oembed_result($result, $url, $args)
 {
     $post_id = url_to_postid($url);
 
-    /** This filter is documented in wp-includes/class-wp-oembed-controller.php */
     $post_id = apply_filters('oembed_request_post_id', $post_id, $url);
 
     if (!$post_id) {

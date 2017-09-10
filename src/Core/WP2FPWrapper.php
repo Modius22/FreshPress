@@ -216,6 +216,7 @@ $finalClasses = array_change_key_case([
     'WP_Site' => 'Devtronic\\FreshPress\\Components\\Multisite\\Site',
     'WP_Internal_Pointers' => 'Devtronic\\FreshPress\\Components\\Misc\\InternalPointers',
     '_WP_Editors' => 'Devtronic\\FreshPress\\Components\\Misc\\Editors',
+    'WP_oEmbed_Controller' => 'Devtronic\\FreshPress\\Components\\Misc\\OEmbedController',
 ]);
 
 // Only for compatibility, remove in 2.x
