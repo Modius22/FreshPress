@@ -41,6 +41,9 @@ Look in the `docs/` Folder 🙂
 - [PHP](https://secure.php.net/) version **5.6** or higher.
 - [MySQL](https://www.mysql.com/) version **5.0** or higher.
 
+## Community
+Join our Slack Commuity Channel: https://freshpress.slack.com
+
 ### Recommendations
 1. [PHP](https://secure.php.net/) version **7** or higher.
 2. [MySQL](https://www.mysql.com/) version **5.6** or higher.
